@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+
     padding-bottom: 20px;
     font-family: 'Raleway', sans-serif;
 }
@@ -153,3 +153,186 @@ body.modal-open {
 }
 
 /*Login end*/
+
+
+/*--------------Home Index page----------------------*/
+
+.home-img {
+    background: url("../images/pexels-photo-199497.png") no-repeat center;
+    height: 100vh;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /*filter: brightness(50%);*/
+}
+
+
+    .home-img h2 {
+        color: #fff;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        font-size: 45px;
+        margin: 0;
+        margin-bottom: 10px
+    }
+
+.search-input {
+    margin: 20px auto;
+    padding: 4px 16px;
+    max-width: 400px;
+    height: 45px;
+    width: 100%;
+    border-radius: 3px;
+    border: none;
+}
+
+    .search-input:focus {
+        outline: none;
+    }
+
+.search-button {
+    height: 45px;
+    margin-left: 10px;
+    border-radius: 3px;
+    border: none;
+    width: 100px;
+    background-color: #2f477a;
+    color: #fff;
+}
+
+    .search-button:hover {
+        background-color: #4caf50
+    }
+
+    .search-button:focus {
+        outline: none;
+    }
+
+
+/*------------------------------CENTER----------------------------------------*/
+
+.outer {
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+
+
+
+/*-----------------NavBar--------------------*/
+
+/* navbar */
+.navbar-default {
+    background-color: #FFF;
+    border-color: black;
+    opacity: 0.9;
+}
+    /* Title */
+    .navbar-default .navbar-brand {
+        color: #777;
+    }
+
+        .navbar-default .navbar-brand:hover,
+        .navbar-default .navbar-brand:focus {
+            color: #5E5E5E;
+        }
+    /* Link */
+    .navbar-default .navbar-nav > li > a {
+        color: black;
+    }
+
+        .navbar-default .navbar-nav > li > a:hover,
+        .navbar-default .navbar-nav > li > a:focus {
+            color: black;
+        }
+
+    .navbar-default .navbar-nav > .active > a,
+    .navbar-default .navbar-nav > .active > a:hover,
+    .navbar-default .navbar-nav > .active > a:focus {
+        color: black;
+        background-color: #E7E7E7;
+    }
+
+    .navbar-default .navbar-nav > .open > a,
+    .navbar-default .navbar-nav > .open > a:hover,
+    .navbar-default .navbar-nav > .open > a:focus {
+        color: #555;
+        background-color: #D5D5D5;
+    }
+    /* Caret */
+    .navbar-default .navbar-nav > .dropdown > a .caret {
+        border-top-color: #777;
+        border-bottom-color: #777;
+    }
+
+    .navbar-default .navbar-nav > .dropdown > a:hover .caret,
+    .navbar-default .navbar-nav > .dropdown > a:focus .caret {
+        border-top-color: #333;
+        border-bottom-color: #333;
+    }
+
+    .navbar-default .navbar-nav > .open > a .caret,
+    .navbar-default .navbar-nav > .open > a:hover .caret,
+    .navbar-default .navbar-nav > .open > a:focus .caret {
+        border-top-color: #555;
+        border-bottom-color: #555;
+    }
+    /* Mobile version */
+    .navbar-default .navbar-toggle {
+        border-color: #DDD;
+    }
+
+        .navbar-default .navbar-toggle:hover,
+        .navbar-default .navbar-toggle:focus {
+            background-color: #DDD;
+        }
+
+        .navbar-default .navbar-toggle .icon-bar {
+            background-color: #CCC;
+        }
+
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #777;
+    }
+
+        .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+        .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+            color: #333;
+        }
+}
+
+/*------------End navBar---------------------------------------------------*/
+
+/*-------------Video-------------------------------------------------------*/
+.video-container {
+    background-color: #f7f9fb;
+    margin-top: 0px;
+
+}
+
+    .video-container iframe {
+        margin-top: 100px;
+        margin-bottom: 80px;
+        width: 526px;
+        height: 296px;
+    }
+
+    .video-container p {
+        font-size: 24px;
+        margin-left: 20px;
+    }

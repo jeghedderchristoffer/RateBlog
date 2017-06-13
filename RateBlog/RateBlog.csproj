@@ -11,6 +11,10 @@
   <PropertyGroup>
     <UserSecretsId>aspnet-RateBlog-524ea7c1-fc9b-4696-aa47-2bb2a181ead4</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\images\pexels-photo-199497.png" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
