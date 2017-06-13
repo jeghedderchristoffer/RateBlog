@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using RateBlog.Data;
 using RateBlog.Models;
 using RateBlog.Services;
+using RateBlog.Repository;
 
 namespace RateBlog
 {
@@ -58,6 +59,7 @@ namespace RateBlog
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<IPlatformRepository, PlatformRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,6 +91,10 @@ namespace RateBlog
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            SeedPlatformData.Initialize(app.ApplicationServices);
+
         }
+
     }
+
 }
