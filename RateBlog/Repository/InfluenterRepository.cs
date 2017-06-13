@@ -44,10 +44,8 @@ namespace RateBlog.Repository
 
         public void Add(Influenter influenter)
         {
-
             _applicationDbContext.Influenter.Add(influenter);
-            _applicationDbContext.SaveChanges();
-            
+            _applicationDbContext.SaveChanges();           
         }
     }
 }

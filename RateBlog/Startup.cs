@@ -13,6 +13,7 @@ using RateBlog.Data;
 using RateBlog.Models;
 using RateBlog.Services;
 using RateBlog.Repository;
+using Microsoft.AspNetCore.Http;
 
 namespace RateBlog
 {
@@ -49,7 +50,10 @@ namespace RateBlog
                 options.Password.RequiredLength = 6;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false; 
+                options.Password.RequireUppercase = false;
+
+                // Skift login path
+                options.Cookies.ApplicationCookie.LoginPath = new PathString();
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -60,6 +64,8 @@ namespace RateBlog
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<IPlatformRepository, PlatformRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using RateBlog.Models;
 using RateBlog.Models.AccountViewModels;
 using RateBlog.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace RateBlog.Controllers
 {
@@ -24,6 +25,8 @@ namespace RateBlog.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+        private readonly IHttpContextAccessor _httpContextAccessor; 
+
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -31,7 +34,8 @@ namespace RateBlog.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,6 +43,7 @@ namespace RateBlog.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _httpContextAccessor = httpContextAccessor; 
         }
 
         //
@@ -49,6 +54,8 @@ namespace RateBlog.Controllers
         {
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
+
+            var type = HttpContext.GetType();
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -98,6 +105,9 @@ namespace RateBlog.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+
+
+
             return View();
         }
 

@@ -8,7 +8,6 @@ namespace RateBlog.Models
 {
     public class Influenter
     {
-       
         public int InfluenterId { get; set; }
         public string Fornavn { get; set; }
         public string Efternavn { get; set; }
@@ -16,10 +15,7 @@ namespace RateBlog.Models
         public int? Alder { get; set; }
         public string Links { get; set; }
         public string Profiltekst { get; set; }
-
         public virtual ICollection<InfluenterPlatform> InfluenterPlatform { get; set; }
         public virtual ICollection<InfluenterRating> InfluenterRating { get; set; }
-
-
     }
 }
