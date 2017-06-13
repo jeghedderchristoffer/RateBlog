@@ -17,6 +17,10 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
+
+
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -40,6 +44,44 @@
             </div>
         </div>
     </nav>
+
+    <!-- Modal -->
+    <div id="loginModal" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="max-width: 450px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center"><b>Velkommen tilbage!</b></h4>
+                </div>
+                <div class="modal-body">
+                    <span id="errorMsgTop" style="color: red"></span>
+                    @Html.AntiForgeryToken()
+                    <input id="email" type="email" class="text-input" placeholder="Email" />
+                    <span id="errorMsgBot" style="color: red"></span>
+                    <input id="password" class="text-input" placeholder="Kodeord" type="password" />
+                    <input type="button" class="login-button" id="loginBtn" value="Log på" />
+                    <a id="forgotPasswordBtn" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; padding-bottom: 10px; color: #000">Har du glemt kodeord? Tryk her</p></a>
+                    <div id="forgotPassword" class="display-none">
+                        <input id="email" type="email" class="text-input" placeholder="Hvad er din email?" />
+                        <input style="margin-bottom: 10px" type="button" class="login-button" value="Tilsend kodeord" />
+                    </div>
+                    <div class="divider">
+                        <h4><span>ELLER</span></h4>
+                    </div>
+                    <div class="divider-small">
+                        <input type="submit" class="login-button" style="background-color: #0094ff" id="login" value="Log på med Facebook" />
+                    </div>
+                    <div class="divider-small">
+                        <input type="submit" class="login-button" style="background-color: #0094ff" id="login" value="Log på med Instagram" />
+                    </div>
+
+                    <input type="submit" class="login-button" style="background-color: #0094ff" id="login" value="Log på med Google" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container body-content">
         @RenderBody()
         <hr />
