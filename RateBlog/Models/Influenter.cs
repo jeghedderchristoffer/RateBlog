@@ -18,6 +18,7 @@ namespace RateBlog.Models
         public string Profiltekst { get; set; }
 
         public virtual ICollection<InfluenterPlatform> InfluenterPlatform { get; set; }
+        public virtual ICollection<InfluenterRating> InfluenterRating { get; set; }
 
 
     }

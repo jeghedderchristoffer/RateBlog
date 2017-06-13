@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace RateBlog.Data
 
         public DbSet<Influenter> Influenter { get; set; }
         public DbSet<Platform> Platform { get; set; }
+        public DbSet<Rating> Rating { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -35,6 +37,21 @@ namespace RateBlog.Data
                 .HasOne(pt => pt.Platform)
                 .WithMany(t => t.InfluenterPlatform)
                 .HasForeignKey(pt => pt.PlatformId);
+
+            builder.Entity<InfluenterRating>()
+                .HasKey(t => new { t.InfluenterId, t.RatingId });
+
+            builder.Entity<InfluenterRating>()
+                .HasOne(pt => pt.Influenter)
+                .WithMany(p => p.InfluenterRating)
+                .HasForeignKey(pt => pt.InfluenterId);
+
+            builder.Entity<InfluenterRating>()
+                .HasOne(pt => pt.Rating)
+                .WithMany(t => t.InfluenterRating)
+                .HasForeignKey(pt => pt.RatingId);
+
+
 
 
             // Customize the ASP.NET Identity model and override the defaults if needed.
