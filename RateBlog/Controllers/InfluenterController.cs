@@ -15,14 +15,15 @@ namespace RateBlog.Controllers
         private IInfluenterRepository _influenter;
 
         public InfluenterController(IInfluenterRepository influenter)
-        {
+        { 
             _influenter = influenter;
         }
 
 
         public IActionResult Index(string search)
         {
-            var influenter = _influenter.GetAll().FindAll(x => x.Fornavn == search);
+            var influenter = _influenter.GetAll().FindAll(x => x.Fornavn.ToLower().Contains(search.ToLower()));
+
 
             var model = new IndexViewModel()
             {
