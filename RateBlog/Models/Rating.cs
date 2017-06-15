@@ -15,9 +15,6 @@ namespace RateBlog.Models
         public int Sprog { get; set; }
         public string Feedback { get; set; }
 
-
-
-
         public virtual ICollection<InfluenterRating> InfluenterRating { get; set; }
     }
 }
