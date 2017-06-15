@@ -20,6 +20,7 @@ namespace RateBlog.Data
         public DbSet<Influenter> Influenter { get; set; }
         public DbSet<Platform> Platform { get; set; }
         public DbSet<Rating> Rating { get; set; }
+        public DbSet<Kategori> Kategori { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

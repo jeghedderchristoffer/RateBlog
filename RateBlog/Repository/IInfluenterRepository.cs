@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Repository
 {
-    interface IInfluenterRepository
+    public interface IInfluenterRepository
     {
         Influenter Get(int Id);
 

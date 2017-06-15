@@ -1,7 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model RateBlog.Models.InfluenterViewModels.IndexViewModel
 
-<h1>Det virker</h1>
+<div class="container" style="padding-top: 70px">
+    <div class="col-md-12">
+        <div class="col-md-3">
+            <div class="sorter" style="margin-top:75px;">
+                <h1>Søge muligheder</h1>
+                <br />
+                <p>Kategori</p>
+                <br />
+                <p>Vurdering</p>
+                <br />
+                <p>Køn</p>
+                <br />
+                <p>Alder</p>
+                <br />
+                <p>Mulighed X</p>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="infoInfluenter">
+                <h1>Influertere:</h1>
+                <hr />
+                @foreach (var influ in Model.InfluentList)
+                {
+                    <div class="col-md-12 search-result">
+                        <div class="col-md-3">
+                            <div class="picinfluenter">
+                                <img src="http://via.placeholder.com/100x100/eee" class="influ-img">
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="specifikInfo">
+                                <p>Fornavn: @influ.Fornavn</p>
+                                <p>Efternavn: @influ.Efternavn</p>
+                                <p>Alder: @influ.Alder</p>
+                                <br />
+                            </div>
+                        </div>
+                    </div>     
+                }
+            </div>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />

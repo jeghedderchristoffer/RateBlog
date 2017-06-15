@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RateBlog.Data;
+using RateBlog.Models.InfluenterViewModels;
+using RateBlog.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +11,28 @@ namespace RateBlog.Controllers
 {
     public class InfluenterController : Controller
     {
-        public IActionResult Index()
+
+        private IInfluenterRepository _influenter;
+
+        public InfluenterController(IInfluenterRepository influenter)
         {
-            return View(); 
+            _influenter = influenter;
         }
+
+
+        public IActionResult Index(string search)
+        {
+            var influenter = _influenter.GetAll().FindAll(x => x.Fornavn == search);
+
+            var model = new IndexViewModel()
+            {
+                InfluentList = influenter
+            };
+
+            return View(model); 
+        }
+
+
 
 
 
