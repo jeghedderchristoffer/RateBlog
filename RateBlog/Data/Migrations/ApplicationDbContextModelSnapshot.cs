@@ -195,6 +195,19 @@ namespace RateBlog.Data.Migrations
                     b.ToTable("Influenter");
                 });
 
+            modelBuilder.Entity("RateBlog.Models.InfluenterKategori", b =>
+                {
+                    b.Property<int>("InfluenterId");
+
+                    b.Property<int>("KategoriId");
+
+                    b.HasKey("InfluenterId", "KategoriId");
+
+                    b.HasIndex("KategoriId");
+
+                    b.ToTable("InfluenterKategori");
+                });
+
             modelBuilder.Entity("RateBlog.Models.InfluenterPlatform", b =>
                 {
                     b.Property<int>("InfluenterId");
@@ -219,6 +232,18 @@ namespace RateBlog.Data.Migrations
                     b.HasIndex("RatingId");
 
                     b.ToTable("InfluenterRating");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.Kategori", b =>
+                {
+                    b.Property<int>("KategoriId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("KategoriNavn");
+
+                    b.HasKey("KategoriId");
+
+                    b.ToTable("Kategori");
                 });
 
             modelBuilder.Entity("RateBlog.Models.Platform", b =>
@@ -287,6 +312,19 @@ namespace RateBlog.Data.Migrations
                     b.HasOne("RateBlog.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("RateBlog.Models.InfluenterKategori", b =>
+                {
+                    b.HasOne("RateBlog.Models.Influenter", "Influenter")
+                        .WithMany("InfluenterKategori")
+                        .HasForeignKey("InfluenterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RateBlog.Models.Kategori", "Kategori")
+                        .WithMany("InfluenterKategori")
+                        .HasForeignKey("KategoriId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

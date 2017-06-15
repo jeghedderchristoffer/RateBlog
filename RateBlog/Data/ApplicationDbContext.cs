@@ -51,6 +51,19 @@ namespace RateBlog.Data
                 .WithMany(t => t.InfluenterRating)
                 .HasForeignKey(pt => pt.RatingId);
 
+            builder.Entity<InfluenterKategori>()
+                .HasKey(t => new { t.InfluenterId, t.KategoriId });
+
+            builder.Entity<InfluenterKategori>()
+                .HasOne(pt => pt.Influenter)
+                .WithMany(p => p.InfluenterKategori)
+                .HasForeignKey(pt => pt.InfluenterId);
+
+            builder.Entity<InfluenterKategori>()
+                .HasOne(pt => pt.Kategori)
+                .WithMany(t => t.InfluenterKategori)
+                .HasForeignKey(pt => pt.KategoriId);
+
 
 
 
