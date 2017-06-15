@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Models
 {
-    public class SeedPlatformData
+    public class SeedData
     {
 
         public static void Initialize(IServiceProvider serviceProvider)
