@@ -324,6 +324,7 @@ body.modal-open {
         background-color: #fff;
         position: relative;
         width: 100%;
+        border-bottom: 1px solid #ddd
     }
 
     .navbar-brand,
@@ -357,99 +358,112 @@ body.modal-open {
         }
 }
 
-/*------------End navBar---------------------------------------------------*/
-
-/*-------------Video-------------------------------------------------------*/
-.video-container {
-    background-color: #fff;
-    margin-top: 0px;
-    padding-top: 100px;
-    padding-bottom: 100px;
+.navbar-allaround {
+    height: 70px;
+    background-color: #18243d;
+    width: 100%
 }
 
-    .video-container iframe {
+
+@media (max-width: 767px) {
+    .navbar-allaround {
+        display: none;
+    }
+}
+
+    /*------------End navBar---------------------------------------------------*/
+
+    /*-------------Video-------------------------------------------------------*/
+    .video-container {
+        background-color: #fff;
+        margin-top: 0px;
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
+        .video-container iframe {
+            width: 100%;
+            height: 296px;
+        }
+
+        .video-container p {
+            font-size: 24px;
+            margin-left: 20px;
+        }
+
+        .video-container h1 {
+            margin: 0;
+            padding-bottom: 50px
+        }
+    /*-------------Video End-------------------------------------------------------*/
+
+    /*Categori container*/
+
+    .categori-container {
+        background-color: #f6f6f6;
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
+    .circle {
+        position: relative;
+        display: inline-block;
         width: 100%;
-        height: 296px;
+        height: 0;
+        padding: 50% 0;
+        border-radius: 50%;
+        background: #38a9e4;
+        color: white;
+        font-size: 26px;
+        text-align: center;
+        line-height: 0;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
-    .video-container p {
-        font-size: 24px;
-        margin-left: 20px;
+    @media screen and (max-width: 991px) {
+
+        .circle {
+            font-size: 18px;
+        }
     }
 
-    .video-container h1{
-        margin: 0; 
-        padding-bottom: 50px
-    }
-/*-------------Video End-------------------------------------------------------*/
+    @media screen and (max-width: 767px) {
 
-/*Categori container*/
-
-.categori-container {
-    background-color: #f6f6f6;
-    padding-top: 100px;
-    padding-bottom: 100px;
-}
-
-.circle {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 0;
-    padding: 50% 0;
-    border-radius: 50%;
-    background: #38a9e4;
-    color: white;
-    font-size: 26px;
-    text-align: center;
-    line-height: 0;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-@media screen and (max-width: 991px) {
-
-    .circle {
-        font-size: 18px;
-    }
-}
-
-@media screen and (max-width: 767px) {
-
-    .circle {
-        font-size: 12px;
-    }
-}
-
-
-
-/*Categori container end*/
-
-
-.sorter {
-    background-color: #eee;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
-    margin-right: 10px;
-}
-
-    .sorter h1 {
-        font-size: 25px;
-        padding-top: 0px;
+        .circle {
+            font-size: 12px;
+        }
     }
 
-.influ-img {
-    height: 150px;
-    width: 150px;
-    border-radius: 30%;
-}
 
-.search-result {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
-    padding-top: 20px;
-}
+
+    /*Categori container end*/
+
+
+    .sorter {
+        background-color: #eee;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 2px;
+        margin-right: 10px;
+    }
+
+        .sorter h1 {
+            font-size: 25px;
+            padding-top: 0px;
+        }
+
+    .influ-img {
+        height: 150px;
+        width: 150px;
+        border-radius: 30%;
+    }
+
+    .search-result {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+        padding-top: 20px;
+    }
 
 
