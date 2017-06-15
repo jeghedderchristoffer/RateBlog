@@ -7,7 +7,7 @@ namespace RateBlog.Models.InfluenterViewModels
 {
     public class IndexViewModel
     {
-
+        public string SearchString { get; set; }
         public List<Influenter> InfluentList  { get; set; }
 
 

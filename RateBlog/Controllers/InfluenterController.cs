@@ -27,7 +27,9 @@ namespace RateBlog.Controllers
 
             var model = new IndexViewModel()
             {
-                InfluentList = influenter
+                InfluentList = influenter,
+                SearchString = search
+                
             };
 
             return View(model); 

@@ -98,7 +98,9 @@ namespace RateBlog
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            SeedPlatformData.Initialize(app.ApplicationServices);
+
+
+            SeedData.Initialize(app.ApplicationServices);
 
         }
 
