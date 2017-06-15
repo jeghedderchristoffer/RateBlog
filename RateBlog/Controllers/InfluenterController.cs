@@ -22,7 +22,8 @@ namespace RateBlog.Controllers
 
         public IActionResult Index(string search)
         {
-            var influenter = _influenter.GetAll().FindAll(x => x.Fornavn == search);
+            var influenter = _influenter.GetAll().FindAll(x => x.Fornavn.ToLower().Contains(search.ToLower()));
+            
 
             var model = new IndexViewModel()
             {
@@ -31,6 +32,8 @@ namespace RateBlog.Controllers
 
             return View(model); 
         }
+
+
 
 
 
