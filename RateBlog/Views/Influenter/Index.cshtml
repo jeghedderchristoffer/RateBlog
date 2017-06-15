@@ -3,8 +3,23 @@
 <div class="navbar-allaround">
 
 </div>
+<div style="background-color: #f6f6f6; padding-bottom: 20px;">
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <h2>Find og anmeld Influentere</h2>
+                <form asp-controller="Influenter" asp-action="Index">
+                    <input type="text" name="search" class="search-inputsøg" placeholder="Søg Influenter" />
+                    <span>
+                        <input class="search-button" type="submit" value="Søg" />
+                    </span>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="container" style="padding-top: 70px">
+<div class="container" style="padding-top: 20px">
     <div class="col-md-12">
         <div class="col-md-3">
             <div class="sorter" style="margin-top:75px;">
