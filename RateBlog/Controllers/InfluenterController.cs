@@ -22,6 +22,11 @@ namespace RateBlog.Controllers
 
         public IActionResult Index(string search)
         {
+
+            if (string.IsNullOrEmpty(search))
+            {
+                search = "";
+            }
             var influenter = _influenter.GetAll().FindAll(x => x.Fornavn.ToLower().Contains(search.ToLower()));
 
 

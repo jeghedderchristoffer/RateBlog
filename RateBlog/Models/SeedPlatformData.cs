@@ -16,7 +16,7 @@ namespace RateBlog.Models
             using (var context = new ApplicationDbContext(
                 serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
-                
+
                 if (context.Platform.ToList().Count != 0)
                 {
                     return;   // DB has been seeded
@@ -25,13 +25,13 @@ namespace RateBlog.Models
                 context.Platform.AddRange(
                      new Platform
                      {
-                      
-                         PlatformNavn ="YouTube"
+
+                         PlatformNavn = "YouTube"
                      },
 
                      new Platform
                      {
-                         PlatformNavn ="Instagram",
+                         PlatformNavn = "Instagram",
                      },
 
                      new Platform
@@ -41,19 +41,26 @@ namespace RateBlog.Models
 
                    new Platform
                    {
-                      
+
                        PlatformNavn = "Facebook",
                    },
 
                    new Platform
                    {
-                     
-                       PlatformNavn ="LinkedIn"
+
+                       PlatformNavn = "LinkedIn"
                    }
 
                 );
                 context.SaveChanges();
+
             }
+
+
         }
+
+
     }
 }
+    
+

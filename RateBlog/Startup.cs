@@ -100,7 +100,8 @@ namespace RateBlog
             });
 
 
-            SeedData.Initialize(app.ApplicationServices);
+            SeedPlatformData.Initialize(app.ApplicationServices);
+            SeedInfluentData.Initialize(app.ApplicationServices);
 
         }
 
