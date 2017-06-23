@@ -49,6 +49,11 @@ textarea {
     }
 }
 
+.noPadding{
+    padding-left: 0; 
+    padding-right: 0;
+}
+
 /*Modal*/
 
 body.modal-open {
@@ -320,7 +325,7 @@ body.modal-open {
 
 .navbar-default .btn-link {
     color: #fff;
-    line-height: 30px;
+    line-height: 0px;
     height: 70px;
     padding-top: 0;
     padding-bottom: 0;
@@ -456,18 +461,18 @@ body.modal-open {
 
 .sorter {
     background-color: #eee;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
-    margin-right: 10px;
-    border-radius: 3px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-top: 15px;
+    border-radius: 5px;
 }
 
     .sorter h1 {
         font-size: 25px;
         padding-top: 0px;
     }
+
+
 
 .influ-img {
     height: 150px;
@@ -489,4 +494,236 @@ body.modal-open {
     width: 100%;
     border-radius: 3px;
     border: 1px solid black;
+}
+
+/*Dropdown menu*/
+
+ul li {
+    font: 13px Verdana, 'Lucida Grande';
+    cursor: pointer;
+    -webkit-transition: padding .05s linear;
+    -moz-transition: padding .05s linear;
+    -ms-transition: padding .05s linear;
+    -o-transition: padding .05s linear;
+    transition: padding .05s linear;
+}
+
+    ul li.drop {
+        position: relative;
+    }
+
+ul > li {
+    display: inline-block;
+}
+
+ul li a {
+    line-height: 80px;
+    padding: 0 20px;
+    height: 80px;
+    color: #777;
+    -webkit-transition: all .1s ease-out;
+    -moz-transition: all .1s ease-out;
+    -ms-transition: all .1s ease-out;
+    -o-transition: all .1s ease-out;
+    transition: all .1s ease-out;
+}
+
+    ul li a:hover {
+        color: #eee;
+    }
+
+.dropOut .triangle {
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+    top: -8px;
+    left: 50%;
+    margin-left: -8px;
+}
+
+.dropdownContain {
+    width: 160px;
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    margin-left: -80px; /* half of width */
+    top: -400px;
+}
+
+
+.dropOut {
+    width: 160px;
+    background: white;
+    float: left;
+    position: relative;
+    margin-top: 0px;
+    opacity: 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 6px rgba(0,0,0,.15);
+    -moz-box-shadow: 0 1px 6px rgba(0,0,0,.15);
+    box-shadow: 0 1px 6px rgba(0,0,0,.15);
+    -webkit-transition: all .1s ease-out;
+    -moz-transition: all .1s ease-out;
+    -ms-transition: all .1s ease-out;
+    -o-transition: all .1s ease-out;
+    transition: all .1s ease-out;
+}
+
+
+    .dropOut ul {
+        float: left;
+        padding: 10px;
+    }
+
+
+        .dropOut ul li a {
+            text-align: left;
+            float: left;
+            width: 120px;
+            padding: 20px 20px 20px 20px;
+            margin: 0px 10px;
+            color: #777;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-transition: background .1s ease-out;
+            -moz-transition: background .1s ease-out;
+            -ms-transition: background .1s ease-out;
+            -o-transition: background .1s ease-out;
+            transition: background .1s ease-out;
+        }
+
+            .dropOut ul li:hover {
+                background: #f6f6f6;
+            }
+
+ul li:hover .dropdownContain {
+    top: 62px;
+}
+
+ul li:hover .underline {
+    border-bottom-color: #777;
+}
+
+ul li:hover .dropOut {
+    opacity: 1;
+    margin-top: 8px;
+}
+
+.dropOut-a{
+    color: #777; 
+    line-height: 0px !important;
+    height: 0px !important;
+    padding-left: 0px !important;
+}
+
+.dropOut-a:hover{
+    text-decoration: none; 
+    color: #777;
+}
+
+/*Profil Index*/
+
+.margin-top{
+    margin-top: 50px; 
+}
+
+.profil-img{
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+}
+
+.profile-info{
+   
+}
+
+.profile-text{
+    font-size: 16px;
+}
+
+
+
+/*Social Media buttons*/
+
+.fa {
+    display: block;
+    padding: 15px;
+    font-size: 28px !important;
+    width: 60px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 2px;
+    vertical-align: middle;
+}
+
+    .fa:hover {
+        opacity: 0.7;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.fa-facebook {
+    background: #3B5998;
+    color: white;
+}
+
+.fa-twitter {
+    background: #55ACEE;
+    color: white;
+}
+
+.fa-google {
+    background: #dd4b39;
+    color: white;
+}
+
+.fa-linkedin {
+    background: #007bb5;
+    color: white;
+}
+
+.fa-youtube {
+    background: #bb0000;
+    color: white;
+}
+
+.fa-instagram {
+    background: #125688;
+    color: white;
+}
+
+.fa-snapchat-ghost {
+    background: #fffc00;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.fa-globe {
+    background: #5E9DC8; 
+    color: white;
+}
+
+.social-box {
+    width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.social-box span {
+    font-size: 20px;
+
+}
+
+@media screen and (min-width: 1200px) {
+
+    .social-box span {
+        font-size: 20px;
+        margin-left: 15px;
+    }
 }

@@ -7,6 +7,8 @@ namespace RateBlog.Models
 {
     public class Rating
     {
+        // tror den mangler en FK til applicationUser, da man skal kunne fortælle
+        // hvem der har givet denne rating. Og det skulle gerne være 1-1 forhold. 
 
         public int RatingId { get; set; }
         public int KommerUd { get; set; }

@@ -33,7 +33,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Influentoo</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Bestfluence</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -90,17 +90,14 @@
                     <h4 class="modal-title text-center"><b>Tilslut dig til fællesskabet!</b></h4>
                 </div>
                 <div class="modal-body">
-                    <span id="errorMsgTop" style="color: red"></span>
+                    <span id="opretErrorMsgTop" style="color: red"></span>
                     @Html.AntiForgeryToken()
-                    <input id="fornavn" type="text" class="text-input" placeholder="Fornavn" />
-                    <span id="" style="color: red"></span>
-                    <input id="efternavn" type="text" class="text-input" placeholder="Efternavn" />
-                    <span id="" style="color: red"></span>
-                    <input id="" type="email" class="text-input" placeholder="Email" />
-                    <span id="" style="color: red"></span>
-                    <input id="" class="text-input" placeholder="Kodeord" type="password" />
-                    <input id="" class="text-input" placeholder="Gentag Kodeord" type="password" />
-                    <input type="button" class="login-button" id="" value="Opret profil" />
+                    <input id="opretEmail" type="email" class="text-input" placeholder="Email" />
+                    <input id="opretFirstName" type="text" class="text-input" placeholder="Fornavn" />
+                    <input id="opretLastName" type="text" class="text-input" placeholder="Efternavn" />
+                    <input id="opretPassword" class="text-input" placeholder="Kodeord" type="password" />
+                    <input id="opretPassword2" class="text-input" placeholder="Gentag Kodeord" type="password" />
+                    <input type="button" class="login-button" id="opretBtn" value="Opret profil" />
 
                     <div class="divider" style="padding-top: 15px">
                         <h4><span>ELLER</span></h4>
