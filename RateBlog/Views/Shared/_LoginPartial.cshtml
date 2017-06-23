@@ -8,11 +8,22 @@
 {
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            <li class="drop">
+                <a href="#">Profil</a>
+                <div class="dropdownContain">
+                    <div class="dropOut">
+                        <div class="triangle"></div>
+                        <ul>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Index" class="dropOut-a">Profil</a></li>
+                            <li><a href="#" class="dropOut-a">Skift kodeord</a></li>
+                            <li><a href="#" class="dropOut-a">Influenter</a></li>
+                            <li><a href="#" class="dropOut-a">Opret</a></li>
+                        </ul>
+                    </div>
+                </div>
             </li>
             <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log af</button>
             </li>
         </ul>
     </form>
@@ -20,7 +31,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a class="login-links" data-toggle="modal" data-target="#opretModal" >Register</a></li>
+        <li><a class="login-links" data-toggle="modal" data-target="#opretModal">Register</a></li>
         <li><a class="login-links" data-toggle="modal" data-target="#loginModal">Log in</a></li>
         @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Virksomhed</a></li>*@
     </ul>

@@ -23,22 +23,27 @@
     <div class="col-md-12">
         <div class="col-md-3">
             <div class="sorter">
-                <h1>Søge muligheder</h1>
+                <p><b>Platform</b></p>
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Youtube</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Blogger</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Instagram</label><br />
                 <br />
-                <p>Kategori</p>
-                <br />
-                <p>Vurdering</p>
-                <br />
-                <p>Køn</p>
-                <br />
-                <p>Alder</p>
-                <br />
-                <p>Mulighed X</p>
+                <p><b>Kategori</b></p>
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Gamer</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Beauty</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Underholdning</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Fashion</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Lifestyle</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Food</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Mommy</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Vlogger</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">DIY</label><br />
+                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Reality</label><br />
             </div>
         </div>
         <div class="col-md-9">
             <div class="infoInfluenter">
-                <h1>Influertere: @Model.SearchString</h1>
+                <h1>Resultater for @Model.SearchString</h1>
                 <hr />
                 @foreach (var influ in Model.InfluentList)
                 {

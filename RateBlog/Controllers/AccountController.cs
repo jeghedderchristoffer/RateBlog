@@ -116,12 +116,12 @@ namespace RateBlog.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<JsonResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -133,13 +133,14 @@ namespace RateBlog.Controllers
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return Json(new { sucess = true, issue = "", error = "" });
                 }
                 AddErrors(result);
+                return Json(new { sucess = false, issue = model, error = ModelState.Values.Where(i => i.Errors.Count > 0) });
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return Json(new { sucess = false, issue = model, error = ModelState.Values.Where(i => i.Errors.Count > 0) });
         }
 
         //
