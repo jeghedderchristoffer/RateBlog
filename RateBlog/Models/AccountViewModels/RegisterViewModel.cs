@@ -9,10 +9,7 @@ namespace RateBlog.Models.AccountViewModels
     public class RegisterViewModel
     {
         [Required(ErrorMessage = "Missing")]
-        public string FirstName { get; set; }
-
-        [Required(ErrorMessage = "Missing")]
-        public string LastName { get; set; }
+        public string Name { get; set; }
 
         [Required(ErrorMessage = "Missing")]
         [EmailAddress(ErrorMessage = "Email")]

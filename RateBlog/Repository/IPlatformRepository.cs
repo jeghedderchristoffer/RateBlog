@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Repository
 {
-    interface IPlatformRepository
+    public interface IPlatformRepository
     {
         Platform Get(int Id);
 

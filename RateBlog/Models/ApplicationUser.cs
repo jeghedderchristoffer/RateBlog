@@ -9,7 +9,15 @@ namespace RateBlog.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string Name { get; set; }
+        public DateTime? Birth { get; set; }
+        public string City { get; set; }
+        public string ProfileText { get; set; }
+
+        public virtual Influenter Influenter { get; set; }
+        public int? InfluenterId { get; set; }
+
+
+
     }
 }

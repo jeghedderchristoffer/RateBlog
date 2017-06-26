@@ -13,7 +13,7 @@ namespace RateBlog.Models
 
         public int PlatformId { get; set; }
         public Platform Platform { get; set; }
-        
 
+        public string Link { get; set; }
     }
 }

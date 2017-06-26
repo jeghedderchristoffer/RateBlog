@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170625093129_userUpdated")]
+    partial class userUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -130,7 +131,7 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<DateTime?>("Birth");
+                    b.Property<DateTime>("Birth");
 
                     b.Property<string>("City");
 
@@ -141,8 +142,6 @@ namespace RateBlog.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<int?>("InfluenterId");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -173,9 +172,6 @@ namespace RateBlog.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InfluenterId")
-                        .IsUnique();
-
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -191,8 +187,17 @@ namespace RateBlog.Data.Migrations
                     b.Property<int>("InfluenterId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Alias")
-                        .IsRequired();
+                    b.Property<int?>("Alder");
+
+                    b.Property<string>("Alias");
+
+                    b.Property<string>("Efternavn");
+
+                    b.Property<string>("Fornavn");
+
+                    b.Property<string>("Links");
+
+                    b.Property<string>("Profiltekst");
 
                     b.HasKey("InfluenterId");
 
@@ -217,8 +222,6 @@ namespace RateBlog.Data.Migrations
                     b.Property<int>("InfluenterId");
 
                     b.Property<int>("PlatformId");
-
-                    b.Property<string>("Link");
 
                     b.HasKey("InfluenterId", "PlatformId");
 
@@ -319,13 +322,6 @@ namespace RateBlog.Data.Migrations
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RateBlog.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("RateBlog.Models.Influenter", "Influenter")
-                        .WithOne("ApplicationUser")
-                        .HasForeignKey("RateBlog.Models.ApplicationUser", "InfluenterId");
                 });
 
             modelBuilder.Entity("RateBlog.Models.InfluenterKategori", b =>

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Options;
 using RateBlog.Models;
 using RateBlog.Models.ManageViewModels;
 using RateBlog.Services;
+using RateBlog.Repository;
+using RateBlog.Data;
 
 namespace RateBlog.Controllers
 {
@@ -23,14 +25,25 @@ namespace RateBlog.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
+        private readonly IInfluenterRepository _influenterRepo;
+        private readonly IPlatformRepository _platformRepo;
+        private readonly IInfluenterPlatformRepository _influenterPlatformRepo;
+
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           IOptions<IdentityCookieOptions> identityCookieOptions,
           IEmailSender emailSender,
           ISmsSender smsSender,
-          ILoggerFactory loggerFactory)
+          ILoggerFactory loggerFactory,
+          IInfluenterRepository influenterRepo,
+          IPlatformRepository platformRepo,
+          IInfluenterPlatformRepository influenterPlatformRepo)
         {
+            _influenterRepo = influenterRepo;
+            _platformRepo = platformRepo;
+            _influenterPlatformRepo = influenterPlatformRepo;
+
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
@@ -341,6 +354,135 @@ namespace RateBlog.Controllers
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            EditProfileViewModel model;
+
+            if (user.InfluenterId.HasValue)
+            {
+                var influenter = _influenterRepo.Get(user.InfluenterId.Value);
+
+                model = new EditProfileViewModel
+                {
+                    Name = user.Name,
+                    Email = user.Email,
+                    Birth = user.Birth,
+                    City = user.City,
+                    PhoneNumber = user.PhoneNumber,
+                    ProfileText = user.ProfileText,
+                    Influenter = _influenterRepo.Get(user.InfluenterId.Value),
+                    YoutubeLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "YouTube").PlatformId),
+                    FacebookLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Facebook").PlatformId),
+                    InstagramLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Instagram").PlatformId),
+                    SnapchatLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "SnapChat").PlatformId),
+                    LinkedinLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "LinkedIn").PlatformId),
+                    WebsiteLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Website").PlatformId),
+                };
+            }
+            else
+            {
+                model = new EditProfileViewModel
+                {
+                    Name = user.Name,
+                    Email = user.Email,
+                    Birth = user.Birth,
+                    City = user.City,
+                    PhoneNumber = user.PhoneNumber,
+                    ProfileText = user.ProfileText,
+                };
+            }
+
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (ModelState.IsValid)
+            {
+                user.Email = model.Email;
+                user.UserName = model.Email;
+                user.Name = model.Name;
+                user.Birth = model.Birth;
+                user.City = model.City;
+                user.PhoneNumber = model.PhoneNumber;
+                user.ProfileText = model.ProfileText;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    TempData["Success"] = "Din profil blev opdateret!";
+                    return View();
+                }
+
+                ModelState.AddModelError(string.Empty, "Der findes allerede en bruger med denne email.");
+                return View();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditInfluenterProfile(EditProfileViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (ModelState.IsValid)
+            {
+                user.Email = model.Email;
+                user.UserName = model.Email;
+                user.Name = model.Name;
+                user.Birth = model.Birth;
+                user.City = model.City;
+                user.PhoneNumber = model.PhoneNumber;
+                user.ProfileText = model.ProfileText;
+
+                // Add if influenterId is null
+                if (user.InfluenterId == null)
+                {
+                    var newInfluenter = new Influenter();
+                    newInfluenter.Alias = model.Influenter.Alias;
+                    _influenterRepo.Add(newInfluenter);
+                    user.InfluenterId = newInfluenter.InfluenterId;
+                }
+
+                var influenter = _influenterRepo.Get(user.InfluenterId.Value);
+                influenter.Alias = model.Influenter.Alias;
+                _influenterRepo.Update(influenter);
+
+                // Indsætter links og platforme, hvis de ikke er null. Koden skal nok laves om...
+
+                _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "YouTube").PlatformId, model.YoutubeLink);
+                _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Facebook").PlatformId, model.FacebookLink);
+                _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Instagram").PlatformId, model.InstagramLink);
+                _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "SnapChat").PlatformId, model.SnapchatLink);
+                _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "LinkedIn").PlatformId, model.LinkedinLink);
+                _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Website").PlatformId, model.WebsiteLink);
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    TempData["Success"] = "Din profil blev opdateret!";
+                    return RedirectToAction("EditProfile");
+                }
+
+                ModelState.AddModelError(string.Empty, "Der findes allerede en bruger med denne email.");
+                return RedirectToAction("EditProfile");
+            }
+
+            TempData["Error"] = "Du skal udfylde dine influent informationer for at kunne blive influenter!";
+            return RedirectToAction("EditProfile");
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -369,5 +511,6 @@ namespace RateBlog.Controllers
         }
 
         #endregion
+
     }
 }

@@ -58,6 +58,8 @@ namespace RateBlog
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddMemoryCache();
+            services.AddSession();
             services.AddMvc();
 
             // Add application services.
@@ -65,8 +67,7 @@ namespace RateBlog
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<IPlatformRepository, PlatformRepository>();
             services.AddTransient<IInfluenterRepository, InfluenterRepository>();
-
-
+            services.AddTransient<IInfluenterPlatformRepository, InfluenterPlatformRepository>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,6 +90,8 @@ namespace RateBlog
             app.UseStaticFiles();
 
             app.UseIdentity();
+
+            app.UseSession();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 

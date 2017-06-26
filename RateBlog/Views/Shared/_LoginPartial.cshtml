@@ -7,24 +7,27 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" id="dropdownPc">
             <li class="drop">
                 <a href="#">Profil</a>
                 <div class="dropdownContain">
                     <div class="dropOut">
                         <div class="triangle"></div>
                         <ul>
-                            <li><a asp-area="" asp-controller="Manage" asp-action="Index" class="dropOut-a">Profil</a></li>
-                            <li><a href="#" class="dropOut-a">Skift kodeord</a></li>
-                            <li><a href="#" class="dropOut-a">Influenter</a></li>
-                            <li><a href="#" class="dropOut-a">Opret</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Index" class="dropOut-a">Vis profil</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="EditProfile" class="dropOut-a">Rediger profil</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="ChangePassword" class="dropOut-a">Skift kodeord</a></li>
+                            <li><a id="logOut" href="#" class="dropOut-a">Log af</a></li>
                         </ul>
                     </div>
                 </div>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log af</button>
-            </li>
+            </li>           
+        </ul>
+        <ul class="nav navbar-nav navbar-right" id="dropdownMobile">
+            <li><a asp-area="" asp-controller="Manage" asp-action="Index">Vis profil</a></li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="EditProfile">Rediger profil</a></li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="ChangePassword">Skift kodeord</a></li>
+            <li><a id="logOutMobile" href="#">Log af</a></li>
         </ul>
     </form>
 }
@@ -33,6 +36,5 @@ else
     <ul class="nav navbar-nav navbar-right">
         <li><a class="login-links" data-toggle="modal" data-target="#opretModal">Register</a></li>
         <li><a class="login-links" data-toggle="modal" data-target="#loginModal">Log in</a></li>
-        @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Virksomhed</a></li>*@
     </ul>
 }

@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170625122345_updatedUserInfluenter")]
+    partial class updatedUserInfluenter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -191,8 +192,9 @@ namespace RateBlog.Data.Migrations
                     b.Property<int>("InfluenterId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Alias")
-                        .IsRequired();
+                    b.Property<string>("Alias");
+
+                    b.Property<string>("Links");
 
                     b.HasKey("InfluenterId");
 
@@ -217,8 +219,6 @@ namespace RateBlog.Data.Migrations
                     b.Property<int>("InfluenterId");
 
                     b.Property<int>("PlatformId");
-
-                    b.Property<string>("Link");
 
                     b.HasKey("InfluenterId", "PlatformId");
 
