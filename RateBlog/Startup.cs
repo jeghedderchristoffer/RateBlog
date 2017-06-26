@@ -65,6 +65,7 @@ namespace RateBlog
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<IPlatformRepository, PlatformRepository>();
             services.AddTransient<IInfluenterRepository, InfluenterRepository>();
+            services.AddTransient<IRatingRepository, RatingRepository> ();
 
 
         }

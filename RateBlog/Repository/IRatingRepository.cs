@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Repository
 {
-    interface IRatingRepository
+    public interface IRatingRepository
     {
         
         Rating Get(int Id);
