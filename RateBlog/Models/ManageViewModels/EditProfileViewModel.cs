@@ -24,14 +24,25 @@ namespace RateBlog.Models.ManageViewModels
 
         public bool IsInfluenter { get; set; }
 
-
+        // Platform/link
         public string FacebookLink { get; set; }
         public string InstagramLink { get; set; }
         public string SnapchatLink { get; set; }
         public string YoutubeLink { get; set; }
-        public string LinkedinLink { get; set; }
         public string WebsiteLink { get; set; }
+        public string TwitterLink { get; set; }
+        public string TwitchLink { get; set; }
 
+        // Kategori
+        public bool LifestyleBool { get; set; }
+        public bool DIYBool { get; set; }
+        public bool VlogBool { get; set; }
+        public bool BeautyBool { get; set; }
+        public bool GamingBool { get; set; }
+        public bool EntertainmentBool { get; set; }
+        public bool FoodBool { get; set; }
+        public bool FashionBool { get; set; }
+        public bool MommyBool { get; set; }
 
         public Influenter Influenter { get; set; } 
 

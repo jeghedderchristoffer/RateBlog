@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Repository
 {
-    interface IKategori
+    public interface IKategoriRepository
     {
         Kategori Get(int Id);
 

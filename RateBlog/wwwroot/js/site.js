@@ -221,15 +221,61 @@ $(document).ready(function () {
     var FacebookInput = $("#editFacebook"),
         FacebookText = $("#editFacebookText"),
         InstagramInput = $("#editInstagram"),
-        InstagramText = $("#editInstagramText");
+        InstagramText = $("#editInstagramText"),
+        YoutubeInput = $("#editYoutube"),
+        YoutubeText = $("#editYoutubeText"),
+        SnapchatInput = $("#editSnapchat"),
+        SnapchatText = $("#editSnapchatText"),
+        TwitterInput = $("#editTwitter"),
+        TwitterText = $("#editTwitterText"),
+        TwitchInput = $("#editTwitch"),
+        TwitchText = $("#editTwitchText"),
+        WebsiteInput = $("#editWebsite"),
+        WebsiteText = $("#editWebsiteText");
 
-    if (FacebookInput.val() != "") {
+    if (FacebookInput.val() !== "") {
         FacebookText.text("www.facebook.com/" + $("#editFacebook").val());
-    };
+    }
 
-    if (InstagramInput.val() != "") {
+    if (InstagramInput.val() !== "") {
         InstagramText.text("www.instagram.com/" + InstagramInput.val());
-    };
+    }
+
+    if (YoutubeInput.val() !== "") {
+        YoutubeText.text("www.youtube.com/user/" + YoutubeInput.val());
+    }
+
+    if (SnapchatInput.val() !== "") {
+        SnapchatText.text("www.snapchat.com/add/" + SnapchatInput.val());
+    }
+
+    if (TwitterInput.val() !== "") {
+        TwitterText.text("www.twitter.com/" + TwitterInput.val());
+    }
+
+    if (TwitchInput.val() !== "") {
+        TwitchText.text("www.twitch.tv/" + TwitchInput.val()); 
+    }
+
+    if (WebsiteInput.val() !== "") {
+        WebsiteText.text(WebsiteInput.val());
+    }
+
+    WebsiteInput.keyup(function () {
+        WebsiteText.text(WebsiteInput.val());
+    }); 
+
+    TwitchInput.keyup(function () {
+        TwitchText.text("www.twitch.tv/" + TwitchInput.val());
+    });
+
+    TwitterInput.keyup(function () {
+        TwitterText.text("www.twitter.com/" + TwitterInput.val());
+    });
+
+    SnapchatInput.keyup(function () {
+        SnapchatText.text("www.snapchat.com/add/" + SnapchatInput.val());
+    });
 
     FacebookInput.keyup(function () {
         FacebookText.text("www.facebook.com/" + FacebookInput.val());
@@ -238,5 +284,14 @@ $(document).ready(function () {
     InstagramInput.keyup(function () {
         InstagramText.text("www.instagram.com/" + InstagramInput.val());
     });
+
+    YoutubeInput.keyup(function () {
+        YoutubeText.text("www.youtube.com/user/" + YoutubeInput.val());
+    })
+
+
+    // Select Category
+
+    $("#selectCategory").select2();
 
 }); 

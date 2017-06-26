@@ -1,5 +1,6 @@
 ﻿@model EditProfileViewModel
 @inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Repository.IKategoriRepository KategoriRepository
 @{
     var user = await UserManager.GetUserAsync(User);
 }
@@ -115,6 +116,46 @@
             <input asp-for="@Model.Influenter.Alias" class="edit-input" />
             <span asp-validation-for="@Model.Influenter.Alias" class="text-danger" style="margin-left: 5px;"></span>
 
+            <p>Vælg dine kategorier:</p>
+            <div class="choose-category">
+                <label>
+                    <input asp-for="@Model.BeautyBool" type="checkbox">
+                    <span>Beauty</span>
+                </label>          
+                <label>
+                    <input asp-for="@Model.DIYBool" type="checkbox">
+                    <span>DIY</span>
+                </label>   
+                <label>
+                    <input asp-for="@Model.EntertainmentBool" type="checkbox">
+                    <span>Entertainment</span>
+                </label>    
+                <label>
+                    <input asp-for="@Model.FashionBool" type="checkbox">
+                    <span>Fashion</span>
+                </label>     
+                <label>
+                    <input asp-for="@Model.FoodBool" type="checkbox">
+                    <span>Food</span>
+                </label>     
+                <label>
+                    <input asp-for="@Model.GamingBool" type="checkbox">
+                    <span>Gaming</span>
+                </label>     
+                <label>
+                    <input asp-for="@Model.LifestyleBool" type="checkbox">
+                    <span>Lifestyle</span>
+                </label>     
+                <label>
+                    <input asp-for="@Model.MommyBool" type="checkbox">
+                    <span>Mommy</span>
+                </label>     
+                <label>
+                    <input asp-for="@Model.VlogBool" type="checkbox">
+                    <span>Vlog</span>
+                </label>       
+            </div>
+
             <p>Dine sociale medier:</p>
 
             <div class="edit-social-box">
@@ -128,23 +169,28 @@
             </div>
 
             <div class="edit-social-box">
-                <a class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
-                <span id="editSnapchat"><input asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" /></span>
-            </div>
-
-            <div class="edit-social-box">
                 <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
-                <span id="editYoutube"><input asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" /></span>
+                <span><input id="editYoutube" asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" /><span class="margin-left" id="editYoutubeText"></span></span>
             </div>
 
             <div class="edit-social-box">
-                <a class="fa fa-edit fa-linkedin fa-linkedin-edit"></a>
-                <span id="editLinkedin"><input asp-for="@Model.LinkedinLink" type="text" placeholder="LinkedIn navn" /></span>
+                <a class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
+                <span><input id="editSnapchat" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" /><span class="margin-left" id="editSnapchatText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-twitter fa-twitter-edit"></a>
+                <span><input id="editTwitter" asp-for="@Model.TwitterLink" type="text" placeholder="Twitter navn" /><span class="margin-left" id="editTwitterText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-twitch fa-twitch-edit"></a>
+                <span><input id="editTwitch" asp-for="@Model.TwitchLink" type="text" placeholder="Twitch navn" /><span class="margin-left" id="editTwitchText"></span></span>
             </div>
 
             <div class="edit-social-box">
                 <a class="fa fa-edit fa-globe fa-globe-edit"></a>
-                <span id="editLinkedin"><input asp-for="@Model.WebsiteLink" type="text" placeholder="Hjemmeside link" /></span>
+                <span><input id="editWebsite" asp-for="@Model.WebsiteLink" type="text" placeholder="Hjemmeside link" /><span class="margin-left" id="editWebsiteText"></span></span>
             </div>
 
             <br />

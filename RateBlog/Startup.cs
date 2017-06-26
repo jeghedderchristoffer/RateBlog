@@ -67,7 +67,9 @@ namespace RateBlog
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<IPlatformRepository, PlatformRepository>();
             services.AddTransient<IInfluenterRepository, InfluenterRepository>();
-            services.AddTransient<IInfluenterPlatformRepository, InfluenterPlatformRepository>(); 
+            services.AddTransient<IInfluenterPlatformRepository, InfluenterPlatformRepository>();
+            services.AddTransient<IKategoriRepository, KategoriRepository>();
+            services.AddTransient<IInfluenterKategoriRepository, InfluenterKategoriRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

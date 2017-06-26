@@ -16,6 +16,16 @@ namespace RateBlog.Repository
             _dbContext = dbContext;
         }
 
+        public List<InfluenterPlatform> GetAllByInfluenter(int inluenterId)
+        {
+            if(_dbContext.InfluenterPlatform.Any(x=> x.InfluenterId == inluenterId))
+            {
+                return _dbContext.InfluenterPlatform.Where(x => x.InfluenterId == inluenterId).ToList();            
+            }
+
+            return null; 
+        }
+
         public string GetLink(int influenterId, int platformId)
         {
             if (_dbContext.InfluenterPlatform.Any(x => x.InfluenterId == influenterId && x.PlatformId == platformId))
