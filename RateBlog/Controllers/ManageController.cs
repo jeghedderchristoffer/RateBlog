@@ -28,6 +28,8 @@ namespace RateBlog.Controllers
         private readonly IInfluenterRepository _influenterRepo;
         private readonly IPlatformRepository _platformRepo;
         private readonly IInfluenterPlatformRepository _influenterPlatformRepo;
+        private readonly IKategoriRepository _kategoriRepo;
+        private readonly IInfluenterKategoriRepository _influenterKategoriRepo;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
@@ -38,11 +40,15 @@ namespace RateBlog.Controllers
           ILoggerFactory loggerFactory,
           IInfluenterRepository influenterRepo,
           IPlatformRepository platformRepo,
-          IInfluenterPlatformRepository influenterPlatformRepo)
+          IInfluenterPlatformRepository influenterPlatformRepo,
+          IKategoriRepository kategoriRepo,
+          IInfluenterKategoriRepository influenterKategoriRepo)
         {
             _influenterRepo = influenterRepo;
             _platformRepo = platformRepo;
             _influenterPlatformRepo = influenterPlatformRepo;
+            _kategoriRepo = kategoriRepo;
+            _influenterKategoriRepo = influenterKategoriRepo;
 
             _userManager = userManager;
             _signInManager = signInManager;
@@ -379,8 +385,18 @@ namespace RateBlog.Controllers
                     FacebookLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Facebook").PlatformId),
                     InstagramLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Instagram").PlatformId),
                     SnapchatLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "SnapChat").PlatformId),
-                    LinkedinLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "LinkedIn").PlatformId),
+                    TwitterLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitter").PlatformId),
                     WebsiteLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Website").PlatformId),
+                    TwitchLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitch").PlatformId),
+                    DIYBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "DIY").KategoriId),
+                    BeautyBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Beauty").KategoriId),
+                    EntertainmentBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Entertainment").KategoriId),
+                    FashionBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Fashion").KategoriId),
+                    FoodBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Food").KategoriId),
+                    GamingBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Gaming").KategoriId),
+                    LifestyleBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Lifestyle").KategoriId),
+                    MommyBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Mommy").KategoriId),
+                    VlogBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "VLOG").KategoriId),
                 };
             }
             else
@@ -395,8 +411,6 @@ namespace RateBlog.Controllers
                     ProfileText = user.ProfileText,
                 };
             }
-
-
             return View(model);
         }
 
@@ -464,8 +478,21 @@ namespace RateBlog.Controllers
                 _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Facebook").PlatformId, model.FacebookLink);
                 _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Instagram").PlatformId, model.InstagramLink);
                 _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "SnapChat").PlatformId, model.SnapchatLink);
-                _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "LinkedIn").PlatformId, model.LinkedinLink);
+                _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitter").PlatformId, model.TwitterLink);
                 _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Website").PlatformId, model.WebsiteLink);
+                _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitch").PlatformId, model.TwitchLink);
+
+                // Insætter kategori
+
+                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Beauty").KategoriId, model.BeautyBool);
+                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Lifestyle").KategoriId, model.LifestyleBool);
+                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "DIY").KategoriId, model.DIYBool);
+                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "VLOG").KategoriId, model.VlogBool);
+                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Gaming").KategoriId, model.GamingBool);
+                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Entertainment").KategoriId, model.EntertainmentBool);
+                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Food").KategoriId, model.FoodBool);
+                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Fashion").KategoriId, model.FashionBool);
+                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Mommy").KategoriId, model.MommyBool);
 
                 var result = await _userManager.UpdateAsync(user);
 

@@ -691,7 +691,11 @@ ul li:hover .dropOut {
     .social-box a {
         vertical-align: middle;
         cursor: pointer;
+        outline: none;
+        text-decoration: none;
+        color: #fff;
     }
+
 
     .social-box span {
         font-size: 16px;
@@ -706,6 +710,7 @@ ul li:hover .dropOut {
     text-align: center;
     text-decoration: none;
     margin: 5px 2px;
+    border-radius: 5px;
 }
 
     .fa-profile:hover {
@@ -740,7 +745,7 @@ ul li:hover .dropOut {
 }
 
 .fa-instagram-profile {
-    background: #125688;
+    background: #bc2a8d;
     color: white;
 }
 
@@ -752,6 +757,11 @@ ul li:hover .dropOut {
 
 .fa-globe-profile {
     background: #5E9DC8;
+    color: white;
+}
+
+.fa-twitch-profile {
+    background: #6441A5;
     color: white;
 }
 
@@ -810,6 +820,12 @@ ul li:hover .dropOut {
     margin-bottom: 20px;
     border-radius: 6px;
     outline: none;
+}
+
+.edit-input-multiple {
+    width: 50%;
+    max-width: 100%;
+    height: 40px !important;
 }
 
 .edit-button {
@@ -885,6 +901,7 @@ ul li:hover .dropOut {
     text-align: center;
     text-decoration: none;
     margin: 5px 2px;
+    border-radius: 5px;
 }
 
     .fa-edit:hover {
@@ -931,6 +948,11 @@ ul li:hover .dropOut {
 
 .fa-globe-edit {
     background: #5E9DC8;
+    color: white;
+}
+
+.fa-twitch-edit {
+    background: #6441A5;
     color: white;
 }
 

@@ -1,8 +1,12 @@
 ﻿@model IndexViewModel
 @inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Repository.IInfluenterPlatformRepository IPRepository
+@inject RateBlog.Repository.IInfluenterKategoriRepository IKRepository
+@inject RateBlog.Repository.IPlatformRepository PlatformRepository
 @{
-    ViewData["Title"] = "Manage your account";
+    ViewData["Title"] = "Vis profil";
     var user = await UserManager.GetUserAsync(User);
+    string last = IKRepository.GetAllKategori(user.InfluenterId.Value).Last();
 }
 
 <div class="navbar-allaround"></div>
@@ -12,42 +16,85 @@
         <img class="profil-img center-block" src="http://placehold.it/200x200" />
         <div class="text-center">
             <h2>@user.Name</h2>
-            <h3>Gamer | Underholdning</h3>
+            @if (user.InfluenterId != null)
+            {
+                <h3>
+
+                    @foreach (var v in IKRepository.GetAllKategori(user.InfluenterId.Value))
+                    {
+                        if (v.Equals(last))
+                        {
+                            @v
+                        }
+                        else
+                        {
+                            @v <span> | </span>
+                        }
+                    }
+                </h3>
+            }
             <hr />
         </div>
     </div>
     <div class="col-md-12">
         <div class="col-md-4">
-            
+
         </div>
         <div class="col-md-4 profile-text">
             <p> @user.ProfileText </p>
         </div>
         <div class="col-md-4">
-            <div class="social-box">
-                <a href="#" class="fa fa-profile fa-facebook fa-facebook-profile"></a>
-                <span>/ChristofferJespersen...</span>
-            </div>
-            <div class="social-box">
-                <a href="#" class="fa fa-profile fa-instagram fa-instagram-profile"></a>
-                <span>ChristofferJespersen</span>
-            </div>
-            <div class="social-box">
-                <a href="#" class="fa fa-profile fa-snapchat-ghost fa-snapchat-ghost-profile"></a>
-                <span>Christoffer123</span>
-            </div>
-            <div class="social-box">
-                <a href="#" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
-                <span>/ChristofferJespersen</span>
-            </div>
-            <div class="social-box">
-                <a href="#" class="fa fa-profile fa-linkedin fa-linkedin-profile"></a>
-                <span>Christoffer Jespersen</span>
-            </div>
-            <div class="social-box">
-                <a href="#" class="fa fa-profile fa-globe fa-globe-profile"></a>
-                <span>www.christoffertv.com</span>
-            </div>
+            @if (user.InfluenterId != null)
+            {
+                @if (IPRepository.GetAllByInfluenter(user.InfluenterId.Value) != null)
+                {
+
+                    @foreach (var v in IPRepository.GetAllByInfluenter(user.InfluenterId.Value))
+                    {
+                        <div class="social-box">
+                            @if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Facebook")
+                        {
+                                <a href="http://www.facebook.com/@v.Link" target="_blank" class="fa fa-profile fa-facebook fa-facebook-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "YouTube")
+                            {
+                                <a href="http://www.youtube.com/user/@v.Link" target="_blank" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "SnapChat")
+                            {
+                                <a href="http://www.snapchat.com/add/@v.Link" target="_blank" class="fa fa-profile fa-snapchat-ghost fa-snapchat-ghost-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Instagram")
+                            {
+                                <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-profile fa-instagram fa-instagram-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitter")
+                            {
+                                <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-profile fa-twitter fa-twitter-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitch")
+                            {
+                                <a href="http://www.twitch.tv/@v.Link" target="_blank" class="fa fa-profile fa-twitch fa-twitch-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Website")
+                            {
+                                <a href="http://@v.Link" target="_blank" class="fa fa-profile fa-globe fa-globe-profile"></a>
+                                <span>Personlig hjemmeside</span>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h4>Denne influenter har ikke tilknyttet nogle sociale medier</h4>
+                }
+            }
         </div>
     </div>
 </div>

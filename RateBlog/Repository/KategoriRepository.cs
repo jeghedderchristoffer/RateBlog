@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Repository
 {
-    public class KategoriRepository : IKategori
+    public class KategoriRepository : IKategoriRepository
     {
 
         private ApplicationDbContext _applicationDbContext;

@@ -49,6 +49,10 @@ namespace RateBlog.Models
                    {
 
                        PlatformNavn = "LinkedIn"
+                   }, 
+                   new Platform
+                   {
+                       PlatformNavn = "Twitter"
                    }
 
                 );
