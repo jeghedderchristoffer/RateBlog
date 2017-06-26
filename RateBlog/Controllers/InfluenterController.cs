@@ -27,14 +27,12 @@ namespace RateBlog.Controllers
             {
                 search = "";
             }
-            var influenter = _influenter.GetAll().FindAll(x => x.Fornavn.ToLower().Contains(search.ToLower()));
+            //var influenter = _influenter.GetAll().FindAll(x => x.Name.ToLower().Contains(search.ToLower()));
 
 
             var model = new IndexViewModel()
             {
-                InfluentList = influenter,
-                SearchString = search
-                
+                SearchString = search               
             };
 
             return View(model); 

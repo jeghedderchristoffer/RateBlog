@@ -89,14 +89,13 @@ $(document).ready(function () {
 // Opret ajax
 
 $(document).ready(function () {
-    var opretErrorMsg = $("#opretErrorMsgTop"); 
+    var opretErrorMsg = $("#opretErrorMsgTop");
 
     $("#opretBtn").click(function () {
 
         //collect the user data
         var data = {};
-        data.FirstName = $("#opretFirstName").val();
-        data.LastName = $("#opretLastName").val();
+        data.Name = $("#opretNavn").val();
         data.Email = $("#opretEmail").val();
         data.Password = $("#opretPassword").val();
         data.ConfirmPassword = $("#opretPassword2").val();
@@ -120,11 +119,11 @@ $(document).ready(function () {
 
                 for (var i = 0; i < result.error.length; i++) {
                     console.log(result.error[i].errors[0].errorMessage);
-                    var error = result.error[i].errors[0].errorMessage; 
+                    var error = result.error[i].errors[0].errorMessage;
                     if (error === 'Missing') {
                         opretErrorMsg.text("Du skal udfylde alle felterne.");
                         return;
-                    } 
+                    }
                     else if (error === 'Email') {
                         opretErrorMsg.text("Dette er ikke en gyldig email.");
                         $("#opretEmail").focus();
@@ -152,3 +151,92 @@ $(document).ready(function () {
         });
     });
 });
+
+// Log af
+
+$(document).ready(function () {
+    $("#logOut").click(function () {
+        $("#logoutForm").submit();
+    });
+    $("#logOutMobile").click(function () {
+        $("#logoutForm").submit();
+    });
+});
+
+// Update navbar to mobile version 
+
+$(document).ready(function () {
+    if ($(window).width() <= 767) {
+        $("#dropdownPc").hide();
+        $("#dropdownMobile").show();
+    }
+    else {
+        $("#dropdownPc").show();
+        $("#dropdownMobile").hide();
+    }
+
+    $(window).resize(function () {
+        if ($(window).width() <= 767) {
+            $("#dropdownPc").hide();
+            $("#dropdownMobile").show();
+        }
+        else {
+            $("#dropdownPc").show();
+            $("#dropdownMobile").hide();
+        }
+    });
+});
+
+// Rediger profil
+
+$(document).ready(function () {
+    var influenterBtn = $("#redigerInfluenterBtn"),
+        fanBtn = $("#redigerFanBtn"),
+        influenterContainer = $("#redigerInfluenterContainer"),
+        fanContainer = $("#redigerFanContainer");
+
+    if ($("#redigerInfluenterBtn").hasClass("active")) {
+        fanContainer.hide();
+    }
+    else {
+        influenterContainer.hide();
+    }
+
+    influenterBtn.click(function () {
+        influenterBtn.addClass("active");
+        fanBtn.removeClass("active");
+        influenterContainer.show();
+        fanContainer.hide();
+    });
+
+    fanBtn.click(function () {
+        influenterBtn.removeClass("active");
+        fanBtn.addClass("active");
+        fanContainer.show();
+        influenterContainer.hide();
+    });
+
+    // Text efter inputs social media
+
+    var FacebookInput = $("#editFacebook"),
+        FacebookText = $("#editFacebookText"),
+        InstagramInput = $("#editInstagram"),
+        InstagramText = $("#editInstagramText");
+
+    if (FacebookInput.val() != "") {
+        FacebookText.text("www.facebook.com/" + $("#editFacebook").val());
+    };
+
+    if (InstagramInput.val() != "") {
+        InstagramText.text("www.instagram.com/" + InstagramInput.val());
+    };
+
+    FacebookInput.keyup(function () {
+        FacebookText.text("www.facebook.com/" + FacebookInput.val());
+    });
+
+    InstagramInput.keyup(function () {
+        InstagramText.text("www.instagram.com/" + InstagramInput.val());
+    });
+
+}); 
