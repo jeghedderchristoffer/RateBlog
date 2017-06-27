@@ -7,7 +7,7 @@
 <div class="outer">
     <div class="middle">
         <div class="inner">
-            <h1>Giv din vurdering af X</h1>
+            <h1>Giv feedback til X</h1>
 
         </div>
     </div>
@@ -20,7 +20,7 @@
 
     <div class="col-md-12 rating-container">
         <hr />
-        <div class="col-md-3" style="padding-left: 0px;">
+        <div class="col-md-3" style="padding-left: 0px; padding-bottom:0px;">
             <div class="kategoriNavn">
 
                 <h2>Orginalitet</h2>
@@ -30,28 +30,28 @@
         <div class="col-md-6">
             <div class="Rating">
 
-                            <div class="col-md-9" >
-                                <div class="stars1">
-                                    <form action="">
-                                        <input class="star1 star-5" id="star-51" type="radio" name="star" />
-                                        <label class="star1 star-5" for="star-51"></label>
-                                        <input class="star1 star-4" id="star-41" type="radio" name="star" />
-                                        <label class="star1 star-4" for="star-41"></label>
-                                        <input class="star1 star-3" id="star-31" type="radio" name="star" />
-                                        <label class="star1 star-3" for="star-31"></label>
-                                        <input class="star1 star-2" id="star-21" type="radio" name="star" />
-                                        <label class="star1 star-2" for="star-21"></label>
-                                        <input class="star1 star-1" id="star-11" type="radio" name="star" />
-                                        <label class="star1 star-1" for="star-11"></label>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <i class="fa fa-check fa-3x" id="orginalitetCheck" aria-hidden="true" style="color:#53b90a; padding-top: 20px; display: none;"></i>
-                        </div>
+                <div class="col-md-9">
+                    <div class="stars1">
+                        <form action="">
+                            <input class="star1 star-5" id="star-51" type="radio" name="star" />
+                            <label class="star1 star-5" for="star-51"></label>
+                            <input class="star1 star-4" id="star-41" type="radio" name="star" />
+                            <label class="star1 star-4" for="star-41"></label>
+                            <input class="star1 star-3" id="star-31" type="radio" name="star" />
+                            <label class="star1 star-3" for="star-31"></label>
+                            <input class="star1 star-2" id="star-21" type="radio" name="star" />
+                            <label class="star1 star-2" for="star-21"></label>
+                            <input class="star1 star-1" id="star-11" type="radio" name="star" />
+                            <label class="star1 star-1" for="star-11"></label>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <i class="fa fa-check fa-3x" id="orginalitetCheck" aria-hidden="true" style="color:#53b90a; padding-top: 20px; display: none;"></i>
+            </div>
 
-       
+
         </div>
         <div class="col-md-3">
             <div class="kategoriInfo">
@@ -331,7 +331,7 @@
         <div class="col-md-3" style="padding-left: 0px;">
             <div class="kategoriNavn">
 
-                <h2>Overskrift på anmeddelse</h2>
+                <h2>Giv feedback</h2>
 
             </div>
         </div>
@@ -339,7 +339,7 @@
             <div class="Rating">
 
                 <div class="col-md-9">
-                    <input class="rating-input" type="text" style="width: 100%"/>
+                    <textarea id="feedbacktext"></textarea>
                 </div>
             </div>
             <div class="col-md-3">
@@ -364,6 +364,47 @@
         </div>
 
     </div>
+
+    <div class="col-md-12 rating-container">
+        <hr />
+        <div class="col-md-3" style="padding-left: 0px;">
+            <div class="kategoriNavn">
+
+                <h2>Overskrift på feedback</h2>
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="Rating">
+
+                <div class="col-md-9">
+                    <input class="rating-input" type="text" style="width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <i class="fa fa-check fa-3x" id="overskriftCheck" aria-hidden="true" style="color:#53b90a; padding-top: 20px; display: none;"></i>
+            </div>
+
+
+        </div>
+        <div class="col-md-3">
+            <div class="kategoriInfo">
+                <div class="outer">
+                    <div class="middle">
+                        <div class="inner">
+                            <a title="Orginalitet" data-toggle="popover" data-trigger="hover" data-placement="left" data-content="Du skal give din samlede vurdering af influenterens orginalitet"><i class="fa fa-info-circle fa-3x" aria-hidden="true" style="color: #08468d; padding-top: 10px;"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
 
 
 

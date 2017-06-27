@@ -1276,7 +1276,7 @@ ul li:hover .dropOut {
 /*------End Hover Info Rating---------*/
 
 .rating-container{
-    padding-bottom: 20px;
+    padding-bottom: 0px;
 }
 
 .rating-input {
@@ -1292,3 +1292,4 @@ ul li:hover .dropOut {
     outline: none;
     
 }
+
