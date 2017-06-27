@@ -110,7 +110,7 @@ namespace RateBlog
 
 
             SeedPlatformData.Initialize(app.ApplicationServices);
-            SeedInfluentData.Initialize(app.ApplicationServices);
+            SeedKategoriData.Initialize(app.ApplicationServices);
 
         }
 

@@ -48,11 +48,15 @@ namespace RateBlog.Models
                    new Platform
                    {
 
-                       PlatformNavn = "LinkedIn"
-                   }, 
+                       PlatformNavn = "Twitch"
+                   },
                    new Platform
                    {
                        PlatformNavn = "Twitter"
+                   },
+                   new Platform
+                   {
+                       PlatformNavn = "Website"
                    }
 
                 );
@@ -66,5 +70,5 @@ namespace RateBlog.Models
 
     }
 }
-    
+
 
