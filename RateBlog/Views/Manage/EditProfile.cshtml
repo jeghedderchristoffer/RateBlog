@@ -118,7 +118,16 @@
 
             <p>Vælg dine kategorier:</p>
             <div class="choose-category">
-                <label>
+
+                @for(int i = 0; i < Model.IKList.Count; i++)
+                {
+                    <label>
+                        @Html.CheckBoxFor(x => x.IKList[i].IsSelected)
+                        <span>@Model.IKList[i].KategoriNavn</span>
+                        @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
+                    </label>
+                }
+                @*<label>
                     <input asp-for="@Model.BeautyBool" type="checkbox">
                     <span>Beauty</span>
                 </label>          
@@ -153,7 +162,7 @@
                 <label>
                     <input asp-for="@Model.VlogBool" type="checkbox">
                     <span>Vlog</span>
-                </label>       
+                </label>*@       
             </div>
 
             <p>Dine sociale medier:</p>

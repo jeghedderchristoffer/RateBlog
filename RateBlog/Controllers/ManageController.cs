@@ -388,15 +388,8 @@ namespace RateBlog.Controllers
                     TwitterLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitter").PlatformId),
                     WebsiteLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Website").PlatformId),
                     TwitchLink = _influenterPlatformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitch").PlatformId),
-                    DIYBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "DIY").KategoriId),
-                    BeautyBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Beauty").KategoriId),
-                    EntertainmentBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Entertainment").KategoriId),
-                    FashionBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Fashion").KategoriId),
-                    FoodBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Food").KategoriId),
-                    GamingBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Gaming").KategoriId),
-                    LifestyleBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Lifestyle").KategoriId),
-                    MommyBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Mommy").KategoriId),
-                    VlogBool = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "VLOG").KategoriId),
+
+                    IKList = await GetInfluenterKategoriList()
                 };
             }
             else
@@ -409,6 +402,7 @@ namespace RateBlog.Controllers
                     City = user.City,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
+                    IKList = await GetInfluenterKategoriList()
                 };
             }
             return View(model);
@@ -419,6 +413,11 @@ namespace RateBlog.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
+            if (model.IKList == null)
+            {
+                model.IKList = await GetInfluenterKategoriList();
+            }
+
             if (ModelState.IsValid)
             {
                 user.Email = model.Email;
@@ -427,18 +426,18 @@ namespace RateBlog.Controllers
                 user.Birth = model.Birth;
                 user.City = model.City;
                 user.PhoneNumber = model.PhoneNumber;
-                user.ProfileText = model.ProfileText;
+                user.ProfileText = model.ProfileText;              
 
                 var result = await _userManager.UpdateAsync(user);
 
                 if (result.Succeeded)
                 {
                     TempData["Success"] = "Din profil blev opdateret!";
-                    return View();
+                    return View(model);
                 }
 
-                ModelState.AddModelError(string.Empty, "Der findes allerede en bruger med denne email.");
-                return View();
+                TempData["Error"] = "Der findes allerede en bruger med denne email!";
+                return View(model);
             }
 
             return View(model);
@@ -448,6 +447,8 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> EditInfluenterProfile(EditProfileViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
+
+            var IK = model.IKList;
 
             if (ModelState.IsValid)
             {
@@ -482,17 +483,13 @@ namespace RateBlog.Controllers
                 _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Website").PlatformId, model.WebsiteLink);
                 _influenterPlatformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitch").PlatformId, model.TwitchLink);
 
-                // Insætter kategori
 
-                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Beauty").KategoriId, model.BeautyBool);
-                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Lifestyle").KategoriId, model.LifestyleBool);
-                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "DIY").KategoriId, model.DIYBool);
-                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "VLOG").KategoriId, model.VlogBool);
-                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Gaming").KategoriId, model.GamingBool);
-                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Entertainment").KategoriId, model.EntertainmentBool);
-                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Food").KategoriId, model.FoodBool);
-                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Fashion").KategoriId, model.FashionBool);
-                _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == "Mommy").KategoriId, model.MommyBool);
+                // Insætter kategori
+                foreach (var v in model.IKList)
+                {
+                    _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == v.KategoriNavn).KategoriId, v.IsSelected);
+                }
+
 
                 var result = await _userManager.UpdateAsync(user);
 
@@ -502,12 +499,12 @@ namespace RateBlog.Controllers
                     return RedirectToAction("EditProfile");
                 }
 
-                ModelState.AddModelError(string.Empty, "Der findes allerede en bruger med denne email.");
-                return RedirectToAction("EditProfile");
+                TempData["Error"] = "Der findes allerede en bruger med denne email!";
+                return View("EditProfile", model);
             }
 
-            TempData["Error"] = "Du skal udfylde dine influent informationer for at kunne blive influenter!";
-            return RedirectToAction("EditProfile");
+            TempData["Error"] = "Du skal udfylde dine informationer for at kunne blive influenter!";
+            return View("EditProfile", model);
         }
 
         #region Helpers
@@ -535,6 +532,47 @@ namespace RateBlog.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
+        }
+
+        private async Task<List<InfluenterKategoriViewModel>> GetInfluenterKategoriList()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user.InfluenterId.HasValue)
+            {
+                var influenter = _influenterRepo.Get(user.InfluenterId.Value);
+
+                return new List<InfluenterKategoriViewModel>()
+                    {
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "DIY", IsSelected = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId , _kategoriRepo.GetIdByName("DIY")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Beauty")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Entertainment"))  },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Fashion")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Food", IsSelected = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Food"))},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Gaming"))},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Lifestyle")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Mommy", IsSelected = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Mommy")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "VLOG", IsSelected = _influenterKategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("VLOG")) },
+                    };
+            }
+            else
+            {
+                return new List<InfluenterKategoriViewModel>()
+                    {
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "DIY", IsSelected = false },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = false },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = false  },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = false},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Food", IsSelected = false},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = false},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = false },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Mommy", IsSelected = false },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "VLOG", IsSelected = false },
+                    };
+            }
+
+
+
         }
 
         #endregion

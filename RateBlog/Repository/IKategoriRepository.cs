@@ -12,5 +12,7 @@ namespace RateBlog.Repository
 
         List<Kategori> GetAll();
 
+        int GetIdByName(string name);
+
     }
 }
