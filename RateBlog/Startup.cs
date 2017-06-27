@@ -51,6 +51,7 @@ namespace RateBlog
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
+                options.User.RequireUniqueEmail = true;
 
                 // Skift login path
                 options.Cookies.ApplicationCookie.LoginPath = new PathString();
@@ -61,6 +62,8 @@ namespace RateBlog
             services.AddMemoryCache();
             services.AddSession();
             services.AddMvc();
+
+           
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
