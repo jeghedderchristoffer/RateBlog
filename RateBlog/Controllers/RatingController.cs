@@ -22,6 +22,11 @@ namespace RateBlog.Controllers
             return View();
         }
 
+        public IActionResult RatingStars()
+        {
+            return View();
+        }
+
     }
 
 }

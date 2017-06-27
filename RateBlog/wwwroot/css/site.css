@@ -1272,7 +1272,6 @@ ul li:hover .dropOut {
     }
 
     .stars6 label.star6:hover {
-        transform: scale(1.3);
     }
 
     .stars6 label.star6:before {
@@ -1316,7 +1315,7 @@ ul li:hover .dropOut {
 
 /*------End Hover Info Rating---------*/
 
-.rating-container{
+.rating-container {
     padding-bottom: 0px;
 }
 
@@ -1331,6 +1330,68 @@ ul li:hover .dropOut {
     margin-bottom: 20px;
     border-radius: 6px;
     outline: none;
+}
+
+
+
+
+
+
+
+/*Rating*/
+
+.rating {
+    border: none;
+    float: left;
+    height: 70px;
+}
+
+    .rating label {
+        margin-bottom: 0;
+    }
+
+    .rating > input {
+        display: none;
+    }
+
+    .rating > label:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+
+    .rating input:checked ~ label:before {
+        content: '\f005';
+    }
+
+    .rating > label {
+        float: right;
+        padding: 10px;
+        font-size: 36px;
+        color: #444;
+        transition: all .2s;
+    }
+
+    /***** CSS Magic to Highlight Stars on Hover *****/
+
+    .rating label:hover {
+        transform: scale(1.3);
+        cursor: pointer;
+    }
+
+.rating-box {
+    border-bottom: 1px solid #777;
+    height: 70px;
+}
+
+    .rating-box h3 {
+        margin: 0;
+        line-height: 70px;
+    }
+
+    .rating-box i {
+        color: #53b90a;
+        line-height: 70px
+    }
     
 }
 
@@ -1399,5 +1460,4 @@ ul li:hover .dropOut {
     .radio label input[type="radio"]:disabled + .cr {
         opacity: .5;
     }
-
 
