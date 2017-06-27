@@ -31,5 +31,14 @@ namespace RateBlog.Repository
             return _applicationDbContext.Kategori.ToList();
         }
 
+        public int GetIdByName(string name)
+        {
+            if(_applicationDbContext.Kategori.Any(x => x.KategoriNavn == name))
+            {
+                return _applicationDbContext.Kategori.SingleOrDefault(x => x.KategoriNavn == name).KategoriId; 
+            }
+
+            return 0;
+        }
     }
 }

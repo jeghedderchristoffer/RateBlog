@@ -43,6 +43,8 @@ namespace RateBlog.Models.ManageViewModels
         public bool FoodBool { get; set; }
         public bool FashionBool { get; set; }
         public bool MommyBool { get; set; }
+         
+        public List<InfluenterKategoriViewModel> IKList { get; set; }
 
         public Influenter Influenter { get; set; } 
 

@@ -6,7 +6,20 @@
 @{
     ViewData["Title"] = "Vis profil";
     var user = await UserManager.GetUserAsync(User);
-    string last = IKRepository.GetAllKategori(user.InfluenterId.Value).Last();
+
+    string last = "";
+
+    try
+    {
+        if (IKRepository.GetAllKategori(user.InfluenterId.Value) != null)
+        {
+            last = IKRepository.GetAllKategori(user.InfluenterId.Value).Last();
+        }
+    }
+    catch (InvalidOperationException)
+    {
+
+    };
 }
 
 <div class="navbar-allaround"></div>
@@ -16,7 +29,7 @@
         <img class="profil-img center-block" src="http://placehold.it/200x200" />
         <div class="text-center">
             <h2>@user.Name</h2>
-            @if (user.InfluenterId != null)
+            @if (user.InfluenterId != null && IKRepository.GetAllKategori(user.InfluenterId.Value) != null)
             {
                 <h3>
 
@@ -32,6 +45,10 @@
                         }
                     }
                 </h3>
+            }
+            else
+            {
+                <h3>FAN</h3>
             }
             <hr />
         </div>
