@@ -426,7 +426,7 @@ namespace RateBlog.Controllers
                 user.Birth = model.Birth;
                 user.City = model.City;
                 user.PhoneNumber = model.PhoneNumber;
-                user.ProfileText = model.ProfileText;              
+                user.ProfileText = model.ProfileText;
 
                 var result = await _userManager.UpdateAsync(user);
 
@@ -448,8 +448,6 @@ namespace RateBlog.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var IK = model.IKList;
-
             if (ModelState.IsValid)
             {
                 user.Email = model.Email;
@@ -459,6 +457,14 @@ namespace RateBlog.Controllers
                 user.City = model.City;
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if(result.Succeeded != true)
+                {
+                    TempData["Error"] = "Der findes allerede en bruger med denne email!";
+                    return View("EditProfile", model);
+                }
 
                 // Add if influenterId is null
                 if (user.InfluenterId == null)
@@ -489,9 +495,6 @@ namespace RateBlog.Controllers
                 {
                     _influenterKategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == v.KategoriNavn).KategoriId, v.IsSelected);
                 }
-
-
-                var result = await _userManager.UpdateAsync(user);
 
                 if (result.Succeeded)
                 {
