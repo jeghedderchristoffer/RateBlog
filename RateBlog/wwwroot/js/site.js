@@ -285,6 +285,21 @@ $(document).ready(function () {
         InstagramText.text("www.instagram.com/" + InstagramInput.val());
     });
 
+}); 
+
+//Rating Stars
+
+
+$("label").click(function () {
+    $(this).parent().find("label").css({ "background-color": "#D8D8D8" });
+    $(this).css({ "background-color": "#7ED321" });
+    $(this).nextAll().css({ "background-color": "#7ED321" });
+});
+
+
+$(document).ready(function () {
+    $('[data-toggle="popover"]').popover();
+});
     YoutubeInput.keyup(function () {
         YoutubeText.text("www.youtube.com/user/" + YoutubeInput.val());
     })

@@ -960,44 +960,134 @@ ul li:hover .dropOut {
     margin-left: 15px;
 }
 
-.choose-category{
-    width: 50%;
-    margin-bottom: 20px;
+
+/*--------Stars on rating---------*/
+
+.stars {
+     width: 270px;
+     display: inline-block; 
 }
 
-.choose-category label {
+.stars input.star {
+    display: none;
+}
+
+.stars label.star {
+    float: right;
+    padding: 10px;
+    font-size: 36px;
+    color: #444;
+    transition: all .2s;
+    
+}
+
+.stars input.star:checked ~ label.star:before {
+     content: '\f005';
+     color: #FD4;
+     transition: all .25s;
+    
+}
+
+.stars input.star-5:checked ~ label.star:before {
+    color: #FE7;
+    text-shadow: 0 0 10px #952;
+}
+
+.stars input.star-1:checked ~ label.star:before {
+    color: #F62;
+}
+
+.stars label.star:hover {
+    transform: scale(1.3);
+}
+
+.stars label.star:before {
+    content: '\f006';
+    font-family: FontAwesome;
+}
+
+
+/*------End Stars----------*/
+
+
+/*----------New Rating stars----------*/
+
+.rating { 
+  border: none;
+  width: 240px;
+  float: left;
+  margin:0px 0px 0px 28px;
+}
+
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin-top: 2px;
+  padding:0px 5px 0px 5px;
+  font-size: 1.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f006";
+}
+
+.rating > .half:before { 
+  content: "\f006";
+  position: absolute;
+}
+
+.rating > label { 
+	color: #fff; 
+	float: right;
+	margin:4px 1px 0px 0px;
+	background-color:#D8D8D8;
+	border-radius:15px;
+  height:25px;
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { 
+	background-color:#7ED321 !important;
+  cursor:pointer;
+} /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { 
+	background-color:#7ED321 !important;
+  cursor:pointer;
+} 
+
+
+
+/*----End new rating stars-------*/
+
+
+/*------Hover Info Rating---------*/
+
+.tooltip {
     position: relative;
-    cursor: pointer;
-    border: 1px solid #000;
-    border-radius: 5px;
-    margin: 5px;
-    width: 30%;
-}
-
-.choose-category span{
-    text-align:center;
-    width: 100%;
-        
-}
-
-    .choose-category label [type="checkbox"] {
-        display: none;
-    }
-
-.choose-category [type="checkbox"] + span {
     display: inline-block;
-    padding: 1em;
+    border-bottom: 1px dotted black;
 }
 
-    .choose-category :checked + span {
-        background: #E67E22;
-        border-color: #E67E22; 
-        display: inline-block;
-        border-radius: 4px;
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
         color: #fff;
-        font-weight: normal;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        right: 105%;
     }
 
-.choose-category [type="checkbox"][disabled] + span {
-    background: #f00;
-}
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+
+/*------End Hover Info Rating---------*/
