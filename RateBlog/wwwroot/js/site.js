@@ -287,7 +287,7 @@ $(document).ready(function () {
 
     YoutubeInput.keyup(function () {
         YoutubeText.text("www.youtube.com/user/" + YoutubeInput.val());
-    })
+    });
 
 }); 
 
@@ -344,5 +344,14 @@ $(document).ready(function () {
     });
 });
 
+
+
+$(document).ready(function () {
+    $(".rating label").click(function () {
+        $(this).parent().find("label").css({ "color": "#FD4" });
+        $(this).css({ "color": "#FD4" });
+        $(this).prevAll().css({ "color": "#444" });
+    });
+})
 
 
