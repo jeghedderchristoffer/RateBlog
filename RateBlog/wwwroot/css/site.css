@@ -961,18 +961,18 @@ ul li:hover .dropOut {
 }
 
 
-/*--------Stars on rating---------*/
+/*--------Stars on rating 1---------*/
 
-.stars {
+.stars1 {
      width: 270px;
      display: inline-block; 
 }
 
-.stars input.star {
+.stars1 input.star1 {
     display: none;
 }
 
-.stars label.star {
+.stars1 label.star1 {
     float: right;
     padding: 10px;
     font-size: 36px;
@@ -981,86 +981,269 @@ ul li:hover .dropOut {
     
 }
 
-.stars input.star:checked ~ label.star:before {
+.stars1 input.star1:checked ~ label.star1:before {
      content: '\f005';
      color: #FD4;
      transition: all .25s;
     
 }
 
-.stars input.star-5:checked ~ label.star:before {
+.stars1 input.star-51:checked ~ label.star1:before {
     color: #FE7;
     text-shadow: 0 0 10px #952;
 }
 
-.stars input.star-1:checked ~ label.star:before {
+.stars1 input.star-11:checked ~ label.star1:before {
     color: #F62;
 }
 
-.stars label.star:hover {
+.stars1 label.star1:hover {
     transform: scale(1.3);
 }
 
-.stars label.star:before {
+.stars1 label.star1:before {
     content: '\f006';
     font-family: FontAwesome;
 }
 
 
-/*------End Stars----------*/
+/*------End Stars 1----------*/
 
 
-/*----------New Rating stars----------*/
+/*--------Stars on rating 2---------*/
 
-.rating { 
-  border: none;
-  width: 240px;
-  float: left;
-  margin:0px 0px 0px 28px;
+.stars2 {
+    width: 270px;
+    display: inline-block;
 }
 
-.rating > input { display: none; } 
-.rating > label:before { 
-  margin-top: 2px;
-  padding:0px 5px 0px 5px;
-  font-size: 1.25em;
-  font-family: FontAwesome;
-  display: inline-block;
-  content: "\f006";
+    .stars2 input.star2 {
+        display: none;
+    }
+
+    .stars2 label.star2 {
+        float: right;
+        padding: 10px;
+        font-size: 36px;
+        color: #444;
+        transition: all .2s;
+    }
+
+    .stars2 input.star2:checked ~ label.star2:before {
+        content: '\f005';
+        color: #FD4;
+        transition: all .25s;
+    }
+
+    .stars2 input.star-52:checked ~ label.star2:before {
+        color: #FE7;
+        text-shadow: 0 0 10px #952;
+    }
+
+    .stars2 input.star-12:checked ~ label.star2:before {
+        color: #F62;
+    }
+
+    .stars2 label.star2:hover {
+        transform: scale(1.3);
+    }
+
+    .stars2 label.star2:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+
+
+/*------End Stars 2----------*/
+
+
+/*--------Stars on rating 3---------*/
+
+.stars3 {
+    width: 270px;
+    display: inline-block;
 }
 
-.rating > .half:before { 
-  content: "\f006";
-  position: absolute;
+    .stars3 input.star3 {
+        display: none;
+    }
+
+    .stars3 label.star3 {
+        float: right;
+        padding: 10px;
+        font-size: 36px;
+        color: #444;
+        transition: all .2s;
+    }
+
+    .stars3 input.star3:checked ~ label.star3:before {
+        content: '\f005';
+        color: #FD4;
+        transition: all .25s;
+    }
+
+    .stars3 input.star-53:checked ~ label.star3:before {
+        color: #FE7;
+        text-shadow: 0 0 10px #952;
+    }
+
+    .stars3 input.star-13:checked ~ label.star3:before {
+        color: #F62;
+    }
+
+    .stars3 label.star3:hover {
+        transform: scale(1.3);
+    }
+
+    .stars3 label.star3:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+
+
+/*------End Stars 3----------*/
+
+/*--------Stars on rating 2---------*/
+
+.stars4 {
+    width: 270px;
+    display: inline-block;
 }
 
-.rating > label { 
-	color: #fff; 
-	float: right;
-	margin:4px 1px 0px 0px;
-	background-color:#D8D8D8;
-	border-radius:15px;
-  height:25px;
+    .stars4 input.star4 {
+        display: none;
+    }
+
+    .stars4 label.star4 {
+        float: right;
+        padding: 10px;
+        font-size: 36px;
+        color: #444;
+        transition: all .2s;
+    }
+
+    .stars4 input.star4:checked ~ label.star4:before {
+        content: '\f005';
+        color: #FD4;
+        transition: all .25s;
+    }
+
+    .stars4 input.star-54:checked ~ label.star4:before {
+        color: #FE7;
+        text-shadow: 0 0 10px #952;
+    }
+
+    .stars4 input.star-14:checked ~ label.star4:before {
+        color: #F62;
+    }
+
+    .stars4 label.star4:hover {
+        transform: scale(1.3);
+    }
+
+    .stars4 label.star4:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+
+
+/*------End Stars 4----------*/
+
+/*--------Stars on rating 5---------*/
+
+.stars5 {
+    width: 270px;
+    display: inline-block;
 }
 
-/***** CSS Magic to Highlight Stars on Hover *****/
+    .stars5 input.star5 {
+        display: none;
+    }
 
-.rating:not(:checked) > label:hover, /* hover current star */
-.rating:not(:checked) > label:hover ~ label { 
-	background-color:#7ED321 !important;
-  cursor:pointer;
-} /* hover previous stars in list */
+    .stars5 label.star5 {
+        float: right;
+        padding: 10px;
+        font-size: 36px;
+        color: #444;
+        transition: all .2s;
+    }
 
-.rating > input:checked + label:hover, /* hover current star when changing rating */
-.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-.rating > input:checked ~ label:hover ~ label { 
-	background-color:#7ED321 !important;
-  cursor:pointer;
-} 
+    .stars5 input.star5:checked ~ label.star5:before {
+        content: '\f005';
+        color: #FD4;
+        transition: all .25s;
+    }
+
+    .stars5 input.star-55:checked ~ label.star5:before {
+        color: #FE7;
+        text-shadow: 0 0 10px #952;
+    }
+
+    .stars5 input.star-15:checked ~ label.star5:before {
+        color: #F62;
+    }
+
+    .stars5 label.star5:hover {
+        transform: scale(1.3);
+    }
+
+    .stars5 label.star5:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+
+
+/*------End Stars 5----------*/
+
+
+/*--------Stars on rating 6---------*/
+
+.stars6 {
+    width: 270px;
+    display: inline-block;
+}
+
+    .stars6 input.star6 {
+        display: none;
+    }
+
+    .stars6 label.star6 {
+        float: right;
+        padding: 10px;
+        font-size: 36px;
+        color: #444;
+        transition: all .2s;
+    }
+
+    .stars6 input.star6:checked ~ label.star6:before {
+        content: '\f005';
+        color: #FD4;
+        transition: all .25s;
+    }
+
+    .stars6 input.star-56:checked ~ label.star6:before {
+        color: #FE7;
+        text-shadow: 0 0 10px #952;
+    }
+
+    .stars6 input.star-16:checked ~ label.star6:before {
+        color: #F62;
+    }
+
+    .stars6 label.star6:hover {
+        transform: scale(1.3);
+    }
+
+    .stars6 label.star6:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+
+
+/*------End Stars 6----------*/
 
 
 
-/*----End new rating stars-------*/
 
 
 /*------Hover Info Rating---------*/
@@ -1091,3 +1274,21 @@ ul li:hover .dropOut {
     }
 
 /*------End Hover Info Rating---------*/
+
+.rating-container{
+    padding-bottom: 20px;
+}
+
+.rating-input {
+    width: 50%;
+    max-width: 100%;
+    height: 40px;
+    padding: 15px 15px;
+    font-size: 20px;
+    border: 1px solid #dadada;
+   margin-top:20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    outline: none;
+    
+}

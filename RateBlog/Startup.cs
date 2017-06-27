@@ -70,6 +70,7 @@ namespace RateBlog
             services.AddTransient<IInfluenterPlatformRepository, InfluenterPlatformRepository>();
             services.AddTransient<IKategoriRepository, KategoriRepository>();
             services.AddTransient<IInfluenterKategoriRepository, InfluenterKategoriRepository>();
+            services.AddTransient<IRatingRepository, RatingRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
