@@ -284,25 +284,40 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="Rating">
+
 
                 <div class="col-md-9">
-                    <div class="stars6">
-                        <form action="">
-                            <input class="star6 star-5" id="star-56" type="radio" name="star" />
-                            <label class="star6 star-5" for="star-56"></label>
-                            <input class="star6 star-4" id="star-46" type="radio" name="star" />
-                            <label class="star6 star-4" for="star-46"></label>
-                            <input class="star6 star-3" id="star-36" type="radio" name="star" />
-                            <label class="star6 star-3" for="star-36"></label>
-                            <input class="star6 star-2" id="star-26" type="radio" name="star" />
-                            <label class="star6 star-2" for="star-26"></label>
-                            <input class="star6 star-1" id="star-16" type="radio" name="star" />
-                            <label class="star6 star-1" for="star-16"></label>
-                        </form>
+
+                                <div class="col-sm-12">
+                                    <div class="checkbox">
+                                        <label style="font-size: 1.5em">
+                                            <input type="checkbox" value="">
+                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                            0-1 år
+                                        </label>
+                                    </div>
+                                    <div class="checkbox" style="padding-top: 3px;">
+                                        <label style="font-size: 1.5em">
+                                            <input type="checkbox" value="">
+                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                            1-2 år
+                                        </label>
+                                    </div>
+                                    <div class="checkbox" style="padding-top: 3px;">
+                                        <label style="font-size: 1.5em">
+                                            <input type="checkbox" value="">
+                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                            Over 2 år
+                                        </label>
+                
+
+                        </div>
+
                     </div>
+
+
                 </div>
-            </div>
+           
             <div class="col-md-3">
                 <i class="fa fa-check fa-3x" id="fulgtCheck" aria-hidden="true" style="color:#53b90a; padding-top: 20px; display: none;"></i>
             </div>
@@ -326,12 +341,14 @@
 
     </div>
 
+    
+
     <div class="col-md-12 rating-container">
         <hr />
         <div class="col-md-3" style="padding-left: 0px;">
             <div class="kategoriNavn">
 
-                <h2>Giv feedback</h2>
+                <h2>Overskrift på feedback</h2>
 
             </div>
         </div>
@@ -339,7 +356,7 @@
             <div class="Rating">
 
                 <div class="col-md-9">
-                    <textarea id="feedbacktext"></textarea>
+                    <input class="rating-input" type="text" style="width: 100%" />
                 </div>
             </div>
             <div class="col-md-3">
@@ -364,13 +381,12 @@
         </div>
 
     </div>
-
     <div class="col-md-12 rating-container">
         <hr />
         <div class="col-md-3" style="padding-left: 0px;">
             <div class="kategoriNavn">
 
-                <h2>Overskrift på feedback</h2>
+                <h2>Giv feedback</h2>
 
             </div>
         </div>
@@ -378,7 +394,7 @@
             <div class="Rating">
 
                 <div class="col-md-9">
-                    <input class="rating-input" type="text" style="width: 100%" />
+                    <textarea id="feedbacktext" style="width: 100%;" rows="10"></textarea>
                 </div>
             </div>
             <div class="col-md-3">

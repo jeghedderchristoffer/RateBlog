@@ -1,4 +1,7 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.IndexViewModel
+@inject RateBlog.Repository.IInfluenterRepository InfluenterReposritory
+@inject RateBlog.Repository.IInfluenterKategoriRepository InfluenterKategoriRepository
+
 
 <div class="navbar-allaround">
 
@@ -55,12 +58,13 @@
                         </div>
                         <div class="col-md-9">
                             <div class="specifikInfo">
-                                <p>Fornavn: @influ.Fornavn</p>
-                                <p>Efternavn: @influ.Efternavn</p>
-                                <p>Alder: @influ.Alder</p>
-                                <p>Alias: @influ.Alias</p>
-                                <p>Link: @influ.Links</p>
-                                <p>Teskt: @influ.Profiltekst</p>
+                                <h1>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h1>
+                                @foreach (var kat in InfluenterKategoriRepository.GetAllKategori(influ.InfluenterId.Value))
+                                {
+                                    <p>@kat</p>
+
+                                }
+
                                 <br />
                             </div>
                         </div>

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using RateBlog.Data;
+using RateBlog.Models;
 using RateBlog.Models.InfluenterViewModels;
 using RateBlog.Repository;
 using System;
@@ -13,11 +15,18 @@ namespace RateBlog.Controllers
     {
 
         private IInfluenterRepository _influenter;
+        private UserManager<ApplicationUser> _userManager;
 
-        public InfluenterController(IInfluenterRepository influenter)
+        public InfluenterController(IInfluenterRepository influenter, UserManager<ApplicationUser> userManager)
         { 
             _influenter = influenter;
+            _userManager = userManager;
         }
+
+        
+
+        
+
 
 
         public IActionResult Index(string search)
@@ -27,12 +36,14 @@ namespace RateBlog.Controllers
             {
                 search = "";
             }
-            //var influenter = _influenter.GetAll().FindAll(x => x.Name.ToLower().Contains(search.ToLower()));
-
+            
+            var influenter = _userManager.Users.Where(x => x.Name.ToLower().Contains(search.ToLower()) && x.InfluenterId.HasValue).ToList();
 
             var model = new IndexViewModel()
             {
-                SearchString = search               
+                SearchString = search,
+                InfluentList = influenter
+                
             };
 
             return View(model); 
