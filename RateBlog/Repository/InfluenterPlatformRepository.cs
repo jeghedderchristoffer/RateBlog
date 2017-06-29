@@ -62,9 +62,10 @@ namespace RateBlog.Repository
                 if (!string.IsNullOrEmpty(link))
                 {
                     _dbContext.InfluenterPlatform.Add(ip);
-                    _dbContext.SaveChanges();
                 }
             }
+
+            _dbContext.SaveChanges();
         }
     }
 }

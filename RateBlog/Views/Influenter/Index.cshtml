@@ -1,7 +1,14 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.IndexViewModel
+@inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Repository.IInfluenterRepository InfluenterReposritory
 @inject RateBlog.Repository.IInfluenterKategoriRepository InfluenterKategoriRepository
-
+@inject RateBlog.Repository.IInfluenterPlatformRepository InfluenterPlatformRepo
+@inject RateBlog.Repository.IPlatformRepository PlatformRepository
+@{
+    ViewData["Title"] = "Find en influenter";
+    var user = await UserManager.GetUserAsync(User);
+    string last = "";
+}
 
 <div class="navbar-allaround">
 
@@ -27,9 +34,7 @@
         <div class="col-md-3">
             <div class="sorter">
                 <p><b>Platform</b></p>
-                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Youtube</label><br />
-                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Blogger</label><br />
-                <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Instagram</label><br />
+
                 <br />
                 <p><b>Kategori</b></p>
                 <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Gamer</label><br />
@@ -46,36 +51,75 @@
         </div>
         <div class="col-md-9">
             <div class="infoInfluenter">
-                <h1>Resultater for @Model.SearchString</h1>
-                <hr />
+                <h1 style="margin-top: 0">Resultater for @Model.SearchString</h1>
+
+
+
+
+
+
+
                 @foreach (var influ in Model.InfluentList)
                 {
                     <div class="col-md-12 search-result">
                         <div class="col-md-3">
-                            <div class="picinfluenter">
-                                <img src="http://via.placeholder.com/100x100/eee" class="influ-img">
-                            </div>
+                            <img class="influ-img" src="~/images/pp.jpg" />
                         </div>
-                        <div class="col-md-9">
-                            <div class="specifikInfo">
-                                <h1>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h1>
-                                @foreach (var kat in InfluenterKategoriRepository.GetAllKategori(influ.InfluenterId.Value))
+                        <div class="col-md-6 noPadding">
+                            <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
+
+                            <p style="margin-top: 15px;">
+                                @foreach (var kategori in InfluenterKategoriRepository.GetAllKategori(influ.InfluenterId.Value))
                                 {
-                                    <p>@kat</p>
-
+                                    @if (kategori.Equals(InfluenterKategoriRepository.GetAllKategori(influ.InfluenterId.Value).Last()))
+                                    {
+                                        @kategori
+                                    }
+                                    else
+                                    {
+                                        @kategori <span>|</span>
+                                    }
                                 }
+                            </p>
 
-                                <br />
-                            </div>
+                            @foreach (var platform in InfluenterPlatformRepo.GetAllByInfluenter(influ.InfluenterId.Value))
+                            {
+                                @if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Facebook")
+                                {
+                                    <a href="http://www.facebook.com/@platform.Link" target="_blank" class="fa fa-search fa-facebook fa-facebook-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "YouTube")
+                                {
+                                    <a href="http://www.youtube.com/user/@platform.Link" target="_blank" class="fa fa-search fa-youtube fa-youtube-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "SnapChat")
+                                {
+                                    <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search fa-snapchat-ghost fa-snapchat-ghost-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Instagram")
+                                {
+                                    <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search fa-instagram fa-instagram-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitter")
+                                {
+                                    <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search fa-twitter fa-twitter-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitch")
+                                {
+                                    <a href="http://www.twitch.tv/@platform.Link" target="_blank" class="fa fa-search fa-twitch fa-twitch-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Website")
+                                {
+                                    <a href="http://@platform.Link" target="_blank" class="fa fa-search fa-globe fa-globe-search"></a>
+                                }
+                            }
+
+
                         </div>
-                    </div>     
+                    </div>
                 }
             </div>
-
-
-
         </div>
-
     </div>
 </div>
 

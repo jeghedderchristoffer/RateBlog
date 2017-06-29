@@ -294,11 +294,9 @@ $(document).ready(function () {
 //Rating Stars
 
 $(document).ready(function () {
-    $('[data-toggle="popover"]').popover();
-
-
-
-
+    $('[data-toggle="popover"]').popover({
+        container: "body"
+    }); 
 });
 
 //Check Rating
@@ -350,8 +348,28 @@ $(document).ready(function () {
     $(".rating label").click(function () {
         $(this).parent().find("label").css({ "color": "#FD4" });
         $(this).css({ "color": "#FD4" });
-        $(this).prevAll().css({ "color": "#444" });
+        $(this).prevAll().css({ "color": "#DCDCDC" });
+
+        if ($(this).parent().attr("id") == "orginalitetCheckBox") {
+            $("#orginalitetCheck").fadeIn(400);
+        }
+        if ($(this).parent().attr("id") == "kvalitetCheckBox") {
+            $("#kvalitetCheck").fadeIn(400);
+        }
+        if ($(this).parent().attr("id") == "troværdighedCheckBox") {
+            $("#troværdighedCheck").fadeIn(400);
+        }
+        if ($(this).parent().attr("id") == "interaktionCheckBox") {
+            $("#interaktionCheck").fadeIn(400);
+        }
+        if ($(this).parent().attr("id") == "aktivitetCheckBox") {
+            $("#aktivitetCheck").fadeIn(400);
+        }
+
     });
+
+
+
 })
 
 

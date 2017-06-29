@@ -15,7 +15,13 @@
   <ItemGroup>
     <Content Include="wwwroot\css\select2.min.css" />
     <Content Include="wwwroot\css\social-buttons.css" />
+    <Content Include="wwwroot\images\entertainment-pic.jpeg" />
+    <Content Include="wwwroot\images\fashion-pic.jpg" />
+    <Content Include="wwwroot\images\lifestyle-pic.jpeg" />
     <Content Include="wwwroot\images\pexels-photo-199497.png" />
+    <Content Include="wwwroot\images\beauty-pic.jpeg" />
+    <Content Include="wwwroot\images\pp.jpg" />
+    <Content Include="wwwroot\images\gaming-pic.jpg" />
     <Content Include="wwwroot\js\select2.min.js" />
   </ItemGroup>
   <ItemGroup>
