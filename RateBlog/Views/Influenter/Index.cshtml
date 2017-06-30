@@ -18,7 +18,7 @@
 
     </div>
 
-    <div style="background-color: #f6f6f6; padding-bottom: 20px;">
+    <div style="background-color: #e6ecf3; padding-bottom: 20px;">
         <div class="outer">
             <div class="middle">
                 <div class="inner">
@@ -35,7 +35,7 @@
     </div>
 
     <div class="container" style="padding-top: 20px">
-        <div class="col-md-12">
+        <div class="col-md-12 noPaddingLeft">
 
             @if (TempData["Success"] != null)
             {
@@ -45,7 +45,7 @@
                 </div>
             }
 
-            <div class="col-md-3">
+            <div class="col-md-3 noPaddingLeft">
                 <div class="sorter">
                     <p><b>Platform</b></p>
 
@@ -100,31 +100,31 @@
                                 {
                                     @if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Facebook")
                                     {
-                                        <a href="http://www.facebook.com/@platform.Link" target="_blank" class="fa fa-search fa-facebook fa-facebook-search"></a>
+                                        <a href="http://www.facebook.com/@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
                                     }
                                     else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "YouTube")
                                     {
-                                        <a href="http://www.youtube.com/user/@platform.Link" target="_blank" class="fa fa-search fa-youtube fa-youtube-search"></a>
+                                        <a href="http://www.youtube.com/user/@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
                                     }
                                     else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "SnapChat")
                                     {
-                                        <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search fa-snapchat-ghost fa-snapchat-ghost-search"></a>
+                                        <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>
                                     }
                                     else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Instagram")
                                     {
-                                        <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search fa-instagram fa-instagram-search"></a>
+                                        <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search-o fa-instagram fa-instagram-search"></a>
                                     }
                                     else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitter")
                                     {
-                                        <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search fa-twitter fa-twitter-search"></a>
+                                        <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search-o fa-twitter fa-twitter-search"></a>
                                     }
                                     else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitch")
                                     {
-                                        <a href="http://www.twitch.tv/@platform.Link" target="_blank" class="fa fa-search fa-twitch fa-twitch-search"></a>
+                                        <a href="http://www.twitch.tv/@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
                                     }
                                     else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Website")
                                     {
-                                        <a href="http://@platform.Link" target="_blank" class="fa fa-search fa-globe fa-globe-search"></a>
+                                        <a href="http://@platform.Link" target="_blank" class="fa fa-search-o fa-globe fa-globe-search"></a>
                                     }
                                 }
 

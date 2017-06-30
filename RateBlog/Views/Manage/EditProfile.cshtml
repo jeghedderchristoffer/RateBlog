@@ -42,42 +42,45 @@
             </div>
         }
         <div id="redigerFanContainer">
-            <h4><b>Personlig profil</b></h4>
-            <br />
             <form asp-area="" asp-controller="Manage" asp-action="EditProfile">
-                <input asp-for="@Model.IsInfluenter" value="false" hidden="hidden" />
-                <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
-                <p>Fulde navn:</p>
-                <input asp-for="@Model.Name" class="edit-input" />
-                <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
+                <div class="col-md-12 noPaddingLeft">
+                    <div class="col-md-6 noPaddingLeft">
+                        <h4><b>Personlig profil</b></h4>
+                        <br />
+                        <input asp-for="@Model.IsInfluenter" value="false" hidden="hidden" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
+                        <p>Fulde navn:</p>
+                        <input asp-for="@Model.Name" class="edit-input" />
+                        <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Email:</p>
-                <input asp-for="@Model.Email" class="edit-input" />
-                <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
+                        <p>Email:</p>
+                        <input asp-for="@Model.Email" class="edit-input" />
+                        <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Fødselsdag:</p>
-                <input asp-for="@Model.Birth" class="edit-input" type="date" />
-                <span asp-validation-for="@Model.Birth" class="text-danger" style="margin-left: 5px;"></span>
+                        <p>Fødselsdag:</p>
+                        <input asp-for="@Model.Birth" class="edit-input" type="date" />
+                        <span asp-validation-for="@Model.Birth" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>By:</p>
-                <input asp-for="@Model.City" class="edit-input" />
-                <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
+                        <p>By:</p>
+                        <input asp-for="@Model.City" class="edit-input" />
+                        <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Telefon nummer:</p>
-                <input asp-for="@Model.PhoneNumber" class="edit-input" />
-                <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
-
-                <hr />
-                <h4><b>Profil information</b></h4>
-                <br />
-
-                <p>Profiltekst:</p>
-                <textarea asp-for="@Model.ProfileText" class="edit-input" rows="6" style="height: auto;"></textarea>
-                <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
-                <input type="submit" class="edit-button" value="Gem" />
+                        <p>Telefon nummer:</p>
+                        <input asp-for="@Model.PhoneNumber" class="edit-input" />
+                        <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
+                    </div>
+                    <div class="col-md-6 noPaddingLeft">
+                        <h4><b>Profil information</b></h4>
+                        <br />
+                        <p>Profiltekst:</p>
+                        <textarea asp-for="@Model.ProfileText" class="edit-input" rows="7" style="height: auto;"></textarea>
+                        <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 noPaddingLeft">
+                    <input type="submit" class="edit-button" value="Gem" />
+                </div>
             </form>
-
-
         </div>
 
         <div id="redigerInfluenterContainer">
@@ -88,23 +91,23 @@
                 <input asp-for="@Model.IsInfluenter" value="true" hidden="hidden" />
                 <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
                 <p>Fulde navn:</p>
-                <input asp-for="@Model.Name" class="edit-input" />
+                <input asp-for="@Model.Name" class="edit-input-influ" />
                 <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
 
                 <p>Email:</p>
-                <input asp-for="@Model.Email" class="edit-input" />
+                <input asp-for="@Model.Email" class="edit-input-influ" />
                 <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
 
                 <p>Fødselsdag:</p>
-                <input asp-for="@Model.Birth" class="edit-input" type="date" />
+                <input asp-for="@Model.Birth" class="edit-input-influ" type="date" />
                 <span asp-validation-for="@Model.Birth" class="text-danger" style="margin-left: 5px;"></span>
 
                 <p>By:</p>
-                <input asp-for="@Model.City" class="edit-input" />
+                <input asp-for="@Model.City" class="edit-input-influ" />
                 <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
 
                 <p>Telefon nummer:</p>
-                <input asp-for="@Model.PhoneNumber" class="edit-input" />
+                <input asp-for="@Model.PhoneNumber" class="edit-input-influ" />
                 <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
 
 
@@ -116,7 +119,7 @@
                 <br />
 
                 <p>Alias/kaldenavn:</p>
-                <input asp-for="@Model.Influenter.Alias" class="edit-input" />
+                <input asp-for="@Model.Influenter.Alias" class="edit-input-influ" />
                 <span asp-validation-for="@Model.Influenter.Alias" class="text-danger" style="margin-left: 5px;"></span>
 
                 <p>Vælg dine kategorier:</p>
@@ -130,42 +133,6 @@
                             @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
                         </label>
                     }
-                    @*<label>
-                            <input asp-for="@Model.BeautyBool" type="checkbox">
-                            <span>Beauty</span>
-                        </label>
-                        <label>
-                            <input asp-for="@Model.DIYBool" type="checkbox">
-                            <span>DIY</span>
-                        </label>
-                        <label>
-                            <input asp-for="@Model.EntertainmentBool" type="checkbox">
-                            <span>Entertainment</span>
-                        </label>
-                        <label>
-                            <input asp-for="@Model.FashionBool" type="checkbox">
-                            <span>Fashion</span>
-                        </label>
-                        <label>
-                            <input asp-for="@Model.FoodBool" type="checkbox">
-                            <span>Food</span>
-                        </label>
-                        <label>
-                            <input asp-for="@Model.GamingBool" type="checkbox">
-                            <span>Gaming</span>
-                        </label>
-                        <label>
-                            <input asp-for="@Model.LifestyleBool" type="checkbox">
-                            <span>Lifestyle</span>
-                        </label>
-                        <label>
-                            <input asp-for="@Model.MommyBool" type="checkbox">
-                            <span>Mommy</span>
-                        </label>
-                        <label>
-                            <input asp-for="@Model.VlogBool" type="checkbox">
-                            <span>Vlog</span>
-                        </label>*@
                 </div>
 
                 <p>Dine sociale medier:</p>
@@ -207,10 +174,10 @@
 
                 <br />
                 <p>Profiltekst:</p>
-                <textarea asp-for="@Model.ProfileText" class="edit-input" rows="6" style="height: auto;"></textarea>
+                <textarea asp-for="@Model.ProfileText" class="edit-input-influ" rows="6" style="height: auto;"></textarea>
                 <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
 
-                <input type="submit" class="edit-button" value="Gem" />
+                <input type="submit" class="edit-button-influ" value="Gem" />
             </form>
 
 
