@@ -14,6 +14,7 @@ using RateBlog.Models;
 using RateBlog.Services;
 using RateBlog.Repository;
 using Microsoft.AspNetCore.Http;
+using RateBlog.Repository.Interface;
 
 namespace RateBlog
 {
@@ -74,6 +75,7 @@ namespace RateBlog
             services.AddTransient<IKategoriRepository, KategoriRepository>();
             services.AddTransient<IInfluenterKategoriRepository, InfluenterKategoriRepository>();
             services.AddTransient<IRatingRepository, RatingRepository>();
+            services.AddTransient<IInfluenterRatingRepository, InfluenterRatingRepository>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

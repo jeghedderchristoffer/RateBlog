@@ -7,8 +7,7 @@
 <div class="outer">
     <div class="middle">
         <div class="inner">
-            <h1>Giv feedback til Christoffer Jespersen</h1>
-
+            <h1>Giv feedback til @Model.Influenter.Alias</h1>
         </div>
     </div>
 </div>
@@ -18,6 +17,9 @@
 
 <div class="container">
     <form asp-area="" asp-controller="Rating" asp-action="RateInfluenter">
+        @Html.HiddenFor(x => x.Influenter.InfluenterId)
+        @Html.HiddenFor(x => x.Influenter.Alias)
+
         <div class="col-md-12 rating-box" id="orginalitetBox">
             <div class="col-md-4">
                 <h4>Orginalitet</h4>
@@ -205,6 +207,7 @@
         <div class="col-md-12 noPadding">
             <input type="submit" class="rate-button" value="Send dit feedback"/>
         </div>
+
     </form>
 
 </div>
