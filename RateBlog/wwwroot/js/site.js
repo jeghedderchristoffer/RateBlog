@@ -350,23 +350,24 @@ $(document).ready(function () {
         $(this).css({ "color": "#FD4" });
         $(this).prevAll().css({ "color": "#DCDCDC" });
 
-        if ($(this).parent().attr("id") == "orginalitetCheckBox") {
+        if ($(this).parent().attr("id") === "orginalitetCheckBox") {
             $("#orginalitetCheck").fadeIn(400);
         }
-        if ($(this).parent().attr("id") == "kvalitetCheckBox") {
+        if ($(this).parent().attr("id") === "kvalitetCheckBox") {
             $("#kvalitetCheck").fadeIn(400);
         }
-        if ($(this).parent().attr("id") == "troværdighedCheckBox") {
+        if ($(this).parent().attr("id") === "troværdighedCheckBox") {
             $("#troværdighedCheck").fadeIn(400);
         }
-        if ($(this).parent().attr("id") == "interaktionCheckBox") {
+        if ($(this).parent().attr("id") === "interaktionCheckBox") {
             $("#interaktionCheck").fadeIn(400);
         }
-        if ($(this).parent().attr("id") == "aktivitetCheckBox") {
+        if ($(this).parent().attr("id") === "aktivitetCheckBox") {
             $("#aktivitetCheck").fadeIn(400);
         }
-
     });
+
+    $()
 
 
 

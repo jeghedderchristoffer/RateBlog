@@ -1,5 +1,4 @@
 ﻿body {
-    padding-bottom: 20px;
     font-family: 'Raleway', sans-serif;
 }
 
@@ -199,12 +198,11 @@ body.modal-open {
 
 .home-img {
     background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/pexels-photo-199497.png") no-repeat center;
-    height: 100vh;
+    height: 700px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    /*filter: brightness(50%);*/
 }
 
 
@@ -432,7 +430,7 @@ body.modal-open {
 
 /*-------------Video-------------------------------------------------------*/
 .video-container {
-    background-color: #fff;
+    background-color: #f6f6f6;
     margin-top: 0px;
     padding-top: 100px;
     padding-bottom: 100px;
@@ -456,82 +454,41 @@ body.modal-open {
 
 /*Banner container*/
 
-.banner-container{
-    padding-top: 150px; 
+.banner-container {
+    padding-top: 150px;
     padding-bottom: 150px;
-    background: #08468d;
-    color: #fff;
+    color: #444;
+    background-color: #fff;
 }
 
-.banner-container h1{
-    margin: 0;
-}
+    .banner-container h1 {
+        margin: 0;
+    }
 
 /*Categori container*/
 
 .categori-container {
-    background-color: #f6f6f6;
-    padding-top: 100px;
+    background-color: #fff;
+    padding-top: 80px;
     padding-bottom: 100px;
 }
 
-.circle {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 0;
-    padding: 50% 0;
-    border-radius: 50%;
-    background: #38a9e4;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    line-height: 0;
-    -moz-box-shadow: inset 0 0 5px #dadada;
-    -webkit-box-shadow: inset 0 0 5px #dadada;
-    box-shadow: inset 0 0 5px #dadada;
-    transition: all 0.5s ease 0s;
+.categori-container h1{
+    margin: 0;
+    margin-bottom: 50px;
 }
 
-    .circle span {
-        font-weight: bold;
-
-    }
-
-@media screen and (max-width: 991px) {
-
-    .circle {
-        font-size: 18px;
-    }
-}
-
-@media screen and (max-width: 767px) {
-
-    .circle {
-        font-size: 12px;
-    }
-}
-
-.circle:hover {
-    -moz-box-shadow: inset 0 0 15px #f6f6f6;
-    -webkit-box-shadow: inset 0 0 15px #f6f6f6;
-    box-shadow: inset 0 0 15px #f6f6f6;
-    color: #f6f6f6
-}
-
-
-.extra-padding{
-    padding-left: 60px; 
+.extra-padding {
+    padding-left: 60px;
     padding-right: 60px;
     padding-top: 20px;
     padding-bottom: 20px;
 }
 
-.extra-padding a {
-    outline: none; 
-    text-decoration: none;
-}
+    .extra-padding a {
+        outline: none;
+        text-decoration: none;
+    }
 
 
 /*Categori container end*/
@@ -560,7 +517,6 @@ body.modal-open {
     margin-bottom: 10px;
     display: block;
     border: 1px solid #eee;
-
 }
 
 .search-result {
@@ -1299,70 +1255,12 @@ input[type=checkbox].with-font {
         background-color: #4BB533;
     }
 
-/**/
 
-/*#feedbacktext {
-    max-width: 100%;
-    font-size: 20px;
+/*Footer*/
+
+footer {
+    height: 300px;
+    padding: 30px;
+    background: #47525e; 
+    color: #fff;
 }
-
-
-
-.checkbox label:after,
-.radio label:after {
-    content: '';
-    display: inline;
-    clear: both;
-}
-
-.checkbox .cr,
-.radio .cr {
-    position: relative;
-    display: inline-block;
-    border: 1px solid #a9a9a9;
-    border-radius: .25em;
-    width: 1.3em;
-    height: 1.3em;
-    float: left;
-    margin-right: .5em;
-}
-
-.radio .cr {
-    border-radius: 50%;
-}
-
-    .checkbox .cr .cr-icon,
-    .radio .cr .cr-icon {
-        position: absolute;
-        font-size: .8em;
-        line-height: 0;
-        top: 50%;
-        left: 20%;
-    }
-
-    .radio .cr .cr-icon {
-        margin-left: 0.04em;
-    }
-
-.checkbox label input[type="checkbox"],
-.radio label input[type="radio"] {
-    display: none;
-}
-
-    .checkbox label input[type="checkbox"] + .cr > .cr-icon,
-    .radio label input[type="radio"] + .cr > .cr-icon {
-        transform: scale(3) rotateZ(-20deg);
-        opacity: 0;
-        transition: all .3s ease-in;
-    }
-
-    .checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
-    .radio label input[type="radio"]:checked + .cr > .cr-icon {
-        transform: scale(1) rotateZ(0deg);
-        opacity: 1;
-    }
-
-    .checkbox label input[type="checkbox"]:disabled + .cr,
-    .radio label input[type="radio"]:disabled + .cr {
-        opacity: .5;
-    }*/
