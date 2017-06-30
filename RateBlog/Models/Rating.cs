@@ -15,11 +15,13 @@ namespace RateBlog.Models
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
-        public int KommerUd { get; set; }
-        public int Troværdighed { get; set; }
+        public int Orginalitet { get; set; }
         public int Kvalitet { get; set; }
-        public int Sprog { get; set; }
-        public string Feedback { get; set; }
+        public int Troværdighed { get; set; }
+        public int Interaktion { get; set; }
+        public int Aktivitet { get; set; }
+        public int TidFulgt { get; set; }
+        public string Review { get; set; }
 
         public virtual ICollection<InfluenterRating> InfluenterRating { get; set; }
     }

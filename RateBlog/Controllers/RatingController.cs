@@ -47,8 +47,12 @@ namespace RateBlog.Controllers
 
             // Værdier: 01 == 0-1 år, 12 == 1-2 år, 2 == 2+ år!! 
             var antalÅrFulgt = antalÅr;
-
             var review = model.Review;
+
+            var rating = new Rating()
+            {
+                
+            }; 
 
 
 
