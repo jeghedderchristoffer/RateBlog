@@ -1,215 +1,220 @@
 ﻿@model RateBlog.Models.RatingViewModels.RatingViewModel
 
-<div class="navbar-allaround">
-</div>
+<div style="padding-bottom: 100px;">
 
 
-<div class="outer">
-    <div class="middle">
-        <div class="inner">
-            <h1>Giv feedback til @Model.Influenter.Alias</h1>
+
+    <div class="navbar-allaround">
+    </div>
+
+
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <h1>Giv feedback til @Model.Influenter.Alias</h1>
+            </div>
         </div>
     </div>
-</div>
-<br />
+    <br />
 
 
 
-<div class="container">
-    <form asp-area="" asp-controller="Rating" asp-action="RateInfluenter">
-        @Html.HiddenFor(x => x.Influenter.InfluenterId)
-        @Html.HiddenFor(x => x.Influenter.Alias)
+    <div class="container">
+        <form asp-area="" asp-controller="Rating" asp-action="RateInfluenter">
+            @Html.HiddenFor(x => x.Influenter.InfluenterId)
+            @Html.HiddenFor(x => x.Influenter.Alias)
 
-        <div class="col-md-12 rating-box" id="orginalitetBox">
-            <div class="col-md-4">
-                <h4>Orginalitet</h4>
+            <div class="col-md-12 rating-box" id="orginalitetBox">
+                <div class="col-md-4">
+                    <h4>Orginalitet</h4>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="rating center-block" id="orginalitetCheckBox">
+                        <input type="radio" id="field1_star5" name="orginalitet" value="5" /><label class="full" for="field1_star5"></label>
+
+                        <input type="radio" id="field1_star4" name="orginalitet" value="4" /><label class="full" for="field1_star4"></label>
+
+                        <input type="radio" id="field1_star3" name="orginalitet" value="3" /><label class="full" for="field1_star3"></label>
+
+                        <input type="radio" id="field1_star2" name="orginalitet" value="2" /><label class="full" for="field1_star2"></label>
+
+                        <input type="radio" id="field1_star1" name="orginalitet" value="1" /><label class="full" for="field1_star1"></label>
+
+                    </fieldset>
+
+                    <i class="fa fa-check fa-3x pull-right" id="orginalitetCheck" aria-hidden="true" style="display: none"></i>
+
+                </div>
+                <div class="col-md-2">
+                    <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
+                        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
+                    </a>
+                </div>
             </div>
-            <div class="col-md-6">
-                <fieldset class="rating center-block" id="orginalitetCheckBox">
-                    <input type="radio" id="field1_star5" name="orginalitet" value="5" /><label class="full" for="field1_star5"></label>
 
-                    <input type="radio" id="field1_star4" name="orginalitet" value="4" /><label class="full" for="field1_star4"></label>
 
-                    <input type="radio" id="field1_star3" name="orginalitet" value="3" /><label class="full" for="field1_star3"></label>
+            <div class="col-md-12 rating-box" id="kvalitetBox">
+                <div class="col-md-4">
+                    <h4>Kvalitet</h4>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="rating center-block" id="kvalitetCheckBox">
+                        <input type="radio" id="field2_star5" name="kvalitet" value="5" /><label class="full" for="field2_star5"></label>
 
-                    <input type="radio" id="field1_star2" name="orginalitet" value="2" /><label class="full" for="field1_star2"></label>
+                        <input type="radio" id="field2_star4" name="kvalitet" value="4" /><label class="full" for="field2_star4"></label>
 
-                    <input type="radio" id="field1_star1" name="orginalitet" value="1" /><label class="full" for="field1_star1"></label>
+                        <input type="radio" id="field2_star3" name="kvalitet" value="3" /><label class="full" for="field2_star3"></label>
 
-                </fieldset>
+                        <input type="radio" id="field2_star2" name="kvalitet" value="2" /><label class="full" for="field2_star2"></label>
 
-                <i class="fa fa-check fa-3x pull-right" id="orginalitetCheck" aria-hidden="true" style="display: none"></i>
+                        <input type="radio" id="field2_star1" name="kvalitet" value="1" /><label class="full" for="field2_star1"></label>
 
+                    </fieldset>
+
+                    <i class="fa fa-check fa-3x pull-right" id="kvalitetCheck" aria-hidden="true" style="display: none"></i>
+
+                </div>
+                <div class="col-md-2">
+                    <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
+                        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
+                    </a>
+                </div>
             </div>
-            <div class="col-md-2">
-                <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                    <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
-                </a>
+
+            <div class="col-md-12 rating-box" id="troværdighedBox">
+                <div class="col-md-4">
+                    <h4>Troværdighed</h4>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="rating center-block" id="troværdighedCheckBox">
+                        <input type="radio" id="field3_star5" name="troværdighed" value="5" /><label class="full" for="field3_star5"></label>
+
+                        <input type="radio" id="field3_star4" name="troværdighed" value="4" /><label class="full" for="field3_star4"></label>
+
+                        <input type="radio" id="field3_star3" name="troværdighed" value="3" /><label class="full" for="field3_star3"></label>
+
+                        <input type="radio" id="field3_star2" name="troværdighed" value="2" /><label class="full" for="field3_star2"></label>
+
+                        <input type="radio" id="field3_star1" name="troværdighed" value="1" /><label class="full" for="field3_star1"></label>
+
+                    </fieldset>
+
+                    <i class="fa fa-check fa-3x pull-right" id="troværdighedCheck" aria-hidden="true" style="display: none"></i>
+
+                </div>
+                <div class="col-md-2">
+                    <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
+                        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
+                    </a>
+                </div>
             </div>
-        </div>
 
+            <div class="col-md-12 rating-box" id="interaktionBox">
+                <div class="col-md-4">
+                    <h4>Interaktion</h4>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="rating center-block" id="interaktionCheckBox">
+                        <input type="radio" id="field4_star5" name="interaktion" value="5" /><label class="full" for="field4_star5"></label>
 
-        <div class="col-md-12 rating-box" id="kvalitetBox">
-            <div class="col-md-4">
-                <h4>Kvalitet</h4>
+                        <input type="radio" id="field4_star4" name="interaktion" value="4" /><label class="full" for="field4_star4"></label>
+
+                        <input type="radio" id="field4_star3" name="interaktion" value="3" /><label class="full" for="field4_star3"></label>
+
+                        <input type="radio" id="field4_star2" name="interaktion" value="2" /><label class="full" for="field4_star2"></label>
+
+                        <input type="radio" id="field4_star1" name="interaktion" value="1" /><label class="full" for="field4_star1"></label>
+
+                    </fieldset>
+
+                    <i class="fa fa-check fa-3x pull-right" id="interaktionCheck" aria-hidden="true" style="display: none"></i>
+
+                </div>
+                <div class="col-md-2">
+                    <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
+                        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
+                    </a>
+                </div>
             </div>
-            <div class="col-md-6">
-                <fieldset class="rating center-block" id="kvalitetCheckBox">
-                    <input type="radio" id="field2_star5" name="kvalitet" value="5" /><label class="full" for="field2_star5"></label>
 
-                    <input type="radio" id="field2_star4" name="kvalitet" value="4" /><label class="full" for="field2_star4"></label>
+            <div class="col-md-12 rating-box" id="aktivitetBox">
+                <div class="col-md-4">
+                    <h4>Aktivitet</h4>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="rating center-block" id="aktivitetCheckBox">
+                        <input type="radio" id="field5_star5" name="aktivitet" value="5" /><label class="full" for="field5_star5"></label>
 
-                    <input type="radio" id="field2_star3" name="kvalitet" value="3" /><label class="full" for="field2_star3"></label>
+                        <input type="radio" id="field5_star4" name="aktivitet" value="4" /><label class="full" for="field5_star4"></label>
 
-                    <input type="radio" id="field2_star2" name="kvalitet" value="2" /><label class="full" for="field2_star2"></label>
+                        <input type="radio" id="field5_star3" name="aktivitet" value="3" /><label class="full" for="field5_star3"></label>
 
-                    <input type="radio" id="field2_star1" name="kvalitet" value="1" /><label class="full" for="field2_star1"></label>
+                        <input type="radio" id="field5_star2" name="aktivitet" value="2" /><label class="full" for="field5_star2"></label>
 
-                </fieldset>
+                        <input type="radio" id="field5_star1" name="aktivitet" value="1" /><label class="full" for="field5_star1"></label>
 
-                <i class="fa fa-check fa-3x pull-right" id="kvalitetCheck" aria-hidden="true" style="display: none"></i>
+                    </fieldset>
 
+                    <i class="fa fa-check fa-3x pull-right" id="aktivitetCheck" aria-hidden="true" style="display: none"></i>
+
+                </div>
+                <div class="col-md-2">
+                    <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
+                        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
+                    </a>
+                </div>
             </div>
-            <div class="col-md-2">
-                <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                    <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
-                </a>
-            </div>
-        </div>
 
-        <div class="col-md-12 rating-box" id="troværdighedBox">
-            <div class="col-md-4">
-                <h4>Troværdighed</h4>
-            </div>
-            <div class="col-md-6">
-                <fieldset class="rating center-block" id="troværdighedCheckBox">
-                    <input type="radio" id="field3_star5" name="troværdighed" value="5" /><label class="full" for="field3_star5"></label>
-
-                    <input type="radio" id="field3_star4" name="troværdighed" value="4" /><label class="full" for="field3_star4"></label>
-
-                    <input type="radio" id="field3_star3" name="troværdighed" value="3" /><label class="full" for="field3_star3"></label>
-
-                    <input type="radio" id="field3_star2" name="troværdighed" value="2" /><label class="full" for="field3_star2"></label>
-
-                    <input type="radio" id="field3_star1" name="troværdighed" value="1" /><label class="full" for="field3_star1"></label>
-
-                </fieldset>
-
-                <i class="fa fa-check fa-3x pull-right" id="troværdighedCheck" aria-hidden="true" style="display: none"></i>
-
-            </div>
-            <div class="col-md-2">
-                <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                    <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-12 rating-box" id="interaktionBox">
-            <div class="col-md-4">
-                <h4>Interaktion</h4>
-            </div>
-            <div class="col-md-6">
-                <fieldset class="rating center-block" id="interaktionCheckBox">
-                    <input type="radio" id="field4_star5" name="interaktion" value="5" /><label class="full" for="field4_star5"></label>
-
-                    <input type="radio" id="field4_star4" name="interaktion" value="4" /><label class="full" for="field4_star4"></label>
-
-                    <input type="radio" id="field4_star3" name="interaktion" value="3" /><label class="full" for="field4_star3"></label>
-
-                    <input type="radio" id="field4_star2" name="interaktion" value="2" /><label class="full" for="field4_star2"></label>
-
-                    <input type="radio" id="field4_star1" name="interaktion" value="1" /><label class="full" for="field4_star1"></label>
-
-                </fieldset>
-
-                <i class="fa fa-check fa-3x pull-right" id="interaktionCheck" aria-hidden="true" style="display: none"></i>
-
-            </div>
-            <div class="col-md-2">
-                <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                    <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-12 rating-box" id="aktivitetBox">
-            <div class="col-md-4">
-                <h4>Aktivitet</h4>
-            </div>
-            <div class="col-md-6">
-                <fieldset class="rating center-block" id="aktivitetCheckBox">
-                    <input type="radio" id="field5_star5" name="aktivitet" value="5" /><label class="full" for="field5_star5"></label>
-
-                    <input type="radio" id="field5_star4" name="aktivitet" value="4" /><label class="full" for="field5_star4"></label>
-
-                    <input type="radio" id="field5_star3" name="aktivitet" value="3" /><label class="full" for="field5_star3"></label>
-
-                    <input type="radio" id="field5_star2" name="aktivitet" value="2" /><label class="full" for="field5_star2"></label>
-
-                    <input type="radio" id="field5_star1" name="aktivitet" value="1" /><label class="full" for="field5_star1"></label>
-
-                </fieldset>
-
-                <i class="fa fa-check fa-3x pull-right" id="aktivitetCheck" aria-hidden="true" style="display: none"></i>
-
-            </div>
-            <div class="col-md-2">
-                <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                    <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-12 rating-box" id="fulghtAntalÅr">
-            <div class="col-md-4">
-                <h4>Tid fulgt</h4>
-            </div>
-            <div class="col-md-6">
-                <div class="rating-radio">
-                    <div class="radio-inline">
-                        <input id="question1" name="antalÅr" type="radio" class="with-font" value="01" />
-                        <label for="question1">0-1 år</label>
+            <div class="col-md-12 rating-box" id="fulghtAntalÅr">
+                <div class="col-md-4">
+                    <h4>Tid fulgt</h4>
+                </div>
+                <div class="col-md-6">
+                    <div class="rating-radio">
+                        <div class="radio-inline">
+                            <input id="question1" name="antalÅr" type="radio" class="with-font" value="01" />
+                            <label for="question1">0-1 år</label>
+                        </div>
+                        <div class="radio-inline">
+                            <input id="question2" name="antalÅr" type="radio" class="with-font" value="12" />
+                            <label for="question2">1-2 år</label>
+                        </div>
+                        <div class="radio-inline">
+                            <input id="question3" name="antalÅr" type="radio" class="with-font" value="2" />
+                            <label for="question3">2+ år</label>
+                        </div>
                     </div>
-                    <div class="radio-inline">
-                        <input id="question2" name="antalÅr" type="radio" class="with-font" value="12" />
-                        <label for="question2">1-2 år</label>
-                    </div>
-                    <div class="radio-inline">
-                        <input id="question3" name="antalÅr" type="radio" class="with-font" value="2" />
-                        <label for="question3">2+ år</label>
-                    </div>
+
+                </div>
+                <div class="col-md-2">
+                    <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
+                        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
+                    </a>
                 </div>
 
             </div>
-            <div class="col-md-2">
-                <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                    <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
-                </a>
+
+            <div class="col-md-12 rating-box" style="border-bottom: none; height: 100%" id="feedbackText">
+                <div class="col-md-4">
+                    <h4>Review</h4>
+                </div>
+                <div class="col-md-6">
+                    <textarea class="rating-input" asp-for="@Model.Review" rows="8" placeholder="Hvad mener du om denne influenter?"></textarea>
+                </div>
+                <div class="col-md-2">
+                    <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
+                        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
+                    </a>
+                </div>
             </div>
 
-        </div>
-
-        <div class="col-md-12 rating-box" style="border-bottom: none; height: 100%" id="feedbackText">
-            <div class="col-md-4">
-                <h4>Review</h4>
+            <div class="col-md-12 noPadding">
+                <input type="submit" class="rate-button" value="Send dit feedback" />
             </div>
-            <div class="col-md-6">
-                <textarea class="rating-input" asp-for="@Model.Review" rows="8" placeholder="Hvad mener du om denne influenter?"></textarea>
-            </div>
-            <div class="col-md-2">
-                <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                    <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
-                </a>
-            </div>
-        </div>
 
-        <div class="col-md-12 noPadding">
-            <input type="submit" class="rate-button" value="Send dit feedback"/>
-        </div>
+        </form>
 
-    </form>
+    </div>
+
 
 </div>
-
-

@@ -22,96 +22,101 @@
     };
 }
 
-<div class="navbar-allaround"></div>
+<div style="padding-bottom: 100px;">
 
-<div class="container">
-    <div class="col-md-12 margin-top">
-        <img class="profil-img center-block" src="http://placehold.it/200x200" />
-        <div class="text-center">
-            <h2>@user.Name</h2>
-            @if (user.InfluenterId != null && IKRepository.GetAllKategori(user.InfluenterId.Value) != null)
+
+
+    <div class="navbar-allaround"></div>
+
+    <div class="container">
+        <div class="col-md-12 margin-top">
+            <img class="profil-img center-block" src="http://placehold.it/200x200" />
+            <div class="text-center">
+                <h2>@user.Name</h2>
+                @if (user.InfluenterId != null && IKRepository.GetAllKategori(user.InfluenterId.Value) != null)
             {
-                <h3>
+                    <h3>
 
-                    @foreach (var v in IKRepository.GetAllKategori(user.InfluenterId.Value))
-                    {
-                        if (v.Equals(last))
+                        @foreach (var v in IKRepository.GetAllKategori(user.InfluenterId.Value))
                         {
-                            @v
+                            if (v.Equals(last))
+                            {
+                                @v
+                            }
+                            else
+                            {
+                                @v <span> | </span>
+                            }
                         }
-                        else
-                        {
-                            @v <span> | </span>
-                        }
-                    }
-                </h3>
-            }
-            else
-            {
-                <h3>FAN</h3>
-            }
-            <hr />
-        </div>
-    </div>
-    <div class="col-md-12">
-        <div class="col-md-4">
-
-        </div>
-        <div class="col-md-4 profile-text">
-            <p> @user.ProfileText </p>
-        </div>
-        <div class="col-md-4">
-            @if (user.InfluenterId != null)
-            {
-                @if (IPRepository.GetAllByInfluenter(user.InfluenterId.Value) != null)
-                {
-
-                    @foreach (var v in IPRepository.GetAllByInfluenter(user.InfluenterId.Value))
-                    {
-                        <div class="social-box">
-                            @if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Facebook")
-                            {
-                                <a href="http://www.facebook.com/@v.Link" target="_blank" class="fa fa-profile fa-facebook fa-facebook-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
-                            }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "YouTube")
-                            {
-                                <a href="http://www.youtube.com/user/@v.Link" target="_blank" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
-                            }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "SnapChat")
-                            {
-                                <a href="http://www.snapchat.com/add/@v.Link" target="_blank" class="fa fa-profile fa-snapchat-ghost fa-snapchat-ghost-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
-                            }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Instagram")
-                            {
-                                <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-profile fa-instagram fa-instagram-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
-                            }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitter")
-                            {
-                                <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-profile fa-twitter fa-twitter-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
-                            }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitch")
-                            {
-                                <a href="http://www.twitch.tv/@v.Link" target="_blank" class="fa fa-profile fa-twitch fa-twitch-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
-                            }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Website")
-                            {
-                                <a href="http://@v.Link" target="_blank" class="fa fa-profile fa-globe fa-globe-profile"></a>
-                                <span>Personlig hjemmeside</span>
-                            }
-                        </div>
-                    }
+                    </h3>
                 }
                 else
                 {
-                    <h4>Denne influenter har ikke tilknyttet nogle sociale medier</h4>
+                    <h3>FAN</h3>
                 }
-            }
+                <hr />
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4 profile-text">
+                <p> @user.ProfileText </p>
+            </div>
+            <div class="col-md-4">
+                @if (user.InfluenterId != null)
+            {
+                    @if (IPRepository.GetAllByInfluenter(user.InfluenterId.Value) != null)
+                {
+
+                        @foreach (var v in IPRepository.GetAllByInfluenter(user.InfluenterId.Value))
+                    {
+                            <div class="social-box">
+                                @if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Facebook")
+                                {
+                                    <a href="http://www.facebook.com/@v.Link" target="_blank" class="fa fa-profile fa-facebook fa-facebook-profile"></a>
+                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                }
+                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "YouTube")
+                                {
+                                    <a href="http://www.youtube.com/user/@v.Link" target="_blank" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
+                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                }
+                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "SnapChat")
+                                {
+                                    <a href="http://www.snapchat.com/add/@v.Link" target="_blank" class="fa fa-profile fa-snapchat-ghost fa-snapchat-ghost-profile"></a>
+                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                }
+                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Instagram")
+                                {
+                                    <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-profile fa-instagram fa-instagram-profile"></a>
+                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                }
+                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitter")
+                                {
+                                    <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-profile fa-twitter fa-twitter-profile"></a>
+                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                }
+                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitch")
+                                {
+                                    <a href="http://www.twitch.tv/@v.Link" target="_blank" class="fa fa-profile fa-twitch fa-twitch-profile"></a>
+                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                }
+                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Website")
+                                {
+                                    <a href="http://@v.Link" target="_blank" class="fa fa-profile fa-globe fa-globe-profile"></a>
+                                    <span>Personlig hjemmeside</span>
+                                }
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h4>Denne influenter har ikke tilknyttet nogle sociale medier</h4>
+                    }
+                }
+            </div>
         </div>
     </div>
 </div>

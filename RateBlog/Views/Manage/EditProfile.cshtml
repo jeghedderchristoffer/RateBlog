@@ -5,213 +5,217 @@
     var user = await UserManager.GetUserAsync(User);
 }
 
+<div style="padding-bottom: 100px;">
 
-<div class="navbar-allaround"></div>
 
-<div class="container">
-    <div class="editprofile-head">
-        <h2>Rediger din profil</h2>
 
-        @if (user.InfluenterId != null)
-        {
-            <button id="redigerInfluenterBtn" class="active">INFLUENTER</button>
-        }
-        else
-        {
-            <button id="redigerFanBtn" class="active">FAN</button>
-            <button id="redigerInfluenterBtn">INFLUENTER</button>
-        }
+    <div class="navbar-allaround"></div>
 
-    </div>
-    <hr />
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert fade in alert-success alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Success!</strong> @TempData["Success"]
+    <div class="container">
+        <div class="editprofile-head">
+            <h2>Rediger din profil</h2>
+
+            @if (user.InfluenterId != null)
+            {
+                <button id="redigerInfluenterBtn" class="active">INFLUENTER</button>
+            }
+            else
+            {
+                <button id="redigerFanBtn" class="active">FAN</button>
+                <button id="redigerInfluenterBtn">INFLUENTER</button>
+            }
+
         </div>
-    }
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert fade in alert-danger alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Fejl!</strong> @TempData["Error"]
+        <hr />
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert fade in alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> @TempData["Success"]
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert fade in alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Fejl!</strong> @TempData["Error"]
+            </div>
+        }
+        <div id="redigerFanContainer">
+            <h4><b>Personlig profil</b></h4>
+            <br />
+            <form asp-area="" asp-controller="Manage" asp-action="EditProfile">
+                <input asp-for="@Model.IsInfluenter" value="false" hidden="hidden" />
+                <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
+                <p>Fulde navn:</p>
+                <input asp-for="@Model.Name" class="edit-input" />
+                <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
+
+                <p>Email:</p>
+                <input asp-for="@Model.Email" class="edit-input" />
+                <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
+
+                <p>Fødselsdag:</p>
+                <input asp-for="@Model.Birth" class="edit-input" type="date" />
+                <span asp-validation-for="@Model.Birth" class="text-danger" style="margin-left: 5px;"></span>
+
+                <p>By:</p>
+                <input asp-for="@Model.City" class="edit-input" />
+                <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
+
+                <p>Telefon nummer:</p>
+                <input asp-for="@Model.PhoneNumber" class="edit-input" />
+                <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
+
+                <hr />
+                <h4><b>Profil information</b></h4>
+                <br />
+
+                <p>Profiltekst:</p>
+                <textarea asp-for="@Model.ProfileText" class="edit-input" rows="6" style="height: auto;"></textarea>
+                <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
+                <input type="submit" class="edit-button" value="Gem" />
+            </form>
+
+
         </div>
-    }
-    <div id="redigerFanContainer">
-        <h4><b>Personlig profil</b></h4>
-        <br />
-        <form asp-area="" asp-controller="Manage" asp-action="EditProfile">
-            <input asp-for="@Model.IsInfluenter" value="false" hidden="hidden" />
-            <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
-            <p>Fulde navn:</p>
-            <input asp-for="@Model.Name" class="edit-input" />
-            <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
 
-            <p>Email:</p>
-            <input asp-for="@Model.Email" class="edit-input" />
-            <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
+        <div id="redigerInfluenterContainer">
 
-            <p>Fødselsdag:</p>
-            <input asp-for="@Model.Birth" class="edit-input" type="date" />
-            <span asp-validation-for="@Model.Birth" class="text-danger" style="margin-left: 5px;"></span>
-
-            <p>By:</p>
-            <input asp-for="@Model.City" class="edit-input" />
-            <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
-
-            <p>Telefon nummer:</p>
-            <input asp-for="@Model.PhoneNumber" class="edit-input" />
-            <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
-
-            <hr />
-            <h4><b>Profil information</b></h4>
+            <h4><b>Personlig profil</b></h4>
             <br />
+            <form asp-area="" asp-controller="Manage" asp-action="EditInfluenterProfile">
+                <input asp-for="@Model.IsInfluenter" value="true" hidden="hidden" />
+                <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
+                <p>Fulde navn:</p>
+                <input asp-for="@Model.Name" class="edit-input" />
+                <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
 
-            <p>Profiltekst:</p>
-            <textarea asp-for="@Model.ProfileText" class="edit-input" rows="6" style="height: auto;"></textarea>
-            <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
-            <input type="submit" class="edit-button" value="Gem" />
-        </form>
+                <p>Email:</p>
+                <input asp-for="@Model.Email" class="edit-input" />
+                <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
 
+                <p>Fødselsdag:</p>
+                <input asp-for="@Model.Birth" class="edit-input" type="date" />
+                <span asp-validation-for="@Model.Birth" class="text-danger" style="margin-left: 5px;"></span>
 
-    </div>
+                <p>By:</p>
+                <input asp-for="@Model.City" class="edit-input" />
+                <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
 
-    <div id="redigerInfluenterContainer">
-
-        <h4><b>Personlig profil</b></h4>
-        <br />
-        <form asp-area="" asp-controller="Manage" asp-action="EditInfluenterProfile" >
-            <input asp-for="@Model.IsInfluenter" value="true" hidden="hidden" />
-            <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
-            <p>Fulde navn:</p>
-            <input asp-for="@Model.Name" class="edit-input" />
-            <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
-
-            <p>Email:</p>
-            <input asp-for="@Model.Email" class="edit-input" />
-            <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
-
-            <p>Fødselsdag:</p>
-            <input asp-for="@Model.Birth" class="edit-input" type="date" />
-            <span asp-validation-for="@Model.Birth" class="text-danger" style="margin-left: 5px;"></span>
-
-            <p>By:</p>
-            <input asp-for="@Model.City" class="edit-input" />
-            <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
-
-            <p>Telefon nummer:</p>
-            <input asp-for="@Model.PhoneNumber" class="edit-input" />
-            <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
+                <p>Telefon nummer:</p>
+                <input asp-for="@Model.PhoneNumber" class="edit-input" />
+                <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
 
 
-            <!--Influenter Profil-->
+                <!--Influenter Profil-->
 
 
-            <hr>
-            <h4><b>Influenter profil</b></h4>
-            <br />
+                <hr>
+                <h4><b>Influenter profil</b></h4>
+                <br />
 
-            <p>Alias/kaldenavn:</p>
-            <input asp-for="@Model.Influenter.Alias" class="edit-input" />
-            <span asp-validation-for="@Model.Influenter.Alias" class="text-danger" style="margin-left: 5px;"></span>
+                <p>Alias/kaldenavn:</p>
+                <input asp-for="@Model.Influenter.Alias" class="edit-input" />
+                <span asp-validation-for="@Model.Influenter.Alias" class="text-danger" style="margin-left: 5px;"></span>
 
-            <p>Vælg dine kategorier:</p>
-            <div class="choose-category">
+                <p>Vælg dine kategorier:</p>
+                <div class="choose-category">
 
-                @for(int i = 0; i < Model.IKList.Count; i++)
-                {
-                    <label>
-                        @Html.CheckBoxFor(x => x.IKList[i].IsSelected)
-                        <span>@Model.IKList[i].KategoriNavn</span>
-                        @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
-                    </label>
-                }
-                @*<label>
-                    <input asp-for="@Model.BeautyBool" type="checkbox">
-                    <span>Beauty</span>
-                </label>          
-                <label>
-                    <input asp-for="@Model.DIYBool" type="checkbox">
-                    <span>DIY</span>
-                </label>   
-                <label>
-                    <input asp-for="@Model.EntertainmentBool" type="checkbox">
-                    <span>Entertainment</span>
-                </label>    
-                <label>
-                    <input asp-for="@Model.FashionBool" type="checkbox">
-                    <span>Fashion</span>
-                </label>     
-                <label>
-                    <input asp-for="@Model.FoodBool" type="checkbox">
-                    <span>Food</span>
-                </label>     
-                <label>
-                    <input asp-for="@Model.GamingBool" type="checkbox">
-                    <span>Gaming</span>
-                </label>     
-                <label>
-                    <input asp-for="@Model.LifestyleBool" type="checkbox">
-                    <span>Lifestyle</span>
-                </label>     
-                <label>
-                    <input asp-for="@Model.MommyBool" type="checkbox">
-                    <span>Mommy</span>
-                </label>     
-                <label>
-                    <input asp-for="@Model.VlogBool" type="checkbox">
-                    <span>Vlog</span>
-                </label>*@       
-            </div>
+                    @for (int i = 0; i < Model.IKList.Count; i++)
+                    {
+                        <label>
+                            @Html.CheckBoxFor(x => x.IKList[i].IsSelected)
+                            <span>@Model.IKList[i].KategoriNavn</span>
+                            @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
+                        </label>
+                    }
+                    @*<label>
+                            <input asp-for="@Model.BeautyBool" type="checkbox">
+                            <span>Beauty</span>
+                        </label>
+                        <label>
+                            <input asp-for="@Model.DIYBool" type="checkbox">
+                            <span>DIY</span>
+                        </label>
+                        <label>
+                            <input asp-for="@Model.EntertainmentBool" type="checkbox">
+                            <span>Entertainment</span>
+                        </label>
+                        <label>
+                            <input asp-for="@Model.FashionBool" type="checkbox">
+                            <span>Fashion</span>
+                        </label>
+                        <label>
+                            <input asp-for="@Model.FoodBool" type="checkbox">
+                            <span>Food</span>
+                        </label>
+                        <label>
+                            <input asp-for="@Model.GamingBool" type="checkbox">
+                            <span>Gaming</span>
+                        </label>
+                        <label>
+                            <input asp-for="@Model.LifestyleBool" type="checkbox">
+                            <span>Lifestyle</span>
+                        </label>
+                        <label>
+                            <input asp-for="@Model.MommyBool" type="checkbox">
+                            <span>Mommy</span>
+                        </label>
+                        <label>
+                            <input asp-for="@Model.VlogBool" type="checkbox">
+                            <span>Vlog</span>
+                        </label>*@
+                </div>
 
-            <p>Dine sociale medier:</p>
+                <p>Dine sociale medier:</p>
 
-            <div class="edit-social-box">
-                <a class="fa fa-edit fa-facebook fa-facebook-edit"></a>
-                <span><input id="editFacebook" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" /><span class="margin-left" id="editFacebookText"></span></span>
-            </div>
+                <div class="edit-social-box">
+                    <a class="fa fa-edit fa-facebook fa-facebook-edit"></a>
+                    <span><input id="editFacebook" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" /><span class="margin-left" id="editFacebookText"></span></span>
+                </div>
 
-            <div class="edit-social-box">
-                <a class="fa fa-edit fa-instagram fa-instagram-edit"></a>
-                <span><input id="editInstagram" asp-for="@Model.InstagramLink" type="text" placeholder="Instagram navn" /><span class="margin-left" id="editInstagramText"></span></span>
-            </div>
+                <div class="edit-social-box">
+                    <a class="fa fa-edit fa-instagram fa-instagram-edit"></a>
+                    <span><input id="editInstagram" asp-for="@Model.InstagramLink" type="text" placeholder="Instagram navn" /><span class="margin-left" id="editInstagramText"></span></span>
+                </div>
 
-            <div class="edit-social-box">
-                <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
-                <span><input id="editYoutube" asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" /><span class="margin-left" id="editYoutubeText"></span></span>
-            </div>
+                <div class="edit-social-box">
+                    <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
+                    <span><input id="editYoutube" asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" /><span class="margin-left" id="editYoutubeText"></span></span>
+                </div>
 
-            <div class="edit-social-box">
-                <a class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
-                <span><input id="editSnapchat" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" /><span class="margin-left" id="editSnapchatText"></span></span>
-            </div>
+                <div class="edit-social-box">
+                    <a class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
+                    <span><input id="editSnapchat" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" /><span class="margin-left" id="editSnapchatText"></span></span>
+                </div>
 
-            <div class="edit-social-box">
-                <a class="fa fa-edit fa-twitter fa-twitter-edit"></a>
-                <span><input id="editTwitter" asp-for="@Model.TwitterLink" type="text" placeholder="Twitter navn" /><span class="margin-left" id="editTwitterText"></span></span>
-            </div>
+                <div class="edit-social-box">
+                    <a class="fa fa-edit fa-twitter fa-twitter-edit"></a>
+                    <span><input id="editTwitter" asp-for="@Model.TwitterLink" type="text" placeholder="Twitter navn" /><span class="margin-left" id="editTwitterText"></span></span>
+                </div>
 
-            <div class="edit-social-box">
-                <a class="fa fa-edit fa-twitch fa-twitch-edit"></a>
-                <span><input id="editTwitch" asp-for="@Model.TwitchLink" type="text" placeholder="Twitch navn" /><span class="margin-left" id="editTwitchText"></span></span>
-            </div>
+                <div class="edit-social-box">
+                    <a class="fa fa-edit fa-twitch fa-twitch-edit"></a>
+                    <span><input id="editTwitch" asp-for="@Model.TwitchLink" type="text" placeholder="Twitch navn" /><span class="margin-left" id="editTwitchText"></span></span>
+                </div>
 
-            <div class="edit-social-box">
-                <a class="fa fa-edit fa-globe fa-globe-edit"></a>
-                <span><input id="editWebsite" asp-for="@Model.WebsiteLink" type="text" placeholder="Hjemmeside link" /><span class="margin-left" id="editWebsiteText"></span></span>
-            </div>
+                <div class="edit-social-box">
+                    <a class="fa fa-edit fa-globe fa-globe-edit"></a>
+                    <span><input id="editWebsite" asp-for="@Model.WebsiteLink" type="text" placeholder="Hjemmeside link" /><span class="margin-left" id="editWebsiteText"></span></span>
+                </div>
 
-            <br />
-            <p>Profiltekst:</p>
-            <textarea asp-for="@Model.ProfileText" class="edit-input" rows="6" style="height: auto;"></textarea>
-            <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
+                <br />
+                <p>Profiltekst:</p>
+                <textarea asp-for="@Model.ProfileText" class="edit-input" rows="6" style="height: auto;"></textarea>
+                <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
 
-            <input type="submit" class="edit-button" value="Gem" />
-        </form>
+                <input type="submit" class="edit-button" value="Gem" />
+            </form>
 
+
+        </div>
 
     </div>
 
 </div>
-

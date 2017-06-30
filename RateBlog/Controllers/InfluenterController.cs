@@ -23,12 +23,6 @@ namespace RateBlog.Controllers
             _userManager = userManager;
         }
 
-        
-
-        
-
-
-
         public IActionResult Index(string search)
         {
 

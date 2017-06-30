@@ -2,164 +2,228 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="home-img">
-    <div class="outer">
-        <div class="middle">
-            <div class="inner">
-                <h2>Find og anmeld Influentere</h2>
-                <form asp-controller="Influenter" asp-action="Index">
-                    <input type="text" name="search" class="search-input" placeholder="Find en influenter" />
-                    <span>
-                        <input class="search-button" type="submit" value="Søg" />
-                    </span>
-                </form>
+<div id="noPaddingBottomBody">
+
+
+    <div class="home-img">
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <h2>Find og anmeld Influentere</h2>
+                    <form asp-controller="Influenter" asp-action="Index">
+                        <input type="text" name="search" class="search-input" placeholder="Find en influenter" />
+                        <span>
+                            <input class="search-button" type="submit" value="Søg" />
+                        </span>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="banner-container">
-    <div class="container">
-        <h1 class="text-center">Giv din mening til kende og skab et bedre online univers</h1>
+    <div class="banner-container">
+        <div class="container">
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <h3>Gør en forskel.</h3>
+                    <p>Ved at dele dine meninger kan du hjælpe med at skabe en bedre online fællesskab.</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>Snak pænt.</h3>
+                    <p>Ved at dele dine meninger kan du hjælpe med at skabe en bedre online fællesskab.</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>Stop mobning.</h3>
+                    <p>Ved at dele dine meninger kan du hjælpe med at skabe en bedre online fællesskab.</p>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="video-container">
-    <div class="container">
+    <div class="video-container">
+        <div class="container">
+            <div class="col-md-12">
+
+                <div class="col-md-6">
+                    <iframe src="https://www.youtube.com/embed/_w8zya4BGIY"></iframe>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-offset-1 col-md-11" style="margin-top: 5px">
+                        <p><i class="fa fa-search" aria-hidden="true" style="margin-right: 25px"></i>Find din yndlings stjerne</p>
+                    </div>
+                    <div class="col-md-offset-1 col-md-11" style="margin-top: 40px">
+                        <p><i class="fa fa-handshake-o" aria-hidden="true" style="margin-right: 25px"></i>Bliv medlem af fællesskabet</p>
+                    </div>
+                    <div class="col-md-offset-1 col-md-11" style="margin-top: 40px">
+                        <p><i class="fa fa-star" aria-hidden="true" style="margin-right: 25px"></i>Giv din mening til kende</p>
+                    </div>
+                    <div class="col-md-offset-1 col-md-11" style="margin-top: 40px">
+                        <p><i class="fa fa-lightbulb-o" aria-hidden="true" style="margin-right: 25px"></i>Bliv inspireret af influenter</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="categori-container">
+        <div class="container">
+            <h1 class="text-center">Opdag nye influenter</h1>
+            <div class="col-sm-12" style="padding-bottom: 60px;">
+                <div class="col-sm-4">
+                    <div class="ih-item circle effect19 center-block">
+                        <a href="#">
+                            <div class="img"><img src="~/images/beauty-pic.jpeg" alt="img"></div>
+                            <div class="info">
+                                <h3>Beauty</h3>
+                                <p>Find beauty influenter</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="ih-item circle effect19 center-block">
+                        <a href="#">
+                            <div class="img"><img src="~/images/gaming-pic.jpg" alt="img"></div>
+                            <div class="info">
+                                <h3>Gaming</h3>
+                                <p>Find gaming influenter</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="ih-item circle effect19 center-block">
+                        <a href="#">
+                            <div class="img"><img src="~/images/entertainment-pic.jpeg" alt="img"></div>
+                            <div class="info">
+                                <h3 style="font-size: 14px">Entertainment</h3>
+                                <p>Find entertainment influenter</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12" style="padding-bottom: 60px;">
+                <div class="col-sm-4">
+                    <div class="ih-item circle effect19 center-block">
+                        <a href="#">
+                            <div class="img"><img src="~/images/fashion-pic.jpeg" alt="img"></div>
+                            <div class="info">
+                                <h3>Fashion</h3>
+                                <p>Find fashion influenter</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="ih-item circle effect19 center-block">
+                        <a href="#">
+                            <div class="img"><img src="~/images/mommy-pic.jpeg" alt="img"></div>
+                            <div class="info">
+                                <h3>Mommy</h3>
+                                <p>Find mommy influenter</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="ih-item circle effect19 center-block">
+                        <a href="#">
+                            <div class="img"><img src="~/images/lifestyle-pic.jpeg" alt="img"></div>
+                            <div class="info">
+                                <h3>Lifestyle</h3>
+                                <p>Find lifestyle influenter</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-12">
+                <div class="col-sm-4">
+                    <div class="ih-item circle effect19 center-block">
+                        <a href="#">
+                            <div class="img"><img src="~/images/vlog-pic.jpeg" alt="img"></div>
+                            <div class="info">
+                                <h3>VLOG</h3>
+                                <p>Find VLOG influenter</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="ih-item circle effect19 center-block">
+                        <a href="#">
+                            <div class="img"><img src="~/images/food-pic.jpeg" alt="img"></div>
+                            <div class="info">
+                                <h3>Food</h3>
+                                <p>Find food influenter</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="ih-item circle effect19 center-block">
+                        <a href="#">
+                            <div class="img"><img src="~/images/diy-pic.jpeg" alt="img"></div>
+                            <div class="info">
+                                <h3>DIY</h3>
+                                <p>Find DIY influenter</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
         <div class="col-md-12">
+            <div class="col-md-3 footer-area">
+                <h4><b>OM BESTFLUENCE</b></h4>
+                <ul>
+                    <li><a href="#">Om Bestfluence</a></li>
+                    <li><a href="#">Presse</a></li>
+                    <li><a href="#">Job</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Kontakt os</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 footer-area">
+                <h4><b>FANS OG INFLUENTERS</b></h4>
+                <ul>
+                    <li><a href="#">Sådan virker det</a></li>
+                    <li><a href="#">Forældre</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">God kommunikation</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 footer-area">
+                <h4><b>VIRKSOMHEDER</b></h4>
+                <ul>
+                    <li><a href="#">Markedføring</a></li>
+                    <li><a href="#">Find en influenter</a></li>
+                    <li><a href="#">Ambasadør</a></li>
+                </ul>
+            </div>
 
-            <div class="col-md-6">
-                <iframe src="https://www.youtube.com/embed/_w8zya4BGIY"></iframe>
+            <div class="col-md-3 footer-area">
+                <a href="http://www.facebook.com/" target="_blank" class="fa fa-footer fa-facebook fa-facebook-footer"></a>
+                <a href="http://www.instagram.com/" target="_blank" class="fa fa-footer fa-instagram fa-instagram-footer"></a>
+                <a href="http://www.youtube.com/" target="_blank" class="fa fa-footer fa-youtube fa-youtube-footer"></a>
+                <a href="http://www.twitter.com/" target="_blank" class="fa fa-footer fa-twitter fa-twitter-footer"></a>
+                <ul>
+                    <li><a href="#">Vilkår og betingelser</a></li>
+                    <li><a href="#">Persondatapolitik</a></li>
+                    <li><a href="#">Retningslinjer for brugere</a></li>
+                </ul>
+
             </div>
-            <div class="col-md-6">
-                <div class="col-md-offset-1 col-md-11" style="margin-top: 5px">
-                    <p><i class="fa fa-search" aria-hidden="true" style="margin-right: 25px"></i>Find din yndlings stjerne</p>
-                </div>
-                <div class="col-md-offset-1 col-md-11" style="margin-top: 40px">
-                    <p><i class="fa fa-handshake-o" aria-hidden="true" style="margin-right: 25px"></i>Bliv medlem af fællesskabet</p>
-                </div>
-                <div class="col-md-offset-1 col-md-11" style="margin-top: 40px">
-                    <p><i class="fa fa-star" aria-hidden="true" style="margin-right: 25px"></i>Giv din mening til kende</p>
-                </div>
-                <div class="col-md-offset-1 col-md-11" style="margin-top: 40px">
-                    <p><i class="fa fa-lightbulb-o" aria-hidden="true" style="margin-right: 25px"></i>Bliv inspireret af influenter</p>
-                </div>
-            </div>
+
         </div>
-    </div>
-</div>
+    </footer>
 
-<div class="categori-container">
-    <div class="container">
-        <h1 class="text-center">Opdag nye influenter</h1>
-        <div class="col-sm-12" style="padding-bottom: 60px;">
-            <div class="col-sm-4">
-                <div class="ih-item circle effect19 center-block">
-                    <a href="#">
-                        <div class="img"><img src="~/images/beauty-pic.jpeg" alt="img"></div>
-                        <div class="info">
-                            <h3>Beauty</h3>
-                            <p>Find beauty influenter</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="ih-item circle effect19 center-block">
-                    <a href="#">
-                        <div class="img"><img src="~/images/gaming-pic.jpg" alt="img"></div>
-                        <div class="info">
-                            <h3>Gaming</h3>
-                            <p>Find gaming influenter</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="ih-item circle effect19 center-block">
-                    <a href="#">
-                        <div class="img"><img src="~/images/entertainment-pic.jpeg" alt="img"></div>
-                        <div class="info">
-                            <h3 style="font-size: 14px">Entertainment</h3>
-                            <p>Find entertainment influenter</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>   
-
-        <div class="col-sm-12" style="padding-bottom: 60px;">
-            <div class="col-sm-4">
-                <div class="ih-item circle effect19 center-block">
-                    <a href="#">
-                        <div class="img"><img src="~/images/fashion-pic.jpeg" alt="img"></div>
-                        <div class="info">
-                            <h3>Fashion</h3>
-                            <p>Find fashion influenter</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="ih-item circle effect19 center-block">
-                    <a href="#">
-                        <div class="img"><img src="~/images/mommy-pic.jpeg" alt="img"></div>
-                        <div class="info">
-                            <h3>Mommy</h3>
-                            <p>Find mommy influenter</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="ih-item circle effect19 center-block">
-                    <a href="#">
-                        <div class="img"><img src="~/images/lifestyle-pic.jpeg" alt="img"></div>
-                        <div class="info">
-                            <h3>Lifestyle</h3>
-                            <p>Find lifestyle influenter</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>   
-
-
-        <div class="col-sm-12">
-            <div class="col-sm-4">
-                <div class="ih-item circle effect19 center-block">
-                    <a href="#">
-                        <div class="img"><img src="~/images/vlog-pic.jpeg" alt="img"></div>
-                        <div class="info">
-                            <h3>VLOG</h3>
-                            <p>Find VLOG influenter</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="ih-item circle effect19 center-block">
-                    <a href="#">
-                        <div class="img"><img src="~/images/food-pic.jpeg" alt="img"></div>
-                        <div class="info">
-                            <h3>Food</h3>
-                            <p>Find food influenter</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="ih-item circle effect19 center-block">
-                    <a href="#">
-                        <div class="img"><img src="~/images/diy-pic.jpeg" alt="img"></div>
-                        <div class="info">
-                            <h3>DIY</h3>
-                            <p>Find DIY influenter</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>   
-
-    </div>
 </div>
