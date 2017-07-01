@@ -324,11 +324,4 @@ $(document).ready(function () {
             $("#sprogCheck").fadeIn(400);
         }
     });
-
-    $()
-
-
-
-})
-
-
+}); 

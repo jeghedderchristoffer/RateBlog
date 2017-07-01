@@ -15,17 +15,20 @@ namespace RateBlog.Controllers
     {
 
         private IInfluenterRepository _influenter;
+        private IRatingRepository _ratingRepository;
         private UserManager<ApplicationUser> _userManager;
 
-        public InfluenterController(IInfluenterRepository influenter, UserManager<ApplicationUser> userManager)
+        public InfluenterController(IInfluenterRepository influenter, IRatingRepository ratingRepository, UserManager<ApplicationUser> userManager)
         { 
             _influenter = influenter;
             _userManager = userManager;
+            _ratingRepository = ratingRepository;
         }
 
         [HttpPost]
         public IActionResult Index(string search)
         {
+            Dictionary<int, double> influenterRating = new Dictionary<int, double>(); 
 
             if (string.IsNullOrEmpty(search))
             {
@@ -34,11 +37,16 @@ namespace RateBlog.Controllers
             
             var influenter = _userManager.Users.Where(x => x.Name.ToLower().Contains(search.ToLower()) && x.InfluenterId.HasValue).ToList();
 
+            foreach(var v in influenter)
+            {
+                influenterRating.Add(v.InfluenterId.Value, _ratingRepository.GetRatingAverage(v.InfluenterId.Value)); 
+            }
+
             var model = new IndexViewModel()
             {
                 SearchString = search,
-                InfluentList = influenter
-                
+                InfluentList = influenter, 
+                InfluenterRatings = influenterRating             
             };
 
             return View(model); 

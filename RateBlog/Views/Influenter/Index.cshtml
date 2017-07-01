@@ -3,6 +3,7 @@
 @inject RateBlog.Repository.IInfluenterRepository InfluenterReposritory
 @inject RateBlog.Repository.IKategoriRepository CategoryRepository
 @inject RateBlog.Repository.IPlatformRepository PlatformRepository
+@inject RateBlog.Repository.IRatingRepository RatingRepository
 @{
     ViewData["Title"] = "Find en influenter";
     var user = await UserManager.GetUserAsync(User);
@@ -10,11 +11,7 @@
 
 <div style="height: 100vh; background: #f5f5f5">
 
-
-
-    <div class="navbar-allaround">
-
-    </div>
+    <div class="navbar-allaround"></div>
 
     <div style="background-color: #fff; padding-bottom: 20px;">
         <div class="outer">
@@ -31,6 +28,7 @@
             </div>
         </div>
     </div>
+
     <div style="padding-bottom: 100px; background: #f5f5f5; border-top: 1px solid #ddd">
         <div class="container" style="padding-top: 20px">
             <div class="col-md-12 noPaddingLeft">
@@ -58,9 +56,8 @@
 
                         @foreach (var influ in Model.InfluentList)
                         {
-
                             <div class="col-md-12 search-result">
-                                <div class="col-md-2 col-sm-3 noPadding" style="height: 100%">
+                                <div class="col-lg-2 col-md-3 col-sm-3 noPadding" style="height: 100%">
                                     <div class="outer">
                                         <div class="middle">
                                             <div class="inner">
@@ -68,11 +65,10 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-                                <div class="col-md-7 col-sm-6 noPadding">
-                                    <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
+                                <div class="col-lg-7 col-md-6 col-sm-6 noPadding">
 
+                                    <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
                                     <p style="margin-top: 15px;">
                                         @foreach (var kategori in CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value))
                                         {
@@ -120,14 +116,24 @@
                                     }
 
                                 </div>
-                                <div class="col-md-3 col-sm-3 noPadding">
-                                    <fieldset class="show-rating">
-                                        <label class="full"></label>
-                                        <label class="full"></label>
-                                        <label class="full"></label>
-                                        <label class="full"></label>
-                                        <label class="full"></label>
-                                    </fieldset>
+                                <div class="col-lg-3 col-md-3 col-sm-3 noPadding">
+                                    <div class="star-rating-search">
+                                        <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(influ.InfluenterId.Value), 2)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+
+                                            <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(influ.InfluenterId.Value)%">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <a asp-controller="Influenter" asp-action="Show" asp-route-id="@influ.InfluenterId" class="a-button">Se profil</a>
                                 </div>
                             </div>
@@ -139,3 +145,32 @@
 
     </div>
 </div>
+
+@section SearchStar{
+    <script>
+
+
+        $(document).ready(function () {
+            $(".front-stars").load(function () {
+                console.log("")
+
+            });
+
+        });
+
+        //function getAverage(influenterId) {
+
+        //    console.log(influenterId);
+
+        //    $.ajax({
+        //        type: "GET",
+        //        data: { InfluenterId: influenterId },
+        //        url: "/Rating/GetAverageRating",
+        //        success: function (msg) {
+        //            $("#" + influenterId).css("width", msg * 20);
+        //            console.log(msg);
+        //        }
+        //    });
+        //}
+    </script>
+}

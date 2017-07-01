@@ -72,6 +72,15 @@ namespace RateBlog.Controllers
             return RedirectToAction("Show", "Influenter", new { Id = model.Influenter.InfluenterId });
         }
 
+        public JsonResult GetAverageRating(int influenterId)
+        {
+            var averageRating = _rating.GetRatingAverage(influenterId);
+
+            return Json(averageRating);
+        }
+
+
+
     }
 
 }

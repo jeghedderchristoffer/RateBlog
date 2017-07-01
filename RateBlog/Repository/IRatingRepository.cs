@@ -44,6 +44,13 @@ namespace RateBlog.Repository
         /// </summary>
         /// <param name="influenterId"></param>
         /// <param name="ratingId"></param>
-        void AddInfluenterPlatform(int influenterId, int ratingId); 
+        void AddInfluenterPlatform(int influenterId, int ratingId);
+
+        /// <summary>
+        /// Gets the average rating for a influenter
+        /// </summary>
+        /// <param name="influenterId"></param>
+        /// <returns></returns>
+        double GetRatingAverage(int influenterId);
     }
 }

@@ -548,7 +548,7 @@ body.modal-open {
 
 /*Search*/
 
-.show-rating {
+/*.show-rating {
     border: none;
     float: left;
     height: 50px;
@@ -577,17 +577,53 @@ body.modal-open {
         font-size: 22px;
         color: #DCDCDC;
         transition: all .2s;
-    }
+    }*/
+
+.star-rating-search {
+    display: flex;
+    font-size: 28px;
+    margin-top: 30px;
+    float: right;
+}
+
+.back-stars {
+    display: flex;
+    color: #DCDCDC;
+    position: relative;
+    text-shadow: 0px 0px 1px #000;
+}
+
+
+.back-stars i {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.front-stars {
+    display: flex;
+    color: #FD4;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+}
+
+.front-stars i {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
 
 .a-button {
     display: block;
     text-decoration: none;
     background-color: #53b80a;
     color: #fff;
-    padding: 10px 48px;
+    padding: 10px 52px;
     border-radius: 5px;
-    float: right;
+    margin-top: 20px;
+    text-align: center;
     transition: all .2s ease-out;
+    float: right;
 }
 
     .a-button:hover {

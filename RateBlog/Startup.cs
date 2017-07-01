@@ -14,6 +14,7 @@ using RateBlog.Models;
 using RateBlog.Services;
 using Microsoft.AspNetCore.Http;
 using RateBlog.Repository;
+using System.Globalization;
 
 namespace RateBlog
 {
@@ -59,6 +60,7 @@ namespace RateBlog
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            
             services.AddMemoryCache();
             services.AddSession();
             services.AddMvc();
@@ -90,6 +92,12 @@ namespace RateBlog
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            // Skal bruges til at seperere double's decimaler med . og ikke , //
+            var cultureInfo = new CultureInfo("en-US");
+            cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             app.UseStaticFiles();
 

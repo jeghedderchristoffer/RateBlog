@@ -2,6 +2,7 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Repository.IPlatformRepository PlatformRepository
 @inject RateBlog.Repository.IKategoriRepository CategoryRepository
+@inject RateBlog.Repository.IRatingRepository RatingRepository 
 @{
     ViewData["Title"] = "Vis profil";
     var user = await UserManager.GetUserAsync(User);
