@@ -57,6 +57,10 @@ textarea {
 .noPaddingLeft {
     padding-left: 0;
 }
+
+.noPaddingRight{
+    padding-right: 0;
+}
 /*Modal*/
 
 body.modal-open {
@@ -599,11 +603,13 @@ body.modal-open {
     }
 
 .sorter {
-    background-color: #eee;
+    background-color: #fff;
     padding-bottom: 15px;
     padding-left: 15px;
     padding-top: 15px;
-    border-radius: 5px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-top: 59px;
 }
 
     .sorter h1 {
@@ -614,18 +620,19 @@ body.modal-open {
 
 
 .influ-img {
-    height: 128px;
-    width: 128px;
-    border-radius: 20%;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    height: 100px;
+    width: 100px;
+    border-radius: 10%;
     display: block;
     border: 1px solid #eee;
 }
 
 .search-result {
-    border-top: 1px solid #eee;
+    border: 1px solid #ddd;
     height: 150px;
+    background: #fff;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
     .search-result h4 {

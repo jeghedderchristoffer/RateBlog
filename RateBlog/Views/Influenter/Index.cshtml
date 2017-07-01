@@ -8,7 +8,7 @@
     var user = await UserManager.GetUserAsync(User);
 }
 
-<div style="padding-bottom: 100px;">
+<div style="height: 100vh; background: #f5f5f5">
 
 
 
@@ -16,7 +16,7 @@
 
     </div>
 
-    <div style="background-color: #e6ecf3; padding-bottom: 20px;">
+    <div style="background-color: #fff; padding-bottom: 20px;">
         <div class="outer">
             <div class="middle">
                 <div class="inner">
@@ -31,103 +31,111 @@
             </div>
         </div>
     </div>
+    <div style="padding-bottom: 100px; background: #f5f5f5; border-top: 1px solid #ddd">
+        <div class="container" style="padding-top: 20px">
+            <div class="col-md-12 noPaddingLeft">
+                <div class="col-md-3 hidden-sm hidden-xs noPaddingLeft">
+                    <div class="sorter">
+                        <p><b>Platform</b></p>
 
-    <div class="container" style="padding-top: 20px">
-        <div class="col-md-12 noPaddingLeft">
-            <div class="col-md-3 hidden-sm hidden-xs noPaddingLeft">
-                <div class="sorter">
-                    <p><b>Platform</b></p>
-
-                    <br />
-                    <p><b>Kategori</b></p>
-                    <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Gamer</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Beauty</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Underholdning</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Fashion</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Lifestyle</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Food</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Mommy</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Vlogger</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">DIY</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Reality</label><br />
+                        <br />
+                        <p><b>Kategori</b></p>
+                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Gamer</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Beauty</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Underholdning</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Fashion</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Lifestyle</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Food</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Mommy</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Vlogger</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">DIY</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Reality</label><br />
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-9 col-sm-12">
-                <div class="infoInfluenter">
-                    <h1 style="margin-top: 0; margin-bottom: 20px;">Resultater for @Model.SearchString</h1>
+                <div class="col-md-9 col-sm-12">
+                    <div class="infoInfluenter">
+                        <h1 style="margin-top: 0; margin-bottom: 20px;">Resultater for @Model.SearchString</h1>
 
-                    @foreach (var influ in Model.InfluentList)
-                    {
+                        @foreach (var influ in Model.InfluentList)
+                        {
 
-                        <div class="col-md-12 search-result">
-                            <div class="col-md-3 col-sm-3">
-                                <img class="influ-img" src="~/images/pp.jpg" />
-                            </div>
-                            <div class="col-md-6 col-sm-6 noPadding">
-                                <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
+                            <div class="col-md-12 search-result">
+                                <div class="col-md-2 col-sm-3 noPadding" style="height: 100%">
+                                    <div class="outer">
+                                        <div class="middle">
+                                            <div class="inner">
+                                                <img class="influ-img" src="~/images/pp.jpg" />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <p style="margin-top: 15px;">
-                                    @foreach (var kategori in CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value))
-                                    {
-                                        @if (kategori.Equals(CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value).Last()))
+                                </div>
+                                <div class="col-md-7 col-sm-6 noPadding">
+                                    <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
+
+                                    <p style="margin-top: 15px;">
+                                        @foreach (var kategori in CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value))
                                         {
-                                            @kategori
+                                            @if (kategori.Equals(CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value).Last()))
+                                            {
+                                                @kategori
+                                            }
+                                            else
+                                            {
+                                                @kategori <span>|</span>
+                                            }
                                         }
-                                        else
+                                    </p>
+
+                                    @foreach (var platform in PlatformRepository.GetAllInfluenterPlatformForInfluenter(influ.InfluenterId.Value))
+                                    {
+                                        @if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Facebook")
                                         {
-                                            @kategori <span>|</span>
+                                            <a href="http://www.facebook.com/@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "YouTube")
+                                        {
+                                            <a href="http://www.youtube.com/user/@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "SnapChat")
+                                        {
+                                            <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Instagram")
+                                        {
+                                            <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search-o fa-instagram fa-instagram-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitter")
+                                        {
+                                            <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search-o fa-twitter fa-twitter-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitch")
+                                        {
+                                            <a href="http://www.twitch.tv/@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Website")
+                                        {
+                                            <a href="http://@platform.Link" target="_blank" class="fa fa-search-o fa-globe fa-globe-search"></a>
                                         }
                                     }
-                                </p>
 
-                                @foreach (var platform in PlatformRepository.GetAllInfluenterPlatformForInfluenter(influ.InfluenterId.Value))
-                                {
-                                    @if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Facebook")
-                                    {
-                                        <a href="http://www.facebook.com/@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
-                                    }
-                                    else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "YouTube")
-                                    {
-                                        <a href="http://www.youtube.com/user/@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
-                                    }
-                                    else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "SnapChat")
-                                    {
-                                        <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>
-                                    }
-                                    else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Instagram")
-                                    {
-                                        <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search-o fa-instagram fa-instagram-search"></a>
-                                    }
-                                    else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitter")
-                                    {
-                                        <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search-o fa-twitter fa-twitter-search"></a>
-                                    }
-                                    else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitch")
-                                    {
-                                        <a href="http://www.twitch.tv/@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
-                                    }
-                                    else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Website")
-                                    {
-                                        <a href="http://@platform.Link" target="_blank" class="fa fa-search-o fa-globe fa-globe-search"></a>
-                                    }
-                                }
-
+                                </div>
+                                <div class="col-md-3 col-sm-3 noPadding">
+                                    <fieldset class="show-rating">
+                                        <label class="full"></label>
+                                        <label class="full"></label>
+                                        <label class="full"></label>
+                                        <label class="full"></label>
+                                        <label class="full"></label>
+                                    </fieldset>
+                                    <a asp-controller="Influenter" asp-action="Show" asp-route-id="@influ.InfluenterId" class="a-button">Se profil</a>
+                                </div>
                             </div>
-                            <div class="col-md-3 col-sm-3 noPadding">
-                                <fieldset class="show-rating">
-                                    <label class="full"></label>
-                                    <label class="full"></label>
-                                    <label class="full"></label>
-                                    <label class="full"></label>
-                                    <label class="full"></label>
-                                </fieldset>
-                                <a asp-controller="Influenter" asp-action="Show" asp-route-id="@influ.InfluenterId" class="a-button">Se profil</a>
-                            </div>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
 </div>
