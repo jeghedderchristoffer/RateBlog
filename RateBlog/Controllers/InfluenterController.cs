@@ -23,6 +23,7 @@ namespace RateBlog.Controllers
             _userManager = userManager;
         }
 
+        [HttpPost]
         public IActionResult Index(string search)
         {
 
@@ -41,6 +42,23 @@ namespace RateBlog.Controllers
             };
 
             return View(model); 
+        }
+
+        [HttpGet]
+        public IActionResult Show(int id)
+        {
+            var influenter = _influenter.Get(id);
+
+            //Burde kun kunne få den pågældene user, da Index() metoden KUN returnere Users som er influenter...
+            var user = _userManager.Users.SingleOrDefault(x => x.InfluenterId == id);
+
+            var model = new ShowViewModel()
+            {
+                ApplicationUser = user,
+                Influenter = influenter
+            };
+
+            return View(model);
         }
 
 

@@ -3,6 +3,7 @@
 @inject RateBlog.Repository.IKategoriRepository KategoriRepository
 @{
     var user = await UserManager.GetUserAsync(User);
+    ViewData["Title"] = "Rediger din profil";
 }
 
 <div style="padding-bottom: 100px;">

@@ -12,8 +12,8 @@ using Microsoft.Extensions.Logging;
 using RateBlog.Data;
 using RateBlog.Models;
 using RateBlog.Services;
-using RateBlog.Repository;
 using Microsoft.AspNetCore.Http;
+using RateBlog.Repository;
 using RateBlog.Repository.Interface;
 
 namespace RateBlog

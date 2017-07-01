@@ -1,0 +1,101 @@
+﻿@model RateBlog.Models.InfluenterViewModels.ShowViewModel
+@inject RateBlog.Repository.IInfluenterKategoriRepository InfluenterKategoriRepository
+@inject RateBlog.Repository.IInfluenterPlatformRepository InfluenterPlatformRepository
+@inject RateBlog.Repository.IPlatformRepository PlatformRepository
+@{
+    ViewData["Title"] = Model.Influenter.Alias + "'s profil";
+}
+
+<div style="padding-bottom: 100px;">
+    <div class="navbar-allaround"></div>
+    <div class="container">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert fade in alert-success alert-dismissable" style="margin-top: 10px;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                @TempData["Success"]
+            </div>
+        }
+        <a class="button-rate" asp-controller="Rating" asp-action="Index" asp-route-id="@Model.Influenter.InfluenterId">RATE DENNE INFLUENTER</a>
+        <div class="col-md-12">
+            <img class="profil-img center-block" src="http://placehold.it/200x200" />
+            <div class="text-center">
+                <h2>@Model.ApplicationUser.Name</h2>
+                <h3>
+                    @foreach (var v in InfluenterKategoriRepository.GetAllKategori(Model.ApplicationUser.InfluenterId.Value))
+                    {
+                        if (v.Equals(InfluenterKategoriRepository.GetAllKategori(Model.ApplicationUser.InfluenterId.Value).Last()))
+                        {
+                            @v
+                        }
+                        else
+                        {
+                            @v <span> | </span>
+                        }
+                    }
+                </h3>
+
+                <hr />
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4 profile-text">
+                <p>@Model.ApplicationUser.ProfileText</p>
+            </div>
+            <div class="col-md-4">
+                @if (InfluenterPlatformRepository.GetAllByInfluenter(Model.ApplicationUser.InfluenterId.Value) != null)
+                {
+
+                    @foreach (var v in InfluenterPlatformRepository.GetAllByInfluenter(Model.ApplicationUser.InfluenterId.Value))
+                    {
+                        <div class="social-box">
+                            @if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Facebook")
+                            {
+                                <a href="http://www.facebook.com/@v.Link" target="_blank" class="fa fa-profile fa-facebook fa-facebook-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "YouTube")
+                            {
+                                <a href="http://www.youtube.com/user/@v.Link" target="_blank" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "SnapChat")
+                            {
+                                <a href="http://www.snapchat.com/add/@v.Link" target="_blank" class="fa fa-profile fa-snapchat-ghost fa-snapchat-ghost-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Instagram")
+                            {
+                                <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-profile fa-instagram fa-instagram-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitter")
+                            {
+                                <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-profile fa-twitter fa-twitter-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitch")
+                            {
+                                <a href="http://www.twitch.tv/@v.Link" target="_blank" class="fa fa-profile fa-twitch fa-twitch-profile"></a>
+                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                            }
+                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Website")
+                            {
+                                <a href="http://@v.Link" target="_blank" class="fa fa-profile fa-globe fa-globe-profile"></a>
+                                <span>Personlig hjemmeside</span>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h4>Denne influenter har ikke tilknyttet nogle sociale medier</h4>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

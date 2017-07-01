@@ -299,51 +299,6 @@ $(document).ready(function () {
     }); 
 });
 
-//Check Rating
-
-$(document).ready(function () {
-
-    $(".star1").click(function () {
-        $("#orginalitetCheck").css("display","block");
-    });
-});
-
-$(document).ready(function () {
-
-    $(".star2").click(function () {
-        $("#kvalitetCheck").css("display", "block");
-    });
-});
-
-$(document).ready(function () {
-
-    $(".star3").click(function () {
-        $("#troværdighedCheck").css("display", "block");
-    });
-});
-
-$(document).ready(function () {
-
-    $(".star4").click(function () {
-        $("#interaktionCheck").css("display", "block");
-    });
-});
-
-$(document).ready(function () {
-
-    $(".star5").click(function () {
-        $("#aktivitetCheck").css("display", "block");
-    });
-});
-$(document).ready(function () {
-
-    $(".star6").click(function () {
-        $("#fulgtCheck").css("display", "block");
-    });
-});
-
-
-
 $(document).ready(function () {
     $(".rating label").click(function () {
         $(this).parent().find("label").css({ "color": "#FD4" });
@@ -364,6 +319,9 @@ $(document).ready(function () {
         }
         if ($(this).parent().attr("id") === "aktivitetCheckBox") {
             $("#aktivitetCheck").fadeIn(400);
+        }
+        if ($(this).parent().attr("id") === "sprogCheckBox") {
+            $("#sprogCheck").fadeIn(400);
         }
     });
 

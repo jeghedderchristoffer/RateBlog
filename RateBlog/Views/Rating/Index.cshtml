@@ -1,5 +1,7 @@
 ﻿@model RateBlog.Models.RatingViewModels.RatingViewModel
-
+@{ 
+    ViewData["Title"] = "Feedback til " + Model.Influenter.Alias;
+}
 <div style="padding-bottom: 100px;">
 
 
@@ -11,12 +13,10 @@
     <div class="outer">
         <div class="middle">
             <div class="inner">
-                <h1>Giv feedback til @Model.Influenter.Alias</h1>
+                <h1 style="margin-bottom: 20px;">Giv feedback til @Model.Influenter.Alias</h1>
             </div>
         </div>
     </div>
-    <br />
-
 
 
     <div class="container">
@@ -156,6 +156,34 @@
                     </fieldset>
 
                     <i class="fa fa-check fa-3x pull-right" id="aktivitetCheck" aria-hidden="true" style="display: none"></i>
+
+                </div>
+                <div class="col-md-2">
+                    <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
+                        <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-12 rating-box" id="sprogBox">
+                <div class="col-md-4">
+                    <h4>Sprog</h4>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="rating center-block" id="sprogCheckBox">
+                        <input type="radio" id="field6_star5" name="sprog" value="5" /><label class="full" for="field6_star5"></label>
+
+                        <input type="radio" id="field6_star4" name="sprog" value="4" /><label class="full" for="field6_star4"></label>
+
+                        <input type="radio" id="field6_star3" name="sprog" value="3" /><label class="full" for="field6_star3"></label>
+
+                        <input type="radio" id="field6_star2" name="sprog" value="2" /><label class="full" for="field6_star2"></label>
+
+                        <input type="radio" id="field6_star1" name="sprog" value="1" /><label class="full" for="field6_star1"></label>
+
+                    </fieldset>
+
+                    <i class="fa fa-check fa-3x pull-right" id="sprogCheck" aria-hidden="true" style="display: none"></i>
 
                 </div>
                 <div class="col-md-2">

@@ -41,7 +41,7 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> RateInfluenter(int orginalitet, int kvalitet, int troværdighed, int interaktion, int aktivitet, int antalÅr, RatingViewModel model)
+        public async Task<IActionResult> RateInfluenter(int orginalitet, int kvalitet, int troværdighed, int interaktion, int aktivitet, int antalÅr, int sprog, RatingViewModel model)
         {
             var user = await _userManger.GetUserAsync(User); 
 
@@ -53,6 +53,7 @@ namespace RateBlog.Controllers
                 Troværdighed = troværdighed, 
                 Interaktion = interaktion, 
                 Aktivitet = aktivitet, 
+                SprogBrug = sprog,
                 TidFulgt = antalÅr, 
                 Review = model.Review, 
                 ApplicationUserId = user.Id
@@ -70,7 +71,7 @@ namespace RateBlog.Controllers
             TempData["Success"] = "Du har givet dit feedback til " + model.Influenter.Alias;
 
             // Skal ændres til Influenter Controller, ShowInfluenter Action
-            return RedirectToAction("Index", "Influenter", new { });
+            return RedirectToAction("Show", "Influenter", new { Id = model.Influenter.InfluenterId });
         }
 
     }

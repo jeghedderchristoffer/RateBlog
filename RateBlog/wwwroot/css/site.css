@@ -54,7 +54,7 @@ textarea {
 }
 
 
-.noPaddingLeft{
+.noPaddingLeft {
     padding-left: 0;
 }
 /*Modal*/
@@ -464,7 +464,7 @@ body.modal-open {
     display: inline-block;
     padding-left: 40px;
     margin-bottom: 50px;
-    width: 100%; 
+    width: 100%;
 }
 
 .fa-video {
@@ -542,9 +542,55 @@ body.modal-open {
         text-decoration: none;
     }
 
+/*Search*/
 
-/*Categori container end*/
+.show-rating {
+    border: none;
+    float: left;
+    height: 50px;
+    display: block;
+    float: right;
+    margin-top: 30px;
+}
 
+    .show-rating label {
+        margin-bottom: 0;
+    }
+
+    .show-rating > input {
+        display: none;
+    }
+
+    .show-rating > label:before {
+        content: '\f005';
+        font-family: FontAwesome;
+        text-shadow: 0px 0px 1px #000;
+    }
+
+    .show-rating > label {
+        float: right;
+        padding: 5px;
+        font-size: 22px;
+        color: #DCDCDC;
+        transition: all .2s;
+    }
+
+.a-button {
+    display: block;
+    text-decoration: none;
+    background-color: #53b80a;
+    color: #fff;
+    padding: 10px 48px;
+    border-radius: 5px;
+    float: right;
+    transition: all .2s ease-out;
+}
+
+    .a-button:hover {
+        text-decoration: none;
+        background: #479b0a; 
+        color: #fff;
+    }
 
 .sorter {
     background-color: #eee;
@@ -591,7 +637,7 @@ body.modal-open {
     border: 1px solid black;
 }
 
-.search-inputsøg{
+.search-inputsøg {
     outline: none;
 }
 
@@ -665,6 +711,27 @@ body.modal-open {
     color: white;
 }
 
+.button-rate {
+    float: right;
+    margin-top: 10px;
+    padding: 10px 30px;
+    background: #E67E22;
+    color: #fff;
+    border: 1px solid #E67E22;
+    border-radius: 3px;
+    font-size: 13px;
+    outline: none;
+}
+
+    .button-rate:hover {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .button-rate:focus {
+        text-decoration: none;
+        color: #fff;
+    }
 
 /*Dropdown menu*/
 
@@ -1202,19 +1269,13 @@ ul li:hover .dropOut {
     max-width: 100%;
     height: 100%;
     padding: 15px 15px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     font-size: 16px;
     border: 1px solid #dadada;
     border-radius: 6px;
     outline: none;
-    margin-top: 10px;
+    margin-top: 20px;
 }
-
-
-
-
-
-
 
 /*Rating*/
 

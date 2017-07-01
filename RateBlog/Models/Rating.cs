@@ -21,6 +21,7 @@ namespace RateBlog.Models
         public int Interaktion { get; set; }
         public int Aktivitet { get; set; }
         public int TidFulgt { get; set; }
+        public int SprogBrug { get; set; }
         public string Review { get; set; }
 
         public virtual ICollection<InfluenterRating> InfluenterRating { get; set; }

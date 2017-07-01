@@ -7,7 +7,6 @@
 @{
     ViewData["Title"] = "Find en influenter";
     var user = await UserManager.GetUserAsync(User);
-    string last = "";
 }
 
 <div style="padding-bottom: 100px;">
@@ -36,16 +35,7 @@
 
     <div class="container" style="padding-top: 20px">
         <div class="col-md-12 noPaddingLeft">
-
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert fade in alert-success alert-dismissable">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Success!</strong> @TempData["Success"]
-                </div>
-            }
-
-            <div class="col-md-3 noPaddingLeft">
+            <div class="col-md-3 hidden-sm hidden-xs noPaddingLeft">
                 <div class="sorter">
                     <p><b>Platform</b></p>
 
@@ -63,23 +53,18 @@
                     <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Reality</label><br />
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-9 col-sm-12">
                 <div class="infoInfluenter">
-                    <h1 style="margin-top: 0">Resultater for @Model.SearchString</h1>
-
-
-
-
-
-
+                    <h1 style="margin-top: 0; margin-bottom: 20px;">Resultater for @Model.SearchString</h1>
 
                     @foreach (var influ in Model.InfluentList)
                     {
+
                         <div class="col-md-12 search-result">
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-3">
                                 <img class="influ-img" src="~/images/pp.jpg" />
                             </div>
-                            <div class="col-md-6 noPadding">
+                            <div class="col-md-6 col-sm-6 noPadding">
                                 <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
 
                                 <p style="margin-top: 15px;">
@@ -128,11 +113,16 @@
                                     }
                                 }
 
-
-
                             </div>
-                            <div class="col-md-3">
-                                <a asp-controller="Rating" asp-action="Index" asp-route-id="@influ.InfluenterId.Value">Rate</a>
+                            <div class="col-md-3 col-sm-3 noPadding">
+                                <fieldset class="show-rating">
+                                    <label class="full"></label>
+                                    <label class="full"></label>
+                                    <label class="full"></label>
+                                    <label class="full"></label>
+                                    <label class="full"></label>
+                                </fieldset>
+                                <a asp-controller="Influenter" asp-action="Show" asp-route-id="@influ.InfluenterId" class="a-button">Se profil</a>
                             </div>
                         </div>
                     }
