@@ -46,5 +46,15 @@ namespace RateBlog.Repository
             _applicationDbContext.Entry(rating).State = EntityState.Modified;
             _applicationDbContext.SaveChanges();
         }
+
+        public void AddInfluenterPlatform(int influenterId, int ratingId)
+        {
+            _applicationDbContext.InfluenterRating.Add(new InfluenterRating()
+            {
+                InfluenterId = influenterId,
+                RatingId = ratingId
+            });
+            _applicationDbContext.SaveChanges();
+        }
     }
 }

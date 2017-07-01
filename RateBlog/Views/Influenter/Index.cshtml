@@ -1,8 +1,7 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.IndexViewModel
 @inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Repository.IInfluenterRepository InfluenterReposritory
-@inject RateBlog.Repository.IInfluenterKategoriRepository InfluenterKategoriRepository
-@inject RateBlog.Repository.IInfluenterPlatformRepository InfluenterPlatformRepo
+@inject RateBlog.Repository.IKategoriRepository CategoryRepository
 @inject RateBlog.Repository.IPlatformRepository PlatformRepository
 @{
     ViewData["Title"] = "Find en influenter";
@@ -68,9 +67,9 @@
                                 <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
 
                                 <p style="margin-top: 15px;">
-                                    @foreach (var kategori in InfluenterKategoriRepository.GetAllKategori(influ.InfluenterId.Value))
+                                    @foreach (var kategori in CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value))
                                     {
-                                        @if (kategori.Equals(InfluenterKategoriRepository.GetAllKategori(influ.InfluenterId.Value).Last()))
+                                        @if (kategori.Equals(CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value).Last()))
                                         {
                                             @kategori
                                         }
@@ -81,7 +80,7 @@
                                     }
                                 </p>
 
-                                @foreach (var platform in InfluenterPlatformRepo.GetAllByInfluenter(influ.InfluenterId.Value))
+                                @foreach (var platform in PlatformRepository.GetAllInfluenterPlatformForInfluenter(influ.InfluenterId.Value))
                                 {
                                     @if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Facebook")
                                     {

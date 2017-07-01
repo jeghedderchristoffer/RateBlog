@@ -1,6 +1,5 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.ShowViewModel
-@inject RateBlog.Repository.IInfluenterKategoriRepository InfluenterKategoriRepository
-@inject RateBlog.Repository.IInfluenterPlatformRepository InfluenterPlatformRepository
+@inject RateBlog.Repository.IKategoriRepository CategoryRepository
 @inject RateBlog.Repository.IPlatformRepository PlatformRepository
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s profil";
@@ -16,15 +15,15 @@
                 @TempData["Success"]
             </div>
         }
-        <a class="button-rate" asp-controller="Rating" asp-action="Index" asp-route-id="@Model.Influenter.InfluenterId">RATE DENNE INFLUENTER</a>
+        <a class="button-rate" asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId">RATE DENNE INFLUENTER</a>
         <div class="col-md-12">
             <img class="profil-img center-block" src="http://placehold.it/200x200" />
             <div class="text-center">
                 <h2>@Model.ApplicationUser.Name</h2>
                 <h3>
-                    @foreach (var v in InfluenterKategoriRepository.GetAllKategori(Model.ApplicationUser.InfluenterId.Value))
+                    @foreach (var v in CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value))
                     {
-                        if (v.Equals(InfluenterKategoriRepository.GetAllKategori(Model.ApplicationUser.InfluenterId.Value).Last()))
+                        if (v.Equals(CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value).Last()))
                         {
                             @v
                         }
@@ -46,10 +45,10 @@
                 <p>@Model.ApplicationUser.ProfileText</p>
             </div>
             <div class="col-md-4">
-                @if (InfluenterPlatformRepository.GetAllByInfluenter(Model.ApplicationUser.InfluenterId.Value) != null)
+                @if (PlatformRepository.GetAllInfluenterPlatformForInfluenter(Model.ApplicationUser.InfluenterId.Value) != null)
                 {
 
-                    @foreach (var v in InfluenterPlatformRepository.GetAllByInfluenter(Model.ApplicationUser.InfluenterId.Value))
+                    @foreach (var v in PlatformRepository.GetAllInfluenterPlatformForInfluenter(Model.ApplicationUser.InfluenterId.Value))
                     {
                         <div class="social-box">
                             @if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Facebook")

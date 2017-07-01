@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using RateBlog.Models;
 using RateBlog.Models.RatingViewModels;
 using RateBlog.Repository;
-using RateBlog.Repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,23 +16,22 @@ namespace RateBlog.Controllers
 
         private IRatingRepository _rating;
         private IInfluenterRepository _influenterRepo;
-        private IInfluenterRatingRepository _influenterRatingRepo; 
         private UserManager<ApplicationUser> _userManger;
 
-        public RatingController(IRatingRepository rating, IInfluenterRepository influenterRepo, IInfluenterRatingRepository influenterRatingRepo, UserManager<ApplicationUser> userManger)
+        public RatingController(IRatingRepository rating, IInfluenterRepository influenterRepo, UserManager<ApplicationUser> userManger)
         {
             _rating = rating;
             _influenterRepo = influenterRepo;
-            _influenterRatingRepo = influenterRatingRepo;
             _userManger = userManger;
         }
 
-        public IActionResult Index(int id) 
+        [HttpGet]
+        public IActionResult RateInfluenter(int id) 
         {
             var influenter = _influenterRepo.Get(id);
             var model = new RatingViewModel()
             {
-                Influenter = influenter
+                Influenter = influenter 
             };
 
             return View(model);
@@ -63,7 +61,7 @@ namespace RateBlog.Controllers
             _rating.Add(rating);
 
             // Tilføjer til Join Tabellen InfluenterRating
-            _influenterRatingRepo.Add(model.Influenter.InfluenterId, rating.RatingId);
+            _rating.AddInfluenterPlatform(model.Influenter.InfluenterId, rating.RatingId);
 
             // Der mangler at tjekke om denne user allerede har rated denne influenter....!!!!!!
 

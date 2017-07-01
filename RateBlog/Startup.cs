@@ -14,7 +14,6 @@ using RateBlog.Models;
 using RateBlog.Services;
 using Microsoft.AspNetCore.Http;
 using RateBlog.Repository;
-using RateBlog.Repository.Interface;
 
 namespace RateBlog
 {
@@ -71,11 +70,8 @@ namespace RateBlog
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<IPlatformRepository, PlatformRepository>();
             services.AddTransient<IInfluenterRepository, InfluenterRepository>();
-            services.AddTransient<IInfluenterPlatformRepository, InfluenterPlatformRepository>();
             services.AddTransient<IKategoriRepository, KategoriRepository>();
-            services.AddTransient<IInfluenterKategoriRepository, InfluenterKategoriRepository>();
             services.AddTransient<IRatingRepository, RatingRepository>();
-            services.AddTransient<IInfluenterRatingRepository, InfluenterRatingRepository>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

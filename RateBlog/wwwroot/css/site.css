@@ -592,6 +592,12 @@ body.modal-open {
         color: #fff;
     }
 
+    .a-button:focus {
+        text-decoration: none;
+        background: #479b0a;
+        color: #fff;
+    }
+
 .sorter {
     background-color: #eee;
     padding-bottom: 15px;

@@ -1,8 +1,7 @@
 ﻿@model IndexViewModel
 @inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Repository.IInfluenterPlatformRepository IPRepository
-@inject RateBlog.Repository.IInfluenterKategoriRepository IKRepository
 @inject RateBlog.Repository.IPlatformRepository PlatformRepository
+@inject RateBlog.Repository.IKategoriRepository CategoryRepository
 @{
     ViewData["Title"] = "Vis profil";
     var user = await UserManager.GetUserAsync(User);
@@ -11,9 +10,9 @@
 
     try
     {
-        if (IKRepository.GetAllKategori(user.InfluenterId.Value) != null)
+        if (CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value) != null)
         {
-            last = IKRepository.GetAllKategori(user.InfluenterId.Value).Last();
+            last = CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value).Last();
         }
     }
     catch (InvalidOperationException)
@@ -33,11 +32,11 @@
             <img class="profil-img center-block" src="http://placehold.it/200x200" />
             <div class="text-center">
                 <h2>@user.Name</h2>
-                @if (user.InfluenterId != null && IKRepository.GetAllKategori(user.InfluenterId.Value) != null)
+                @if (user.InfluenterId != null && CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value) != null)
             {
                     <h3>
 
-                        @foreach (var v in IKRepository.GetAllKategori(user.InfluenterId.Value))
+                        @foreach (var v in CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value))
                         {
                             if (v.Equals(last))
                             {
@@ -67,10 +66,10 @@
             <div class="col-md-4">
                 @if (user.InfluenterId != null)
             {
-                    @if (IPRepository.GetAllByInfluenter(user.InfluenterId.Value) != null)
+                    @if (PlatformRepository.GetAllInfluenterPlatformForInfluenter(user.InfluenterId.Value) != null)
                 {
 
-                        @foreach (var v in IPRepository.GetAllByInfluenter(user.InfluenterId.Value))
+                        @foreach (var v in PlatformRepository.GetAllInfluenterPlatformForInfluenter(user.InfluenterId.Value))
                     {
                             <div class="social-box">
                                 @if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Facebook")
