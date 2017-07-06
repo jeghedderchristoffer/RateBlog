@@ -1611,6 +1611,17 @@ footer {
     
 }
 
+.circular-square job {
+    width: 300px;
+    height: 300px;
+    border-radius: 200px;
+    -webkit-border-radius: 200px;
+    -moz-border-radius: 200px;
+}
+
+.circular-square job {
+    border-radius: 50%;
+}
 
 
 

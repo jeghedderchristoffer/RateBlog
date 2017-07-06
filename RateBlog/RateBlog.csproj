@@ -21,12 +21,14 @@
     <Content Include="wwwroot\images\fashion-pic.jpg" />
     <Content Include="wwwroot\images\food-pic.jpeg" />
     <Content Include="wwwroot\images\Jyllandsposten.png" />
+    <Content Include="wwwroot\images\kommunikation.jpeg" />
     <Content Include="wwwroot\images\lifestyle-pic.jpeg" />
     <Content Include="wwwroot\images\mommy-pic.jpeg" />
     <Content Include="wwwroot\images\pexels-photo-199497.png" />
     <Content Include="wwwroot\images\beauty-pic.jpeg" />
     <Content Include="wwwroot\images\pp.jpg" />
     <Content Include="wwwroot\images\gaming-pic.jpg" />
+    <Content Include="wwwroot\images\programing.jpeg" />
     <Content Include="wwwroot\images\Rasmus.jpeg" />
     <Content Include="wwwroot\images\vlog-pic.jpeg" />
   </ItemGroup>
