@@ -58,7 +58,7 @@ textarea {
     padding-left: 0;
 }
 
-.noPaddingRight{
+.noPaddingRight {
     padding-right: 0;
 }
 /*Modal*/
@@ -594,10 +594,10 @@ body.modal-open {
 }
 
 
-.back-stars i {
-    padding-left: 3px;
-    padding-right: 3px;
-}
+    .back-stars i {
+        padding-left: 3px;
+        padding-right: 3px;
+    }
 
 .front-stars {
     display: flex;
@@ -607,10 +607,10 @@ body.modal-open {
     top: 0;
 }
 
-.front-stars i {
-    padding-left: 3px;
-    padding-right: 3px;
-}
+    .front-stars i {
+        padding-left: 3px;
+        padding-right: 3px;
+    }
 
 
 .a-button {
@@ -628,7 +628,7 @@ body.modal-open {
 
     .a-button:hover {
         text-decoration: none;
-        background: #479b0a; 
+        background: #479b0a;
         color: #fff;
     }
 
@@ -1523,3 +1523,94 @@ footer {
         margin-bottom: 40px;
     }
 }
+
+/*----footer-Rasmus----*/
+.footer-img {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Rasmus.jpeg") no-repeat center;
+    height: 400px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+    .footer-img h2 {
+        color: white;
+    }
+
+.omBestfluence h1 {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.circular-square {
+    width: 200px;
+    height: 200px;
+    border-radius: 150px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+}
+
+.circular-square {
+    border-radius: 50%;
+}
+
+
+.kontaktMail {
+    margin: 20px auto;
+    padding: 4px 16px;
+    max-width: 450px;
+    height: 45px;
+    width: 100%;
+    border-radius: 3px;
+    border: solid 1px;
+}
+
+.kontaktMailtext {
+    width: 100%;
+    max-width: 450px;
+    height: 100%;
+    padding: 15px 15px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    border: 1px solid;
+    border-radius: 6px;
+    outline: none;
+    margin-top: 20px;
+}
+
+.mail-button {
+    height: 60px;
+    border-radius: 6px;
+    border: none;
+    max-width: 450px;
+    width: 100%;
+    background-color: #4BB543;
+    color: #fff;
+    font-size: 22px;
+}
+
+    .mail-button:hover {
+        background-color: #4BB533;
+    }
+
+.img-Presse {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 150px;
+}
+
+.checkbox-inline {
+    padding-bottom: 5px;
+}
+
+.dropdown-toggle{
+    background-color: white;
+    border: 1px solid;
+    
+}
+
+
+
+

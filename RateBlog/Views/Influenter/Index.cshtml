@@ -34,10 +34,22 @@
             <div class="col-md-12 noPaddingLeft">
                 <div class="col-md-3 hidden-sm hidden-xs noPaddingLeft">
                     <div class="sorter">
-                        <p><b>Platform</b></p>
+                        
+                        <div class="dropdown">
+                            <button class="btn btn dropdown-toggle" type="button" data-toggle="dropdown">
+                                Sorter i influenter
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Højste rating</a></li>
+                                <li><a href="#">Lavest rating</a></li>
+                                <li><a href="#">Flest følgere</a></li>
+                                <li><a href="#">Mindst følgere</a></li>
+                            </ul>
+                        </div>
 
                         <br />
-                        <p><b>Kategori</b></p>
+                        <h3><b>Kategori</b></h3>
                         <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Gamer</label><br />
                         <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Beauty</label><br />
                         <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Underholdning</label><br />
@@ -53,6 +65,8 @@
                 <div class="col-md-9 col-sm-12">
                     <div class="infoInfluenter">
                         <h1 style="margin-top: 0; margin-bottom: 20px;">Resultater for @Model.SearchString</h1>
+
+
 
                         @foreach (var influ in Model.InfluentList)
                         {

@@ -8,8 +8,8 @@ using RateBlog.Data;
 namespace RateBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170630124718_UpdatedRating")]
-    partial class UpdatedRating
+    [Migration("20170630125826_Rasmus")]
+    partial class Rasmus
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
