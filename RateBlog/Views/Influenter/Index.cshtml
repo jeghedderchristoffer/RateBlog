@@ -18,8 +18,8 @@
             <div class="middle">
                 <div class="inner">
                     <h2>Find og anmeld Influentere</h2>
-                    <form asp-controller="Influenter" asp-action="Index">
-                        <input type="text" name="search" class="search-inputsøg" placeholder="Søg Influenter" />
+                    <form method="get" asp-area="" asp-controller="Influenter" asp-action="Index">
+                        <input type="text" name="search" class="search-inputsøg" placeholder="Find en influenter" />
                         <span>
                             <input class="search-button" type="submit" value="Søg" />
                         </span>
@@ -49,27 +49,52 @@
                         </div>
 
                         <br />
-                        <h3><b>Kategori</b></h3>
-                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Gamer</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Beauty</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Underholdning</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Fashion</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Lifestyle</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Food</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Mommy</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Vlogger</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">DIY</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" value="" style="background: #fff">Reality</label><br />
+                        <h4><b>Platform</b></h4>
+                        <form method="post" id="facebookForm" asp-controller="influenter" asp-action="SorterPlatform">                                                 
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="4" style="background: #fff">Facebook</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="2" style="background: #fff">Instagram</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="1" style="background: #fff">YouTube</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="3" style="background: #fff">Snapchat</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="6" style="background: #fff">Twitter</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="5" style="background: #fff">Twitc</label><br />
+                           
+                            
+                      
+                            <h4><b>Kategori</b></h4>
+                            
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="5" style="background: #fff">Gamer</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="4" style="background: #fff">Beauty</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="6" style="background: #fff">Entertainment</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="8" style="background: #fff">Fashion</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="1" style="background: #fff">Lifestyle</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="7" style="background: #fff">Food</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="9" style="background: #fff">Mommy</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="3" style="background: #fff">Vlogger</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="2" style="background: #fff">DIY</label><br /><br />
+
+
+                                <div class="outer">
+                                    <div class="middle">
+                                        <div class="inner">
+                                            <input type="submit" class="search-button" style="float: left; background-color:#f08301;" value="Søg" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                       
                     </div>
+                    
                 </div>
                 <div class="col-md-9 col-sm-12">
                     <div class="infoInfluenter">
                         <h1 style="margin-top: 0; margin-bottom: 20px;">Resultater for @Model.SearchString</h1>
 
 
-
+                        @if(Model.InfluentList != null) {
                         @foreach (var influ in Model.InfluentList)
                         {
+                            
                             <div class="col-md-12 search-result">
                                 <div class="col-lg-2 col-md-3 col-sm-3 noPadding" style="height: 100%">
                                     <div class="outer">
@@ -152,6 +177,7 @@
                                 </div>
                             </div>
                         }
+                            }
                     </div>
                 </div>
             </div>

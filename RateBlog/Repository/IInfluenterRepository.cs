@@ -17,5 +17,10 @@ namespace RateBlog.Repository
         void Update(Influenter influenter);
 
         void Delete(int InfluenterId);
+
+
+        IQueryable<int> GetAllInfluentersForPlatforms(int[] platformIds);
+
+        IQueryable<int> GetAllInfluentersForKategori(int[] kategoriIds);
     }
 }

@@ -17,39 +17,41 @@ namespace RateBlog.Controllers
         private IInfluenterRepository _influenter;
         private IRatingRepository _ratingRepository;
         private UserManager<ApplicationUser> _userManager;
+        private IPlatformRepository _platform;
 
-        public InfluenterController(IInfluenterRepository influenter, IRatingRepository ratingRepository, UserManager<ApplicationUser> userManager)
-        { 
+
+        public InfluenterController(IInfluenterRepository influenter, IRatingRepository ratingRepository, UserManager<ApplicationUser> userManager, IPlatformRepository platform)
+        {
             _influenter = influenter;
             _userManager = userManager;
             _ratingRepository = ratingRepository;
+            _platform = platform;
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Index(string search)
         {
-            Dictionary<int, double> influenterRating = new Dictionary<int, double>(); 
+            Dictionary<int, double> influenterRating = new Dictionary<int, double>();
 
             if (string.IsNullOrEmpty(search))
             {
                 search = "";
             }
-            
-            var influenter = _userManager.Users.Where(x => x.Name.ToLower().Contains(search.ToLower()) && x.InfluenterId.HasValue).ToList();
 
-            foreach(var v in influenter)
+            var influenter = _userManager.Users.Where(x => x.Name.ToLower().Contains(search.ToLower()) && x.InfluenterId.HasValue || x.Influenter.Alias.Contains(search)).ToList();
+         
+            foreach (var v in influenter)
             {
-                influenterRating.Add(v.InfluenterId.Value, _ratingRepository.GetRatingAverage(v.InfluenterId.Value)); 
+                influenterRating.Add(v.InfluenterId.Value, _ratingRepository.GetRatingAverage(v.InfluenterId.Value));
             }
 
             var model = new IndexViewModel()
             {
                 SearchString = search,
-                InfluentList = influenter, 
-                InfluenterRatings = influenterRating             
+                InfluentList = influenter,
+                InfluenterRatings = influenterRating
             };
-
-            return View(model); 
+            return View(model);
         }
 
         [HttpGet]
@@ -67,6 +69,43 @@ namespace RateBlog.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Read(int id)
+        {
+            var influenter = _influenter.Get(id);
+            var user = _userManager.Users.SingleOrDefault(x => x.InfluenterId == id);
+
+            var model = new ShowViewModel()
+            {
+                ApplicationUser = user,
+                Influenter = influenter
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult SorterPlatform(int[] platforme, int[] kategorier)
+        {
+
+
+            var influenters = _influenter.GetAllInfluentersForPlatforms(platforme).ToList();
+
+            var kategori = _influenter.GetAllInfluentersForKategori(kategorier).ToList();
+
+
+            var sortList = _userManager.Users.Where(x => influenters.Contains(x.InfluenterId.Value) || kategori.Contains(x.InfluenterId.Value)).ToList();
+
+
+
+            var modelSort = new IndexViewModel()
+            {
+                InfluentList = sortList
+            };
+
+            return View("Index", modelSort);
         }
 
 

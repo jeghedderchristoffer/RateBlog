@@ -47,5 +47,19 @@ namespace RateBlog.Repository
             _applicationDbContext.Influenter.Add(influenter);
             _applicationDbContext.SaveChanges();           
         }
+
+
+
+        public IQueryable<int> GetAllInfluentersForPlatforms(int[] platformIds)
+        {
+            return _applicationDbContext.InfluenterPlatform.Where(x => platformIds.Contains(x.PlatformId)).Select(x => x.InfluenterId);
+        }
+
+        public IQueryable<int> GetAllInfluentersForKategori(int[] kategoriIds)
+        {
+            return _applicationDbContext.InfluenterKategori.Where(x => kategoriIds.Contains(x.KategoriId)).Select(x => x.InfluenterId);
+        }
+
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.ShowViewModel
 @inject RateBlog.Repository.IKategoriRepository CategoryRepository
 @inject RateBlog.Repository.IPlatformRepository PlatformRepository
+@inject RateBlog.Repository.IRatingRepository RatingRepository
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s profil";
 }
@@ -43,7 +44,48 @@
         <div class="col-md-12">
             <div class="col-md-4">
 
-            </div>
+
+                <h3>Samlet rating:</h3>
+               
+
+                <div class="star-rating-search" style="float:left;">
+                    <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                        <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                           
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div style="padding-top:80px">
+                    @if (Model.Influenter.InfluenterRating == null)
+                    {
+                        return;
+
+                    }
+                    else
+                    {
+                    <p>Antal ratings: @Model.Influenter.InfluenterRating.Count</p>
+                    }
+                </div>
+                <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button" style="float:left; background-color:#08468d;">Læs ratings</a>
+
+                
+
+
+
+                </div>
             <div class="col-md-4 profile-text">
                 <p>@Model.ApplicationUser.ProfileText</p>
             </div>
