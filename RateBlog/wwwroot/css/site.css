@@ -586,8 +586,13 @@ body.modal-open {
     float: right;
 }
 
+.star-rating-show {
+    display: block;
+    font-size: 50px;
+}
+
 .back-stars {
-    display: flex;
+    display: block;
     color: #DCDCDC;
     position: relative;
     text-shadow: 0px 0px 1px #000;
@@ -600,7 +605,7 @@ body.modal-open {
     }
 
 .front-stars {
-    display: flex;
+    display: block;
     color: #FD4;
     overflow: hidden;
     position: absolute;
@@ -612,6 +617,12 @@ body.modal-open {
         padding-right: 3px;
     }
 
+@media (max-width: 1199px) {
+    .star-rating-show {
+        display: block;
+        font-size: 36px;
+    }
+}
 
 .a-button {
     display: block;
@@ -635,6 +646,31 @@ body.modal-open {
     .a-button:focus {
         text-decoration: none;
         background: #479b0a;
+        color: #fff;
+    }
+
+.a-button-blue-100 {
+    display: block;
+    text-decoration: none;
+    background-color: #08468d;
+    color: #fff;
+    padding: 10px 52px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+    transition: all .2s ease-out;
+    width: 100%;
+}
+
+    .a-button-blue-100:hover {
+        text-decoration: none;
+        background: #073f7e;
+        color: #fff;
+    }
+
+    .a-button-blue-100:focus {
+        text-decoration: none;
+        background: #073f7e;
         color: #fff;
     }
 
@@ -1527,7 +1563,7 @@ footer {
 /*----footer-Rasmus----*/
 .footer-img {
     background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Rasmus.jpeg") no-repeat center;
-    height: 400px;
+    height: 500px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

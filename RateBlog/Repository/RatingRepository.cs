@@ -57,6 +57,15 @@ namespace RateBlog.Repository
             _applicationDbContext.SaveChanges();
         }
 
+        public bool HasRatings(int influenterId)
+        {
+            if(_applicationDbContext.InfluenterRating.Any(x => x.InfluenterId == influenterId))
+            {
+                return true;
+            }
+            return false; 
+        }
+
         public double GetRatingAverage(int influenterId)
         {
             if(_applicationDbContext.InfluenterRating.Any(x => x.InfluenterId == influenterId))

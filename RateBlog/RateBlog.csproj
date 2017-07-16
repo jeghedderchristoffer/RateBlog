@@ -13,7 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\css\select2.min.css" />
     <Content Include="wwwroot\css\social-buttons.css" />
     <Content Include="wwwroot\images\diy-pic.jpeg" />
     <Content Include="wwwroot\images\entertainment-pic.jpeg" />

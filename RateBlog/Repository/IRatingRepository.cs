@@ -52,5 +52,12 @@ namespace RateBlog.Repository
         /// <param name="influenterId"></param>
         /// <returns></returns>
         double GetRatingAverage(int influenterId);
+
+        /// <summary>
+        /// Does this influenter have ratings?
+        /// </summary>
+        /// <param name="influenterId"></param>
+        /// <returns></returns>
+        bool HasRatings(int influenterId);
     }
 }

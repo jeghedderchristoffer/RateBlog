@@ -38,7 +38,7 @@ namespace RateBlog.Controllers
                 search = "";
             }
 
-            var influenter = _userManager.Users.Where(x => x.Name.ToLower().Contains(search.ToLower()) && x.InfluenterId.HasValue || x.Influenter.Alias.Contains(search)).ToList();
+            var influenter = _userManager.Users.Where(x => x.Name.ToLower().Contains(search.ToLower()) && x.InfluenterId.HasValue || x.Influenter.Alias.Contains(search) && x.InfluenterId.HasValue).ToList();
          
             foreach (var v in influenter)
             {
@@ -89,16 +89,9 @@ namespace RateBlog.Controllers
         [HttpPost]
         public IActionResult SorterPlatform(int[] platforme, int[] kategorier)
         {
-
-
             var influenters = _influenter.GetAllInfluentersForPlatforms(platforme).ToList();
-
             var kategori = _influenter.GetAllInfluentersForKategori(kategorier).ToList();
-
-
             var sortList = _userManager.Users.Where(x => influenters.Contains(x.InfluenterId.Value) || kategori.Contains(x.InfluenterId.Value)).ToList();
-
-
 
             var modelSort = new IndexViewModel()
             {
@@ -107,12 +100,5 @@ namespace RateBlog.Controllers
 
             return View("Index", modelSort);
         }
-
-
-
-
-
-
-
     }
 }

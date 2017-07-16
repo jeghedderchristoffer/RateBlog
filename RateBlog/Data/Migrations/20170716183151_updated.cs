@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace RateBlog.Data.Migrations
 {
-    public partial class Rasmus : Migration
+    public partial class updated : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -87,11 +87,14 @@ namespace RateBlog.Data.Migrations
                 {
                     RatingId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Aktivitet = table.Column<int>(nullable: false),
                     ApplicationUserId = table.Column<string>(nullable: true),
-                    Feedback = table.Column<string>(nullable: true),
-                    KommerUd = table.Column<int>(nullable: false),
+                    Interaktion = table.Column<int>(nullable: false),
                     Kvalitet = table.Column<int>(nullable: false),
-                    Sprog = table.Column<int>(nullable: false),
+                    Orginalitet = table.Column<int>(nullable: false),
+                    Review = table.Column<string>(nullable: true),
+                    SprogBrug = table.Column<int>(nullable: false),
+                    TidFulgt = table.Column<int>(nullable: false),
                     Troværdighed = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

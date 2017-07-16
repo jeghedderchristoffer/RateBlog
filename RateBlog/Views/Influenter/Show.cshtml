@@ -17,11 +17,8 @@
             </div>
         }
 
-        <a class="button-rate" asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId">RATE DENNE INFLUENTER</a>
-
-
         <div class="col-md-12">
-            <img class="profil-img center-block" src="http://placehold.it/200x200" />
+            <img class="profil-img margin-top center-block" src="http://placehold.it/200x200" />
             <div class="text-center">
                 <h2>@Model.ApplicationUser.Name</h2>
                 <h3>
@@ -43,52 +40,51 @@
         </div>
         <div class="col-md-12">
             <div class="col-md-4">
+                @if (RatingRepository.HasRatings(Model.Influenter.InfluenterId))
+                {
+                    <h3 class="text-center">Samlet rating:</h3>
 
-
-                <h3>Samlet rating:</h3>
-               
-
-                <div class="star-rating-search" style="float:left;">
-                    <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-
-                        <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                           
+                    <div class="outer">
+                        <div class="middle">
+                            <div class="inner">
+                                <div class="star-rating-show">
+                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
                     </div>
-                    
-                </div>
-                <div style="padding-top:80px">
-                    @if (Model.Influenter.InfluenterRating == null)
-                    {
-                        return;
+                    <p class="text-center">Antal ratings: @Model.Influenter.InfluenterRating.Count</p>
 
-                    }
-                    else
-                    {
-                    <p>Antal ratings: @Model.Influenter.InfluenterRating.Count</p>
-                    }
-                </div>
-                <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button" style="float:left; background-color:#08468d;">Læs ratings</a>
+                    <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-blue-100">Læs ratings</a>
 
-                
+                }
+                else
+                {
+                    <h4>Denne influenter har ingen ratings</h4>
+                }
+            </div>
 
+            <hr class="hidden-md hidden-lg" />
 
-
-                </div>
             <div class="col-md-4 profile-text">
                 <p>@Model.ApplicationUser.ProfileText</p>
             </div>
+
+            <hr class="hidden-md hidden-lg" />
+
             <div class="col-md-4">
                 @if (PlatformRepository.GetAllInfluenterPlatformForInfluenter(Model.ApplicationUser.InfluenterId.Value) != null)
                 {
