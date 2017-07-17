@@ -68,7 +68,8 @@
                     </div>
                     <p class="text-center">Antal ratings: @Model.Influenter.InfluenterRating.Count</p>
 
-                    <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-blue-100">Læs ratings</a>
+                    <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100">Giv din mening</a>
+                    <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-blue-100">Læs ratings</a>                  
 
                 }
                 else

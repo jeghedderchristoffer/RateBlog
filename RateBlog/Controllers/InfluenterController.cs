@@ -18,14 +18,16 @@ namespace RateBlog.Controllers
         private IRatingRepository _ratingRepository;
         private UserManager<ApplicationUser> _userManager;
         private IPlatformRepository _platform;
+        private IKategoriRepository _kategori;
 
 
-        public InfluenterController(IInfluenterRepository influenter, IRatingRepository ratingRepository, UserManager<ApplicationUser> userManager, IPlatformRepository platform)
+        public InfluenterController(IKategoriRepository kategori, IInfluenterRepository influenter, IRatingRepository ratingRepository, UserManager<ApplicationUser> userManager, IPlatformRepository platform)
         {
             _influenter = influenter;
             _userManager = userManager;
             _ratingRepository = ratingRepository;
             _platform = platform;
+            _kategori = kategori;
         }
 
         [HttpGet]
@@ -38,8 +40,18 @@ namespace RateBlog.Controllers
                 search = "";
             }
 
-            var influenter = _userManager.Users.Where(x => x.Name.ToLower().Contains(search.ToLower()) && x.InfluenterId.HasValue || x.Influenter.Alias.Contains(search) && x.InfluenterId.HasValue).ToList();
-         
+            var influenter = _userManager.Users.
+                Where(x => (x.Name.ToLower().Contains(search.ToLower())) && x.InfluenterId.HasValue 
+                && (x.Influenter.Alias.Contains(search) && x.InfluenterId.HasValue)).ToList();
+
+            foreach(var kategori in _kategori.GetAll())
+            {
+                if (search.ToLower().Equals(kategori.KategoriNavn.ToLower()))
+                {
+                    influenter.AddRange(_kategori.GetAllInfluentersWithKategori(search));
+                }
+            }
+
             foreach (var v in influenter)
             {
                 influenterRating.Add(v.InfluenterId.Value, _ratingRepository.GetRatingAverage(v.InfluenterId.Value));

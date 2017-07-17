@@ -1,4 +1,5 @@
-﻿using RateBlog.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using RateBlog.Data;
 using RateBlog.Models;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,12 @@ namespace RateBlog.Repository
     public class KategoriRepository : IKategoriRepository
     {
         private ApplicationDbContext _applicationDbContext;
+        private UserManager<ApplicationUser> _userManager; 
 
-        public KategoriRepository(ApplicationDbContext applicationDbContext)
+        public KategoriRepository(ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
         {
             _applicationDbContext = applicationDbContext;
+            _userManager = userManager; 
         }
 
         public Kategori Get(int Id)
@@ -88,6 +91,21 @@ namespace RateBlog.Repository
                 return true;
             }
             return false;
+        }
+
+        public List<ApplicationUser> GetAllInfluentersWithKategori(string name)
+        {
+            var id = GetIdByName(name);
+            var ik = _applicationDbContext.InfluenterKategori.Where(x => x.KategoriId == id);
+
+            List<ApplicationUser> userList = new List<ApplicationUser>(); 
+
+            foreach(var v in ik)
+            {
+                userList.Add(_applicationDbContext.Users.SingleOrDefault(x => x.InfluenterId == v.InfluenterId));
+            }
+
+            return userList; 
         }
     }
 }

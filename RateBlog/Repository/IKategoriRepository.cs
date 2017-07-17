@@ -51,5 +51,12 @@ namespace RateBlog.Repository
         /// <returns></returns>
         bool IsKategoriSelected(int influenterId, int kategoriId);
 
+        /// <summary>
+        /// Gets all influenters by their choosen kategori
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        List<ApplicationUser> GetAllInfluentersWithKategori(string name);
+
     }
 }
