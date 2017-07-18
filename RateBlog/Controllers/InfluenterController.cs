@@ -99,12 +99,11 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult SorterPlatform(int[] platforme, int[] kategorier, List<ApplicationUser> list)
+        public IActionResult SorterPlatform(int[] platforme, int[] kategorier, List<int?> influId)
         {
             var influenters = _influenter.GetAllInfluentersForPlatforms(platforme).ToList();
             var kategori = _influenter.GetAllInfluentersForKategori(kategorier).ToList();
             var sortList = _userManager.Users.Where(x => influenters.Contains(x.InfluenterId.Value) || kategori.Contains(x.InfluenterId.Value)).ToList();
-            var newList = list.Except(sortList); 
 
 
             var modelSort = new IndexViewModel()

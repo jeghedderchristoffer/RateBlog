@@ -34,7 +34,7 @@
             <div class="col-md-12 noPaddingLeft">
                 <div class="col-md-3 hidden-sm hidden-xs noPaddingLeft">
                     <div class="sorter">
-
+                        
                         <div class="dropdown">
                             <button class="btn btn dropdown-toggle" type="button" data-toggle="dropdown">
                                 Sorter i influenter
@@ -50,139 +50,134 @@
 
                         <br />
                         <h4><b>Platform</b></h4>
-                        <form method="get" id="facebookForm" asp-controller="influenter" asp-action="SorterPlatform">
+                        <form method="post" id="facebookForm" asp-controller="influenter" asp-action="SorterPlatform">                                                 
                             <label class="checkbox-inline"><input type="checkbox" name="platforme" value="4" style="background: #fff">Facebook</label><br />
                             <label class="checkbox-inline"><input type="checkbox" name="platforme" value="2" style="background: #fff">Instagram</label><br />
                             <label class="checkbox-inline"><input type="checkbox" name="platforme" value="1" style="background: #fff">YouTube</label><br />
                             <label class="checkbox-inline"><input type="checkbox" name="platforme" value="3" style="background: #fff">Snapchat</label><br />
                             <label class="checkbox-inline"><input type="checkbox" name="platforme" value="6" style="background: #fff">Twitter</label><br />
                             <label class="checkbox-inline"><input type="checkbox" name="platforme" value="5" style="background: #fff">Twitc</label><br />
-
+                           
+                            
+                      
                             <h4><b>Kategori</b></h4>
+                            
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="5" style="background: #fff">Gamer</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="4" style="background: #fff">Beauty</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="6" style="background: #fff">Entertainment</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="8" style="background: #fff">Fashion</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="1" style="background: #fff">Lifestyle</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="7" style="background: #fff">Food</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="9" style="background: #fff">Mommy</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="3" style="background: #fff">Vlogger</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="2" style="background: #fff">DIY</label><br /><br />
 
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="5" style="background: #fff">Gamer</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="4" style="background: #fff">Beauty</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="6" style="background: #fff">Entertainment</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="8" style="background: #fff">Fashion</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="1" style="background: #fff">Lifestyle</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="7" style="background: #fff">Food</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="9" style="background: #fff">Mommy</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="3" style="background: #fff">Vlogger</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="2" style="background: #fff">DIY</label><br /><br />
 
-                            @{var index = 0; }
-                            @foreach (var influ in Model.InfluentList)
-                            { 
-                                @Html.Hidden("influ" + index, influ)
-                                index++;
-                            }
-
-                            <div class="outer">
-                                <div class="middle">
-                                    <div class="inner">
-                                        <input type="submit" class="search-button" style="float: left; background-color:#f08301;" value="Søg" />
+                                <div class="outer">
+                                    <div class="middle">
+                                        <div class="inner">
+                                            <input type="submit" class="search-button" style="float: left; background-color:#f08301;" value="Søg" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
 
-
+                       
                     </div>
-
+                    
                 </div>
                 <div class="col-md-9 col-sm-12">
                     <div class="infoInfluenter">
                         <h2 style="margin-top: 0; margin-bottom: 20px;">Resultater for @Model.SearchString</h2>
 
 
-                        @if (Model.InfluentList != null)
+                        @if(Model.InfluentList != null) {
+                        @foreach (var influ in Model.InfluentList)
                         {
-                            @foreach (var influ in Model.InfluentList)
-                            {
-
-                                <div class="col-md-12 search-result">
-                                    <div class="col-lg-2 col-md-3 col-sm-3 noPadding" style="height: 100%">
-                                        <div class="outer">
-                                            <div class="middle">
-                                                <div class="inner">
-                                                    <img class="influ-img" src="~/images/pp.jpg" />
-                                                </div>
+                            
+                            <div class="col-md-12 search-result">
+                                <div class="col-lg-2 col-md-3 col-sm-3 noPadding" style="height: 100%">
+                                    <div class="outer">
+                                        <div class="middle">
+                                            <div class="inner">
+                                                <img class="influ-img" src="~/images/pp.jpg" />
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-7 col-md-6 col-sm-6 noPadding">
-
-                                        <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
-                                        <p style="margin-top: 15px;">
-                                            @foreach (var kategori in CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value))
-                                            {
-                                                @if (kategori.Equals(CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value).Last()))
-                                                {
-                                                    @kategori
-                                                }
-                                                else
-                                                {
-                                                    @kategori <span>|</span>
-                                                }
-                                            }
-                                        </p>
-
-                                        @foreach (var platform in PlatformRepository.GetAllInfluenterPlatformForInfluenter(influ.InfluenterId.Value))
-                                        {
-                                            @if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Facebook")
-                                            {
-                                                <a href="http://www.facebook.com/@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
-                                            }
-                                            else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "YouTube")
-                                            {
-                                                <a href="http://www.youtube.com/user/@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
-                                            }
-                                            else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "SnapChat")
-                                            {
-                                                <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>
-                                            }
-                                            else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Instagram")
-                                            {
-                                                <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search-o fa-instagram fa-instagram-search"></a>
-                                            }
-                                            else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitter")
-                                            {
-                                                <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search-o fa-twitter fa-twitter-search"></a>
-                                            }
-                                            else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitch")
-                                            {
-                                                <a href="http://www.twitch.tv/@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
-                                            }
-                                            else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Website")
-                                            {
-                                                <a href="http://@platform.Link" target="_blank" class="fa fa-search-o fa-globe fa-globe-search"></a>
-                                            }
-                                        }
-
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-3 noPadding">
-                                        <div class="star-rating-search">
-                                            <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(influ.InfluenterId.Value), 2)%">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-
-                                                <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(influ.InfluenterId.Value)%">
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a asp-controller="Influenter" asp-action="Show" asp-route-id="@influ.InfluenterId" class="a-button">Se profil</a>
                                     </div>
                                 </div>
-                            }
+                                <div class="col-lg-7 col-md-6 col-sm-6 noPadding">
+
+                                    <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
+                                    <p style="margin-top: 15px;">
+                                        @foreach (var kategori in CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value))
+                                        {
+                                            @if (kategori.Equals(CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value).Last()))
+                                            {
+                                                @kategori
+                                            }
+                                            else
+                                            {
+                                                @kategori <span>|</span>
+                                            }
+                                        }
+                                    </p>
+
+                                    @foreach (var platform in PlatformRepository.GetAllInfluenterPlatformForInfluenter(influ.InfluenterId.Value))
+                                    {
+                                        @if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Facebook")
+                                        {
+                                            <a href="http://www.facebook.com/@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "YouTube")
+                                        {
+                                            <a href="http://www.youtube.com/user/@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "SnapChat")
+                                        {
+                                            <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Instagram")
+                                        {
+                                            <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search-o fa-instagram fa-instagram-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitter")
+                                        {
+                                            <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search-o fa-twitter fa-twitter-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitch")
+                                        {
+                                            <a href="http://www.twitch.tv/@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
+                                        }
+                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Website")
+                                        {
+                                            <a href="http://@platform.Link" target="_blank" class="fa fa-search-o fa-globe fa-globe-search"></a>
+                                        }
+                                    }
+
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 noPadding">
+                                    <div class="star-rating-search">
+                                        <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(influ.InfluenterId.Value), 2)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+
+                                            <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(influ.InfluenterId.Value)%">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a asp-controller="Influenter" asp-action="Show" asp-route-id="@influ.InfluenterId" class="a-button">Se profil</a>
+                                </div>
+                            </div>
                         }
+                            }
                     </div>
                 </div>
             </div>

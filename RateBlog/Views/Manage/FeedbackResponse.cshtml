@@ -1,4 +1,5 @@
 ﻿@model FeedbackResponseViewModel
+@inject UserManager<ApplicationUser> UserManager
 @{ 
     ViewData["Title"] = "Response"; 
 }
@@ -6,7 +7,8 @@
 <div class="navbar-allaround"></div>
 
 <div class="container">
-    <h2>Feedback</h2>
+    <h2 class="text-center" style="margin: 25px 0 25px 0">@UserManager.Users.SingleOrDefault(x => x.Id == Model.Rating.ApplicationUserId).Name's feedback til dig</h2>
+    <hr />
     <p>@Model.Rating.Review</p>
 </div>
 
