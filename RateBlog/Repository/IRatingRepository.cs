@@ -40,13 +40,6 @@ namespace RateBlog.Repository
         void Delete(int RatingId);
 
         /// <summary>
-        /// Add a InfuenterPlatform object. IMPORTANT: Not a rating object, but a InfluenterRating object!
-        /// </summary>
-        /// <param name="influenterId"></param>
-        /// <param name="ratingId"></param>
-        void AddInfluenterPlatform(int influenterId, int ratingId);
-
-        /// <summary>
         /// Gets the average rating for a influenter
         /// </summary>
         /// <param name="influenterId"></param>
@@ -59,5 +52,26 @@ namespace RateBlog.Repository
         /// <param name="influenterId"></param>
         /// <returns></returns>
         bool HasRatings(int influenterId);
+
+        /// <summary>
+        /// Gets the number of unread ratings.
+        /// </summary>
+        /// <param name="influenterId"></param>
+        /// <returns></returns>
+        int GetUnreadRatingsNumber(int influenterId);
+
+        /// <summary>
+        /// Get all ratings for a influenter
+        /// </summary>
+        /// <param name="influenterId"></param>
+        /// <returns></returns>
+        List<Rating> GetRatingForInfluenter(int influenterId);
+
+        /// <summary>
+        /// Count method
+        /// </summary>
+        /// <param name="influenterId"></param>
+        /// <returns></returns>
+        int CountRatings(int influenterId); 
     }
 }

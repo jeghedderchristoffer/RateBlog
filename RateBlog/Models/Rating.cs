@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,9 @@ namespace RateBlog.Models
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
+        public int InfluenterId { get; set; }
+        public Influenter Influenter { get; set; } 
+
         public int Orginalitet { get; set; }
         public int Kvalitet { get; set; }
         public int Troværdighed { get; set; }
@@ -24,6 +28,7 @@ namespace RateBlog.Models
         public int SprogBrug { get; set; }
         public string Review { get; set; }
 
-        public virtual ICollection<InfluenterRating> InfluenterRating { get; set; }
+        [DefaultValue(false)]
+        public bool IsRead { get; set; }
     }
 }

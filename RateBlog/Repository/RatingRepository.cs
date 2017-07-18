@@ -47,34 +47,24 @@ namespace RateBlog.Repository
             _applicationDbContext.SaveChanges();
         }
 
-        public void AddInfluenterPlatform(int influenterId, int ratingId)
-        {
-            _applicationDbContext.InfluenterRating.Add(new InfluenterRating()
-            {
-                InfluenterId = influenterId,
-                RatingId = ratingId
-            });
-            _applicationDbContext.SaveChanges();
-        }
-
         public bool HasRatings(int influenterId)
         {
-            if(_applicationDbContext.InfluenterRating.Any(x => x.InfluenterId == influenterId))
+            if (_applicationDbContext.Rating.Any(x => x.InfluenterId == influenterId))
             {
                 return true;
             }
-            return false; 
+            return false;
         }
 
         public double GetRatingAverage(int influenterId)
         {
-            if(_applicationDbContext.InfluenterRating.Any(x => x.InfluenterId == influenterId))
+            if (_applicationDbContext.Rating.Any(x => x.InfluenterId == influenterId))
             {
-                var influenterRatings = _applicationDbContext.InfluenterRating.Where(x => x.InfluenterId == influenterId);
+                var ratings = _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId);
                 int numberOfRatings = 0;
                 double allRatingSums = 0;
 
-                foreach(var v in influenterRatings)
+                foreach (var v in ratings)
                 {
                     double ratingSum = 0;
 
@@ -92,7 +82,7 @@ namespace RateBlog.Repository
                     numberOfRatings++;
 
                     // Tilføjer dem til samlingen
-                    allRatingSums += ratingSum; 
+                    allRatingSums += ratingSum;
                 }
 
                 double average = (allRatingSums / numberOfRatings) * 20;
@@ -103,5 +93,41 @@ namespace RateBlog.Repository
             return 0;
         }
 
+        public int GetUnreadRatingsNumber(int influenterId)
+        {
+            var ratings = _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId);
+
+            int number = 0;
+
+            foreach (var v in ratings)
+            {
+                if (Get(v.RatingId).IsRead == false)
+                {
+                    number++;
+                }
+            }
+
+            return number;
+        }
+
+
+        // DET SKAL VÆRE one to many FORHOLD OG IKKE MANY TO MANY. 
+
+        public List<Rating> GetRatingForInfluenter(int influenterId)
+        {
+            return null;
+        }
+
+        public int CountRatings(int influenterId)
+        {
+            try
+            {
+                return _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId).Count();
+            }
+            catch(ArgumentNullException)
+            {
+                return 0;
+            }
+        }
     }
 }

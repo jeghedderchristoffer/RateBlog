@@ -227,19 +227,6 @@ namespace RateBlog.Data.Migrations
                     b.ToTable("InfluenterPlatform");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.InfluenterRating", b =>
-                {
-                    b.Property<int>("InfluenterId");
-
-                    b.Property<int>("RatingId");
-
-                    b.HasKey("InfluenterId", "RatingId");
-
-                    b.HasIndex("RatingId");
-
-                    b.ToTable("InfluenterRating");
-                });
-
             modelBuilder.Entity("RateBlog.Models.Kategori", b =>
                 {
                     b.Property<int>("KategoriId")
@@ -273,7 +260,11 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
+                    b.Property<int>("InfluenterId");
+
                     b.Property<int>("Interaktion");
+
+                    b.Property<bool>("IsRead");
 
                     b.Property<int>("Kvalitet");
 
@@ -290,6 +281,8 @@ namespace RateBlog.Data.Migrations
                     b.HasKey("RatingId");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("InfluenterId");
 
                     b.ToTable("Rating");
                 });
@@ -364,24 +357,16 @@ namespace RateBlog.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RateBlog.Models.InfluenterRating", b =>
-                {
-                    b.HasOne("RateBlog.Models.Influenter", "Influenter")
-                        .WithMany("InfluenterRating")
-                        .HasForeignKey("InfluenterId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RateBlog.Models.Rating", "Rating")
-                        .WithMany("InfluenterRating")
-                        .HasForeignKey("RatingId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("RateBlog.Models.Rating", b =>
                 {
                     b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("RateBlog.Models.Influenter", "Influenter")
+                        .WithMany("Ratings")
+                        .HasForeignKey("InfluenterId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

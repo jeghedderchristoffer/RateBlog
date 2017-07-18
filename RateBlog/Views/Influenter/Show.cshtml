@@ -66,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center">Antal ratings: @Model.Influenter.InfluenterRating.Count</p>
+                    <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
 
                     <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100">Giv din mening</a>
                     <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-blue-100">Læs ratings</a>                  
@@ -74,7 +74,8 @@
                 }
                 else
                 {
-                    <h4>Denne influenter har ingen ratings</h4>
+                    <h4>Denne influenter har ingen ratings. Bliv den første</h4>
+                    <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100">Giv din mening</a>
                 }
             </div>
 

@@ -54,14 +54,12 @@ namespace RateBlog.Controllers
                 SprogBrug = sprog,
                 TidFulgt = antalÅr, 
                 Review = model.Review, 
-                ApplicationUserId = user.Id
+                ApplicationUserId = user.Id, 
+                InfluenterId = model.Influenter.InfluenterId
             };
 
             // Tilføjer til Rating tabellen
             _rating.Add(rating);
-
-            // Tilføjer til Join Tabellen InfluenterRating
-            _rating.AddInfluenterPlatform(model.Influenter.InfluenterId, rating.RatingId);
 
             // Der mangler at tjekke om denne user allerede har rated denne influenter....!!!!!!
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace RateBlog.Data.Migrations
 {
-    public partial class updated : Migration
+    public partial class @new : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -89,7 +89,9 @@ namespace RateBlog.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Aktivitet = table.Column<int>(nullable: false),
                     ApplicationUserId = table.Column<string>(nullable: true),
+                    InfluenterId = table.Column<int>(nullable: false),
                     Interaktion = table.Column<int>(nullable: false),
+                    IsRead = table.Column<bool>(nullable: false),
                     Kvalitet = table.Column<int>(nullable: false),
                     Orginalitet = table.Column<int>(nullable: false),
                     Review = table.Column<string>(nullable: true),
@@ -106,6 +108,12 @@ namespace RateBlog.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Rating_Influenter_InfluenterId",
+                        column: x => x.InfluenterId,
+                        principalTable: "Influenter",
+                        principalColumn: "InfluenterId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,30 +165,6 @@ namespace RateBlog.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "InfluenterRating",
-                columns: table => new
-                {
-                    InfluenterId = table.Column<int>(nullable: false),
-                    RatingId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InfluenterRating", x => new { x.InfluenterId, x.RatingId });
-                    table.ForeignKey(
-                        name: "FK_InfluenterRating_Influenter_InfluenterId",
-                        column: x => x.InfluenterId,
-                        principalTable: "Influenter",
-                        principalColumn: "InfluenterId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InfluenterRating_Rating_RatingId",
-                        column: x => x.RatingId,
-                        principalTable: "Rating",
-                        principalColumn: "RatingId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_InfluenterId",
                 table: "AspNetUsers",
@@ -204,14 +188,14 @@ namespace RateBlog.Data.Migrations
                 column: "PlatformId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InfluenterRating_RatingId",
-                table: "InfluenterRating",
-                column: "RatingId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Rating_ApplicationUserId",
                 table: "Rating",
                 column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rating_InfluenterId",
+                table: "Rating",
+                column: "InfluenterId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUsers_Influenter_InfluenterId",
@@ -235,7 +219,7 @@ namespace RateBlog.Data.Migrations
                 name: "InfluenterPlatform");
 
             migrationBuilder.DropTable(
-                name: "InfluenterRating");
+                name: "Rating");
 
             migrationBuilder.DropTable(
                 name: "Kategori");
@@ -245,9 +229,6 @@ namespace RateBlog.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Influenter");
-
-            migrationBuilder.DropTable(
-                name: "Rating");
 
             migrationBuilder.DropIndex(
                 name: "IX_AspNetUsers_InfluenterId",

@@ -10,11 +10,6 @@ namespace RateBlog.Models
     public class Influenter
     {
         public int InfluenterId { get; set; }
-        //public string Name { get; set; }
-        //public string Fornavn { get; set; }
-        //public string Efternavn { get; set; }
-        //public int? Alder { get; set; }        
-        //public string Profiltekst { get; set; }
 
         [Required(ErrorMessage = "Du skal udfylde dit Alias/kaldenavn")]
         public string Alias { get; set; }
@@ -22,8 +17,9 @@ namespace RateBlog.Models
 
         public virtual ApplicationUser ApplicationUser { get; set; }
 
+        public virtual ICollection<Rating> Ratings { get; set; } 
+
         public virtual ICollection<InfluenterPlatform> InfluenterPlatform { get; set; }
-        public virtual ICollection<InfluenterRating> InfluenterRating { get; set; }
         public virtual ICollection<InfluenterKategori> InfluenterKategori { get; set; }
     }
 }

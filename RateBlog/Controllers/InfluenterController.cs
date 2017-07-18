@@ -42,7 +42,7 @@ namespace RateBlog.Controllers
 
             var influenter = _userManager.Users.
                 Where(x => (x.Name.ToLower().Contains(search.ToLower())) && x.InfluenterId.HasValue 
-                && (x.Influenter.Alias.Contains(search) && x.InfluenterId.HasValue)).ToList();
+                || (x.Influenter.Alias.Contains(search) && x.InfluenterId.HasValue)).ToList();
 
             foreach(var kategori in _kategori.GetAll())
             {

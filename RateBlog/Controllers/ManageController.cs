@@ -504,6 +504,12 @@ namespace RateBlog.Controllers
             return View("EditProfile", model);
         }
 
+        [HttpGet]
+        public IActionResult MyFeedback()
+        {
+            return View();
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
