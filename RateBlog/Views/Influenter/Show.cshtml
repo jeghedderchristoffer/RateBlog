@@ -11,7 +11,7 @@
     <div class="container">
         @if (TempData["Success"] != null)
         {
-            <div class="alert fade in alert-success alert-dismissable" style="margin-top: 10px;">
+            <div class="alert fade in alert-success alert-dismissable" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 @TempData["Success"]
             </div>
@@ -42,7 +42,32 @@
             <div class="col-md-4">
                 @if (RatingRepository.HasRatings(Model.Influenter.InfluenterId))
                 {
-                    <h3 class="text-center">Samlet rating:</h3>
+                    <h3 class="text-center">Fan rating:</h3>
+
+                    <div class="outer">
+                        <div class="middle">
+                            <div class="inner">
+                                <div class="star-rating-show">
+                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+
+                    <h3 class="text-center">Ekspert rating:</h3>
 
                     <div class="outer">
                         <div class="middle">

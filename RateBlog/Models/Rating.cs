@@ -17,8 +17,9 @@ namespace RateBlog.Models
         public ApplicationUser ApplicationUser { get; set; }
 
         public int InfluenterId { get; set; }
-        public Influenter Influenter { get; set; } 
+        public Influenter Influenter { get; set; }
 
+        public DateTime RateDateTime { get; set; } 
         public int Orginalitet { get; set; }
         public int Kvalitet { get; set; }
         public int Troværdighed { get; set; }

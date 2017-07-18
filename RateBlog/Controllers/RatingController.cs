@@ -13,7 +13,6 @@ namespace RateBlog.Controllers
 {
     public class RatingController : Controller
     {
-
         private IRatingRepository _rating;
         private IInfluenterRepository _influenterRepo;
         private UserManager<ApplicationUser> _userManger;
@@ -26,12 +25,12 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult RateInfluenter(int id) 
+        public IActionResult RateInfluenter(int id)
         {
             var influenter = _influenterRepo.Get(id);
             var model = new RatingViewModel()
             {
-                Influenter = influenter 
+                Influenter = influenter
             };
 
             return View(model);
@@ -41,7 +40,14 @@ namespace RateBlog.Controllers
         [Authorize]
         public async Task<IActionResult> RateInfluenter(int orginalitet, int kvalitet, int troværdighed, int interaktion, int aktivitet, int antalÅr, int sprog, RatingViewModel model)
         {
-            var user = await _userManger.GetUserAsync(User); 
+            var user = await _userManger.GetUserAsync(User);
+
+            if (orginalitet == 0 || kvalitet == 0 || troværdighed == 0 || interaktion == 0 || aktivitet == 0 || antalÅr == 0 || sprog == 0 || model.Review == null)
+            {
+                TempData["Error"] = "Du skal udfylde alle felterne for at give dit feedback"; 
+                return RedirectToAction("RateInfluenter");
+            }
+
 
             // Værdier til antal tid fulgt: 01 == 0-1 år, 12 == 1-2 år, 2 == 2+ år!! 
             var rating = new Rating()
@@ -55,7 +61,8 @@ namespace RateBlog.Controllers
                 TidFulgt = antalÅr, 
                 Review = model.Review, 
                 ApplicationUserId = user.Id, 
-                InfluenterId = model.Influenter.InfluenterId
+                InfluenterId = model.Influenter.InfluenterId, 
+                RateDateTime = DateTime.Now
             };
 
             // Tilføjer til Rating tabellen

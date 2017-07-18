@@ -72,6 +72,13 @@ namespace RateBlog.Repository
         /// </summary>
         /// <param name="influenterId"></param>
         /// <returns></returns>
-        int CountRatings(int influenterId); 
+        int CountRatings(int influenterId);
+
+        /// <summary>
+        /// Get average for single rating
+        /// </summary>
+        /// <param name="ratingId"></param>
+        /// <returns></returns>
+        double GetSingleRatingAverage(int ratingId);
     }
 }

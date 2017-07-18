@@ -1,15 +1,64 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@inject RateBlog.Repository.IRatingRepository RatingRepository
+@inject UserManager<ApplicationUser> UserManager
 @{
+    ViewData["Title"] = "Feedback";
+    var user = await UserManager.GetUserAsync(User);
 }
+
 
 <div class="navbar-allaround"></div>
 
 <div class="container">
-    <h2 style="margin: 20px 0 0 0">Dit feedback</h2>
-    <hr />
+    <h2 class="text-center" style="margin: 25px 0 25px 0">Dit feedback</h2>
+    @if (user.InfluenterId.HasValue)
+    {
+        <div>
+            @foreach (var v in RatingRepository.GetRatingForInfluenter(user.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+            {
+                var read = (v.IsRead == true) ? "active" : ""; 
 
-    
+
+                <div class="col-md-12 noPadding feedback-container @read">
+                    <form asp-area="" asp-controller="Manage" asp-action="FeedbackResponse" asp-route-id="@v.RatingId">
+                        <a href="#" class="feedback-link" onclick="$(this).closest('form').submit();">
+                            <div class="col-md-1 noPadding">
+                                <img class="center-block" src="http://via.placeholder.com/100x100" />
+                            </div>
+                            <div class="col-md-6 noPadding">
+                                <p>Du er blevet ratet af @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
+                                <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                            </div>
+                            <div class="col-md-5" style="height: 100%">
+                                <div class="star-rating-feedback">
+                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                                        <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </form>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+
+    }
+
+
+
 
 </div>

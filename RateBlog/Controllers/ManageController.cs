@@ -28,6 +28,7 @@ namespace RateBlog.Controllers
         private readonly IInfluenterRepository _influenterRepo;
         private readonly IPlatformRepository _platformRepo;
         private readonly IKategoriRepository _kategoriRepo;
+        private readonly IRatingRepository _ratingRepo; 
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
@@ -38,11 +39,13 @@ namespace RateBlog.Controllers
           ILoggerFactory loggerFactory,
           IInfluenterRepository influenterRepo,
           IPlatformRepository platformRepo,
-          IKategoriRepository kategoriRepo)
+          IKategoriRepository kategoriRepo, 
+          IRatingRepository ratingRepo)
         {
             _influenterRepo = influenterRepo;
             _platformRepo = platformRepo;
             _kategoriRepo = kategoriRepo;
+            _ratingRepo = ratingRepo; 
 
             _userManager = userManager;
             _signInManager = signInManager;
@@ -454,7 +457,7 @@ namespace RateBlog.Controllers
 
                 var result = await _userManager.UpdateAsync(user);
 
-                if(result.Succeeded != true)
+                if (result.Succeeded != true)
                 {
                     TempData["Error"] = "Der findes allerede en bruger med denne email!";
                     return View("EditProfile", model);
@@ -509,6 +512,26 @@ namespace RateBlog.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult FeedbackResponse(int id)
+        {
+            var rating = _ratingRepo.Get(id);
+            rating.IsRead = true;
+            _ratingRepo.Update(rating); 
+
+            var model = new FeedbackResponseViewModel()
+            {
+                Rating = rating
+            };
+
+            return View(model); 
+        }
+
+        //public IActionResult Myfeedback(int id)
+        //{
+
+        //}
 
         #region Helpers
 

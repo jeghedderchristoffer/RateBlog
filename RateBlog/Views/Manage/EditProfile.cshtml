@@ -13,6 +13,20 @@
     <div class="navbar-allaround"></div>
 
     <div class="container">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert fade in alert-success alert-dismissable" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> @TempData["Success"]
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert fade in alert-danger alert-dismissable" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Fejl!</strong> @TempData["Error"]
+            </div>
+        }
         <div class="editprofile-head">
             <h2>Rediger din profil</h2>
 
@@ -27,21 +41,7 @@
             }
 
         </div>
-        <hr />
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert fade in alert-success alert-dismissable">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Success!</strong> @TempData["Success"]
-            </div>
-        }
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert fade in alert-danger alert-dismissable">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Fejl!</strong> @TempData["Error"]
-            </div>
-        }
+        <hr />   
         <div id="redigerFanContainer">
             <form asp-area="" asp-controller="Manage" asp-action="EditProfile">
                 <div class="col-md-12 noPaddingLeft">

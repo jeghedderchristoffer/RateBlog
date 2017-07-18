@@ -110,12 +110,9 @@ namespace RateBlog.Repository
             return number;
         }
 
-
-        // DET SKAL VÆRE one to many FORHOLD OG IKKE MANY TO MANY. 
-
         public List<Rating> GetRatingForInfluenter(int influenterId)
         {
-            return null;
+            return _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId).ToList();
         }
 
         public int CountRatings(int influenterId)
@@ -124,10 +121,28 @@ namespace RateBlog.Repository
             {
                 return _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId).Count();
             }
-            catch(ArgumentNullException)
+            catch (ArgumentNullException)
             {
                 return 0;
             }
         }
+
+        public double GetSingleRatingAverage(int ratingId)
+        {
+            var rating = Get(ratingId);
+            double ratingSum = 0;
+
+            // Tager alle værdier, plusser dem sammen og dividere dem med antallet af ratings == gennemsnit
+            ratingSum += rating.Aktivitet;
+            ratingSum += rating.Interaktion;
+            ratingSum += rating.SprogBrug;
+            ratingSum += rating.Troværdighed;
+            ratingSum += rating.Kvalitet;
+            ratingSum += rating.Orginalitet;
+            ratingSum = ratingSum / 6;
+
+            return ratingSum * 20; 
+        }
+
     }
 }

@@ -9,7 +9,13 @@
     <div class="navbar-allaround">
     </div>
 
-
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert fade in alert-danger alert-dismissable" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Error"]
+        </div>
+    }
     <div class="outer">
         <div class="middle">
             <div class="inner">
@@ -19,7 +25,7 @@
     </div>
 
 
-    <div class="container">
+    <div class="container">    
         <form asp-area="" asp-controller="Rating" asp-action="RateInfluenter">
             @Html.HiddenFor(x => x.Influenter.InfluenterId)
             @Html.HiddenFor(x => x.Influenter.Alias)

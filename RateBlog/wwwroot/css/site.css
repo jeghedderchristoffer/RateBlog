@@ -994,8 +994,8 @@ ul li:hover .dropOut {
 }
 
 .profile-text {
-    font-size: 16px;
-    word-break: break-all;
+    font-size: 15px;
+    word-break: break-word;
 }
 
 
@@ -1691,3 +1691,52 @@ footer {
 .circular-square job {
     border-radius: 50%;
 }
+
+.my-alert {
+    position: absolute !important;
+    z-index: 5000 !important;
+}
+
+/*Feedback side*/
+
+.star-rating-feedback {
+    display: flex;
+    font-size: 28px;
+    float: right;
+    margin-top: 16px
+}
+
+.feedback-container {
+    height: 70px;
+    width: 100%;
+    border-bottom: 1px solid #F0F0F0;
+    padding: 5px;
+    color: #333;
+}
+
+    .feedback-container:first-child {
+        border-top: 1px solid #F0F0F0;
+    }
+
+    .feedback-container.active {
+        background: #F0F0F0;
+    }
+
+    .feedback-container:hover {
+        background: #F0F0F0;
+    }
+
+    .feedback-container img {
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+    }
+
+    .feedback-container p {
+        padding: 6px 0 3px 0;
+        margin: 0;
+    }
+
+    .feedback-container a {
+        color: #303030
+    }
