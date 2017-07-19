@@ -1,15 +1,364 @@
 ﻿@model FeedbackResponseViewModel
+@inject RateBlog.Repository.IRatingRepository RatingRepository
 @inject UserManager<ApplicationUser> UserManager
-@{ 
-    ViewData["Title"] = "Response"; 
+@{
+    ViewData["Title"] = "Response";
 }
 
 <div class="navbar-allaround"></div>
 
-<div class="container">
-    <h2 class="text-center" style="margin: 25px 0 25px 0">@UserManager.Users.SingleOrDefault(x => x.Id == Model.Rating.ApplicationUserId).Name's feedback til dig</h2>
-    <hr />
-    <p>@Model.Rating.Review</p>
+@Html.Partial("_NavbarAddonPartial")
+
+<div class="bottom-container">
+    <div class="navbar-addon" style="border-bottom: none;">
+        <div class="container" style="border-bottom: 3px dotted #ddd;">
+            <div class="col-md-12 noPadding">
+                <div class="col-md-2 noPadding addon-box">
+                    <div class="addon-img-container">
+                        <img src="http://via.placeholder.com/150x150" />
+                    </div>
+                </div>
+                <div class="col-md-5 addon-box">
+                    <div class="addon-number" style="text-align: left">
+                        <p>Du er blevet ratet af</p>
+                        <h3>@UserManager.Users.Single(x => x.Id == Model.Rating.ApplicationUserId).Name</h3>
+                    </div>
+
+                </div>
+                <div class="col-md-5 addon-box">
+                    <div class="addon-number">
+                        <div style="display:inline-block; text-align: center">
+                            <h2 class="text-center">&nbsp; Samlet score</h2>
+                            <br />
+                            <div class="star-rating-response">
+                                <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(Model.Rating.RatingId), 2)%">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(Model.Rating.RatingId)%">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="padding-top: 10px; padding-bottom: 15px; border: 3px dotted #ddd;">
+        <div class="col-md-12">
+            <div class="col-md-6 noPaddingLeft">
+                <h4><i>@UserManager.Users.Single(x => x.Id == Model.Rating.ApplicationUserId).Name har skrevet følgende om dig:</i></h4>
+                <br />
+                <p style="line-height: 180%">@Model.Rating.Review</p>
+            </div>
+            <div class="col-md-offset-1 col-md-5">
+                <h4 class="text-center"><i>@UserManager.Users.Single(x => x.Id == Model.Rating.ApplicationUserId).Name har fulgt dig i:</i></h4>
+                @if (Model.Rating.TidFulgt == 01)
+                {
+                    <h2 class="text-center" style="margin-top: 25px">0-1 år</h2>
+                }
+                else if(Model.Rating.TidFulgt == 12)
+                {
+                    <h2 class="text-center" style="margin-top: 25px">1-2 år</h2>
+                }
+                else if (Model.Rating.TidFulgt == 2)
+                {
+                    <h2 class="text-center" style="margin-top: 25px">2+ år</h2>
+
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container noPadding" style="padding-top: 10px;">
+        <div class="col-md-12 noPadding">
+            <div class="col-md-6 noPadding">
+                <form asp-area="" asp-controller="Manage" asp-action="Answer">
+                    @Html.HiddenFor(x => x.Rating.RatingId)
+                    <textarea asp-for="@Model.Rating.Answer" class="rating-input" style="margin-bottom: 15px" rows="8" placeholder="Har du noget feedback til din rating?"></textarea>
+                    <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Send" />
+                </form>
+            </div>
+            <div class="col-md-6">
+                <p style="margin-top: 20px;">Husk altid at holde den gode tone.</p>
+                <p>Dette svar vil blive offentliggjort</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 
+
+
+
+@*<h2 class="text-center" style="margin: 25px 0 25px 0">@UserManager.Users.SingleOrDefault(x => x.Id == Model.Rating.ApplicationUserId).Name's feedback til dig</h2>
+    <hr />
+    <div class="container" style="padding-bottom: 100px;">
+        <div class="col-md-12 feedback-box">
+            <div class="col-md-4">
+                <h4>Orginalitet</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="star-rating-response">
+                    <div class="back-stars" title="@(Model.Rating.Orginalitet * 20)%">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <div class="front-stars" style="width: @(Model.Rating.Orginalitet * 20)%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4 class="pull-right">@Model.Rating.Orginalitet</h4>
+            </div>
+        </div>
+
+        <div class="col-md-12 feedback-box">
+            <div class="col-md-4">
+                <h4>Kvalitet</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="star-rating-response">
+                    <div class="back-stars" title="@(Model.Rating.Kvalitet * 20)%">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <div class="front-stars" style="width: @(Model.Rating.Kvalitet * 20)%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4 class="pull-right">@Model.Rating.Kvalitet</h4>
+            </div>
+        </div>
+
+        <div class="col-md-12 feedback-box">
+            <div class="col-md-4">
+                <h4>Troværdighed</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="star-rating-response">
+                    <div class="back-stars" title="@(Model.Rating.Troværdighed * 20)%">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <div class="front-stars" style="width: @(Model.Rating.Troværdighed * 20)%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4 class="pull-right">@Model.Rating.Troværdighed</h4>
+            </div>
+        </div>
+
+        <div class="col-md-12 feedback-box">
+            <div class="col-md-4">
+                <h4>Interaktion</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="star-rating-response">
+                    <div class="back-stars" title="@(Model.Rating.Interaktion * 20)%">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <div class="front-stars" style="width: @(Model.Rating.Interaktion * 20)%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4 class="pull-right">@Model.Rating.Interaktion</h4>
+            </div>
+        </div>
+
+        <div class="col-md-12 feedback-box">
+            <div class="col-md-4">
+                <h4>Aktivitet</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="star-rating-response">
+                    <div class="back-stars" title="@(Model.Rating.Aktivitet * 20)%">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <div class="front-stars" style="width: @(Model.Rating.Aktivitet * 20)%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4 class="pull-right">@Model.Rating.Aktivitet</h4>
+            </div>
+        </div>
+
+        <div class="col-md-12 feedback-box">
+            <div class="col-md-4">
+                <h4>Sprog</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="star-rating-response">
+                    <div class="back-stars" title="@(Model.Rating.SprogBrug * 20)%">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <div class="front-stars" style="width: @(Model.Rating.SprogBrug * 20)%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4 class="pull-right">@Model.Rating.SprogBrug</h4>
+            </div>
+        </div>
+
+        <div class="col-md-12 feedback-box">
+            <div class="col-md-4">
+                <h4>Tid fulgt:</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="rating-radio">
+                    @if (Model.Rating.TidFulgt == 01)
+                    {
+                        <div class="radio-inline cursor">
+                            <input id="question1" name="antalÅr" type="radio" class="with-font" value="01" checked="checked" disabled="disabled" />
+                            <label for="question1">0-1 år</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="radio-inline cursor">
+                            <input id="question1" name="antalÅr" type="radio" class="with-font" value="01" disabled="disabled" />
+                            <label for="question1">0-1 år</label>
+                        </div>
+                    }
+
+                    @if (Model.Rating.TidFulgt == 12)
+                    {
+                        <div class="radio-inline cursor">
+                            <input id="question2" name="antalÅr" type="radio" class="with-font" value="12" checked="checked" disabled="disabled" />
+                            <label for="question2">1-2 år</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="radio-inline cursor">
+                            <input id="question2" name="antalÅr" type="radio" class="with-font" value="12" disabled="disabled" />
+                            <label for="question2">1-2 år</label>
+                        </div>
+                    }
+
+                    @if (Model.Rating.TidFulgt == 2)
+                    {
+                        <div class="radio-inline cursor">
+                            <input id="question3" name="antalÅr" type="radio" class="with-font" value="2" checked="checked" disabled="disabled" />
+                            <label for="question3">2+ år</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="radio-inline cursor">
+                            <input id="question3" name="antalÅr" type="radio" class="with-font" value="2" disabled="disabled" />
+                            <label for="question3">2+ år</label>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-2">
+                @if (Model.Rating.TidFulgt == 01)
+                {
+                    <h4 class="pull-right">0-1 år</h4>
+                }
+                else if (Model.Rating.TidFulgt == 12)
+                {
+                    <h4 class="pull-right">1-2 år</h4>
+                }
+                else if (Model.Rating.TidFulgt == 2)
+                {
+                    <h4 class="pull-right">2+ år</h4>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-12 feedback-box" style="height: 100%">
+            <div class="col-md-4">
+                <h4>Review</h4>
+            </div>
+            <div class="col-md-6">
+               <p style="margin-top: 10px; margin-left: 5px">@Model.Rating.Review</p>
+            </div>
+        </div>
+
+        <div class="col-md-12 feedback-box" style="height: 100%">
+            <div class="col-md-4">
+                <h4>Svar</h4>
+            </div>
+            <form asp-area="" asp-controller="Manage" asp-action="Answer">
+                @Html.HiddenFor(x => x.Rating.RatingId)
+                <div class="col-md-6">
+                    <textarea asp-for="@Model.Rating.Answer" class="rating-input" style="margin-bottom: 15px" rows="8" placeholder="Har du noget feedback til din rating?"></textarea>
+                </div>
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-offset-4 col-md-6">
+                    <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Send"/>
+                </div>
+            </form>
+        </div>
+
+    </div>*@

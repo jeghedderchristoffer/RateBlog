@@ -528,10 +528,17 @@ namespace RateBlog.Controllers
             return View(model); 
         }
 
-        //public IActionResult Myfeedback(int id)
-        //{
+        public IActionResult Answer(FeedbackResponseViewModel model)
+        {
+            var rating = _ratingRepo.Get(model.Rating.RatingId);
+            rating.Answer = model.Rating.Answer;
 
-        //}
+            _ratingRepo.Update(rating);
+
+            TempData["Success"] = "Du har sendt dit svar!"; 
+
+            return RedirectToAction("MyFeedback"); 
+        }
 
         #region Helpers
 

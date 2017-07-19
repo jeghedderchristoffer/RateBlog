@@ -144,5 +144,68 @@ namespace RateBlog.Repository
             return ratingSum * 20; 
         }
 
+        public int GetSingleRating(int ratingId, string name)
+        {
+            var rating = Get(ratingId); 
+
+            if(name.ToLower() == "Originalitet".ToLower())
+            {
+                return rating.Orginalitet; 
+            }
+
+
+            return 0; 
+        }
+
+        public int GetInfluenterRatingNumber(int influenterId)
+        {
+            if(_applicationDbContext.Rating.Any(x => x.InfluenterId == influenterId))
+            {
+                return _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId).Count();
+            }
+            return 0; 
+        }
+
+        public int GetMyRatingNumber(string applicationUserId)
+        {
+            if(_applicationDbContext.Rating.Any(x => x.ApplicationUserId == applicationUserId))
+            {
+                return _applicationDbContext.Rating.Where(x => x.ApplicationUserId == applicationUserId).Count();
+            }
+            return 0; 
+        }
+
+        public int GetMyRatingAnswerNumber(string applicationUserId)
+        {
+            if(_applicationDbContext.Rating.Any(x => x.ApplicationUserId == applicationUserId && x.Answer != null))
+            {
+                return _applicationDbContext.Rating.Where(x => x.ApplicationUserId == applicationUserId && x.Answer != null).Count(); 
+            }
+            return 0; 
+        }
+
+        public int GetInfluenterAnswerNumber(int influenterId)
+        {
+            if (_applicationDbContext.Rating.Any(x => x.InfluenterId == influenterId && x.Answer != null))
+            {
+                return _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId && x.Answer != null).Count();
+            }
+            return 0;
+        }
+
+        public double GetAnswerPercentageForInfluencer(int influenterId)
+        {
+            if (_applicationDbContext.Rating.Any(x => x.InfluenterId == influenterId && x.Answer != null))
+            {
+                var numberOfAnswer = _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId && x.Answer != null).Count();
+                var numberOfRatings = _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId && x.IsRead == true).Count();
+
+                double result = (100.0 / numberOfRatings) * numberOfAnswer;
+
+                return result; 
+
+            }
+            return 0;
+        }
     }
 }

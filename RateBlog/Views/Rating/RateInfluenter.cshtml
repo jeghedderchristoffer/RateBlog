@@ -1,14 +1,41 @@
 ﻿@model RateBlog.Models.RatingViewModels.RatingViewModel
-@{ 
+@inject RateBlog.Repository.IRatingRepository RatingRepository
+@{
     ViewData["Title"] = "Feedback til " + Model.Influenter.Alias;
 }
-<div style="padding-bottom: 100px;">
 
+<div class="navbar-allaround"></div>
 
-
-    <div class="navbar-allaround">
+<div class="navbar-addon">
+    <div class="container">
+        <div class="col-md-12 noPadding">
+            <div class="col-md-2 noPadding addon-box">
+                <div class="addon-img-container">
+                    <img src="http://via.placeholder.com/150x150" />
+                </div>
+            </div>
+            <div class="col-md-5 addon-box">
+                <div class="addon-number" style="text-align: left">
+                    <p>Rating af</p>
+                    <h3>@Model.Influenter.Alias</h3>
+                </div>
+                
+            </div>
+            <div class="col-md-5 addon-box">
+                <div class="addon-number">
+                    <h1>@RatingRepository.GetInfluenterRatingNumber(Model.Influenter.InfluenterId)</h1>
+                    <p>Antal ratings</p>
+                </div>
+                <div class="addon-number">
+                    <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(Model.Influenter.InfluenterId), 1)%</h1>
+                    <p>Svar procent</p>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
+<div class="bottom-container">
     @if (TempData["Error"] != null)
     {
         <div class="alert fade in alert-danger alert-dismissable" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
@@ -16,16 +43,15 @@
             @TempData["Error"]
         </div>
     }
-    <div class="outer">
-        <div class="middle">
-            <div class="inner">
-                <h1 style="margin-bottom: 20px;">Giv feedback til @Model.Influenter.Alias</h1>
-            </div>
-        </div>
-    </div>
+
+    <br />
+
+    @*<h2 class="text-center" style="padding: 25px 0 25px 0; margin: 0">Dit feedback</h2>
+    <h2 class="text-center" style="margin: 25px 0 25px 0">Giv dit feedback til @Model.Influenter.Alias</h2>*@
 
 
-    <div class="container">    
+
+    <div class="container">
         <form asp-area="" asp-controller="Rating" asp-action="RateInfluenter">
             @Html.HiddenFor(x => x.Influenter.InfluenterId)
             @Html.HiddenFor(x => x.Influenter.Alias)
@@ -232,18 +258,18 @@
                 <div class="col-md-4">
                     <h4>Review</h4>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <textarea class="rating-input" asp-for="@Model.Review" rows="8" placeholder="Hvad mener du om denne influenter?"></textarea>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <a class="pull-right" title="Orginalitet" data-content="Er denne influenter orginal? Er de ting, som denne person viser sine egne?" data-toggle="popover" data-trigger="hover" data-placement="left">
                         <i class="fa fa-info-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
                     </a>
                 </div>
             </div>
 
-            <div class="col-md-12 noPadding">
-                <input type="submit" class="rate-button" value="Send dit feedback" />
+            <div class="col-md-offset-4 col-md-6">
+                <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Send" />
             </div>
 
         </form>

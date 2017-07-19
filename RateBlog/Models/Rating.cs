@@ -29,6 +29,9 @@ namespace RateBlog.Models
         public int SprogBrug { get; set; }
         public string Review { get; set; }
 
+        [DefaultValue(null)]
+        public string Answer { get; set; }
+
         [DefaultValue(false)]
         public bool IsRead { get; set; }
     }

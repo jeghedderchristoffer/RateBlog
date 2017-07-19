@@ -6,30 +6,30 @@
     ViewData["Title"] = "Rediger din profil";
 }
 
-<div style="padding-bottom: 100px;">
 
+<div class="navbar-allaround"></div>
 
+@if (TempData["Success"] != null)
+{
+    <div class="alert fade in alert-success alert-dismissable" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> @TempData["Success"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert fade in alert-danger alert-dismissable" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Fejl!</strong> @TempData["Error"]
+    </div>
+}
 
-    <div class="navbar-allaround"></div>
+@Html.Partial("_NavbarAddonPartial")
 
-    <div class="container">
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert fade in alert-success alert-dismissable" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Success!</strong> @TempData["Success"]
-            </div>
-        }
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert fade in alert-danger alert-dismissable" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Fejl!</strong> @TempData["Error"]
-            </div>
-        }
+<div style="background: #fff; min-height: 80vh; padding-bottom: 100px;">
+    <div class="container noPadding">
         <div class="editprofile-head">
-            <h2>Rediger din profil</h2>
-
+            <h2 sstyle="margin: 0">Rediger profil</h2>
             @if (user.InfluenterId != null)
             {
                 <button id="redigerInfluenterBtn" class="active">INFLUENTER</button>
@@ -39,55 +39,44 @@
                 <button id="redigerFanBtn" class="active">FAN</button>
                 <button id="redigerInfluenterBtn">INFLUENTER</button>
             }
-
         </div>
-        <hr />   
+
         <div id="redigerFanContainer">
             <form asp-area="" asp-controller="Manage" asp-action="EditProfile">
-                <div class="col-md-12 noPaddingLeft">
-                    <div class="col-md-6 noPaddingLeft">
-                        <h4><b>Personlig profil</b></h4>
-                        <br />
-                        <input asp-for="@Model.IsInfluenter" value="false" hidden="hidden" />
-                        <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
-                        <p>Fulde navn:</p>
-                        <input asp-for="@Model.Name" class="edit-input" />
-                        <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
+                <input asp-for="@Model.IsInfluenter" value="false" hidden="hidden" />
+                <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
+                <p>Fulde navn:</p>
+                <input asp-for="@Model.Name" class="edit-input-influ" />
+                <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
 
-                        <p>Email:</p>
-                        <input asp-for="@Model.Email" class="edit-input" />
-                        <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
+                <p>Email:</p>
+                <input asp-for="@Model.Email" class="edit-input-influ" />
+                <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
 
-                        <p>Fødselsdag:</p>
-                        <input asp-for="@Model.Birth" class="edit-input" type="date" />
-                        <span asp-validation-for="@Model.Birth" class="text-danger" style="margin-left: 5px;"></span>
+                <p>Fødselsdag:</p>
+                <input asp-for="@Model.Birth" class="edit-input-influ" type="date" />
+                <span asp-validation-for="@Model.Birth" class="text-danger" style="margin-left: 5px;"></span>
 
-                        <p>By:</p>
-                        <input asp-for="@Model.City" class="edit-input" />
-                        <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
+                <p>By:</p>
+                <input asp-for="@Model.City" class="edit-input-influ" />
+                <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
 
-                        <p>Telefon nummer:</p>
-                        <input asp-for="@Model.PhoneNumber" class="edit-input" />
-                        <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
-                    </div>
-                    <div class="col-md-6 noPaddingLeft">
-                        <h4><b>Profil information</b></h4>
-                        <br />
-                        <p>Profiltekst:</p>
-                        <textarea asp-for="@Model.ProfileText" class="edit-input" rows="7" style="height: auto;"></textarea>
-                        <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
-                    </div>
-                </div>
-                <div class="col-md-6 noPaddingLeft">
-                    <input type="submit" class="edit-button" value="Gem" />
-                </div>
+                <p>Telefon nummer:</p>
+                <input asp-for="@Model.PhoneNumber" class="edit-input-influ" />
+                <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
+
+                <p>Profil tekst:</p>
+                <textarea asp-for="@Model.ProfileText" class="edit-input-influ" rows="7" style="height: auto;"></textarea>
+                <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
+
+                <input type="submit" class="edit-button-influ" value="Gem" />
+
+
+
             </form>
         </div>
 
         <div id="redigerInfluenterContainer">
-
-            <h4><b>Personlig profil</b></h4>
-            <br />
             <form asp-area="" asp-controller="Manage" asp-action="EditInfluenterProfile">
                 <input asp-for="@Model.IsInfluenter" value="true" hidden="hidden" />
                 <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
@@ -114,9 +103,8 @@
 
                 <!--Influenter Profil-->
 
-
-                <hr>
-                <h4><b>Influenter profil</b></h4>
+                <br />
+                <h4><b>Influencer oplysninger:</b></h4>
                 <br />
 
                 <p>Alias/kaldenavn:</p>

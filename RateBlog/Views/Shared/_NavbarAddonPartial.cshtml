@@ -1,0 +1,65 @@
+﻿@inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Repository.IRatingRepository RatingRepository
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<div class="navbar-addon">
+    <div class="container">
+        <div class="col-md-12 noPadding">
+            <div class="col-md-2 noPadding addon-box">
+                <div class="addon-img-container">
+                    <img src="http://via.placeholder.com/150x150" />
+                </div>
+            </div>
+            <div class="col-md-5 addon-box">
+                <div class="addon-number" style="text-align: left">
+                    <h3>@user.Name</h3>
+                    @if (user.InfluenterId.HasValue)
+                    {
+                        <p style="margin-top: 10px;">Influencer</p>
+                    }
+                    else
+                    {
+                        <p style="margin-top: 10px;">Fan</p>
+                    }
+
+                </div>
+            </div>
+
+            <div class="col-md-5 addon-box">
+                @if (!user.InfluenterId.HasValue)
+                {
+                    <div class="addon-number" style="width: 50%">
+                        <h1>@RatingRepository.GetMyRatingNumber(user.Id)</h1>
+                        <p>Meninger</p>
+                    </div>
+                    <div class="addon-number" style="width: 50%">
+                        <h1>@RatingRepository.GetMyRatingAnswerNumber(user.Id)</h1>
+                        <p>Feedback</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="addon-number" style="width: 33.3%">
+                        <h1>@RatingRepository.GetInfluenterRatingNumber(user.InfluenterId.Value)</h1>
+                        <p>Ratings</p>
+                    </div>
+                    <div class="addon-number" style="width: 33.3%">
+                        <h1>@RatingRepository.GetInfluenterAnswerNumber(user.InfluenterId.Value)</h1>
+                        <p>Svar</p>
+                    </div>
+                    <div class="addon-number" style="width: 33.3%">
+                        <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(user.InfluenterId.Value), 1) %</h1>
+                        <p>Svar procent</p>
+                    </div>
+                }
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

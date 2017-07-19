@@ -8,57 +8,146 @@
 
 <div class="navbar-allaround"></div>
 
-<div class="container">
-    <h2 class="text-center" style="margin: 25px 0 25px 0">Dit feedback</h2>
-    @if (user.InfluenterId.HasValue)
-    {
-        <div>
-            @foreach (var v in RatingRepository.GetRatingForInfluenter(user.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
-            {
-                var read = (v.IsRead == true) ? "active" : ""; 
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert fade in alert-success alert-dismissable" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["Success"]
+    </div>
+}
 
 
-                <div class="col-md-12 noPadding feedback-container @read">
-                    <form asp-area="" asp-controller="Manage" asp-action="FeedbackResponse" asp-route-id="@v.RatingId">
-                        <a href="#" class="feedback-link" onclick="$(this).closest('form').submit();">
-                            <div class="col-md-1 noPadding">
-                                <img class="center-block" src="http://via.placeholder.com/100x100" />
-                            </div>
-                            <div class="col-md-6 noPadding">
-                                <p>Du er blevet ratet af @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
-                                <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                            </div>
-                            <div class="col-md-5" style="height: 100%">
-                                <div class="star-rating-feedback">
-                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+@Html.Partial("_NavbarAddonPartial")
 
-                                        <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+<div class="bottom-container">
+
+    <div class="container">
+        <h2 style="padding: 25px 0 25px 33px; margin: 0">Feedback</h2>
+        <div class="col-md-12 noPaddingRight">
+            <div class="col-md-8 noPaddingRight">
+                @if (user.InfluenterId.HasValue)
+                {
+                    @foreach (var v in RatingRepository.GetRatingForInfluenter(user.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                    {
+                        var read = (v.IsRead == true) ? "active" : "";
+
+                        <form asp-area="" asp-controller="Manage" asp-action="FeedbackResponse" asp-route-id="@v.RatingId">
+                            <a href="#" class="feedback-link" onclick="$(this).closest('form').submit();">
+                                <div class="col-md-12 noPadding feedback-container @read">
+                                    <div class="col-md-2 noPadding">
+                                        <img class="center-block" src="http://via.placeholder.com/100x100" />
+                                    </div>
+                                    <div class="col-md-6 noPadding">
+                                        <p>Du er blevet ratet af @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
+                                        <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                                    </div>
+                                    <div class="col-md-4" style="height: 100%">
+                                        <div class="star-rating-feedback">
+                                            <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+
+                                                <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            </a>
+                        </form>
+
+                    }
+                }
+            </div>
+            <div class="col-md-4 noPaddingRight">
+                <div class="feedback-rating-all-box">
+
+                    <div class="feedback-rating-all-box-item">
+                        <h3 class="text-center">Samlet rating</h3>
+                        <div class="star-rating-feedback-all">
+                            <div class="back-stars" title="50%">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <div class="front-stars" style="width: 50%">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
                             </div>
-                        </a>
-                    </form>
+                        </div>
+                    </div>
                 </div>
-            }
+
+                <div class="feedback-rating-all-box">
+                    <div class="feedback-rating-all-box-item">
+                        <h3 class="text-center">Fan rating</h3>
+                        <div class="star-rating-feedback-all">
+                            <div class="back-stars" title="50%">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <div class="front-stars" style="width: 50%">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-rating-all-box">
+                    <div class="feedback-rating-all-box-item" style="border: none">
+                        <h3 class="text-center">Ekspert rating</h3>
+                        <div class="star-rating-feedback-all">
+                            <div class="back-stars" title="50%">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <div class="front-stars" style="width: 50%">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
-    }
-    else
-    {
-
-    }
 
 
 
 
+
+
+
+
+
+
+
+    </div>
 </div>
