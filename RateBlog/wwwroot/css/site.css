@@ -776,9 +776,11 @@ body.modal-open {
 .influ-img {
     height: 100px;
     width: 100px;
-    border-radius: 10%;
+    border-radius: 50%;
     display: block;
     border: 1px solid #eee;
+    margin-right:10px;
+
 }
 
 .search-result {
