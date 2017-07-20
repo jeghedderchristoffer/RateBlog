@@ -10,12 +10,12 @@
 @Html.Partial("_NavbarAddonPartial")
 
 <div class="bottom-container">
-    <div class="navbar-addon" style="border-bottom: none;">
-        <div class="container" style="border-bottom: 3px dotted #ddd;">
+    <div class="navbar-addon" style="padding-bottom: 20px; border: none;">
+        <div class="container">
             <div class="col-md-12 noPadding">
                 <div class="col-md-2 noPadding addon-box">
                     <div class="addon-img-container">
-                        <img src="http://via.placeholder.com/150x150" />
+                        <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.Rating.ApplicationUserId })" />
                     </div>
                 </div>
                 <div class="col-md-5 addon-box">
@@ -55,43 +55,42 @@
             </div>
         </div>
     </div>
-    <div class="container" style="padding-top: 10px; padding-bottom: 15px; border: 3px dotted #ddd;">
-        <div class="col-md-12">
-            <div class="col-md-6 noPaddingLeft">
-                <h4><i>@UserManager.Users.Single(x => x.Id == Model.Rating.ApplicationUserId).Name har skrevet følgende om dig:</i></h4>
-                <br />
-                <p style="line-height: 180%">@Model.Rating.Review</p>
-            </div>
-            <div class="col-md-offset-1 col-md-5">
-                <h4 class="text-center"><i>@UserManager.Users.Single(x => x.Id == Model.Rating.ApplicationUserId).Name har fulgt dig i:</i></h4>
-                @if (Model.Rating.TidFulgt == 01)
-                {
-                    <h2 class="text-center" style="margin-top: 25px">0-1 år</h2>
-                }
-                else if(Model.Rating.TidFulgt == 12)
-                {
-                    <h2 class="text-center" style="margin-top: 25px">1-2 år</h2>
-                }
-                else if (Model.Rating.TidFulgt == 2)
-                {
-                    <h2 class="text-center" style="margin-top: 25px">2+ år</h2>
+    <div style="border-bottom: 1px solid #ddd ">
+        <div class="container" style="padding-top: 30px; padding-bottom: 30px;">
+            <div class="col-md-12">
+                <div class="col-md-6 noPaddingLeft">
+                    <h4><i>@UserManager.Users.Single(x => x.Id == Model.Rating.ApplicationUserId).Name har skrevet følgende om dig:</i></h4>
+                    <br />
+                    <p style="line-height: 180%">@Model.Rating.Review</p>
+                </div>
+                <div class="col-md-offset-1 col-md-5">
+                    <h4 class="text-center"><i>@UserManager.Users.Single(x => x.Id == Model.Rating.ApplicationUserId).Name har fulgt dig i:</i></h4>
+                    @if (Model.Rating.TidFulgt == 01)
+                    {
+                        <h2 class="text-center" style="margin-top: 25px">0-1 år</h2>
+                    }
+                    else if (Model.Rating.TidFulgt == 12)
+                    {
+                        <h2 class="text-center" style="margin-top: 25px">1-2 år</h2>
+                    }
+                    else if (Model.Rating.TidFulgt == 2)
+                    {
+                        <h2 class="text-center" style="margin-top: 25px">2+ år</h2>
 
-                }
+                    }
+                </div>
             </div>
         </div>
     </div>
-    <div class="container noPadding" style="padding-top: 10px;">
+    <div class="container noPadding" style="padding-top: 30px;">
         <div class="col-md-12 noPadding">
             <div class="col-md-6 noPadding">
                 <form asp-area="" asp-controller="Manage" asp-action="Answer">
+                    <h4 class="text-center">Hvad har du af feedback til din rating:</h4>
                     @Html.HiddenFor(x => x.Rating.RatingId)
                     <textarea asp-for="@Model.Rating.Answer" class="rating-input" style="margin-bottom: 15px" rows="8" placeholder="Har du noget feedback til din rating?"></textarea>
                     <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Send" />
                 </form>
-            </div>
-            <div class="col-md-6">
-                <p style="margin-top: 20px;">Husk altid at holde den gode tone.</p>
-                <p>Dette svar vil blive offentliggjort</p>
             </div>
         </div>
     </div>

@@ -30,7 +30,7 @@
 
     <div class="container">
         <div class="col-md-12 margin-top">
-            <img class="profil-img center-block" src="http://placehold.it/200x200" />
+            <img class="profil-img center-block" src="@Url.Action("ProfilePic", "Manage")" />
             <div class="text-center">
                 <h2>@user.Name</h2>
                 @if (user.InfluenterId != null && CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value) != null)

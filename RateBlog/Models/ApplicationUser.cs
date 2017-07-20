@@ -13,6 +13,7 @@ namespace RateBlog.Models
         public DateTime? Birth { get; set; }
         public string City { get; set; }
         public string ProfileText { get; set; }
+        public Byte[] ImageFile { get; set; }
 
         public virtual Influenter Influenter { get; set; }
         public int? InfluenterId { get; set; }

@@ -22,6 +22,8 @@ namespace RateBlog.Models.ManageViewModels
 
         public string PhoneNumber { get; set; }
 
+        public byte[] ProfilePicture { get; set; }  
+
         public bool IsInfluenter { get; set; }
 
         // Platform/link
@@ -32,17 +34,6 @@ namespace RateBlog.Models.ManageViewModels
         public string WebsiteLink { get; set; }
         public string TwitterLink { get; set; }
         public string TwitchLink { get; set; }
-
-        // Kategori
-        public bool LifestyleBool { get; set; }
-        public bool DIYBool { get; set; }
-        public bool VlogBool { get; set; }
-        public bool BeautyBool { get; set; }
-        public bool GamingBool { get; set; }
-        public bool EntertainmentBool { get; set; }
-        public bool FoodBool { get; set; }
-        public bool FashionBool { get; set; }
-        public bool MommyBool { get; set; }
          
         public List<InfluenterKategoriViewModel> IKList { get; set; }
 

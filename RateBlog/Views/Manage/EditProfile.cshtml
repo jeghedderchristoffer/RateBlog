@@ -42,7 +42,7 @@
         </div>
 
         <div id="redigerFanContainer">
-            <form asp-area="" asp-controller="Manage" asp-action="EditProfile">
+            <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="EditProfile">
                 <input asp-for="@Model.IsInfluenter" value="false" hidden="hidden" />
                 <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
                 <p>Fulde navn:</p>
@@ -65,9 +65,15 @@
                 <input asp-for="@Model.PhoneNumber" class="edit-input-influ" />
                 <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
 
+                <p>Profil billede:</p>
+                <input type="file" name="profilePic" class="input-files" />
+                <br />
+
                 <p>Profil tekst:</p>
                 <textarea asp-for="@Model.ProfileText" class="edit-input-influ" rows="7" style="height: auto;"></textarea>
                 <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
+
+
 
                 <input type="submit" class="edit-button-influ" value="Gem" />
 
@@ -77,7 +83,7 @@
         </div>
 
         <div id="redigerInfluenterContainer">
-            <form asp-area="" asp-controller="Manage" asp-action="EditInfluenterProfile">
+            <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="EditInfluenterProfile">
                 <input asp-for="@Model.IsInfluenter" value="true" hidden="hidden" />
                 <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
                 <p>Fulde navn:</p>
@@ -100,6 +106,9 @@
                 <input asp-for="@Model.PhoneNumber" class="edit-input-influ" />
                 <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
 
+                <p>Profil billede:</p>
+                <input type="file" name="profilePicInfluencer" class="input-files" />
+                <br />
 
                 <!--Influenter Profil-->
 

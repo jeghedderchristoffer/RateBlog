@@ -12,6 +12,8 @@ using RateBlog.Models.ManageViewModels;
 using RateBlog.Services;
 using RateBlog.Repository;
 using RateBlog.Data;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace RateBlog.Controllers
 {
@@ -28,7 +30,7 @@ namespace RateBlog.Controllers
         private readonly IInfluenterRepository _influenterRepo;
         private readonly IPlatformRepository _platformRepo;
         private readonly IKategoriRepository _kategoriRepo;
-        private readonly IRatingRepository _ratingRepo; 
+        private readonly IRatingRepository _ratingRepo;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
@@ -39,13 +41,13 @@ namespace RateBlog.Controllers
           ILoggerFactory loggerFactory,
           IInfluenterRepository influenterRepo,
           IPlatformRepository platformRepo,
-          IKategoriRepository kategoriRepo, 
+          IKategoriRepository kategoriRepo,
           IRatingRepository ratingRepo)
         {
             _influenterRepo = influenterRepo;
             _platformRepo = platformRepo;
             _kategoriRepo = kategoriRepo;
-            _ratingRepo = ratingRepo; 
+            _ratingRepo = ratingRepo;
 
             _userManager = userManager;
             _signInManager = signInManager;
@@ -377,6 +379,7 @@ namespace RateBlog.Controllers
                     City = user.City,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
+                    ProfilePicture = user.ImageFile,
                     Influenter = _influenterRepo.Get(user.InfluenterId.Value),
                     YoutubeLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "YouTube").PlatformId),
                     FacebookLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Facebook").PlatformId),
@@ -406,7 +409,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProfile(EditProfileViewModel model)
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model, IFormFile profilePic)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -425,6 +428,14 @@ namespace RateBlog.Controllers
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
 
+                if (profilePic != null)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    profilePic.OpenReadStream().CopyTo(ms);
+                    user.ImageFile = ms.ToArray();
+                }
+
+
                 var result = await _userManager.UpdateAsync(user);
 
                 if (result.Succeeded)
@@ -441,7 +452,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditInfluenterProfile(EditProfileViewModel model)
+        public async Task<IActionResult> EditInfluenterProfile(EditProfileViewModel model, IFormFile profilePicInfluencer)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -454,6 +465,13 @@ namespace RateBlog.Controllers
                 user.City = model.City;
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
+
+                if (profilePicInfluencer != null)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    profilePicInfluencer.OpenReadStream().CopyTo(ms);
+                    user.ImageFile = ms.ToArray();
+                }
 
                 var result = await _userManager.UpdateAsync(user);
 
@@ -518,14 +536,14 @@ namespace RateBlog.Controllers
         {
             var rating = _ratingRepo.Get(id);
             rating.IsRead = true;
-            _ratingRepo.Update(rating); 
+            _ratingRepo.Update(rating);
 
             var model = new FeedbackResponseViewModel()
             {
                 Rating = rating
             };
 
-            return View(model); 
+            return View(model);
         }
 
         public IActionResult Answer(FeedbackResponseViewModel model)
@@ -535,9 +553,25 @@ namespace RateBlog.Controllers
 
             _ratingRepo.Update(rating);
 
-            TempData["Success"] = "Du har sendt dit svar!"; 
+            TempData["Success"] = "Du har sendt dit svar!";
 
-            return RedirectToAction("MyFeedback"); 
+            return RedirectToAction("MyFeedback");
+        }
+
+        public async Task<IActionResult> ProfilePic()
+        {
+            var user = await GetCurrentUserAsync();
+
+            byte[] buffer = user.ImageFile;
+            return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ImageFile));
+        }
+
+        [HttpGet]
+        public IActionResult UsersProfilePic(string id)
+        {
+            var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
+            byte[] buffer = user.ImageFile;
+            return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ImageFile));
         }
 
         #region Helpers

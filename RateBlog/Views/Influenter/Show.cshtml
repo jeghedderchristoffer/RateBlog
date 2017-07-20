@@ -18,7 +18,7 @@
         }
 
         <div class="col-md-12">
-            <img class="profil-img margin-top center-block" src="http://placehold.it/200x200" />
+            <img class="profil-img margin-top center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
             <div class="text-center">
                 <h2>@Model.ApplicationUser.Name</h2>
                 <h3>
