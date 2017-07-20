@@ -42,6 +42,9 @@
 
 <div class=" container">
     <div class="col-md-12">
+
+        @*Fans*@
+
         <div class="col-md-8 readrating">
             <h1>Fans</h1>
             <h4>Samlet rating:</h4>
@@ -69,6 +72,10 @@
             </div> 
 
         </div>
+
+
+        @*Eksperter*@
+
         <div class="col-md-4 readrating">
             <h1>Eksperter</h1>
             <h4>Samlet rating:</h4>
@@ -101,18 +108,22 @@
         <div class="col-md-7 noPaddingRight">
             @if (Model.ApplicationUser.InfluenterId.HasValue)
             {
-                @foreach (var v in RatingRepository.GetRatingForInfluenter(@Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                @foreach (var v in RatingRepository.GetRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
                 {
 
 
 
-                    <div class="col-md-12 noPadding feedback-container">
+                    <div class="col-md-12 noPadding feedback-containerRead">
                         <div class="col-md-2 noPadding">
                             <img class="center-block" src="http://via.placeholder.com/100x100" />
                         </div>
                         <div class="col-md-6 noPadding">
                             <p>Mening fra @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
                             <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                            <h5><i>Andmeldelse:</i></h5>
+                            <p>@v.Review</p>
+
+                            
                         </div>
                         <div class="col-md-4" style="height: 100%">
                             <div class="star-rating-feedback">
@@ -134,6 +145,8 @@
                             </div>
                         </div>
                     </div>
+
+
 
 
 

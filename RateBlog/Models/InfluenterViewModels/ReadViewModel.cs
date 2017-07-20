@@ -11,6 +11,7 @@ namespace RateBlog.Models.InfluenterViewModels
         public Influenter Influenter { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public List<ApplicationUser> InfluentList { get; set; }
+        public int MyProperty { get; set; }
 
     }
 }
