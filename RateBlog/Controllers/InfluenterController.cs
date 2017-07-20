@@ -52,6 +52,14 @@ namespace RateBlog.Controllers
                 }
             }
 
+            foreach (var platform in _platform.GetAll())
+            {
+                if (search.ToLower().Equals(platform.PlatformNavn.ToLower()))
+                {
+                    influenter.AddRange(_platform.GetAllInfluentersWithPlatform(search));
+                }
+            }
+
             foreach (var v in influenter)
             {
                 influenterRating.Add(v.InfluenterId.Value, _ratingRepository.GetRatingAverage(v.InfluenterId.Value));
