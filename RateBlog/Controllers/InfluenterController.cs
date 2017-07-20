@@ -41,14 +41,22 @@ namespace RateBlog.Controllers
             }
 
             var influenter = _userManager.Users.
-                Where(x => (x.Name.ToLower().Contains(search.ToLower())) && x.InfluenterId.HasValue 
+                Where(x => (x.Name.ToLower().Contains(search.ToLower())) && x.InfluenterId.HasValue
                 || (x.Influenter.Alias.Contains(search) && x.InfluenterId.HasValue)).ToList();
 
-            foreach(var kategori in _kategori.GetAll())
+            foreach (var kategori in _kategori.GetAll())
             {
                 if (search.ToLower().Equals(kategori.KategoriNavn.ToLower()))
                 {
                     influenter.AddRange(_kategori.GetAllInfluentersWithKategori(search));
+                }
+            }
+
+            foreach (var platform in _platform.GetAll())
+            {
+                if (search.ToLower().Equals(platform.PlatformNavn.ToLower()))
+                {
+                    influenter.AddRange(_platform.GetAllInfluentersWithPlatform(search));
                 }
             }
 
@@ -89,7 +97,7 @@ namespace RateBlog.Controllers
             var influenter = _influenter.Get(id);
             var user = _userManager.Users.SingleOrDefault(x => x.InfluenterId == id);
 
-            var model = new ShowViewModel()
+            var model = new ReadViewModel()
             {
                 ApplicationUser = user,
                 Influenter = influenter
@@ -98,17 +106,20 @@ namespace RateBlog.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public IActionResult SorterPlatform(int[] platforme, int[] kategorier, List<int?> influId)
+        [HttpPost]
+        public IActionResult SorterPlatform(int[] platforme, int[] kategorier)
         {
             var influenters = _influenter.GetAllInfluentersForPlatforms(platforme).ToList();
             var kategori = _influenter.GetAllInfluentersForKategori(kategorier).ToList();
+
             var sortList = _userManager.Users.Where(x => influenters.Contains(x.InfluenterId.Value) || kategori.Contains(x.InfluenterId.Value)).ToList();
 
 
             var modelSort = new IndexViewModel()
             {
-                InfluentList = sortList
+                InfluentList = sortList,
+                
+
             };
 
             return View("Index", modelSort);

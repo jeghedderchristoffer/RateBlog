@@ -77,5 +77,30 @@ namespace RateBlog.Repository
 
             return null;
         }
+
+        public int GetIdByName(string name)
+        {
+            if (_applicationDbContext.Platform.Any(x => x.PlatformNavn == name))
+            {
+                return _applicationDbContext.Platform.SingleOrDefault(x => x.PlatformNavn == name).PlatformId;
+            }
+
+            return 0;
+        }
+
+        public List<ApplicationUser> GetAllInfluentersWithPlatform(string name)
+        {
+            var id = GetIdByName(name);
+            var ik = _applicationDbContext.InfluenterPlatform.Where(x => x.PlatformId == id);
+
+            List<ApplicationUser> userList = new List<ApplicationUser>();
+
+            foreach (var v in ik)
+            {
+                userList.Add(_applicationDbContext.Users.SingleOrDefault(x => x.InfluenterId == v.InfluenterId));
+            }
+
+            return userList;
+        }
     }
 }

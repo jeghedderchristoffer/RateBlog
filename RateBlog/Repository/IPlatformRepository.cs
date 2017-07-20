@@ -44,6 +44,8 @@ namespace RateBlog.Repository
         /// <param name="link"></param>
         void Insert(int influenterId, int platformId, string link);
 
+        List<ApplicationUser> GetAllInfluentersWithPlatform(string name);
+
 
     }
 }
