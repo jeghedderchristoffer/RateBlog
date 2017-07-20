@@ -1,7 +1,190 @@
-﻿@inject RateBlog.Repository.IRatingRepository RatingRepository
+﻿@model RateBlog.Models.InfluenterViewModels.ReadViewModel
+@inject RateBlog.Repository.IRatingRepository RatingRepository
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s ratings";
 }
 
 <div class="navbar-allaround"></div>
+
+<div class="navbar-addon">
+
+    <div class="container">
+        <div class="col-md-12 noPadding">
+            <div class="col-md-2 noPadding addon-box">
+                <div class="addon-img-container">
+                    <a asp-controller="Influenter" asp-action="Show" asp-route-id="@Model.Influenter.InfluenterId">
+                        <img src="http://via.placeholder.com/150x150" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5 addon-box">
+                <div class="addon-number" style="text-align: left">
+                    <p>Rating af</p>
+                    <h3>@Model.Influenter.Alias</h3>
+                    
+                </div>
+
+            </div>
+            <div class="col-md-5 addon-box">
+                <div class="addon-number">
+                    <h1>@RatingRepository.GetInfluenterRatingNumber(Model.Influenter.InfluenterId)</h1>
+                    <p>Antal ratings</p>
+                </div>
+                <div class="addon-number">
+                    <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(Model.Influenter.InfluenterId), 1)%</h1>
+                    <p>Svar procent</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class=" container">
+    <div class="col-md-12">
+        <div class="col-md-8 readrating">
+            <h1>Fans</h1>
+            <h4>Samlet rating:</h4>
+            <div class="outer">
+                <div class="middle">
+                    <div class="inner">
+                        <div class="star-rating-show" style="padding-bottom: 20px;">
+                            <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+        </div>
+        <div class="col-md-4 readrating">
+            <h1>Eksperter</h1>
+            <h4>Samlet rating:</h4>
+            <div class="outer">
+                <div class="middle">
+                    <div class="inner">
+                        <div class="star-rating-show" style="padding-bottom: 20px;">
+                            <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-12 noPaddingRight">
+        <div class="col-md-7 noPaddingRight">
+            @if (Model.ApplicationUser.InfluenterId.HasValue)
+            {
+                @foreach (var v in RatingRepository.GetRatingForInfluenter(@Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                {
+
+
+
+                    <div class="col-md-12 noPadding feedback-container">
+                        <div class="col-md-2 noPadding">
+                            <img class="center-block" src="http://via.placeholder.com/100x100" />
+                        </div>
+                        <div class="col-md-6 noPadding">
+                            <p>Mening fra @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
+                            <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                        </div>
+                        <div class="col-md-4" style="height: 100%">
+                            <div class="star-rating-feedback">
+                                <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+
+                                    <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                }
+            }
+        </div>
+        
+            <div class="col-md-5 noPaddingRight">
+                @if (Model.ApplicationUser.InfluenterId.HasValue)
+            {
+                    @foreach (var v in RatingRepository.GetRatingForInfluenter(@Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                {
+
+
+
+                        <div class="col-md-12 noPadding feedback-container">
+                            <div class="col-md-2 noPadding">
+                                <img class="center-block" src="http://via.placeholder.com/100x100" />
+                            </div>
+                            <div class="col-md-6 noPadding">
+                                <p>Mening fra @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
+                                <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                            </div>
+                            <div class="col-md-4" style="height: 100%">
+                                <div class="star-rating-feedback">
+                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                                        <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    }
+                }
+            </div>
+
+        </div>
+    </div>
+
 

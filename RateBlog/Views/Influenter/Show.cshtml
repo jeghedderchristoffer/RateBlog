@@ -20,7 +20,7 @@
         <div class="col-md-12">
             <img class="profil-img margin-top center-block" src="http://placehold.it/200x200" />
             <div class="text-center">
-                <h2>@Model.ApplicationUser.Name</h2>
+                <h2 >@Model.ApplicationUser.Name</h2>
                 <h3>
                     @foreach (var v in CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value))
                     {
@@ -94,7 +94,7 @@
                     <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
 
                     <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100">Giv din mening</a>
-                    <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-blue-100">Læs ratings</a>                  
+                    <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-blue-100">Se ratings</a>                  
 
                 }
                 else

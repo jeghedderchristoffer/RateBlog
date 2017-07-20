@@ -1852,3 +1852,12 @@ footer {
         margin: 0;
         margin-bottom: 15px;
     }
+
+.readrating h1{
+    text-align: center;
+    
+}
+
+.readrating h4{
+    text-align: center;
+}
