@@ -14,7 +14,7 @@
             <div class="col-md-2 noPadding addon-box">
                 <div class="addon-img-container">
                     <a asp-controller="Influenter" asp-action="Show" asp-route-id="@Model.Influenter.InfluenterId">
-                        <img src="http://via.placeholder.com/150x150" />
+                        <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
                     </a>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                 <div class="addon-number" style="text-align: left">
                     <p>Rating af</p>
                     <h3>@Model.Influenter.Alias</h3>
-                    
+
                 </div>
 
             </div>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
 
         </div>
 
@@ -105,6 +105,10 @@
 
     </div>
     <div class="col-md-12 noPaddingRight">
+
+        @*Fan*@
+
+
         <div class="col-md-7 noPaddingRight">
             @if (Model.ApplicationUser.InfluenterId.HasValue)
             {
@@ -115,15 +119,87 @@
 
                     <div class="col-md-12 noPadding feedback-containerRead">
                         <div class="col-md-2 noPadding">
-                            <img class="center-block" src="http://via.placeholder.com/100x100" />
+                            <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId})" />
+                        </div>
+                        <div class="col-md-6 noPadding">
+                            <p><b>Mening fra @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</b></p>
+                            <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                            <h5><i>Andmeldelse:</i></h5>
+                            <p style="padding-bottom:20px; line-height: 150%;">@v.Review</p>
+
+
+                        </div>
+                        <div class="col-md-4" style="height: 100%">
+                            <div class="star-rating-feedback">
+                                <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+
+                                    <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (v.Answer != null)
+                        {
+
+                            <div class="col-md-12" style="border-top: 1px solid #ddd; padding-top: 10px; padding-left: 0;">
+                                <div class="col-md-2 noPadding" style="padding-top: 10px;">
+                                    <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id})" />
+                                </div>
+                                <div class="col-md-6 noPadding">
+                                    <p><b>Svar fra @Model.ApplicationUser.Name</b></p>
+                                    <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                                    <h5><i>Svar:</i></h5>
+                                    <p style="line-height: 150%">@v.Answer</p>
+
+
+                                </div>
+
+                            </div>
+                        }
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                }
+            }
+        </div>
+
+        @*Eksperter*@
+
+
+        <div class="col-md-5 noPaddingRight">
+            @if (Model.ApplicationUser.InfluenterId.HasValue)
+            {
+                @foreach (var v in RatingRepository.GetRatingForInfluenter(@Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                {
+
+
+
+                    <div class="col-md-12 noPadding feedback-container">
+                        <div class="col-md-2 noPadding">
+                            <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId})" />
                         </div>
                         <div class="col-md-6 noPadding">
                             <p>Mening fra @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
                             <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                            <h5><i>Andmeldelse:</i></h5>
-                            <p>@v.Review</p>
-
-                            
                         </div>
                         <div class="col-md-4" style="height: 100%">
                             <div class="star-rating-feedback">
@@ -148,56 +224,11 @@
 
 
 
-
-
                 }
             }
         </div>
-        
-            <div class="col-md-5 noPaddingRight">
-                @if (Model.ApplicationUser.InfluenterId.HasValue)
-            {
-                    @foreach (var v in RatingRepository.GetRatingForInfluenter(@Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
-                {
 
-
-
-                        <div class="col-md-12 noPadding feedback-container">
-                            <div class="col-md-2 noPadding">
-                                <img class="center-block" src="http://via.placeholder.com/100x100" />
-                            </div>
-                            <div class="col-md-6 noPadding">
-                                <p>Mening fra @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
-                                <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                            </div>
-                            <div class="col-md-4" style="height: 100%">
-                                <div class="star-rating-feedback">
-                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-
-                                        <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    }
-                }
-            </div>
-
-        </div>
     </div>
+</div>
 
 
