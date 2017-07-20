@@ -428,6 +428,7 @@ namespace RateBlog.Controllers
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
 
+
                 if (profilePic != null)
                 {
                     MemoryStream ms = new MemoryStream();
@@ -552,6 +553,11 @@ namespace RateBlog.Controllers
             rating.Answer = model.Rating.Answer;
 
             _ratingRepo.Update(rating);
+
+            if(model.Rating.Answer == null)
+            {
+                TempData["Error"] = "Du fik ikke sendt dit svar.";
+            }
 
             TempData["Success"] = "Du har sendt dit svar!";
 
