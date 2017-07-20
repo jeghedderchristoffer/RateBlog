@@ -558,6 +558,8 @@ namespace RateBlog.Controllers
             return RedirectToAction("MyFeedback");
         }
 
+        [HttpGet]
+        [AllowAnonymous]     
         public async Task<IActionResult> ProfilePic()
         {
             var user = await GetCurrentUserAsync();
@@ -567,6 +569,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult UsersProfilePic(string id)
         {
             var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
