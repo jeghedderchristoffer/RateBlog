@@ -428,6 +428,7 @@ namespace RateBlog.Controllers
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
 
+
                 if (profilePic != null)
                 {
                     MemoryStream ms = new MemoryStream();
@@ -553,13 +554,22 @@ namespace RateBlog.Controllers
 
             _ratingRepo.Update(rating);
 
-            TempData["Success"] = "Du har sendt dit svar!";
+            if (model.Rating.Answer == null)
+            {
+                TempData["Error"] = "Du fik ikke sendt dit svar.";
+            }
+            else
+            {
+                TempData["Success"] = "Du har sendt dit svar!";
+            }
+
+
 
             return RedirectToAction("MyFeedback");
         }
 
         [HttpGet]
-        [AllowAnonymous]     
+        [AllowAnonymous]
         public async Task<IActionResult> ProfilePic()
         {
             var user = await GetCurrentUserAsync();
