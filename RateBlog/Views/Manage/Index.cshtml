@@ -58,15 +58,15 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-4">
                 <h1>RATING HER</h1>
             </div>
             <hr class="visible-xs" />
-            <div class="col-md-4 profile-text">
+            <div class="col-md-4 col-sm-4 profile-text">
                 <p> @user.ProfileText </p>
             </div>
             <hr class="visible-xs" />
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-4">
                 @if (user.InfluenterId != null)
             {
                     @if (PlatformRepository.GetAllInfluenterPlatformForInfluenter(user.InfluenterId.Value) != null)

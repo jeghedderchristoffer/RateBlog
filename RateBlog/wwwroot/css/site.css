@@ -532,7 +532,7 @@ body.modal-open {
     text-align: center;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
     .navbar-addon img {
         border-radius: 50%;
         height: 50px;
@@ -627,6 +627,12 @@ body.modal-open {
         .icon-box span {
             font-size: 18px;
         }
+}
+
+@media (max-width: 991px) {
+    .icon-box {
+        padding-left: 0;
+    }
 }
 
 .fa-video {
