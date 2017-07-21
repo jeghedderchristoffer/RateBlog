@@ -100,7 +100,7 @@
                                     <div class="outer">
                                         <div class="middle">
                                             <div class="inner">
-                                                <img class="influ-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = influ.Id })" />
+                                                <img class="influ-img" style="margin-top:20px;" src="@Url.Action("UsersProfilePic", "Manage", new { id = influ.Id })" />
                                             </div>
                                         </div>
                                     </div>
@@ -156,7 +156,7 @@
 
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 noPadding">
-                                    <div class="star-rating-search">
+                                    <div class="star-rating-search" style="margin-top: 15px;">
                                         <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(influ.InfluenterId.Value), 2)%">
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                             <i class="fa fa-star" aria-hidden="true"></i>
@@ -174,6 +174,7 @@
                                         </div>
                                     </div>
                                     <a asp-controller="Influenter" asp-action="Show" asp-route-id="@influ.InfluenterId" class="a-button">Se profil</a>
+                                    <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@influ.InfluenterId" class="a-button" style="width:156.57px; margin-top: 10px; margin-bottom:15px; background-color: #08468d;">Anmeld</a>
                                 </div>
                             </div>
                         }
