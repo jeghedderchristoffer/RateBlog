@@ -14,6 +14,7 @@ using RateBlog.Repository;
 using RateBlog.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace RateBlog.Controllers
 {
@@ -359,7 +360,6 @@ namespace RateBlog.Controllers
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
-
         [HttpGet]
         public async Task<IActionResult> EditProfile()
         {
@@ -379,7 +379,6 @@ namespace RateBlog.Controllers
                     City = user.City,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
-                    ProfilePicture = user.ImageFile,
                     Influenter = _influenterRepo.Get(user.InfluenterId.Value),
                     YoutubeLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "YouTube").PlatformId),
                     FacebookLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Facebook").PlatformId),
@@ -453,7 +452,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditInfluenterProfile(EditProfileViewModel model, IFormFile profilePicInfluencer)
+        public async Task<IActionResult> EditInfluenterProfile(EditProfileViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -467,10 +466,10 @@ namespace RateBlog.Controllers
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
 
-                if (profilePicInfluencer != null)
+                if (model.ProfilePic != null)
                 {
                     MemoryStream ms = new MemoryStream();
-                    profilePicInfluencer.OpenReadStream().CopyTo(ms);
+                    model.ProfilePic.OpenReadStream().CopyTo(ms);
                     user.ImageFile = ms.ToArray();
                 }
 
@@ -522,7 +521,19 @@ namespace RateBlog.Controllers
                 return View("EditProfile", model);
             }
 
-            TempData["Error"] = "Du skal udfylde dine informationer for at kunne blive influenter!";
+            if (ModelState["ProfilePic"] != null)
+            {
+                var dd = ModelState["ProfilePic"]; 
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                var message = allErrors.First();
+                TempData["Error"] = message.ErrorMessage;
+            }
+            else
+            {
+                TempData["Error"] = "Du skal udfylde dine informationer for at kunne blive influenter!";
+            }
+
+            
             return View("EditProfile", model);
         }
 

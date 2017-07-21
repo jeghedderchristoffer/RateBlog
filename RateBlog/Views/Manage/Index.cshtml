@@ -32,10 +32,10 @@
         <div class="col-md-12 margin-top">
             <img class="profil-img center-block" src="@Url.Action("ProfilePic", "Manage")" />
             <div class="text-center">
-                <h2>@user.Name</h2>
+                <h2 class="responsive-visProfil-h2">@user.Name</h2>
                 @if (user.InfluenterId != null && CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value) != null)
             {
-                    <h3>
+                    <h3 class="responsive-visProfil-h3">
 
                         @foreach (var v in CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value))
                         {
@@ -59,11 +59,13 @@
         </div>
         <div class="col-md-12">
             <div class="col-md-4">
-
+                <h1>RATING HER</h1>
             </div>
+            <hr class="visible-xs" />
             <div class="col-md-4 profile-text">
                 <p> @user.ProfileText </p>
             </div>
+            <hr class="visible-xs" />
             <div class="col-md-4">
                 @if (user.InfluenterId != null)
             {
