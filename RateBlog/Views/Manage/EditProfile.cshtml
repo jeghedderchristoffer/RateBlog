@@ -27,7 +27,7 @@
 @Html.Partial("_NavbarAddonPartial")
 
 <div style="background: #fff; min-height: 80vh; padding-bottom: 100px;">
-    <div class="container noPadding">
+    <div class="container">
         <div class="editprofile-head">
             <h2 sstyle="margin: 0">Rediger profil</h2>
             @if (user.InfluenterId != null)
@@ -40,6 +40,12 @@
                 <button id="redigerInfluenterBtn">INFLUENTER</button>
             }
         </div>
+
+        <br class="visible-xs" />
+        <br class="visible-xs" />
+        <br class="visible-xs" />
+        <br />
+
 
         <div id="redigerFanContainer">
             <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="EditProfile">
@@ -73,11 +79,7 @@
                 <textarea asp-for="@Model.ProfileText" class="edit-input-influ" rows="7" style="height: auto;"></textarea>
                 <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
 
-
-
                 <input type="submit" class="edit-button-influ" value="Gem" />
-
-
 
             </form>
         </div>
@@ -85,7 +87,6 @@
         <div id="redigerInfluenterContainer">
             <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="EditInfluenterProfile">
                 <input asp-for="@Model.IsInfluenter" value="true" hidden="hidden" />
-                <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
                 <p>Fulde navn:</p>
                 <input asp-for="@Model.Name" class="edit-input-influ" />
                 <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
@@ -107,7 +108,7 @@
                 <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
 
                 <p>Profil billede:</p>
-                <input type="file" name="profilePicInfluencer" class="input-files" />
+                <input type="file" name="ProfilePic" asp-for="@Model.ProfilePic"/>
                 <br />
 
                 <!--Influenter Profil-->
@@ -137,7 +138,7 @@
 
                 <div class="edit-social-box">
                     <a class="fa fa-edit fa-facebook fa-facebook-edit"></a>
-                    <span><input id="editFacebook" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" /><span class="margin-left" id="editFacebookText"></span></span>
+                    <span><input id="editFacebook" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" /><span class="margin-left inside-span" id="editFacebookText"></span></span>
                 </div>
 
                 <div class="edit-social-box">

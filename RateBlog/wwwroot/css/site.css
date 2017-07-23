@@ -226,6 +226,7 @@ body.modal-open {
     margin: 20px auto;
     padding: 4px 16px;
     max-width: 400px;
+    min-width: 0;
     height: 45px;
     width: 100%;
     border-radius: 3px;
@@ -235,6 +236,8 @@ body.modal-open {
     .search-input:focus {
         outline: none;
     }
+
+
 
 .search-button {
     height: 45px;
@@ -255,6 +258,47 @@ body.modal-open {
         outline: none;
     }
 
+
+@media (max-width: 767px) {
+    .search-input {
+        margin: 20px auto;
+        padding: 4px 16px;
+        max-width: 400px;
+        min-width: 0;
+        height: 45px;
+        width: 78%;
+        border-radius: 3px;
+        border: none;
+    }
+
+    .search-button {
+        height: 45px;
+        margin-left: 0;
+        border-radius: 3px;
+        border: none;
+        width: 20%;
+        background-color: #f08301;
+        color: #fff;
+        transition: all 0.5s ease 0s;
+    }
+
+    .home-img {
+        background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/pexels-photo-199497.png") no-repeat center;
+        height: 500px;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+
+        .home-img h2 {
+            color: #fff;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+            font-size: 28px;
+            margin: 0;
+            margin-bottom: 10px
+        }
+}
 
 /*Center*/
 
@@ -488,6 +532,39 @@ body.modal-open {
     text-align: center;
 }
 
+@media (max-width: 991px) {
+    .navbar-addon img {
+        border-radius: 50%;
+        height: 50px;
+        width: 50px;
+    }
+
+    .addon-img-container {
+        vertical-align: top;
+        text-align: center;
+        padding-top: 15px;
+    }
+
+    .addon-number {
+        vertical-align: top;
+        padding-top: 16px;
+    }
+
+        .addon-number h3 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .addon-number h1 {
+            font-size: 24px;
+            padding-top: 15px;
+        }
+
+    .addon-box {
+        height: 100%
+    }
+}
+
 /*Video Container*/
 .video-container {
     background-color: #f5f5f5;
@@ -513,6 +590,21 @@ body.modal-open {
         padding-bottom: 50px
     }
 
+@media (max-width: 767px) {
+    .video-container {
+        background-color: #f5f5f5;
+        margin-top: 0px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        border-bottom: 1px solid #ddd;
+        border-top: 1px solid #ddd;
+    }
+
+    .video-container-responsive {
+        margin-top: 30px !important;
+    }
+}
+
 .margin-left {
     margin-left: 25px;
 }
@@ -522,6 +614,25 @@ body.modal-open {
     padding-left: 40px;
     margin-bottom: 50px;
     width: 100%;
+}
+
+@media (max-width: 767px) {
+    .icon-box {
+        display: inline-block;
+        margin-bottom: 50px;
+        width: 100%;
+        padding-left: 0;
+    }
+
+        .icon-box span {
+            font-size: 18px;
+        }
+}
+
+@media (max-width: 991px) {
+    .icon-box {
+        padding-left: 0;
+    }
 }
 
 .fa-video {
@@ -551,6 +662,19 @@ body.modal-open {
 }
 
 
+@media (max-width: 767px) {
+    .fa-video {
+        display: block;
+        padding: 13px;
+        font-size: 20px !important;
+        width: 45px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 50%;
+        transition: all 0.3s ease 0s;
+        margin-right: 10px;
+    }
+}
 
 /*Banner container*/
 
@@ -573,6 +697,14 @@ body.modal-open {
         margin-top: 20px;
     }
 
+
+@media (max-width: 767px) {
+    .banner-container p {
+        color: #444;
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+}
 
 /*Categori container*/
 
@@ -1051,6 +1183,7 @@ ul li:hover .dropOut {
 .profile-text {
     font-size: 15px;
     word-break: break-word;
+    line-height: 180%;
 }
 
 
@@ -1185,6 +1318,37 @@ ul li:hover .dropOut {
         font-weight: 500;
     }
 
+@media (max-width: 767px) {
+    .editprofile-head h2, .editprofile-head button {
+        vertical-align: top;
+        line-height: 38px;
+        display: block
+    }
+
+    .editprofile-head button {
+        float: left;
+        padding: 2px 20px;
+        background: #fff;
+        color: #000;
+        border: 1px solid #000;
+        border-radius: 3px;
+        font-size: 12px;
+        outline: none;
+        transition: all 0.3s ease 0s;
+        margin: 15px 0 15px 0;
+    }
+
+        .editprofile-head button.active {
+            margin: 15px 0 15px 0;
+            float: left;
+        }
+
+    #redigerInfluenterBtn {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
 .edit-input {
     width: 100%;
     max-width: 100%;
@@ -1288,6 +1452,46 @@ ul li:hover .dropOut {
 @media screen and (max-width: 991px) {
     .edit-social-box input[type="text"] {
         max-width: 292px;
+    }
+}
+
+@media (max-width: 767px) {
+    .edit-social-box input[type="text"] {
+        width: 76%;
+        max-width: 502px;
+        margin-left: 10px;
+        height: 40px;
+        padding: 15px 15px;
+        font-size: 16px;
+        border: 1px solid #dadada;
+        border-radius: 6px;
+        outline: none;
+    }
+
+    .margin-left {
+        margin-left: 0;
+        word-break: break-word
+    }
+
+    .responsive-visProfil-h2 {
+        font-size: 22px
+    }
+
+    .responsive-visProfil-h3{
+        font-size: 18px
+    }
+
+    .profil-img{
+        width: 200px; 
+        height: 200px;
+    }
+
+    .profile-text{
+        font-size: 14px
+    }
+
+    .addon-number p{
+        font-size: 14px;
     }
 }
 
@@ -1400,6 +1604,20 @@ ul li:hover .dropOut {
     .choose-category [type="checkbox"][disabled] + span {
         background: #f00;
     }
+
+@media (max-width: 767px) {
+    .choose-category {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+        .choose-category label {
+            position: relative;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 45%;
+        }
+}
 
 /*------Hover Info Rating---------*/
 
@@ -1856,12 +2074,11 @@ footer {
         margin-bottom: 15px;
     }
 
-.readrating h1{
+.readrating h1 {
     text-align: center;
-    
 }
 
-.readrating h4{
+.readrating h4 {
     text-align: center;
 }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Models.ManageViewModels
 {
-    public class EditProfileViewModel
+    public class EditProfileViewModel : IValidatableObject
     {
         [Required(ErrorMessage = "Du skal udfylde dit navn.")]
         public string Name { get; set; }
@@ -22,7 +23,7 @@ namespace RateBlog.Models.ManageViewModels
 
         public string PhoneNumber { get; set; }
 
-        public byte[] ProfilePicture { get; set; }  
+        public IFormFile ProfilePic { get; set; }
 
         public bool IsInfluenter { get; set; }
 
@@ -34,11 +35,26 @@ namespace RateBlog.Models.ManageViewModels
         public string WebsiteLink { get; set; }
         public string TwitterLink { get; set; }
         public string TwitchLink { get; set; }
-         
+
         public List<InfluenterKategoriViewModel> IKList { get; set; }
 
-        public Influenter Influenter { get; set; } 
+        public Influenter Influenter { get; set; }
 
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (ProfilePic != null)
+            {
+                if (ProfilePic.ContentType != "image/png" && ProfilePic.ContentType != "image/jpeg")
+                {
+                    yield return new ValidationResult("Billedet skal være af typen JPEG eller PGN.");
+                }
 
+                if (ProfilePic.Length > 1000000)
+                {
+                    yield return new ValidationResult("Billedet må ikke overstige 1MB.");
+                }
+            }
+
+        }
     }
 }
