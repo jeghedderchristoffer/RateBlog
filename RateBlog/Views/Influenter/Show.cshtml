@@ -20,19 +20,28 @@
         <div class="col-md-12">
             <img class="profil-img margin-top center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
             <div class="text-center">
-                <h2 >@Model.ApplicationUser.Name</h2>
+                <h2>@Model.ApplicationUser.Name</h2>
                 <h3>
-                    @foreach (var v in CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value))
+                    @if (CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value) != null)
                     {
-                        if (v.Equals(CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value).Last()))
+                        @foreach (var v in CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value))
                         {
-                            @v
-                        }
-                        else
-                        {
-                            @v <span> | </span>
+                            if (v.Equals(CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value).Last()))
+                            {
+                                @v
+                            }
+                            else
+                            {
+                                @v <span> | </span>
+                            }
                         }
                     }
+                    else
+                    {
+                        <span>Ukendte kategorier</span>
+
+                    }
+
                 </h3>
 
                 <hr />
@@ -65,7 +74,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                   
+                    </div>
 
                     <h3 class="text-center">Ekspert rating:</h3>
 
@@ -93,21 +102,29 @@
                     </div>
                     <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
 
-                    <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #08468d ">Giv din mening</a>
-                    <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-blue-100" style="background-color:#f08301">Se anmeldelser</a>                  
+                    <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #08468d ">Skriv din mening</a>
+                    <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se anmeldelser</a>
 
                 }
                 else
                 {
-                    <h4>Denne influenter har ingen ratings. Bliv den første</h4>
-                    <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100">Giv din mening</a>
+                    <h4>Denne influencer har ingen anmeldelser. Bliv den første</h4>
+                    <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #08468d ">Giv din mening</a>
                 }
             </div>
 
             <hr class="hidden-md hidden-lg" />
 
             <div class="col-md-4 profile-text">
-                <p>@Model.ApplicationUser.ProfileText</p>
+                @if (string.IsNullOrEmpty(Model.ApplicationUser.ProfileText))
+                {
+                    <h4>Denne influencer har ikke skrevet nogen profil tekst</h4>
+                }
+                else
+                {
+                    <p>@Model.ApplicationUser.ProfileText</p>
+                }
+
             </div>
 
             <hr class="hidden-md hidden-lg" />
@@ -159,7 +176,7 @@
                 }
                 else
                 {
-                    <h4>Denne influenter har ikke tilknyttet nogle sociale medier</h4>
+                    <h4>Denne influencer har ikke tilknyttet nogle sociale medier</h4>
                 }
 
             </div>

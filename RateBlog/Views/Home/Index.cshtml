@@ -10,9 +10,9 @@
         <div class="outer">
             <div class="middle">
                 <div class="inner">
-                    <h2>Find og anmeld Influentere</h2>
+                    <h2>Søg på influencers</h2>
                     <form method="get" asp-area="" asp-controller="Influenter" asp-action="Index">
-                        <input type="text" name="search" class="search-input" style="border: solid 1px" placeholder="Find en influenter" />
+                        <input type="text" name="search" id="search" class="search-input" style="border: solid 1px" placeholder="F.eks. Gaming eller Armin" />
                         <span>
                             <input class="search-button" type="submit" value="Søg" />
                         </span>
@@ -26,16 +26,16 @@
         <div class="container">
             <div class="col-md-12">
                 <div class="col-md-4 col-sm-4">
+                    <h3>Tag kampen op</h3>
+                    <p>Bestfluence tager kampen op mod mobning, løgne og utroværdighed på de sociale medier, ved at hylde influencers med kvalitetsindhold.</p>
+                </div>
+                <div class="col-md-4 col-sm-4">
                     <h3>Gør en forskel</h3>
-                    <p>Ved at dele din mening er du med til at skabe et bedre online fællesskab.</p>
+                    <p>Bestfluence gør en forskel, ved at lade seernes og læsernes meninger bliver hørt gennem konstruktiv feedback til influencerne.</p>
                 </div>
                 <div class="col-md-4 col-sm-4">
-                    <h3>Snak pænt</h3>
-                    <p>Giv din mening og hjælp til med at skabe en pænere tone online. Lad os snakke pænt.</p>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <h3>Stop mobning</h3>
-                    <p style="margin-bottom: 0;">Lad os sammen stoppe mobning, shaming eller shitstorms. Vi er alle mennesker.</p>
+                    <h3>Opdag det nye</h3>
+                    <p style="margin-bottom: 0;">Bestfluence er med på beatet og ønsker at nye influencers som producerer kvalitetsunderholdning nemt skal kunne opdages.</p>
                 </div>
             </div>
         </div>
@@ -45,25 +45,25 @@
         <div class="container">
             <div class="col-md-12 noPadding">
 
-                <div class="col-md-6 col-sm-6">
+                <div class="col-md-6 col-sm-12">
                     <iframe src="https://www.youtube.com/embed/_w8zya4BGIY"></iframe>
                 </div>
-                <div class="col-md-6 col-sm-6 video-container-responsive" style="margin-top: 15px">
+                <div class="col-md-6 col-sm-12 video-container-responsive" style="margin-top: 15px">
 
                     <div class="icon-box">
                         <span class="fa fa-video fa-search fa-search-video"></span>
-                        <span class="margin-left">Find din influenter</span>
+                        <span class="margin-left">Find din influencer</span>
                     </div>
 
                     <div class="icon-box">
                         <span class="fa fa-video fa-star fa-star-video"></span>
 
-                        <span class="margin-left">Giv dit feedback</span>
+                        <span class="margin-left">Giv konstruktiv feedback</span>
                     </div>
 
                     <div class="icon-box" style="margin-bottom: 0;">
                         <span class="fa fa-video fa-heart fa-heart-video"></span>
-                        <span class="margin-left">Opdag nye influenters</span>
+                        <span class="margin-left">Hjælp andre</span>
                     </div>
 
                 </div>
@@ -73,12 +73,12 @@
 
     <div class="categori-container">
         <div class="container">
-            <h1 class="text-center">Opdag nye influenter</h1>
+            <h1 class="text-center">Opdag influencers</h1>
             <div class="col-sm-12" style="padding-bottom: 60px;">
                 <div class="col-sm-4 responsive-padding">
                     <div class="ih-item circle effect19 center-block">
                         <a href="/Influenter?search=Beauty">
-                            <div class="img"><img src="~/images/beauty-pic.jpeg" alt="img"></div>
+                            <div class="img"><img src="~/images/beauty-kat.jpg" alt="img"></div>
                             <div class="info">
                                 <h3>Beauty</h3>
                                 <p>Find beauty influenter</p>
@@ -89,7 +89,7 @@
                 <div class="col-sm-4 responsive-padding">
                     <div class="ih-item circle effect19 center-block">
                         <a href="/Influenter?search=Gaming">
-                            <div class="img"><img src="~/images/gaming-pic.jpg" alt="img"></div>
+                            <div class="img"><img src="~/images/gaming-kat.jpeg" alt="img"></div>
                             <div class="info">
                                 <h3>Gaming</h3>
                                 <p>Find gaming influenter</p>
@@ -100,7 +100,7 @@
                 <div class="col-sm-4">
                     <div class="ih-item circle effect19 center-block">
                         <a href="/Influenter?search=Entertainment">
-                            <div class="img"><img src="~/images/entertainment-pic.jpeg" alt="img"></div>
+                            <div class="img"><img src="~/images/entertainment-kat.jpeg" alt="img"></div>
                             <div class="info">
                                 <h3 style="font-size: 14px">Entertainment</h3>
                                 <p>Find entertainment influenter</p>
@@ -114,7 +114,7 @@
                 <div class="col-sm-4 responsive-padding">
                     <div class="ih-item circle effect19 center-block">
                         <a href="/Influenter?search=Fashion">
-                            <div class="img"><img src="~/images/fashion-pic.jpeg" alt="img"></div>
+                            <div class="img"><img src="~/images/fashion-kat.jpeg" alt="img"></div>
                             <div class="info">
                                 <h3>Fashion</h3>
                                 <p>Find fashion influenter</p>
@@ -125,7 +125,7 @@
                 <div class="col-sm-4 responsive-padding">
                     <div class="ih-item circle effect19 center-block">
                         <a href="/Influenter?search=Mommy">
-                            <div class="img"><img src="~/images/mommy-pic.jpeg" alt="img"></div>
+                            <div class="img"><img src="~/images/mommy-kat.jpeg" alt="img"></div>
                             <div class="info">
                                 <h3>Mommy</h3>
                                 <p>Find mommy influenter</p>
@@ -136,7 +136,7 @@
                 <div class="col-sm-4">
                     <div class="ih-item circle effect19 center-block">
                         <a href="/Influenter?search=Lifestyle">
-                            <div class="img"><img src="~/images/lifestyle-pic.jpeg" alt="img"></div>
+                            <div class="img"><img src="~/images/lifestyle-kat.jpeg" alt="img"></div>
                             <div class="info">
                                 <h3>Lifestyle</h3>
                                 <p>Find lifestyle influenter</p>
@@ -162,7 +162,7 @@
                 <div class="col-sm-4 responsive-padding">
                     <div class="ih-item circle effect19 center-block">
                         <a href="/Influenter?search=Food">
-                            <div class="img"><img src="~/images/food-pic.jpeg" alt="img"></div>
+                            <div class="img"><img src="~/images/food-kat.jpeg" alt="img"></div>
                             <div class="info">
                                 <h3>Food</h3>
                                 <p>Find food influenter</p>
@@ -173,7 +173,7 @@
                 <div class="col-sm-4">
                     <div class="ih-item circle effect19 center-block">
                         <a href="/Influenter?search=DIY">
-                            <div class="img"><img src="~/images/diy-pic.jpeg" alt="img"></div>
+                            <div class="img"><img src="~/images/DIY-kat.jpeg" alt="img"></div>
                             <div class="info">
                                 <h3>DIY</h3>
                                 <p>Find DIY influenter</p>
@@ -186,50 +186,6 @@
         </div>
     </div>
 
-    <footer>
-        <div class="col-md-12">
-            <div class="col-md-3 footer-area">
-                <h4><b>OM BESTFLUENCE</b></h4>
-                <ul>
-                    <li><a asp-controller="Footer" asp-action="About">Om Bestfluence</a></li>
-                    <li><a asp-controller="Footer" asp-action="Presse">Presse</a></li>
-                    <li><a asp-controller="Footer" asp-action="Job">Job</a></li>
-                    <li><a asp-controller="Footer" asp-action="Blog">Blog</a></li>
-                    <li><a asp-controller="Footer" asp-action="Kontakt">Kontakt os</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3 footer-area">
-                <h4><b>FANS OG INFLUENTERS</b></h4>
-                <ul>
-                    <li><a asp-controller="Footer" asp-action="How">Sådan virker det</a></li>
-                    <li><a asp-controller="Footer" asp-action="Forældre">Forældre</a></li>
-                    <li><a asp-controller="Footer" asp-action="FAQ">FAQ</a></li>
-                    <li><a asp-controller="Footer" asp-action="Kommunikation">God kommunikation</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3 footer-area">
-                <h4><b>VIRKSOMHEDER</b></h4>
-                <ul>
-                    <li><a href="#">Markedføring</a></li>
-                    <li><a href="#">Find en influenter</a></li>
-                    <li><a href="#">Ambasadør</a></li>
-                </ul>
-            </div>
-
-            <div class="col-md-3 footer-area">
-                <a href="http://www.facebook.com/" target="_blank" class="fa fa-footer fa-facebook fa-facebook-footer"></a>
-                <a href="http://www.instagram.com/" target="_blank" class="fa fa-footer fa-instagram fa-instagram-footer"></a>
-                <a href="http://www.youtube.com/" target="_blank" class="fa fa-footer fa-youtube fa-youtube-footer"></a>
-                <a href="http://www.twitter.com/" target="_blank" class="fa fa-footer fa-twitter fa-twitter-footer"></a>
-                <ul>
-                    <li><a href="#">Vilkår og betingelser</a></li>
-                    <li><a href="#">Persondatapolitik</a></li>
-                    <li><a href="#">Retningslinjer for brugere</a></li>
-                </ul>
-
-            </div>
-
-        </div>
-    </footer>
+    @Html.Partial("_FooterPartial")
 
 </div>

@@ -10,26 +10,23 @@
 <div class="navbar-addon">
 
     <div class="container">
-        <div class="col-md-12 noPadding">
-            <div class="col-md-2 noPadding addon-box">
+        <div class="col-md-12 col-xs-12 noPadding">
+            <div class="col-md-2 col-xs-2 noPadding addon-box">
                 <div class="addon-img-container">
-                    <a asp-controller="Influenter" asp-action="Show" asp-route-id="@Model.Influenter.InfluenterId">
-                        <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
-                    </a>
+                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == Model.Influenter.InfluenterId).Id })" />
                 </div>
             </div>
-            <div class="col-md-5 addon-box">
+            <div class="col-md-5 col-xs-9 addon-box">
                 <div class="addon-number" style="text-align: left">
-                    <p>Rating af</p>
+                    <p>Se anmeldelser af</p>
                     <h3>@Model.Influenter.Alias</h3>
-
                 </div>
 
             </div>
-            <div class="col-md-5 addon-box">
+            <div class="col-md-5 col-xs-12 addon-box">
                 <div class="addon-number">
                     <h1>@RatingRepository.GetInfluenterRatingNumber(Model.Influenter.InfluenterId)</h1>
-                    <p>Antal ratings</p>
+                    <p>Ratings</p>
                 </div>
                 <div class="addon-number">
                     <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(Model.Influenter.InfluenterId), 1)%</h1>
@@ -41,11 +38,11 @@
 </div>
 
 <div class=" container">
-    <div class="col-md-12">
+    <div class="col-md-12 col-xs-12">
 
         @*Fans*@
 
-        <div class="col-md-7 readrating">
+        <div class="col-md-7 col-sm-6 readrating hidden-xs">
             <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Fans</h2>
             <h4><i>Samlet rating:</i></h4>
             <div class="outer">
@@ -70,26 +67,25 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
 
         @*Eksperter*@
 
-        <div class="col-md-5 readrating">
+        <div class="col-md-5 col-sm-6 col-xs-12 readrating">
             <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Eksperter</h2>
-            <h4><i>Samlet rating:</i></h4>
+            <h4><i>Ekspert rating:</i></h4>
             <div class="outer">
                 <div class="middle">
                     <div class="inner">
                         <div class="star-rating-show" style="padding-bottom: 20px;">
-                            <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
+                            <div class="back-stars" title="80%">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
-                                <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
+                                <div class="front-stars" style="width: 80%">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -102,129 +98,184 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <div class="col-md-12 noPaddingRight">
+
+    <div class="col-xs-12 visible-xs">
+        @if (Model.ApplicationUser.InfluenterId.HasValue)
+            {
+
+            <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px; margin-bottom: 0">
+                <div class="col-md-3 col-xs-12 noPadding read-img-container">
+                    <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = "b812d097-38b2-4f36-8a18-3fe23f7a5d81"})" />
+                </div>
+
+                <div class="col-md-9 col-xs-12" style="height: 100%">
+                    <div class="star-rating-feedback mobile-star-feedback " style="margin-top: 20px; margin-bottom: 10px;">
+                        <div class="back-stars" title="80%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+
+                            <div class="front-stars" style="width: 80%">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-xs-12" style="margin-top: 10px;">
+                    <p><b>Mening fra Sofie Larssen</b></p>
+                    <p style="color: #989898">23/07/2017 </p>
+                    <h5><i>Anmeldelse:</i></h5>
+                    <p class="feedback-text">Lorem ipsum dolor sit amet, cum docendi epicuri mentitum ne, ex nam habeo bonorum legimus, prompta assentior ullamcorper pro te. Equidem referrentur nam te, putant ceteros atomorum pro ex, vidisse consetetur pri te. Sea et ceteros laboramus incorrupte, ex mel case equidem. Velit pertinax gubergren vix ex. Quem vulputate vituperata ex pro. Lorem movet insolens qui ad, mei aeque lobortis scripserit te.</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-xs-12 readrating visible-xs">
+        <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Fans</h2>
+        <h4><i>Samlet rating:</i></h4>
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <div class="star-rating-show" style="padding-bottom: 20px;">
+                        <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12 col-xs-12">
 
         @*Fan*@
 
 
-        <div class="col-md-7 noPaddingRight">
+        <div class="col-md-7 col-sm-6 noPadding">
             @if (Model.ApplicationUser.InfluenterId.HasValue)
             {
-                @foreach (var v in RatingRepository.GetRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                @if (RatingRepository.GetRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).Count != 0)
                 {
+                    @foreach (var v in RatingRepository.GetRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                    {
+                        <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
+                            <div class="col-md-2 col-xs-12 noPadding read-img-container">
+                                <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
+                            </div>
 
+                            <div class="col-md-6 col-xs-12 noPadding">
+                                <p><b>Mening fra @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</b></p>
+                                <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                                <h5><i>Anmeldelse:</i></h5>
+                                <p class="feedback-text">@v.Feedback</p>
+                            </div>
 
-
-                    <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
-                        <div class="col-md-2 noPadding"style="padding-top: 10px;">
-                            <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId})" />
-                        </div>
-                        <div class="col-md-6 noPadding">
-                            <p><b>Mening fra @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</b></p>
-                            <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                            <h5><i>Andmeldelse:</i></h5>
-                            <p style="padding-bottom:20px; line-height: 150%;">@v.Review</p>
-
-
-                        </div>
-                        <div class="col-md-4" style="height: 100%">
-                            <div class="star-rating-feedback">
-                                <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-
-                                    <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                            <div class="col-md-4 col-xs-12" style="height: 100%">
+                                <div class="star-rating-feedback mobile-star-feedback">
+                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
+
+                                        <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            @if (v.Answer != null)
+                            {
+                                <div class="col-md-12 col-xs-12" style="border-top: 1px solid #ddd; padding-top: 10px; padding-left: 0; padding-bottom:10px;">
+                                    <div class="col-md-2 noPadding read-img-container">
+                                        <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
+                                    </div>
+                                    <div class="col-md-6 col-xs-12 noPadding">
+                                        <p><b>Svar fra @Model.ApplicationUser.Name</b></p>
+                                        <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                                        <h5><i>Svar:</i></h5>
+                                        <p style="line-height: 150%">@v.Answer</p>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                        @if (v.Answer != null)
-                        {
-
-                            <div class="col-md-12" style="border-top: 1px solid #ddd; padding-top: 10px; padding-left: 0; padding-bottom:10px;">
-                                <div class="col-md-2 noPadding" style="padding-top: 10px;">
-                                    <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id})" />
-                                </div>
-                                <div class="col-md-6 noPadding">
-                                    <p><b>Svar fra @Model.ApplicationUser.Name</b></p>
-                                    <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                                    <h5><i>Svar:</i></h5>
-                                    <p style="line-height: 150%">@v.Answer</p>
-
-
-                                </div>
-
-                            </div>
-                        }
-
-
-
-                    </div>
-
-
-
-
-
-
-
-
+                    }
                 }
+                else
+                {
+                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har ikke fået nogle anmeldelser endnu</p>
+                }
+
             }
+
         </div>
 
         @*Eksperter*@
 
 
-        <div class="col-md-5 noPaddingRight">
+        <div class="col-md-5 col-sm-6 noPaddingRight hidden-xs">
             @if (Model.ApplicationUser.InfluenterId.HasValue)
             {
-                @foreach (var v in RatingRepository.GetRatingForInfluenter(@Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
-                {
 
+                <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
+                    <div class="col-md-3 col-xs-12 noPadding read-img-container">
+                        <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = "b812d097-38b2-4f36-8a18-3fe23f7a5d81"})" />
+                    </div>
 
+                    <div class="col-md-9 col-xs-12" style="height: 100%">
+                        <div class="star-rating-feedback mobile-star-feedback " style="margin-top: 20px">
+                            <div class="back-stars" title="80%">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
 
-                    <div class="col-md-12 noPadding feedback-container">
-                        <div class="col-md-2 noPadding">
-                            <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId})" />
-                        </div>
-                        <div class="col-md-6 noPadding">
-                            <p>Mening fra @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
-                            <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                        </div>
-                        <div class="col-md-4" style="height: 100%">
-                            <div class="star-rating-feedback">
-                                <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
+                                <div class="front-stars" style="width: 80%">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
-
-                                    <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
-
-                }
+                    <div class="col-md-12 col-xs-12" style="margin-top: 10px;">
+                        <p><b>Mening fra Sofie Larssen</b></p>
+                        <p style="color: #989898">23/07/2017 </p>
+                        <h5><i>Anmeldelse:</i></h5>
+                        <p class="feedback-text">Lorem ipsum dolor sit amet, cum docendi epicuri mentitum ne, ex nam habeo bonorum legimus, prompta assentior ullamcorper pro te. Equidem referrentur nam te, putant ceteros atomorum pro ex, vidisse consetetur pri te. Sea et ceteros laboramus incorrupte, ex mel case equidem. Velit pertinax gubergren vix ex. Quem vulputate vituperata ex pro. Lorem movet insolens qui ad, mei aeque lobortis scripserit te.</p>
+                    </div>
+                </div>
             }
         </div>
 

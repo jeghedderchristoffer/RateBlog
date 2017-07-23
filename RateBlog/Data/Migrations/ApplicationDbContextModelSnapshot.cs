@@ -258,11 +258,13 @@ namespace RateBlog.Data.Migrations
                     b.Property<int>("RatingId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Aktivitet");
+                    b.Property<bool>("Anbefaling");
 
                     b.Property<string>("Answer");
 
                     b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Feedback");
 
                     b.Property<int>("InfluenterId");
 
@@ -272,15 +274,9 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<int>("Kvalitet");
 
-                    b.Property<int>("Orginalitet");
+                    b.Property<int>("Opførsel");
 
                     b.Property<DateTime>("RateDateTime");
-
-                    b.Property<string>("Review");
-
-                    b.Property<int>("SprogBrug");
-
-                    b.Property<int>("TidFulgt");
 
                     b.Property<int>("Troværdighed");
 

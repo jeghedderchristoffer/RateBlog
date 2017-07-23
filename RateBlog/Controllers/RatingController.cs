@@ -38,28 +38,24 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> RateInfluenter(int orginalitet, int kvalitet, int troværdighed, int interaktion, int aktivitet, int antalÅr, int sprog, RatingViewModel model)
+        public async Task<IActionResult> RateInfluenter(int kvalitet, int troværdighed, int opførsel, int interaktion, bool anbefaling, RatingViewModel model)
         {
             var user = await _userManger.GetUserAsync(User);
 
-            if (orginalitet == 0 || kvalitet == 0 || troværdighed == 0 || interaktion == 0 || aktivitet == 0 || antalÅr == 0 || sprog == 0 || model.Review == null)
+            if (opførsel == 0 || kvalitet == 0 || troværdighed == 0 || interaktion == 0 || model.Review == null)
             {
                 TempData["Error"] = "Du skal udfylde alle felterne for at give dit feedback"; 
                 return RedirectToAction("RateInfluenter");
             }
 
-
-            // Værdier til antal tid fulgt: 01 == 0-1 år, 12 == 1-2 år, 2 == 2+ år!! 
             var rating = new Rating()
-            {
-                Orginalitet = orginalitet, 
+            { 
                 Kvalitet = kvalitet, 
                 Troværdighed = troværdighed, 
+                Opførsel = opførsel,
                 Interaktion = interaktion, 
-                Aktivitet = aktivitet, 
-                SprogBrug = sprog,
-                TidFulgt = antalÅr, 
-                Review = model.Review, 
+                Feedback = model.Review, 
+                Anbefaling = anbefaling,
                 ApplicationUserId = user.Id, 
                 InfluenterId = model.Influenter.InfluenterId, 
                 RateDateTime = DateTime.Now

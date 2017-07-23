@@ -305,8 +305,8 @@ $(document).ready(function () {
         $(this).css({ "color": "#FD4" });
         $(this).prevAll().css({ "color": "#DCDCDC" });
 
-        if ($(this).parent().attr("id") === "orginalitetCheckBox") {
-            $("#orginalitetCheck").fadeIn(400);
+        if ($(this).parent().attr("id") === "opførselCheckBox") {
+            $("#opførselCheck").fadeIn(400);
         }
         if ($(this).parent().attr("id") === "kvalitetCheckBox") {
             $("#kvalitetCheck").fadeIn(400);
@@ -317,12 +317,6 @@ $(document).ready(function () {
         if ($(this).parent().attr("id") === "interaktionCheckBox") {
             $("#interaktionCheck").fadeIn(400);
         }
-        if ($(this).parent().attr("id") === "aktivitetCheckBox") {
-            $("#aktivitetCheck").fadeIn(400);
-        }
-        if ($(this).parent().attr("id") === "sprogCheckBox") {
-            $("#sprogCheck").fadeIn(400);
-        }
     });
 });
 
@@ -332,7 +326,7 @@ $(document).ready(function () {
 window.onscroll = function () { scrollFunction() };
 
 function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
         document.getElementById("topBtn").style.display = "block";
     } else {
         document.getElementById("topBtn").style.display = "none";
@@ -344,6 +338,5 @@ function topFunction() {
     document.body.scrollTop = 0; // For Chrome, Safari and Opera 
     document.documentElement.scrollTop = 0; // For IE and Firefox
 }
-
 
 

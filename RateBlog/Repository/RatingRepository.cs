@@ -70,13 +70,11 @@ namespace RateBlog.Repository
 
                     // Tager alle værdier, plusser dem sammen og dividere dem med antallet af ratings == gennemsnit
                     var rating = Get(v.RatingId);
-                    ratingSum += rating.Aktivitet;
                     ratingSum += rating.Interaktion;
-                    ratingSum += rating.SprogBrug;
+                    ratingSum += rating.Opførsel;
                     ratingSum += rating.Troværdighed;
                     ratingSum += rating.Kvalitet;
-                    ratingSum += rating.Orginalitet;
-                    ratingSum = ratingSum / 6;
+                    ratingSum = ratingSum / 4;
 
                     // Antal ratings
                     numberOfRatings++;
@@ -133,27 +131,17 @@ namespace RateBlog.Repository
             double ratingSum = 0;
 
             // Tager alle værdier, plusser dem sammen og dividere dem med antallet af ratings == gennemsnit
-            ratingSum += rating.Aktivitet;
             ratingSum += rating.Interaktion;
-            ratingSum += rating.SprogBrug;
+            ratingSum += rating.Opførsel;
             ratingSum += rating.Troværdighed;
             ratingSum += rating.Kvalitet;
-            ratingSum += rating.Orginalitet;
-            ratingSum = ratingSum / 6;
+            ratingSum = ratingSum / 4;
 
             return ratingSum * 20; 
         }
 
         public int GetSingleRating(int ratingId, string name)
         {
-            var rating = Get(ratingId); 
-
-            if(name.ToLower() == "Originalitet".ToLower())
-            {
-                return rating.Orginalitet; 
-            }
-
-
             return 0; 
         }
 

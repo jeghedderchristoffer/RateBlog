@@ -13,8 +13,8 @@
             @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
             {
                 <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="MyFeedback">
-                        Feedback
+                    <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
+                        Anmeldelser
                         @if (RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
                         {
                             <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
@@ -39,6 +39,18 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right" id="dropdownMobile" style="display: none">
+            @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
+            {
+                <li>
+                    <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
+                        Anmeldelser
+                        @if (RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
+                        {
+                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
+                        }
+                    </a>
+                </li>
+            }
             <li><a asp-area="" asp-controller="Manage" asp-action="Index">Vis profil</a></li>
             <li><a asp-area="" asp-controller="Manage" asp-action="EditProfile">Rediger profil</a></li>
             <li><a asp-area="" asp-controller="Manage" asp-action="ChangePassword">Skift kodeord</a></li>

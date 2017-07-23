@@ -20,14 +20,14 @@ namespace RateBlog.Models
         public Influenter Influenter { get; set; }
 
         public DateTime RateDateTime { get; set; } 
-        public int Orginalitet { get; set; }
+
         public int Kvalitet { get; set; }
         public int Troværdighed { get; set; }
         public int Interaktion { get; set; }
-        public int Aktivitet { get; set; }
-        public int TidFulgt { get; set; }
-        public int SprogBrug { get; set; }
-        public string Review { get; set; }
+        public int Opførsel { get; set; }
+        public bool Anbefaling { get; set; }
+
+        public string Feedback { get; set; }
 
         [DefaultValue(null)]
         public string Answer { get; set; }

@@ -205,7 +205,7 @@ body.modal-open {
 /*--------------Home Index page----------------------*/
 
 .home-img {
-    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/pexels-photo-199497.png") no-repeat center;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/index-img.jpeg") no-repeat center;
     height: 700px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -283,8 +283,8 @@ body.modal-open {
     }
 
     .home-img {
-        background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/pexels-photo-199497.png") no-repeat center;
-        height: 500px;
+        background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/index-img.jpeg") no-repeat center;
+        height: 700px;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -480,7 +480,7 @@ body.modal-open {
 
 .navbar-addon {
     height: 188px;
-    background: #fff;
+    background: #fafafa;
     border-bottom: 1px solid #ddd;
     width: 100%;
 }
@@ -532,7 +532,52 @@ body.modal-open {
     text-align: center;
 }
 
+.se-anmeldelse-padding {
+    padding-left: 30px;
+}
+
+.se-anmeldelse-center {
+    display: inline-block;
+    text-align: center
+}
+
+@media (max-width: 767px) {
+    .se-anmeldelse-padding {
+        padding-left: 0;
+        text-align: center
+    }
+
+    .se-anmeldelse-star {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .addon-number h2 {
+        font-size: 20px !important;
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+    }
+}
+
 @media (max-width: 991px) {
+
+    .se-anmeldelse-padding {
+
+        padding-top: 20px;
+
+    }
+
+    .addon-number h2 {
+        font-size: 22px;
+        margin-top: 30px;
+    }
+
+    .se-anmeldelse-center {
+        display: block;
+        text-align: unset;
+    }
+
     .navbar-addon img {
         border-radius: 50%;
         height: 50px;
@@ -547,7 +592,7 @@ body.modal-open {
 
     .addon-number {
         vertical-align: top;
-        padding-top: 16px;
+        padding-top: 18px;
     }
 
         .addon-number h3 {
@@ -567,7 +612,7 @@ body.modal-open {
 
 /*Video Container*/
 .video-container {
-    background-color: #f5f5f5;
+    background-color: #fafafa;
     margin-top: 0px;
     padding-top: 100px;
     padding-bottom: 100px;
@@ -625,7 +670,7 @@ body.modal-open {
     }
 
         .icon-box span {
-            font-size: 18px;
+            font-size: 17px;
         }
 }
 
@@ -657,7 +702,7 @@ body.modal-open {
 }
 
 .fa-heart-video {
-    background: #c75c5c;
+    background: #53b80a;
     color: #fff;
 }
 
@@ -683,6 +728,7 @@ body.modal-open {
     padding-bottom: 50px;
     color: #fff;
     background-color: #fff;
+    line-height: 180%;
 }
 
     .banner-container h3 {
@@ -816,12 +862,13 @@ body.modal-open {
     text-decoration: none;
     background-color: #53b80a;
     color: #fff;
-    padding: 10px 52px;
+    padding: 10px 10px;
     border-radius: 5px;
-    margin-top: 20px;
+    margin-top: 10px;
     text-align: center;
     transition: all .2s ease-out;
     float: right;
+    width: 155.23px;
 }
 
     .a-button:hover {
@@ -831,6 +878,32 @@ body.modal-open {
     }
 
     .a-button:focus {
+        text-decoration: none;
+        background: #479b0a;
+        color: #fff;
+    }
+
+.a-button-discover {
+    display: block;
+    text-decoration: none;
+    background-color: #53b80a;
+    color: #fff;
+    padding: 10px 10px;
+    border-radius: 5px;
+    text-align: center;
+    transition: all .2s ease-out;
+    float: right;
+    width: 155px;
+    height: 50px
+}
+
+    .a-button-discover:hover {
+        text-decoration: none !important;
+        background: #f08301 !important;
+        color: #fff !important;
+    }
+
+    .a-button-discover:focus {
         text-decoration: none;
         background: #479b0a;
         color: #fff;
@@ -887,12 +960,35 @@ body.modal-open {
         color: #fff;
     }
 
+@media (max-width: 767px) {
+    .a-button {
+        display: block;
+        text-decoration: none;
+        background-color: #53b80a;
+        color: #fff;
+        padding: 10px 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        text-align: center;
+        transition: all .2s ease-out;
+        float: right;
+        width: 100%;
+    }
+
+    .star-rating-search {
+        justify-content: center;
+        align-items: center;
+        float: none
+    }
+
+    .noPaddingLeft {
+        padding-left: 15px;
+    }
+}
 
 .sorter {
     background-color: #fff;
-    padding-bottom: 15px;
-    padding-left: 15px;
-    padding-top: 15px;
+    padding: 15px;
     border-radius: 10px;
     border: 1px solid #ddd;
     margin-top: 53px;
@@ -906,27 +1002,35 @@ body.modal-open {
 
 
 .influ-img {
-    height: 100px;
-    width: 100px;
+    height: 110px;
+    width: 110px;
     border-radius: 50%;
     display: block;
     border: 1px solid #eee;
-    margin-right:10px;
-
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .search-result {
     border: 1px solid #ddd;
-    height: 150px;
+    height: 170px;
     background: #fff;
     border-radius: 10px;
     margin-bottom: 10px;
 }
 
     .search-result h4 {
-        margin-top: 20px;
+        margin-top: 30px;
         font-weight: bold;
     }
+
+.search-result-box {
+    height: 170px;
+}
 
 .search-inputsøg {
     margin: 20px auto;
@@ -940,6 +1044,45 @@ body.modal-open {
 
 .search-inputsøg {
     outline: none;
+}
+
+
+@media (max-width: 767px) {
+    .search-inputsøg {
+        margin: 20px auto;
+        padding: 4px 16px;
+        max-width: 400px;
+        height: 45px;
+        width: 78%;
+        border-radius: 3px;
+        border: 1px solid black;
+    }
+
+    .search-result-box {
+        height: 130px
+    }
+
+    .influ-img {
+        top: 30px;
+    }
+
+    .search-result {
+        border: 1px solid #ddd;
+        height: auto;
+        overflow: hidden;
+        background: #fff;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .a-center {
+        text-align: center;
+    }
+
+    .search-result p, .search-result h4 {
+        text-align: center;
+        word-break: break-word;
+    }
 }
 
 .fa-search-o {
@@ -1385,7 +1528,7 @@ ul li:hover .dropOut {
     border: none;
     max-width: none;
     width: 100%;
-    background-color: #4BB543;
+    background-color: #53b80a;
     color: #fff;
     font-size: 16px;
 }
@@ -1396,7 +1539,7 @@ ul li:hover .dropOut {
     border: none;
     max-width: none;
     width: 50%;
-    background-color: #4BB543;
+    background-color: #53b80a;
     color: #fff;
     font-size: 16px;
 }
@@ -1477,20 +1620,24 @@ ul li:hover .dropOut {
         font-size: 22px
     }
 
-    .responsive-visProfil-h3{
+    .responsive-padding {
+        padding-bottom: 60px;
+    }
+
+    .responsive-visProfil-h3 {
         font-size: 18px
     }
 
-    .profil-img{
-        width: 200px; 
+    .profil-img {
+        width: 200px;
         height: 200px;
     }
 
-    .profile-text{
+    .profile-text {
         font-size: 14px
     }
 
-    .addon-number p{
+    .addon-number p {
         font-size: 14px;
     }
 }
@@ -1695,12 +1842,23 @@ ul li:hover .dropOut {
         transition: all .2s;
     }
 
-    /***** CSS Magic to Highlight Stars on Hover *****/
-
-    .rating label:hover {
-        transform: scale(1.3);
-        cursor: pointer;
+@media screen and (max-width: 767px) {
+    .rating > label {
+        float: right;
+        padding: 10px;
+        margin-top: -2px;
+        font-size: 26px;
+        color: #DCDCDC;
+        transition: all .2s;
     }
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating label:hover {
+    transform: scale(1.3);
+    cursor: pointer;
+}
 
 .rating-box {
     border-bottom: 1px solid #eee;
@@ -1779,14 +1937,28 @@ input[type=checkbox].with-font {
         background-color: #4BB533;
     }
 
+@media screen and (max-width: 767px) {
+    .rating-box {
+        border-bottom: 1px solid #eee;
+        overflow: hidden;
+        height: auto;
+    }
+
+        .rating-box i {
+            line-height: 50px;
+            font-size: 2em !important;
+        }
+}
 
 /*Footer*/
 
 footer {
-    min-height: 280px;
+    min-height: 240px;
     padding: 40px;
     background: #47525e;
     color: #fff;
+    height: auto; 
+    overflow: hidden
 }
 
     footer h4 {
@@ -1859,7 +2031,7 @@ footer {
 
 @media screen and (max-width: 991px) {
     .footer-area {
-        margin-bottom: 40px;
+        height: 180px
     }
 }
 
@@ -1972,6 +2144,19 @@ footer {
 
 /*Feedback side*/
 
+.feedback-link {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+    .feedback-link:hover {
+        text-decoration: none;
+    }
+
+    .feedback-link:focus {
+        text-decoration: none;
+    }
+
 .star-rating-feedback {
     display: flex;
     font-size: 28px;
@@ -1986,17 +2171,17 @@ footer {
     padding: 5px;
     margin-bottom: 10px;
     color: #333;
-    background: #f5f5f5;
+    background: #fafafa;
     border-radius: 10px;
 }
 
 
     .feedback-container.active {
-        background: #f5f5f5;
+        background: #fafafa;
     }
 
     .feedback-container:hover {
-        background: #f5f5f5;
+        background: #fafafa;
     }
 
     .feedback-container img {
@@ -2013,6 +2198,7 @@ footer {
     .feedback-container a {
         color: #303030
     }
+
 
 .feedback-box {
     border-bottom: 1px solid #eee;
@@ -2050,7 +2236,7 @@ footer {
     border: 1px solid #ddd;
     padding: 5px;
     color: #333;
-    background: #f5f5f5;
+    background: #fafafa;
     border-radius: 10px;
     margin-bottom: 10px;
 }
@@ -2088,9 +2274,10 @@ footer {
     width: 100%;
     border: 1px solid #ddd;
     padding: 5px;
+    padding-left: 0px;
     margin-bottom: 50px;
     color: #333;
-    background: #f5f5f5;
+    background: #fafafa;
     border-radius: 10px;
 }
 
@@ -2113,12 +2300,50 @@ footer {
     }
 
 
+.anmeldelser-h2 {
+    padding: 25px 0 25px 33px;
+    margin: 0
+}
 
-    .footer-text p {
-        line-height: 200%;
-        font-size: 15px;
-        
+@media (max-width: 991px) {
+    .feedback-container {
+        height: auto;
+        overflow: hidden;
+        padding: 10px;
     }
+
+    .padding-anmeldelser {
+        padding-left: 10px;
+        padding-top: 2px
+    }
+
+    .star-rating-feedback-all {
+        font-size: 30px;
+    }
+
+    .feedback-rating-all-box-item h3 {
+        font-size: 18px
+    }
+}
+
+@media (max-width: 767px) {
+
+
+    .anmeldelser-h2 {
+        padding: 25px 0 25px 0;
+        margin: 0
+    }
+
+    .padding-anmeldelser-responsive {
+        padding: 0;
+    }
+}
+
+
+.footer-text p {
+    line-height: 200%;
+    font-size: 15px;
+}
 
 
 
@@ -2141,3 +2366,48 @@ footer {
     #topBtn:hover {
         background-color: #d87500;
     }
+
+.influ-read-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.read-img-container {
+    padding-top: 10px;
+}
+
+.feedback-text {
+    padding-bottom: 20px !important;
+    line-height: 150%;
+}
+
+.mobile-star-feedback {
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 991px) {
+    .feedback-containerRead {
+        padding: 10px;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .read-img-container {
+        padding-top: 5px;
+        padding-bottom: 10px;
+    }
+
+    .mobile-star-feedback {
+        margin-bottom: 25px;
+        margin-top: 0;
+        justify-content: center;
+        align-items: center;
+        float: none;
+    }
+
+    .feedback-text {
+        padding-bottom: 0;
+        line-height: 150%;
+    }
+}

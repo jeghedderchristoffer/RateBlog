@@ -538,13 +538,13 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult MyFeedback()
+        public IActionResult Anmeldelser()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult FeedbackResponse(int id)
+        public IActionResult SeAnmeldelse(int id)
         {
             var rating = _ratingRepo.Get(id);
             rating.IsRead = true;
@@ -576,7 +576,7 @@ namespace RateBlog.Controllers
 
 
 
-            return RedirectToAction("MyFeedback");
+            return RedirectToAction("Anmeldelser");
         }
 
         [HttpGet]
