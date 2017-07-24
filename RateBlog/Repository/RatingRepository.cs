@@ -137,39 +137,39 @@ namespace RateBlog.Repository
             ratingSum += rating.Kvalitet;
             ratingSum = ratingSum / 4;
 
-            return ratingSum * 20; 
+            return ratingSum * 20;
         }
 
         public int GetSingleRating(int ratingId, string name)
         {
-            return 0; 
+            return 0;
         }
 
         public int GetInfluenterRatingNumber(int influenterId)
         {
-            if(_applicationDbContext.Rating.Any(x => x.InfluenterId == influenterId))
+            if (_applicationDbContext.Rating.Any(x => x.InfluenterId == influenterId))
             {
                 return _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId).Count();
             }
-            return 0; 
+            return 0;
         }
 
         public int GetMyRatingNumber(string applicationUserId)
         {
-            if(_applicationDbContext.Rating.Any(x => x.ApplicationUserId == applicationUserId))
+            if (_applicationDbContext.Rating.Any(x => x.ApplicationUserId == applicationUserId))
             {
                 return _applicationDbContext.Rating.Where(x => x.ApplicationUserId == applicationUserId).Count();
             }
-            return 0; 
+            return 0;
         }
 
         public int GetMyRatingAnswerNumber(string applicationUserId)
         {
-            if(_applicationDbContext.Rating.Any(x => x.ApplicationUserId == applicationUserId && x.Answer != null))
+            if (_applicationDbContext.Rating.Any(x => x.ApplicationUserId == applicationUserId && x.Answer != null))
             {
-                return _applicationDbContext.Rating.Where(x => x.ApplicationUserId == applicationUserId && x.Answer != null).Count(); 
+                return _applicationDbContext.Rating.Where(x => x.ApplicationUserId == applicationUserId && x.Answer != null).Count();
             }
-            return 0; 
+            return 0;
         }
 
         public int GetInfluenterAnswerNumber(int influenterId)
@@ -190,10 +190,29 @@ namespace RateBlog.Repository
 
                 double result = (100.0 / numberOfRatings) * numberOfAnswer;
 
-                return result; 
+                return result;
 
             }
             return 0;
+        }
+
+        public double GetHoursLeftToRate(string applicationUserId, int influenterId)
+        {
+            if (_applicationDbContext.Rating.Any(x => x.InfluenterId == influenterId && x.ApplicationUserId == applicationUserId))
+            {
+                var user = _applicationDbContext.Users.SingleOrDefault(x => x.Id == applicationUserId);
+                var rating = _applicationDbContext.Rating.Where(x => x.InfluenterId == influenterId && x.ApplicationUserId == applicationUserId).OrderByDescending(x => x.RateDateTime).FirstOrDefault();
+
+                var timeSpan = DateTime.Now - rating.RateDateTime;
+                var hours = timeSpan.TotalHours;
+
+                return hours;
+            }
+
+            return 0;
+
+
+            
         }
     }
 }

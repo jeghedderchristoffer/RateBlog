@@ -461,6 +461,12 @@ namespace RateBlog.Controllers
             return View();
         }
 
+        // Skal laves!!!
+        public JavaScriptResult LoginJS()
+        {
+            return new JavaScriptResult("$('#loginModal').modal('show');");
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -484,5 +490,14 @@ namespace RateBlog.Controllers
         }
 
         #endregion
+    }
+
+    public class JavaScriptResult : ContentResult
+    {
+        public JavaScriptResult(string script)
+        {
+            this.Content = script;
+            this.ContentType = "application/javascript";
+        }
     }
 }

@@ -71,6 +71,79 @@ $(document).ready(function () {
     });
 });
 
+//Login page
+
+$(document).ready(function () {
+    var errorMsgTop = $("#errorMsgTop1");
+    var errorMsgBot = $("#errorMsgBot1");
+    var returnNothing = false;
+
+    $("#loginBtn1").click(function () {
+        //errorMsgTop.text("");
+        //errorMsgBot.text(""); 
+
+        //collect the user data
+        var data = {};
+        data.Email = $("#email1").val();
+        data.Password = $("#password1").val();
+        var token = $('input[name="__RequestVerificationToken"]').val();
+
+        if (!isEmail(data.Email)) {
+            $("#email").focus();
+            errorMsgTop.text("Dette er ikke en gyldig email.");
+            if (data.Password === '') {
+                errorMsgBot.text("Du mangler kodeord.");
+            }
+            else {
+                errorMsgBot.text("");
+            }
+            return;
+        }
+
+        $.ajax({
+            url: "/Account/Login",
+            method: "POST",
+            data: {
+                model: data,
+                __RequestVerificationToken: token,
+                returnUrl: "Home/Index"   // you can modify the returnUrl value here
+            },
+            success: function (result) {
+                var JSONString = JSON.stringify(result);
+                var resultObj = JSON.parse(JSONString);
+
+                console.log(data.Password);
+
+                if (resultObj.result === "Missing") {
+                    if (data.Password === '') {
+                        $("#password").focus();
+                        errorMsgBot.text("Du mangler kodeord.");
+                    }
+                    if (isEmail(data.Email)) {
+                        errorMsgTop.text("");
+                    }
+                }
+                else {
+                    errorMsgBot.text("");
+                }
+
+                if (resultObj.result === "Wrong") {
+                    $("#email").focus();
+                    errorMsgTop.text("Brugernavn eller kodeordet er forkert.");
+                }
+
+                if (resultObj.result === "Accepted") {
+                    window.location = "/Home/Index";
+                }
+
+            },
+            error: function () {
+                console.log("fail");
+            }
+        });
+    });
+});
+
 function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);

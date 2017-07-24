@@ -17,7 +17,7 @@
         <div class="outer">
             <div class="middle">
                 <div class="inner">
-                    <h2>Find og anmeld influencers</h2>
+                    <h2>Søg på influencers</h2>
                     <form method="get" asp-area="" asp-co ntroller="Influenter" asp-action="Index">
                         <input type="text" name="search" class="search-inputsøg" placeholder="F.eks. Gaming eller Armin" />
                         <span>
@@ -35,7 +35,7 @@
                 <div class="col-md-3 hidden-sm hidden-xs noPaddingLeft">
                     <div class="sorter">
 
-                        <div class="dropdown">
+                        @*<div class="dropdown">
                             <button class="btn btn dropdown-toggle" style="width: 100%" type="button" data-toggle="dropdown">
                                 Sorter i influenter
                                 <span class="caret"></span>
@@ -46,42 +46,40 @@
                                 <li><a href="#">Flest følgere</a></li>
                                 <li><a href="#">Mindst følgere</a></li>
                             </ul>
-                        </div>
+                        </div>*@
 
-                        <br />
                         <h4><b>Platform</b></h4>
-                        <form method="post" id="facebookForm" asp-controller="influenter" asp-action="SorterPlatform">
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="4" style="background: #fff">Facebook</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="2" style="background: #fff">Instagram</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="1" style="background: #fff">YouTube</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="3" style="background: #fff">Snapchat</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="6" style="background: #fff">Twitter</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="5" style="background: #fff">Twitch</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="4" style="background: #fff">Facebook</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="2" style="background: #fff">Instagram</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="1" style="background: #fff">YouTube</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="3" style="background: #fff">Snapchat</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="6" style="background: #fff">Twitter</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="5" style="background: #fff">Twitch</label><br />
 
 
 
-                            <h4><b>Kategori</b></h4>
+                        <h4><b>Kategori</b></h4>
 
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="5" style="background: #fff">Gamer</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="4" style="background: #fff">Beauty</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="6" style="background: #fff">Entertainment</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="8" style="background: #fff">Fashion</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="1" style="background: #fff">Lifestyle</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="7" style="background: #fff">Food</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="9" style="background: #fff">Mommy</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="3" style="background: #fff">Vlogger</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="2" style="background: #fff">DIY</label><br /><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="5" style="background: #fff">Gamer</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="4" style="background: #fff">Beauty</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="6" style="background: #fff">Entertainment</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="8" style="background: #fff">Fashion</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="1" style="background: #fff">Lifestyle</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="7" style="background: #fff">Food</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="9" style="background: #fff">Mommy</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="3" style="background: #fff">Vlogger</label><br />
+                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="2" style="background: #fff">DIY</label><br /><br />
 
 
-                            <div class="outer">
-                                <div class="middle">
-                                    <div class="inner">
-                                        <input type="submit" class="search-button" style="float: left; background-color:#f08301;" value="Søg" />
-                                    </div>
+                        <div class="outer">
+                            <div class="middle">
+                                <div class="inner">
+                                    <input type="submit" class="search-button" style="float: left; background-color:#f08301;" value="Søg" />
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+
+                      </div>
 
                 </div>
                 <div class="col-md-9 col-sm-12 noPadding">

@@ -11,7 +11,7 @@
 
 @if (TempData["Success"] != null)
 {
-    <div class="alert fade in alert-success alert-dismissable" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
+    <div class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         @TempData["Success"]
     </div>
@@ -19,7 +19,7 @@
 
 @if (TempData["Error"] != null)
 {
-    <div class="alert fade in alert-danger alert-dismissable" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
+    <div class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         @TempData["Error"]
     </div>

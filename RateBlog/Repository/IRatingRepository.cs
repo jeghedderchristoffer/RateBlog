@@ -111,6 +111,19 @@ namespace RateBlog.Repository
         /// <returns></returns>
         int GetMyRatingAnswerNumber(string applicationUserId);
 
+        /// <summary>
+        /// Modtag svarprocent
+        /// </summary>
+        /// <param name="influenterId"></param>
+        /// <returns></returns>
         double GetAnswerPercentageForInfluencer(int influenterId);
+
+        /// <summary>
+        /// Returns the number of hours before you can rate the influencer again. 
+        /// </summary>
+        /// <param name="applicationUserId"></param>
+        /// <param name="influenterId"></param>
+        /// <returns></returns>
+        double GetHoursLeftToRate(string applicationUserId, int influenterId); 
     }
 }

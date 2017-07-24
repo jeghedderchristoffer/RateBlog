@@ -48,6 +48,20 @@ namespace RateBlog.Controllers
                 return RedirectToAction("RateInfluenter");
             }
 
+            var hoursSinceLastRating = _rating.GetHoursLeftToRate(user.Id, model.Influenter.InfluenterId); 
+
+            // Så har denne bruger ikke ratet denne influencer endnu
+            if(hoursSinceLastRating == 0)
+            {
+                // Gør ingenting?? :-)
+            }
+            // Så har denne bruger ratet indenfor 24 timer...
+            else if(hoursSinceLastRating < 24)
+            {
+                TempData["Error"] = "Der skal gå 24 timer før du kan rate en influencer igen";
+                return RedirectToAction("RateInfluenter");
+            }
+
             var rating = new Rating()
             { 
                 Kvalitet = kvalitet, 

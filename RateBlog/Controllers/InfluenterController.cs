@@ -106,7 +106,7 @@ namespace RateBlog.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult SorterPlatform(int[] platforme, int[] kategorier)
         {
             var influenters = _influenter.GetAllInfluentersForPlatforms(platforme).ToList();
