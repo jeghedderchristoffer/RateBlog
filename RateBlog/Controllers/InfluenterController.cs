@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using RateBlog.Data;
 using RateBlog.Models;
 using RateBlog.Models.InfluenterViewModels;
 using RateBlog.Repository;
+using RateBlog.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,11 +19,11 @@ namespace RateBlog.Controllers
     public class InfluenterController : Controller
     {
 
-        private IInfluenterRepository _influenter;
-        private IRatingRepository _ratingRepository;
-        private UserManager<ApplicationUser> _userManager;
-        private IPlatformRepository _platform;
-        private IKategoriRepository _kategori;
+        private readonly IInfluenterRepository _influenter;
+        private readonly IRatingRepository _ratingRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IPlatformRepository _platform;
+        private readonly IKategoriRepository _kategori;
 
 
         public InfluenterController(IKategoriRepository kategori, IInfluenterRepository influenter, IRatingRepository ratingRepository, UserManager<ApplicationUser> userManager, IPlatformRepository platform)
@@ -107,22 +112,19 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult SorterPlatform(int[] platforme, int[] kategorier)
+        public PartialViewResult Sorter(string[] currentUsers, int[] platforme, int[] kategorier)
         {
-            var influenters = _influenter.GetAllInfluentersForPlatforms(platforme).ToList();
-            var kategori = _influenter.GetAllInfluentersForKategori(kategorier).ToList();
-
-            var sortList = _userManager.Users.Where(x => influenters.Contains(x.InfluenterId.Value) || kategori.Contains(x.InfluenterId.Value)).ToList();
-
-
-            var modelSort = new IndexViewModel()
+            // Get all users in the current search...
+            var listOfUsers = new List<ApplicationUser>(); 
+            foreach(var v in currentUsers)
             {
-                InfluentList = sortList,
-                
+                listOfUsers.Add(_userManager.Users.FirstOrDefault(x => x.Id == v)); 
+            }
 
-            };
+            // Gets the selected platforms
+            var sortList = _influenter.SortInfluencerByPlatAndKat(platforme, kategorier, listOfUsers);
 
-            return View("Index", modelSort);
+            return PartialView("InfluencerListPartial", sortList); 
         }
     }
 }

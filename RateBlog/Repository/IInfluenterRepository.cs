@@ -18,9 +18,13 @@ namespace RateBlog.Repository
 
         void Delete(int InfluenterId);
 
-
-        IQueryable<int> GetAllInfluentersForPlatforms(int[] platformIds);
-
-        IQueryable<int> GetAllInfluentersForKategori(int[] kategoriIds);
+        /// <summary>
+        /// Sort influenters (ApplicationUsers)
+        /// </summary>
+        /// <param name="platformIds"></param>
+        /// <param name="kategoriIds"></param>
+        /// <param name="users"></param>
+        /// <returns></returns>
+        List<ApplicationUser> SortInfluencerByPlatAndKat(int[] platformIds, int[] kategoriIds, List<ApplicationUser> users); 
     }
 }

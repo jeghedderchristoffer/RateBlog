@@ -327,7 +327,7 @@ $(document).ready(function () {
     }
 
     if (TwitchInput.val() !== "") {
-        TwitchText.text("www.twitch.tv/" + TwitchInput.val()); 
+        TwitchText.text("www.twitch.tv/" + TwitchInput.val());
     }
 
     if (WebsiteInput.val() !== "") {
@@ -336,7 +336,7 @@ $(document).ready(function () {
 
     WebsiteInput.keyup(function () {
         WebsiteText.text(WebsiteInput.val());
-    }); 
+    });
 
     TwitchInput.keyup(function () {
         TwitchText.text("www.twitch.tv/" + TwitchInput.val());
@@ -362,14 +362,14 @@ $(document).ready(function () {
         YoutubeText.text("www.youtube.com/user/" + YoutubeInput.val());
     });
 
-}); 
+});
 
 //Rating Stars
 
 $(document).ready(function () {
     $('[data-toggle="popover"]').popover({
         container: "body"
-    }); 
+    });
 });
 
 $(document).ready(function () {
@@ -412,4 +412,66 @@ function topFunction() {
     document.documentElement.scrollTop = 0; // For IE and Firefox
 }
 
+$(document).ready(function () {
 
+    var currentUsersArray = new Array();
+
+    $("input[type='hidden'][name='currentInfluencers']").each(function () {
+        currentUsersArray.push($(this).attr("value"));
+    });
+
+    $("input[type='checkbox'][name='platforme'], input[type='checkbox'][name='kategorier']").click(function () {
+
+        var platformArray = new Array();    
+        var kategoriArray = new Array();
+
+        console.log("Current users:" + currentUsersArray.length)
+
+        $("input[type='checkbox'][name='platforme']").each(function () {
+            if ($(this).is(":checked")) {
+                platformArray.push($(this).attr("value"));
+            }
+        });
+
+        $("input[type='checkbox'][name='kategorier']").each(function () {
+            if ($(this).is(":checked")) {
+                kategoriArray.push($(this).attr("value"));
+            }
+        });
+
+        var jsonPlatformArray = {};
+        var jsonKategoriArray = {}; 
+        var jsonCurrentUsersArray = {};
+
+        for (i in kategoriArray) {
+            jsonKategoriArray[i] = kategoriArray[i]; 
+        }
+
+        for (i in currentUsersArray) {
+            jsonCurrentUsersArray[i] = currentUsersArray[i];
+        }
+
+        for (i in platformArray) {
+            jsonPlatformArray[i] = platformArray[i];
+        }
+
+        // Get ajax
+        $.ajax({
+            type: "GET",
+            async: true,
+            url: '/Influenter/Sorter',
+            data: {
+                currentUsers: jsonCurrentUsersArray,
+                platforme: jsonPlatformArray,
+                kategorier: jsonKategoriArray
+            },
+            error: function (request, error) {
+
+            },
+            success: function (response) {
+                $("#listOfInfluencers").html(response);
+            }
+        });
+
+    });
+});

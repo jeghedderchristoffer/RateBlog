@@ -1,0 +1,115 @@
+﻿@model List<ApplicationUser>
+@inject RateBlog.Repository.IInfluenterRepository InfluenterReposritory
+@inject RateBlog.Repository.IKategoriRepository CategoryRepository
+@inject RateBlog.Repository.IPlatformRepository PlatformRepository
+@inject RateBlog.Repository.IRatingRepository RatingRepository
+
+@if (Model != null)
+{
+    @foreach (var influ in Model)
+    {
+        <input type="hidden" name="currentInfluencers" value="@influ.Id" />
+
+        <div class="col-md-12 search-result noPaddingLeft">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">
+                <a asp-controller="Influenter" asp-action="Show" asp-route-id="@influ.InfluenterId">
+                    <img class="influ-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = influ.Id })" />
+                </a>
+
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 noPadding" style="">
+
+                <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
+                <p style="margin-top: 15px;">
+                    @if (CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value) != null)
+                    {
+                    <p style="margin-top: 15px;">
+                        @foreach (var kategori in CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value))
+                        {
+                            @if (kategori.Equals(CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value).Last()))
+                            {
+                                @kategori
+                            }
+                            else
+                            {
+                                @kategori <span>|</span>
+                            }
+                        }
+                    </p>
+                    }
+                    else
+                    {
+                        <p>Ukendte kategorier</p>
+                    }
+
+
+                    <div class="a-center">
+                        @if (PlatformRepository.GetAllInfluenterPlatformForInfluenter(influ.InfluenterId.Value) != null)
+                        {
+                            @foreach (var platform in PlatformRepository.GetAllInfluenterPlatformForInfluenter(influ.InfluenterId.Value))
+                            {
+                                @if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Facebook")
+                                {
+                                    <a href="http://www.facebook.com/@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "YouTube")
+                                {
+                                    <a href="http://www.youtube.com/user/@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "SnapChat")
+                                {
+                                    <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Instagram")
+                                {
+                                    <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search-o fa-instagram fa-instagram-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitter")
+                                {
+                                    <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search-o fa-twitter fa-twitter-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitch")
+                                {
+                                    <a href="http://www.twitch.tv/@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
+                                }
+                                else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Website")
+                                {
+                                    <a href="http://@platform.Link" target="_blank" class="fa fa-search-o fa-globe fa-globe-search"></a>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <p style="margin-top: 15px">Ingen sociale medier</p>
+
+                        }
+
+
+                    </div>
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding">
+                    <div class="star-rating-search" style="margin-top: 20px;">
+                        <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(influ.InfluenterId.Value), 2)%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+
+                            <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(influ.InfluenterId.Value)%">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@influ.InfluenterId" class="a-button" style="background-color: #08468d;">Anmeld</a>
+                    <a asp-controller="Influenter" asp-action="Read" asp-route-id="@influ.InfluenterId" class="a-button" style="margin-bottom:15px;">Se anmeldelser</a>
+
+                </div>
+            </div>
+    }
+}
