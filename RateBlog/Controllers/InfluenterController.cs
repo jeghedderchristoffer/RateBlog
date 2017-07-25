@@ -18,7 +18,6 @@ namespace RateBlog.Controllers
 {
     public class InfluenterController : Controller
     {
-
         private readonly IInfluenterRepository _influenter;
         private readonly IRatingRepository _ratingRepository;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -68,12 +67,12 @@ namespace RateBlog.Controllers
             foreach (var v in influenter)
             {
                 influenterRating.Add(v.InfluenterId.Value, _ratingRepository.GetRatingAverage(v.InfluenterId.Value));
-            }
+            } 
 
             var model = new IndexViewModel()
             {
                 SearchString = search,
-                InfluentList = influenter,
+                InfluentList = influenter.Take(5).ToList(),
                 InfluenterRatings = influenterRating
             };
             return View(model);
@@ -125,6 +124,39 @@ namespace RateBlog.Controllers
             var sortList = _influenter.SortInfluencerByPlatAndKat(platforme, kategorier, listOfUsers);
 
             return PartialView("InfluencerListPartial", sortList); 
+        }
+
+        [HttpGet]
+        public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search)
+        {
+            if (string.IsNullOrEmpty(search))
+            {
+                search = "";
+            }
+
+            var influenter = _userManager.Users.
+                Where(x => (x.Name.ToLower().Contains(search.ToLower())) && x.InfluenterId.HasValue
+                || (x.Influenter.Alias.Contains(search) && x.InfluenterId.HasValue)).ToList();
+
+            foreach (var kategori in _kategori.GetAll())
+            {
+                if (search.ToLower().Equals(kategori.KategoriNavn.ToLower()))
+                {
+                    influenter.AddRange(_kategori.GetAllInfluentersWithKategori(search));
+                }
+            }
+
+            foreach (var platform in _platform.GetAll())
+            {
+                if (search.ToLower().Equals(platform.PlatformNavn.ToLower()))
+                {
+                    influenter.AddRange(_platform.GetAllInfluentersWithPlatform(search));
+                }
+            }
+
+            var list = influenter.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+            return PartialView("InfluencerListPartial", list); 
         }
     }
 }
