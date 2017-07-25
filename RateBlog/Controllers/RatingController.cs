@@ -44,8 +44,15 @@ namespace RateBlog.Controllers
 
             if (opførsel == 0 || kvalitet == 0 || troværdighed == 0 || interaktion == 0 || model.Review == null || anbefaling == null)
             {
-                TempData["Error"] = "Du skal udfylde alle felterne for at give dit feedback"; 
-                return RedirectToAction("RateInfluenter");
+                TempData["Error"] = "Du skal udfylde alle felterne for at give dit feedback";
+
+                var errorModel = new RatingViewModel()
+                {
+                    Review = model.Review,
+                    Influenter = model.Influenter
+                }; 
+
+                return View("RateInfluenter", errorModel);
             }
 
             var hoursSinceLastRating = _rating.GetHoursLeftToRate(user.Id, model.Influenter.InfluenterId); 
