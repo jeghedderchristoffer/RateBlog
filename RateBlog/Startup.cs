@@ -74,6 +74,7 @@ namespace RateBlog
             services.AddTransient<IInfluenterRepository, InfluenterRepository>();
             services.AddTransient<IKategoriRepository, KategoriRepository>();
             services.AddTransient<IRatingRepository, RatingRepository>();
+            services.AddTransient<IEkspertRatingRepository, EkspertRatingRepository> ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,6 +118,7 @@ namespace RateBlog
 
             SeedPlatformData.Initialize(app.ApplicationServices);
             SeedKategoriData.Initialize(app.ApplicationServices);
+            SeedRoleData.Initialize(app.ApplicationServices);
 
         }
 

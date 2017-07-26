@@ -18,10 +18,11 @@
             <div class="middle">
                 <div class="inner">
                     <h2>Søg på influencers</h2>
-                    <form method="get" asp-area="" asp-co ntroller="Influenter" asp-action="Index">
+                    <form method="get" asp-area="" asp-controller="Influenter" asp-action="Index">
                         <input type="text" name="search" class="search-inputsøg" placeholder="F.eks. Gaming eller Armin" />
                         <span>
                             <input class="search-button" type="submit" value="Søg" />
+
                         </span>
                     </form>
                 </div>
@@ -36,17 +37,17 @@
                     <div class="sorter">
 
                         @*<div class="dropdown">
-                            <button class="btn btn dropdown-toggle" style="width: 100%" type="button" data-toggle="dropdown">
-                                Sorter i influenter
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" style="width: 100%">
-                                <li><a href="#">Højste rating</a></li>
-                                <li><a href="#">Lavest rating</a></li>
-                                <li><a href="#">Flest følgere</a></li>
-                                <li><a href="#">Mindst følgere</a></li>
-                            </ul>
-                        </div>*@
+                                <button class="btn btn dropdown-toggle" style="width: 100%" type="button" data-toggle="dropdown">
+                                    Sorter i influenter
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="width: 100%">
+                                    <li><a href="#">Højste rating</a></li>
+                                    <li><a href="#">Lavest rating</a></li>
+                                    <li><a href="#">Flest følgere</a></li>
+                                    <li><a href="#">Mindst følgere</a></li>
+                                </ul>
+                            </div>*@
 
                         <h4><b>Platform</b></h4>
                         <label class="checkbox-inline"><input type="checkbox" name="platforme" value="4" style="background: #fff">Facebook</label><br />
@@ -79,7 +80,7 @@
                             </div>
                         </div>
 
-                      </div>
+                    </div>
 
                 </div>
                 <div class="col-md-9 col-sm-12 noPadding">

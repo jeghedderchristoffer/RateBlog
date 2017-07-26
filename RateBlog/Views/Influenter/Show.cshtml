@@ -2,6 +2,7 @@
 @inject RateBlog.Repository.IKategoriRepository CategoryRepository
 @inject RateBlog.Repository.IPlatformRepository PlatformRepository
 @inject RateBlog.Repository.IRatingRepository RatingRepository
+@inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s profil";
 }
@@ -82,13 +83,13 @@
                         <div class="middle">
                             <div class="inner">
                                 <div class="star-rating-show">
-                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
+                                    <div class="back-stars" title="@Math.Round(EkspertRatingRepository.GetEkspertRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
-                                        <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
+                                        <div class="front-stars" style="width: @EkspertRatingRepository.GetEkspertRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                             <i class="fa fa-star" aria-hidden="true"></i>
