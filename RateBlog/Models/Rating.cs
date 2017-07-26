@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,7 +26,8 @@ namespace RateBlog.Models
         public int Troværdighed { get; set; }
         public int Interaktion { get; set; }
         public int Opførsel { get; set; }
-        public bool Anbefaling { get; set; }
+
+        public bool? Anbefaling { get; set; }
 
         public string Feedback { get; set; }
 

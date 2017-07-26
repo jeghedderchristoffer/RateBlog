@@ -38,14 +38,21 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> RateInfluenter(int kvalitet, int troværdighed, int opførsel, int interaktion, bool anbefaling, RatingViewModel model)
+        public async Task<IActionResult> RateInfluenter(int kvalitet, int troværdighed, int opførsel, int interaktion, bool? anbefaling, RatingViewModel model)
         {
             var user = await _userManger.GetUserAsync(User);
 
-            if (opførsel == 0 || kvalitet == 0 || troværdighed == 0 || interaktion == 0 || model.Review == null)
+            if (opførsel == 0 || kvalitet == 0 || troværdighed == 0 || interaktion == 0 || model.Review == null || anbefaling == null)
             {
-                TempData["Error"] = "Du skal udfylde alle felterne for at give dit feedback"; 
-                return RedirectToAction("RateInfluenter");
+                TempData["Error"] = "Du skal udfylde alle felterne for at give dit feedback";
+
+                var errorModel = new RatingViewModel()
+                {
+                    Review = model.Review,
+                    Influenter = model.Influenter
+                }; 
+
+                return View("RateInfluenter", errorModel);
             }
 
             var hoursSinceLastRating = _rating.GetHoursLeftToRate(user.Id, model.Influenter.InfluenterId); 

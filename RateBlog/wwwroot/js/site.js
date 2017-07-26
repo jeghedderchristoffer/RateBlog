@@ -327,7 +327,7 @@ $(document).ready(function () {
     }
 
     if (TwitchInput.val() !== "") {
-        TwitchText.text("www.twitch.tv/" + TwitchInput.val()); 
+        TwitchText.text("www.twitch.tv/" + TwitchInput.val());
     }
 
     if (WebsiteInput.val() !== "") {
@@ -336,7 +336,7 @@ $(document).ready(function () {
 
     WebsiteInput.keyup(function () {
         WebsiteText.text(WebsiteInput.val());
-    }); 
+    });
 
     TwitchInput.keyup(function () {
         TwitchText.text("www.twitch.tv/" + TwitchInput.val());
@@ -362,14 +362,14 @@ $(document).ready(function () {
         YoutubeText.text("www.youtube.com/user/" + YoutubeInput.val());
     });
 
-}); 
+});
 
 //Rating Stars
 
 $(document).ready(function () {
     $('[data-toggle="popover"]').popover({
         container: "body"
-    }); 
+    });
 });
 
 $(document).ready(function () {
@@ -411,5 +411,3 @@ function topFunction() {
     document.body.scrollTop = 0; // For Chrome, Safari and Opera 
     document.documentElement.scrollTop = 0; // For IE and Firefox
 }
-
-

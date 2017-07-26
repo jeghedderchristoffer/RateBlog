@@ -1,19 +1,15 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.IndexViewModel
 @inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Repository.IInfluenterRepository InfluenterReposritory
-@inject RateBlog.Repository.IKategoriRepository CategoryRepository
-@inject RateBlog.Repository.IPlatformRepository PlatformRepository
-@inject RateBlog.Repository.IRatingRepository RatingRepository
 @{
     ViewData["Title"] = "Find en influenter";
     var user = await UserManager.GetUserAsync(User);
 }
 
-<div style="height: 100vh; background: #f5f5f5">
+<div style="height: 100vh; background: #fafafa">
 
     <div class="navbar-allaround"></div>
 
-    <div style="background-color: #fff; padding-bottom: 20px;">
+    <div style="background-color: #fff; padding-bottom: 15px;">
         <div class="outer">
             <div class="middle">
                 <div class="inner">
@@ -35,167 +31,48 @@
             <div class="col-md-12 noPaddingLeft">
                 <div class="col-md-3 hidden-sm hidden-xs noPaddingLeft">
                     <div class="sorter">
-
-                        @*<div class="dropdown">
-                                <button class="btn btn dropdown-toggle" style="width: 100%" type="button" data-toggle="dropdown">
-                                    Sorter i influenter
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" style="width: 100%">
-                                    <li><a href="#">Højste rating</a></li>
-                                    <li><a href="#">Lavest rating</a></li>
-                                    <li><a href="#">Flest følgere</a></li>
-                                    <li><a href="#">Mindst følgere</a></li>
-                                </ul>
-                            </div>*@
-
-                        <h4><b>Platform</b></h4>
-                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="4" style="background: #fff">Facebook</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="2" style="background: #fff">Instagram</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="1" style="background: #fff">YouTube</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="3" style="background: #fff">Snapchat</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="6" style="background: #fff">Twitter</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="platforme" value="5" style="background: #fff">Twitch</label><br />
-
-
-
-                        <h4><b>Kategori</b></h4>
-
-                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="5" style="background: #fff">Gamer</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="4" style="background: #fff">Beauty</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="6" style="background: #fff">Entertainment</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="8" style="background: #fff">Fashion</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="1" style="background: #fff">Lifestyle</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="7" style="background: #fff">Food</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="9" style="background: #fff">Mommy</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="3" style="background: #fff">Vlogger</label><br />
-                        <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="2" style="background: #fff">DIY</label><br /><br />
-
-
-                        <div class="outer">
-                            <div class="middle">
-                                <div class="inner">
-                                    <input type="submit" class="search-button" style="float: left; background-color:#f08301;" value="Søg" />
-                                </div>
+                        <div class="col-md-12 noPadding">
+                            <h4><b>Platforme</b></h4>
+                            <div class="col-md-6 noPadding">
+                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="4" style="background: #fff">Facebook</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="2" style="background: #fff">Instagram</label><br />
+                                <label class="checkbox-inline" style="padding-bottom: 0;"><input type="checkbox" name="platforme" value="1" style="background: #fff;">YouTube</label><br />
+                            </div>
+                            <div class="col-md-6 noPadding">
+                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="3" style="background: #fff">Snapchat</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="6" style="background: #fff">Twitter</label><br />
+                                <label class="checkbox-inline" style="padding-bottom: 0;"><input type="checkbox" name="platforme" value="5" style="background: #fff;">Twitch</label>
+                            </div>
+                            <div class="col-md-12 noPadding">
+                                <hr />
                             </div>
                         </div>
+                        <div class="col-md-12 noPadding">
+                            <h4><b>Kategorier</b></h4>
 
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="5" style="background: #fff">Gaming</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="4" style="background: #fff">Beauty</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="6" style="background: #fff">Entertainment</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="8" style="background: #fff">Fashion</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="1" style="background: #fff">Lifestyle</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="7" style="background: #fff">Food</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="9" style="background: #fff">Mommy</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="3" style="background: #fff">Vlogger</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="2" style="background: #fff">DIY</label><br />
+                        </div>
                     </div>
-
                 </div>
+
                 <div class="col-md-9 col-sm-12 noPadding">
                     <div class="infoInfluenter">
-                        <h2 style="margin-top: 0; margin-bottom: 20px;">Resultater for @Model.SearchString</h2>
+                        <h2 style="margin-top: 5px; margin-bottom: 20px;">
+                            Resultater for @Model.SearchString
+                        </h2>
 
+                        <div id="listOfInfluencers">
+                            @Html.Partial("InfluencerListPartial", Model.InfluentList)
+                        </div>
 
-                        @if (Model.InfluentList != null)
-                        {
-                            @foreach (var influ in Model.InfluentList)
-                            {
-
-                                <div class="col-md-12 search-result noPaddingLeft">
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">
-                                        <a asp-controller="Influenter" asp-action="Show" asp-route-id="@influ.InfluenterId">
-                                            <img class="influ-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = influ.Id })" />
-                                        </a>
-
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 noPadding" style="">
-
-                                        <h4>@InfluenterReposritory.Get(influ.InfluenterId.Value).Alias</h4>
-                                        <p style="margin-top: 15px;">
-                                            @if (CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value) != null)
-                                            {
-                                            <p style="margin-top: 15px;">
-                                                @foreach (var kategori in CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value))
-                                                {
-                                                    @if (kategori.Equals(CategoryRepository.GetInfluentersCategories(influ.InfluenterId.Value).Last()))
-                                                    {
-                                                        @kategori
-                                                    }
-                                                    else
-                                                    {
-                                                        @kategori <span>|</span>
-                                                    }
-                                                }
-                                            </p>
-                                            }
-                                            else
-                                            {
-                                                <p>Ukendte kategorier</p>
-                                            }
-
-
-                                            <div class="a-center">
-                                                @if (PlatformRepository.GetAllInfluenterPlatformForInfluenter(influ.InfluenterId.Value) != null)
-                                                {
-                                                    @foreach (var platform in PlatformRepository.GetAllInfluenterPlatformForInfluenter(influ.InfluenterId.Value))
-                                                    {
-                                                        @if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Facebook")
-                                                        {
-                                                            <a href="http://www.facebook.com/@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
-                                                        }
-                                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "YouTube")
-                                                        {
-                                                            <a href="http://www.youtube.com/user/@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
-                                                        }
-                                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "SnapChat")
-                                                        {
-                                                            <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>
-                                                        }
-                                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Instagram")
-                                                        {
-                                                            <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search-o fa-instagram fa-instagram-search"></a>
-                                                        }
-                                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitter")
-                                                        {
-                                                            <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search-o fa-twitter fa-twitter-search"></a>
-                                                        }
-                                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Twitch")
-                                                        {
-                                                            <a href="http://www.twitch.tv/@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
-                                                        }
-                                                        else if (PlatformRepository.Get(platform.PlatformId).PlatformNavn == "Website")
-                                                        {
-                                                            <a href="http://@platform.Link" target="_blank" class="fa fa-search-o fa-globe fa-globe-search"></a>
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    <p style="margin-top: 15px">Ingen sociale medier</p>
-
-                                                }
-
-
-                                            </div>
-
-                                        </div>
-                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding">
-                                            <div class="star-rating-search" style="margin-top: 20px;">
-                                                <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(influ.InfluenterId.Value), 2)%">
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-
-                                                    <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(influ.InfluenterId.Value)%">
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@influ.InfluenterId" class="a-button" style="background-color: #08468d;">Anmeld</a>
-                                            <a asp-controller="Influenter" asp-action="Read" asp-route-id="@influ.InfluenterId" class="a-button" style="margin-bottom:15px;">Se anmeldelser</a>
-
-                                        </div>
-                                    </div>
-                            }
-                        }
                     </div>
                 </div>
             </div>
@@ -204,31 +81,119 @@
     </div>
 </div>
 
-@section SearchStar{
+<!--Der skal tages højde for, når der bliver loadet ind, at man kun skal loade ind, 
+    de influencers som matcher de kriterier, når har tjekket af i kategori og platform. 
+    Der skal også laves, så når man har sorteret med kategori eller platform, og scroller ned i bunden, 
+    skal currentUsersArray ikke opdateres, da det fucker op. -->
+@section Scripts{
     <script>
-
+        var pageSize = 5;
+        var pageIndex = 1;
+        var searchString = "@Model.SearchString";
+        var currentUsersArray; 
 
         $(document).ready(function () {
-            $(".front-stars").load(function () {
-                console.log("")
-
+            $(window).scroll(function () {
+                if ($(window).scrollTop() ==
+                    $(document).height() - $(window).height()) {
+                    GetData();
+                }
             });
-
         });
 
-        //function getAverage(influenterId) {
+        function GetData() {
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: '/Influenter/GetNextFromList',
+                data: {
+                    pageIndex: pageIndex,
+                    pageSize: pageSize,
+                    search: searchString
+                },
+                error: function (request, error) {
 
-        //    console.log(influenterId);
+                },
+                success: function (response) {
+                    console.log(response)
+                    $("#listOfInfluencers").append(response);
+                    pageIndex++;
+                    currentUsersArray = UpdateCurrentUserList();
+                }
+            });
+        };
 
-        //    $.ajax({
-        //        type: "GET",
-        //        data: { InfluenterId: influenterId },
-        //        url: "/Rating/GetAverageRating",
-        //        success: function (msg) {
-        //            $("#" + influenterId).css("width", msg * 20);
-        //            console.log(msg);
-        //        }
-        //    });
-        //}
+        function UpdateCurrentUserList() {
+            var currentUsersArray = new Array();
+
+            $("input[type='hidden'][name='currentInfluencers']").each(function () {
+                currentUsersArray.push($(this).attr("value"));
+            });
+            return currentUsersArray;
+        }
+
+        $(document).ready(function () {
+
+            currentUsersArray = UpdateCurrentUserList();
+
+            $("input[type='checkbox'][name='platforme'], input[type='checkbox'][name='kategorier']").click(function () {
+
+                var platformArray = new Array();
+                var kategoriArray = new Array();
+
+                console.log("Current users:" + currentUsersArray.length)
+
+                $("input[type='checkbox'][name='platforme']").each(function () {
+                    if ($(this).is(":checked")) {
+                        platformArray.push($(this).attr("value"));
+                    }
+                });
+
+                $("input[type='checkbox'][name='kategorier']").each(function () {
+                    if ($(this).is(":checked")) {
+                        kategoriArray.push($(this).attr("value"));
+                    }
+                });
+
+                var jsonPlatformArray = {};
+                var jsonKategoriArray = {};
+                var jsonCurrentUsersArray = {};
+
+                for (i in kategoriArray) {
+                    jsonKategoriArray[i] = kategoriArray[i];
+                }
+
+                for (i in currentUsersArray) {
+                    jsonCurrentUsersArray[i] = currentUsersArray[i];
+                }
+
+                for (i in platformArray) {
+                    jsonPlatformArray[i] = platformArray[i];
+                }
+
+                // Get ajax
+                $.ajax({
+                    type: "GET",
+                    async: true,
+                    url: '/Influenter/Sorter',
+                    data: {
+                        currentUsers: jsonCurrentUsersArray,
+                        platforme: jsonPlatformArray,
+                        kategorier: jsonKategoriArray
+                    },
+                    error: function (request, error) {
+
+                    },
+                    success: function (response) {
+                        $("#listOfInfluencers").html(response);
+                    }
+                });
+
+            });
+        });
+
+
+
     </script>
+
 }
