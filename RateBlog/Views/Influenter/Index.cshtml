@@ -18,7 +18,6 @@
                         <input type="text" name="search" class="search-inputsøg" placeholder="F.eks. Gaming eller Armin" />
                         <span>
                             <input class="search-button" type="submit" value="Søg" />
-
                         </span>
                     </form>
                 </div>
@@ -65,12 +64,17 @@
 
                 <div class="col-md-9 col-sm-12 noPadding">
                     <div class="infoInfluenter">
-                        <h2 style="margin-top: 5px; margin-bottom: 20px;">
+                        <h2 style="margin-top: 0; margin-bottom: 20px;">
                             Resultater for @Model.SearchString
                         </h2>
 
                         <div id="listOfInfluencers">
                             @Html.Partial("InfluencerListPartial", Model.InfluentList)
+                        </div>
+                        <div class="text-center" id="loadingInfluencers" style=" margin-top: 40px;">
+                            <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
+                            <h3>Loading</h3>
                         </div>
 
                     </div>
@@ -81,18 +85,18 @@
     </div>
 </div>
 
-<!--Der skal tages højde for, når der bliver loadet ind, at man kun skal loade ind, 
-    de influencers som matcher de kriterier, når har tjekket af i kategori og platform. 
-    Der skal også laves, så når man har sorteret med kategori eller platform, og scroller ned i bunden, 
-    skal currentUsersArray ikke opdateres, da det fucker op. -->
 @section Scripts{
     <script>
-        var pageSize = 5;
-        var pageIndex = 1;
+        var pageSize = 10;
+        var pageIndex = 0;
         var searchString = "@Model.SearchString";
-        var currentUsersArray; 
+        var currentUsersArray;
+        var endLoading = false;
 
         $(document).ready(function () {
+            // Gets the data first
+            GetData();
+
             $(window).scroll(function () {
                 if ($(window).scrollTop() ==
                     $(document).height() - $(window).height()) {
@@ -101,7 +105,47 @@
             });
         });
 
+        
+
+        // Får data når der bliver scrollet ned til bunden
         function GetData() {
+
+            // Platform og kategori Array skal sendes med, så der kun loades ind, hvad der er sorteret efter. //
+            var platformArray = new Array();
+            var kategoriArray = new Array();
+
+            $("input[type='checkbox'][name='platforme']").each(function () {
+                if ($(this).is(":checked")) {
+                    platformArray.push($(this).attr("value"));
+                }
+            });
+
+            $("input[type='checkbox'][name='kategorier']").each(function () {
+                if ($(this).is(":checked")) {
+                    kategoriArray.push($(this).attr("value"));
+                }
+            });
+
+            // Samler platforme og kategorier som JSON //
+            var jsonPlatformArray = {};
+            var jsonKategoriArray = {};
+
+            for (i in kategoriArray) {
+                jsonKategoriArray[i] = kategoriArray[i];
+            }
+
+            for (i in platformArray) {
+                jsonPlatformArray[i] = platformArray[i];
+            }
+
+            // Gets the current users, so i can make sure they dont appear twice in list...
+            var currentInfluencers = UpdateCurrentUserList();
+            var jsonCurrentInfluencers = {};
+
+            for (i in currentInfluencers) {
+                jsonCurrentInfluencers[i] = currentInfluencers[i];
+            }
+
             $.ajax({
                 type: "GET",
                 async: true,
@@ -109,16 +153,31 @@
                 data: {
                     pageIndex: pageIndex,
                     pageSize: pageSize,
-                    search: searchString
+                    search: searchString,
+                    platforme: jsonPlatformArray,
+                    kategorier: jsonKategoriArray,
+                    currentUsers: jsonCurrentInfluencers
+                },
+                beforeSend: function () {
+                    if (!endLoading) {
+                        $("#loadingInfluencers").show();
+                    }                  
                 },
                 error: function (request, error) {
 
                 },
                 success: function (response) {
-                    console.log(response)
-                    $("#listOfInfluencers").append(response);
-                    pageIndex++;
-                    currentUsersArray = UpdateCurrentUserList();
+                    if (response.trim()) {
+                        $("#listOfInfluencers").append(response);
+                        pageIndex++;
+                        currentUsersArray = UpdateCurrentUserList();                       
+                    }
+                    else {
+                        endLoading = true;                       
+                    }
+                },
+                complete: function () {
+                    $("#loadingInfluencers").hide();
                 }
             });
         };
@@ -140,8 +199,7 @@
 
                 var platformArray = new Array();
                 var kategoriArray = new Array();
-
-                console.log("Current users:" + currentUsersArray.length)
+                endLoading = false;
 
                 $("input[type='checkbox'][name='platforme']").each(function () {
                     if ($(this).is(":checked")) {
@@ -179,7 +237,10 @@
                     data: {
                         currentUsers: jsonCurrentUsersArray,
                         platforme: jsonPlatformArray,
-                        kategorier: jsonKategoriArray
+                        kategorier: jsonKategoriArray,
+                        pageIndex: pageIndex,
+                        pageSize: pageSize,
+                        search: searchString
                     },
                     error: function (request, error) {
 
