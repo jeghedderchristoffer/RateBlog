@@ -487,7 +487,7 @@ body.modal-open {
 
     .navbar-addon h2 {
         margin: 0;
-        display: table-cell;
+        display: block;
         vertical-align: middle;
     }
 
@@ -539,6 +539,16 @@ body.modal-open {
 .se-anmeldelse-center {
     display: inline-block;
     text-align: center
+}
+
+@media(max-width: 991px){
+    .addon-number h2 {
+        font-size: 20px !important;
+        display: block;
+        text-align: left;
+        margin-left: 5px;
+        margin-top: 10px;
+    }
 }
 
 @media (max-width: 767px) {
@@ -2178,7 +2188,7 @@ footer {
     padding: 5px;
     margin-bottom: 10px;
     color: #333;
-    background: #fafafa;
+    background: #fff    ;
     border-radius: 5px;
 }
 

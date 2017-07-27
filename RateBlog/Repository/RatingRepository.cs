@@ -209,10 +209,27 @@ namespace RateBlog.Repository
                 return hours;
             }
 
-            return 0;
+            return 0;           
+        }
 
+        public List<Rating> GetFanRatings(string id)
+        {
+            return _applicationDbContext.Rating.Where(x => x.ApplicationUserId == id).ToList();
+        }
 
-            
+        public int GetUnreadAnswer(string id)
+        {
+            var allRating = _applicationDbContext.Rating.Where(x => x.ApplicationUserId == id);
+            int count = 0;
+            foreach(var v in allRating)
+            {
+                if (!string.IsNullOrEmpty(v.Answer) && v.IsAnswerRead == false)
+                {
+                    count++;
+                }
+            }
+
+            return count; 
         }
     }
 }

@@ -124,6 +124,20 @@ namespace RateBlog.Repository
         /// <param name="applicationUserId"></param>
         /// <param name="influenterId"></param>
         /// <returns></returns>
-        double GetHoursLeftToRate(string applicationUserId, int influenterId); 
+        double GetHoursLeftToRate(string applicationUserId, int influenterId);
+
+        /// <summary>
+        /// Gets all the rating the fan has given
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        List<Rating> GetFanRatings(string id);
+
+        /// <summary>
+        /// Gets unread answers. If you have rated a influencer, and the influencer has replied, you get a notification. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        int GetUnreadAnswer(string id);
     }
 }

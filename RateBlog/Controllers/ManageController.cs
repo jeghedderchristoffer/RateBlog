@@ -523,7 +523,7 @@ namespace RateBlog.Controllers
 
             if (ModelState["ProfilePic"] != null)
             {
-                var dd = ModelState["ProfilePic"]; 
+                var dd = ModelState["ProfilePic"];
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 var message = allErrors.First();
                 TempData["Error"] = message.ErrorMessage;
@@ -533,7 +533,7 @@ namespace RateBlog.Controllers
                 TempData["Error"] = "Du skal udfylde dine informationer for at kunne blive influenter!";
             }
 
-            
+
             return View("EditProfile", model);
         }
 
@@ -577,6 +577,25 @@ namespace RateBlog.Controllers
 
 
             return RedirectToAction("Anmeldelser");
+        }
+
+        [HttpPost]
+        public IActionResult MinAnmeldelse(int id)
+        {
+            var rating = _ratingRepo.Get(id);
+
+            if (!string.IsNullOrEmpty(rating.Answer))
+            {
+                rating.IsAnswerRead = true;
+                _ratingRepo.Update(rating); 
+            }
+
+            var model = new MinAnmeldelseViewModel()
+            {
+                Rating = rating
+            };
+
+            return View(model);
         }
 
         [HttpGet]

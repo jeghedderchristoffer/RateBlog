@@ -20,7 +20,7 @@
                         </div>
                         <div class="col-md-5 col-xs-9 addon-box">
                             <div class="addon-number" style="text-align: left">
-                                <p>Du er blevet ratet af</p>
+                                <p>Du er blevet anmeldt af</p>
                                 <h3>@UserManager.Users.Single(x => x.Id == Model.Rating.ApplicationUserId).Name</h3>
                             </div>
 
@@ -76,9 +76,9 @@
         <div class="col-md-12 noPadding">
             <div class="col-md-offset-3 col-md-6">
                 <form asp-area="" asp-controller="Manage" asp-action="Answer">
-                    <h4 class="text-center">Hvad har du af feedback til din rating:</h4>
+                    <h4 class="text-center">Hvad har du af feedback til din anmeldelse:</h4>
                     @Html.HiddenFor(x => x.Rating.RatingId)
-                    <textarea asp-for="@Model.Rating.Answer" class="rating-input" style="margin-bottom: 15px" rows="8" placeholder="Har du noget feedback til din rating?"></textarea>
+                    <textarea asp-for="@Model.Rating.Answer" class="rating-input" style="margin-bottom: 15px" rows="8" placeholder="Har du noget feedback til din anmeldelse?"></textarea>
                     <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Send" />
                 </form>
             </div>
