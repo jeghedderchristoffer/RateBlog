@@ -36,5 +36,9 @@ namespace RateBlog.Models
 
         [DefaultValue(false)]
         public bool IsRead { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsAnswerRead { get; set; }
+
     }
 }

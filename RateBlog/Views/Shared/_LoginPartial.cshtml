@@ -4,6 +4,9 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Repository.IRatingRepository RatingRepo
+@{ 
+    var user = await UserManager.GetUserAsync(User);
+}
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -19,12 +22,25 @@
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
                         Anmeldelser
-                        @if (RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
+                        @if (RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
+                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value)</span>
                         }
                     </a>
                 </li>
+            }
+            else
+            {
+                <li>
+                    <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
+                        Anmeldelser
+                        @if (RatingRepo.GetUnreadAnswer(user.Id) != 0)
+                        {
+                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadAnswer(user.Id)</span>
+                        }
+                    </a>
+                </li>
+
             }
             
             @if (User.IsInRole("Ekspert"))
@@ -44,7 +60,6 @@
                         </div>
                     </div>
                 </li>
-
             }
 
             <li class="drop">
