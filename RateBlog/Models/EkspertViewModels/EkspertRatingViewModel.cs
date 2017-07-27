@@ -39,6 +39,6 @@ namespace RateBlog.Models.EkspertViewModels
         public bool? Anbefaling { get; set; }
         [Required]
         public string AnbefalingString { get; set; }
-
+        
     }
 }

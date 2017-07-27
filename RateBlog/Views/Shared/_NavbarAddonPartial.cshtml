@@ -1,8 +1,38 @@
 ﻿@inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Repository.IRatingRepository RatingRepository
+@inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
 @{
     var user = await UserManager.GetUserAsync(User);
 }
+
+@if (User.IsInRole("Ekspert"))
+{
+    <div class="navbar-addon">
+        <div class="container">
+            <div class="col-md-12 col-xs-12 noPadding">
+                <div class="col-md-2 col-xs-2 noPadding addon-box">
+                    <div class="addon-img-container">
+                        <img src="@Url.Action("ProfilePic", "Manage")" />
+                    </div>
+                </div>
+                <div class="col-md-8 col-xs-9 addon-box">
+                    <div class="addon-number" style="text-align: left">
+                        <h3>@user.Name</h3>
+                        <p style="margin-top: 10px;">Ekspert</p>
+                    </div>
+
+                    <div class="addon-number" style="width: 33.3%">
+                        <h1>@EkspertRatingRepository.GetMyEkspertRatingNumber(user.Id.ToString())</h1>
+                        <p>Anmeldelser</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
 
 <div class="navbar-addon">
     <div class="container">
@@ -63,3 +93,7 @@
         </div>
     </div>
 </div>
+}
+
+
+

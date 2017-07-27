@@ -1,0 +1,157 @@
+﻿@model RateBlog.Models.EkspertViewModels.SeAnmeldelseViewModel
+@inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
+@{
+    ViewData["Title"] = "Ekspert anmeldelser";
+    var user = await UserManager.GetUserAsync(User);
+    var anbefaling = (Model.EkspertRating.Anbefaling.Value) ? "Ja" : "Nej";
+}
+
+<div class="navbar-allaround"></div>
+
+
+@Html.Partial("_NavbarAddonPartial")
+
+
+<div class="bottom-container" style="background: #fafafa; height: auto; overflow: hidden">
+    <div style="background: #fff !important">
+        <div class="navbar-addon" style="padding-bottom: 20px; background:#fff">
+            <div class="container">
+                <div class="col-md-12 col-xs-12 noPadding">
+                    <div class="col-md-2 col-xs-2 noPadding addon-box">
+                        <div class="addon-img-container">
+                            <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId == Model.EkspertRating.InfluenterId).Id })" />
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-xs-9 addon-box">
+                        <div class="addon-number" style="text-align: left">
+                            <p>Du har anmeldt </p>
+                            <h3>@UserManager.Users.SingleOrDefault(x => x.InfluenterId == Model.EkspertRating.InfluenterId).Name</h3>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-5 col-xs-12 addon-box">
+                        <div class="addon-number">
+                            <div class="se-anmeldelse-center se-anmeldelse-padding">
+                                <h2 class="text-center">Samlet score</h2>
+                                <br />
+                                <div class="star-rating-response se-anmeldelse-star">
+                                    <div class="back-stars" title="@Math.Round(EkspertRatingRepository.GetSingleEkspertRatingAverage(Model.EkspertRating.Id), 2)%">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <div class="front-stars" style="width: @EkspertRatingRepository.GetSingleEkspertRatingAverage(Model.EkspertRating.Id)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-12" style="Margin-bottom: 20px; text-align: left; ">
+                    <div class="col-md-12" style="margin-bottom:20px; ">
+                        <div class="col-md-6">
+                            <h3>Anmeldelse:</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <h3>Begrundelse:</h3>
+                        </div>
+                    </div>
+                    <form method="post" asp-controller="Ekspert" asp-action="SeAnmeldelse">
+                        @Html.HiddenFor(x => x.EkspertRating.Id)
+                        @Html.HiddenFor(x => x.EkspertRating.Kvalitet)
+
+                        <div class="col-md-12" style="margin-bottom:20px; padding-bottom:20px; border-bottom: 1px solid #ddd; border-top: 1px solid #ddd">
+                            <div class="col-md-6">
+                                <h4><b>Kvalitet:</b> @Model.EkspertRating.Kvalitet </h4>
+
+                            </div>
+                            <div class="col-md-6">
+                                <h4><b>Kvalitet:</b></h4>
+                                <textarea class="rating-input-ekspert" asp-for="@Model.EkspertRating.KvalitetString"></textarea>
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 seEkspertRating-Info">
+                            <div class="col-md-6">
+                                <h4><b>Troværdighed:</b> @Model.EkspertRating.Troværdighed</h4>
+
+                            </div>
+                            <div class="col-md-6">
+                                <h4><b>Troværdighed:</b></h4>
+                                <textarea class="rating-input-ekspert" asp-for="@Model.EkspertRating.TroværdighedString"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 seEkspertRating-Info">
+                            <div class="col-md-6">
+                                <h4><b>Opførsel:</b> @Model.EkspertRating.Opførsel</h4>
+
+                            </div>
+                            <div class="col-md-6">
+                                <h4><b>Opførsel:</b></h4>
+                                <textarea class="rating-input-ekspert" asp-for="@Model.EkspertRating.OpførselString"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 seEkspertRating-Info">
+                            <div class="col-md-6">
+                                <h4><b>Interaktion:</b> @Model.EkspertRating.Interaktion</h4>
+
+                            </div>
+                            <div class="col-md-6" >
+                                <h4><b>Interaktion:</b></h4>
+                                <textarea class="rating-input-ekspert" asp-for="@Model.EkspertRating.InteraktionString"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" style="margin-bottom:20px; padding-bottom:20px; border-bottom: 1px solid #ddd;">
+                            <div class="col-md-6">
+                                <h4><b>Anbefaling:</b> @anbefaling</h4>
+
+                            </div>
+                            <div class="col-md-6">
+                                <h4><b>Anbefaling:</b></h4>
+                                <p><i>Kan ikke ændres</i></p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" style="margin-bottom:20px; padding-bottom:20px; border-bottom: 1px solid #ddd;">
+                            <div class="col-md-6">
+                                <h4><b>Anmeldelse:</b> @Model.EkspertRating.OffentligFeedback</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <h4><b>Anmeldelse:</b></h4>
+                                <textarea class="rating-input-ekspert" asp-for="@Model.EkspertRating.OffentligFeedbackString"></textarea>
+                            </div>
+                        </div>
+
+
+
+                            <input type="submit" />
+                    </form>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>

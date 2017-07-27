@@ -10,6 +10,9 @@
 
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right" id="dropdownPc">
+            
+ 
+           
 
             @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
             {
@@ -23,14 +26,23 @@
                     </a>
                 </li>
             }
+            
             @if (User.IsInRole("Ekspert"))
             {
-                <li>
-                    <a asp-area="" asp-controller="Ekspert" asp-action="Index">
-                        Ekspert
-                       
-                        
-                    </a>
+
+
+                <li class="drop">
+                    <a href="#">Ekspert</a>
+                    <div class="dropdownContain">
+                        <div class="dropOut">
+                            <div class="triangle"></div>
+                            <ul>
+                                <li><a asp-area="" asp-controller="Ekspert" asp-action="Index" class="dropOut-a">Søg</a></li>
+                                <li><a asp-area="" asp-controller="Ekspert" asp-action="Anmeldelser" class="dropOut-a">Se anmeldser</a></li>
+                                
+                            </ul>
+                        </div>
+                    </div>
                 </li>
 
             }

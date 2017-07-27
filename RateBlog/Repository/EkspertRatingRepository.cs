@@ -105,6 +105,20 @@ namespace RateBlog.Repository
             return ratingSum * 20;
         }
 
+        public int GetMyEkspertRatingNumber(string applicationUserId)
+        {
+            if (_applicationDbContext.EkspertRating.Any(x => x.ApplicationUserId == applicationUserId))
+            {
+                return _applicationDbContext.EkspertRating.Where(x => x.ApplicationUserId == applicationUserId).Count();
+            }
+            return 0;
+        }
+
+        public List<EkspertRating> GetAllForEkspert(string id)
+        {
+            return _applicationDbContext.EkspertRating.Where(x => x.ApplicationUserId == id).ToList();
+        }
+
 
     }
 }

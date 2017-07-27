@@ -1,0 +1,87 @@
+﻿@inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
+@{
+    ViewData["Title"] = "Ekspert anmeldelser";
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<div class="navbar-allaround"></div>
+
+
+@Html.Partial("_NavbarAddonPartial")
+
+
+<div class="container">
+    <div class="col-xs-12 col-sm-12 noPadding">
+        <h2 class="anmeldelser-h2" style="padding-left: 10px;">Dine anmeldelser</h2>
+        <div class="col-md-12 col-xs-12 col-sm-8 noPadding">
+
+            @if (EkspertRatingRepository.GetAllForEkspert(user.Id).Count != 0)
+            {
+                @foreach (var v in EkspertRatingRepository.GetAllForEkspert(user.Id).OrderByDescending(x => x.RateDateTime))
+                {
+
+
+                    <a class="feedback-link" asp-controller="Ekspert" asp-action="SeAnmeldelse" asp-route-id="@v.Id">
+                        <div class="col-md-12 noPadding feedback-container">
+                            <div class="col-md-2 col-sm-2 noPadding">
+                                <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluenterId).Id})" />
+                            </div>
+                            <div class="col-md-4 col-sm-12 visible-xs" style="height: 100%">
+                                <div class="star-rating-feedback mobile-star-feedback" style="margin-top: 10px; margin-bottom: 10px;">
+                                    <div class="back-stars" title="@Math.Round(EkspertRatingRepository.GetSingleEkspertRatingAverage(v.Id), 2)% ">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                                        <div class="front-stars" style="width: @EkspertRatingRepository.GetSingleEkspertRatingAverage(v.Id)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-8 noPadding padding-anmeldelser">
+                                <p>Du er har anmeldt @UserManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluenterId).Name</p>
+                                <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                            </div>
+                            <div class="col-md-4 col-sm-12 hidden-xs" style="height: 100%">
+                                <div class="star-rating-feedback" style="margin-top: 10px; margin-bottom: 10px;">
+                                    <div class="back-stars" title="@Math.Round(EkspertRatingRepository.GetSingleEkspertRatingAverage(v.Id), 2)% ">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                                        <div class="front-stars" style="width: @EkspertRatingRepository.GetSingleEkspertRatingAverage(v.Id)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                }
+
+            }
+            else
+            {
+                <p> Du har desværre ikke givet nogle anmeldelser</p>
+            }
+
+        </div>
+
+    </div>
+</div>
+

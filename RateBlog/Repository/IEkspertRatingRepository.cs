@@ -23,5 +23,9 @@ namespace RateBlog.Repository
         List<EkspertRating> GetEkspertRatingForInfluenter(int influenterId);
 
         double GetSingleEkspertRatingAverage(int Id);
+
+        int GetMyEkspertRatingNumber(string applicationUserId);
+
+        List<EkspertRating> GetAllForEkspert(string id);
     }
 }

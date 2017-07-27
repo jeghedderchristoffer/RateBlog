@@ -68,6 +68,18 @@ namespace RateBlog.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult Anmeldelser(int id)
+        {
+            var influenter = _influenter.Get(id);
+            var model = new AnmeldelseViewModel()
+            {
+                Influenter = influenter
+            };
+
+            return View(model);
+        }
+
 
 
         [HttpPost]
@@ -115,6 +127,42 @@ namespace RateBlog.Controllers
             
 
             return View("EkspertRating", model);
+
+        }
+
+        [HttpGet]
+        public IActionResult SeAnmeldelse(int id)
+        {
+            var ekspertrating = _ekspertrating.Get(id);
+
+            var model = new SeAnmeldelseViewModel()
+            {
+                EkspertRating = ekspertrating
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult SeAnmeldelse(SeAnmeldelseViewModel model)
+        {
+            var ekspertRating = _ekspertrating.Get(model.EkspertRating.Id);
+            ekspertRating.KvalitetString = model.EkspertRating.KvalitetString;
+            ekspertRating.InteraktionString = model.EkspertRating.InteraktionString;
+            ekspertRating.OffentligFeedbackString = model.EkspertRating.OffentligFeedbackString;
+            ekspertRating.OpførselString = model.EkspertRating.OpførselString;
+            ekspertRating.TroværdighedString = model.EkspertRating.TroværdighedString;
+            _ekspertrating.Update(ekspertRating);
+
+            var ekspertrating = _ekspertrating.Get(model.EkspertRating.Id);
+
+            var newModel = new SeAnmeldelseViewModel()
+            {
+                EkspertRating = ekspertrating
+            };
+
+
+            return View(newModel);
 
         }
 
