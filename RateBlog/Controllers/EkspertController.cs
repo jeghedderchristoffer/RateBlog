@@ -143,6 +143,7 @@ namespace RateBlog.Controllers
             return View(model);
         }
 
+        // Update EkspertAnmelelse
         [HttpPost]
         public IActionResult SeAnmeldelse(SeAnmeldelseViewModel model)
         {

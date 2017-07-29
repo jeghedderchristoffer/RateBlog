@@ -55,19 +55,19 @@ namespace RateBlog.Controllers
                 return View("RateInfluenter", errorModel);
             }
 
-            var hoursSinceLastRating = _rating.GetHoursLeftToRate(user.Id, model.Influenter.InfluenterId); 
+            //var hoursSinceLastRating = _rating.GetHoursLeftToRate(user.Id, model.Influenter.InfluenterId);
 
-            // Så har denne bruger ikke ratet denne influencer endnu
-            if(hoursSinceLastRating == 0)
-            {
-                // Gør ingenting?? :-)
-            }
-            // Så har denne bruger ratet indenfor 24 timer...
-            else if(hoursSinceLastRating < 24)
-            {
-                TempData["Error"] = "Der skal gå 24 timer før du kan rate en influencer igen";
-                return RedirectToAction("RateInfluenter");
-            }
+            //// Så har denne bruger ikke ratet denne influencer endnu
+            //if (hoursSinceLastRating == 0)
+            //{
+            //    // Gør ingenting?? :-)
+            //}
+            //// Så har denne bruger ratet indenfor 24 timer...
+            //else if (hoursSinceLastRating < 24)
+            //{
+            //    TempData["Error"] = "Der skal gå 24 timer før du kan rate en influencer igen";
+            //    return RedirectToAction("RateInfluenter");
+            //}
 
             var rating = new Rating()
             { 
@@ -88,7 +88,7 @@ namespace RateBlog.Controllers
             // Der mangler at tjekke om denne user allerede har rated denne influenter....!!!!!!
 
             // Lidt feedback til brugeren
-            TempData["Success"] = "Du har givet dit feedback til " + model.Influenter.Alias;
+            TempData["Success"] = "Du har givet din anmeldelse " + model.Influenter.Alias;
 
             // Skal ændres til Influenter Controller, ShowInfluenter Action
             return RedirectToAction("Show", "Influenter", new { Id = model.Influenter.InfluenterId });

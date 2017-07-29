@@ -2188,14 +2188,9 @@ footer {
     padding: 5px;
     margin-bottom: 10px;
     color: #333;
-    background: #fff    ;
+    background: #fafafa;
     border-radius: 5px;
 }
-
-
-    .feedback-container.active {
-        background: #fafafa;
-    }
 
     .feedback-container:hover {
         background: #fafafa;

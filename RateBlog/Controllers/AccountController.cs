@@ -25,7 +25,7 @@ namespace RateBlog.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
-        private readonly IHttpContextAccessor _httpContextAccessor; 
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
         public AccountController(
@@ -34,7 +34,7 @@ namespace RateBlog.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory, 
+            ILoggerFactory loggerFactory,
             IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
@@ -43,7 +43,7 @@ namespace RateBlog.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
-            _httpContextAccessor = httpContextAccessor; 
+            _httpContextAccessor = httpContextAccessor;
         }
 
         //
@@ -98,6 +98,48 @@ namespace RateBlog.Controllers
             // ModelState er ikke gyldigt, ergo ingen kodeord eller password!
             return Json(new { result = "Missing" });
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logiffn(LoginViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation(1, "User logged in.");
+                    return RedirectToLocal(returnUrl);
+                }
+                if (result.RequiresTwoFactor)
+                {
+                    return RedirectToAction(nameof(SendCode), new
+                    {
+                        ReturnUrl = returnUrl,
+                        RememberMe = model.RememberMe
+                    });
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning(2, "User account locked out.");
+                    return View("Lockout");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+
+
         //
         // GET: /Account/Register
         [HttpGet]
@@ -105,9 +147,6 @@ namespace RateBlog.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-
-
-
             return View();
         }
 

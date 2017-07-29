@@ -88,11 +88,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h3 class="modal-title text-center">Sign up</h3>
+                    <h3 class="modal-title text-center">Opret en profil idag</h3>
                 </div>
                 <div class="modal-body">
                     <span id="opretErrorMsgTop" style="color: red"></span>
                     @Html.AntiForgeryToken()
+
                     <input id="opretNavn" type="text" class="text-input" placeholder="Navn" />
                     <input id="opretEmail" type="email" class="text-input" placeholder="Email" />
                     <input id="opretPassword" class="text-input" placeholder="Kodeord" type="password" />
@@ -139,6 +140,74 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+
+    <script>
+        // Opret ajax
+
+        $(document).ready(function () {
+            var opretErrorMsg = $("#opretErrorMsgTop");
+
+            $("#opretBtn").click(function () {
+
+                //collect the user data
+                var data = {};
+                data.Name = $("#opretNavn").val();
+                data.Email = $("#opretEmail").val();
+                data.Password = $("#opretPassword").val();
+                data.ConfirmPassword = $("#opretPassword2").val();
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                $.ajax({
+                    url: "/Account/Register",
+                    method: "POST",
+                    data: {
+                        model: data,
+                        __RequestVerificationToken: token,
+                        returnUrl: "Home/Index"   // you can modify the returnUrl value here
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        
+                        if (result.sucess === true) {
+                            window.location = "@ViewData["ReturnUrl"]";
+                            return;
+                        }
+
+                        for (var i = 0; i < result.error.length; i++) {
+                            console.log(result.error[i].errors[0].errorMessage);
+                            var error = result.error[i].errors[0].errorMessage;
+                            if (error === 'Missing') {
+                                opretErrorMsg.text("Du skal udfylde alle felterne.");
+                                return;
+                            }
+                            else if (error === 'Email') {
+                                opretErrorMsg.text("Dette er ikke en gyldig email.");
+                                $("#opretEmail").focus();
+                                return;
+                            }
+                            else if (error === 'Password') {
+                                opretErrorMsg.text("Kodeordet skal være minimum 6 karaktere langt.");
+                                return;
+                            }
+                            else if (error === 'NoMatch') {
+                                opretErrorMsg.text("De 2 kodeord er forskellige.");
+                                return;
+                            }
+                            else if (error.indexOf("User name") !== -1) {
+                                opretErrorMsg.text("Der findes allerede en bruger med denne email.");
+                                return;
+                            }
+
+                        }
+
+                    },
+                    error: function () {
+                        console.log("fail");
+                    }
+                });
+            });
+        });
+    </script>
 
     @RenderSection("Scripts", required: false)
     @RenderSection("SearchStar", required: false)
