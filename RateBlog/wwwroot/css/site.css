@@ -2450,6 +2450,91 @@ footer {
     margin-bottom: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid #ddd;
+    
+}
+
+
+.last3ratingFan {
+    background: #fafafa;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid #ddd;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+   
+}
+    .last3ratingFan img {
+        justify-content: center;
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+    }
+.last3ratingFan p {
+    float: right;
+}
+.last3rating h3{
+    text-align: center;
+    padding-top: 0px;
+    margin-top: 0px !important;
+    margin-bottom: 20px;
+}
+
+.last3rating h5 {
+
+    padding-top: 0px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    
+}
+
+
+
+
+.star-rating-show-Last3 {
+    padding-top: 0px;
+    display: flex;
+    font-size: 18px;
+    align-items: center;
+    float: right;
+    
+}
+
+@media screen and (max-width: 767px) {
+    .last3ratingFan {
+        background: #fafafa;
+        border-radius: 5px;
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        border: 1px solid #ddd;
+        padding-top: 10px;
+        margin-bottom: 10px;
+        padding: 5px;
+    }
+
+}
+@media screen and (max-width: 991px) {
+    .last3ratingFan {
+        background: #fafafa;
+        border-radius: 5px;
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        border: 1px solid #ddd;
+        padding-top: 10px;
+        margin-bottom: 10px;
+        padding: 5px;
+
+    }
+        .last3ratingFan img {
+            justify-content: center;
+            margin-left: 30%;
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+        }
+}
 }
 
 @media (max-width: 991px) {

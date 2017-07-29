@@ -231,5 +231,10 @@ namespace RateBlog.Repository
 
             return count; 
         }
+
+        public List<Rating> GetLast3RatingsByFan(string id)
+        {
+            return _applicationDbContext.Rating.Where(x=>x.ApplicationUserId == id).OrderByDescending(x=>x.RateDateTime).Take(3).ToList();
+        }
     }
 }

@@ -104,7 +104,7 @@
     <div class="col-xs-12 visible-xs">
         @if (Model.ApplicationUser.InfluenterId.HasValue)
         {
-            /////////////////////
+            
             @foreach (var v in EkspertRatingRepository.GetEkspertRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
                 {
                 <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">

@@ -151,6 +151,7 @@ namespace RateBlog.Controllers
             ekspertRating.KvalitetString = model.EkspertRating.KvalitetString;
             ekspertRating.InteraktionString = model.EkspertRating.InteraktionString;
             ekspertRating.OffentligFeedbackString = model.EkspertRating.OffentligFeedbackString;
+            ekspertRating.OffentligFeedback = model.EkspertRating.OffentligFeedback;
             ekspertRating.OpførselString = model.EkspertRating.OpførselString;
             ekspertRating.TroværdighedString = model.EkspertRating.TroværdighedString;
             _ekspertrating.Update(ekspertRating);

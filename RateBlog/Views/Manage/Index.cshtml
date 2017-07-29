@@ -126,8 +126,51 @@
                 }
                 else
                 {
-                    <p>FAN ANMELDELSER</p>
+                    <div class="last3rating">
+                        <h3>3 Sidste anmeldelser</h3>
+                    </div>
+                    @foreach (var v in RatingRepository.GetLast3RatingsByFan(user.Id))
+                    {
+                        <div class="col-md-12 col-sm-12 col-xs-12 last3ratingFan">
+                            <div class="col-md-3 col-sm-12 col-xs-12">
+                                <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == v.InfluenterId).Id })" />
+                            </div>
+                            <div class="col-md-9 col-sm-12 col-xs-12" style="padding-top:7px;">
+                                <div class="col-md-12 col-sm-12 col-xs-12 noPadding">
+                                    <h5 style="display: inline">Anmeldt: </h5>
+                                    <p style="display: inline;"><i>@UserManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluenterId).Name</i></p>
+                                </div>
 
+                                <div class="col-md-12 col-sm-12 col-xs-12 noPadding">
+                                    <h5 style="display: inline">Score:</h5>
+
+                                    <div class="star-rating-show-Last3" style="display: inline;">
+                                        <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(v.InfluenterId), 2)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(v.InfluenterId)%">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                           
+
+
+
+                        </div>
+
+                    }
                 }
 
             </div>
@@ -195,5 +238,6 @@
                 }
             </div>
         </div>
+
     </div>
 </div>
