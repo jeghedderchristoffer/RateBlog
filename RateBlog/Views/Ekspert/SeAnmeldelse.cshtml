@@ -61,7 +61,7 @@
 
                 </div>
 
-                <div class="col-md-12" style="Margin-bottom: 20px; text-align: left; ">
+                <div class="col-md-12" style="Margin-bottom: 20px; margin-top:20px; text-align: left; ">
                     <div class="col-md-12" style="margin-bottom:20px; ">
                         <div class="col-md-6">
                             <h3>Anmeldelse:</h3>
@@ -76,73 +76,80 @@
 
                         <div class="col-md-12" style="margin-bottom:20px; padding-bottom:20px; border-bottom: 1px solid #ddd; border-top: 1px solid #ddd">
                             <div class="col-md-6">
-                                <h4><b>Kvalitet:</b> @Model.EkspertRating.Kvalitet </h4>
+                                <h4><b>Kvalitet:</b> </h4>
+                                <h2>@Model.EkspertRating.Kvalitet </h2>
 
                             </div>
                             <div class="col-md-6">
                                 <h4><b>Kvalitet:</b></h4>
-                                <textarea class="rating-input-ekspert" asp-for="@Model.EkspertRating.KvalitetString"></textarea>
+                                <textarea class="rating-input-ekspert" rows="4" asp-for="@Model.EkspertRating.KvalitetString"></textarea>
                                 <br />
                             </div>
                         </div>
 
                         <div class="col-md-12 seEkspertRating-Info">
                             <div class="col-md-6">
-                                <h4><b>Troværdighed:</b> @Model.EkspertRating.Troværdighed</h4>
+                                <h4><b>Troværdighed:</b></h4>
+                                <h2>@Model.EkspertRating.Troværdighed</h2>
 
                             </div>
                             <div class="col-md-6">
                                 <h4><b>Troværdighed:</b></h4>
-                                <textarea class="rating-input-ekspert" asp-for="@Model.EkspertRating.TroværdighedString"></textarea>
+                                <textarea class="rating-input-ekspert" rows="4" asp-for="@Model.EkspertRating.TroværdighedString"></textarea>
                             </div>
                         </div>
 
                         <div class="col-md-12 seEkspertRating-Info">
                             <div class="col-md-6">
-                                <h4><b>Opførsel:</b> @Model.EkspertRating.Opførsel</h4>
+                                <h4><b>Opførsel:</b></h4>
+                                <h2>@Model.EkspertRating.Opførsel</h2>
 
                             </div>
                             <div class="col-md-6">
                                 <h4><b>Opførsel:</b></h4>
-                                <textarea class="rating-input-ekspert" asp-for="@Model.EkspertRating.OpførselString"></textarea>
+                                <textarea class="rating-input-ekspert" rows="4" asp-for="@Model.EkspertRating.OpførselString"></textarea>
                             </div>
                         </div>
 
                         <div class="col-md-12 seEkspertRating-Info">
                             <div class="col-md-6">
-                                <h4><b>Interaktion:</b> @Model.EkspertRating.Interaktion</h4>
+                                <h4><b>Interaktion:</b> </h4>
+                                <h2>@Model.EkspertRating.Interaktion</h2>
 
                             </div>
                             <div class="col-md-6" >
                                 <h4><b>Interaktion:</b></h4>
-                                <textarea class="rating-input-ekspert" asp-for="@Model.EkspertRating.InteraktionString"></textarea>
+                                <textarea class="rating-input-ekspert" rows="4" asp-for="@Model.EkspertRating.InteraktionString"></textarea>
                             </div>
                         </div>
 
                         <div class="col-md-12" style="margin-bottom:20px; padding-bottom:20px; border-bottom: 1px solid #ddd;">
                             <div class="col-md-6">
-                                <h4><b>Anbefaling:</b> @anbefaling</h4>
+                                <h4><b>Anbefaling:</b> </h4>
+                                <h3>@anbefaling</h3>
 
                             </div>
                             <div class="col-md-6">
-                                <h4><b>Anbefaling:</b></h4>
-                                <p><i>Kan ikke ændres</i></p>
+                                <h4 style="margin-bottom:20px;"><b>Anbefaling:</b></h4>
+                                <h5><i>Kan ikke ændres</i></h5>
                             </div>
                         </div>
 
                         <div class="col-md-12" style="margin-bottom:20px; padding-bottom:20px; border-bottom: 1px solid #ddd;">
                             <div class="col-md-6">
-                                <h4><b>Anmeldelse:</b> @Model.EkspertRating.OffentligFeedback</h4>
+                                <h4><b>Offentlig anmeldelse:</b></h4>
+                                <textarea class="rating-input-ekspert" rows="4" asp-for="@Model.EkspertRating.OffentligFeedback"></textarea>
                             </div>
                             <div class="col-md-6">
-                                <h4><b>Anmeldelse:</b></h4>
-                                <textarea class="rating-input-ekspert" asp-for="@Model.EkspertRating.OffentligFeedbackString"></textarea>
+                                <h4><b>Bestfluence anmeldelse:</b></h4>
+                                <textarea class="rating-input-ekspert" rows="4" asp-for="@Model.EkspertRating.OffentligFeedbackString"></textarea>
                             </div>
                         </div>
 
-
-
-                            <input type="submit" />
+                        <div class="col-md-12">
+                            <input type="submit" style="margin-bottom: 20px; margin-top:50px" class="edit-button" value="Opdater din anmeldelse" />
+                        </div>
+                        
                     </form>
 
 

@@ -15,7 +15,26 @@
         <ul class="nav navbar-nav navbar-right" id="dropdownPc">
             
  
-           
+            @if (User.IsInRole("Ekspert"))
+            {
+
+
+                <li class="drop">
+                    <a href="#">Ekspert</a>
+                    <div class="dropdownContain">
+                        <div class="dropOut">
+                            <div class="triangle"></div>
+                            <ul>
+                                <li><a asp-area="" asp-controller="Ekspert" asp-action="Index" class="dropOut-a">Søg</a></li>
+                                <li><a asp-area="" asp-controller="Ekspert" asp-action="Anmeldelser" class="dropOut-a">Se anmeldser</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            }
+            else
+            {
 
             @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
             {
@@ -42,24 +61,7 @@
                 </li>
 
             }
-            
-            @if (User.IsInRole("Ekspert"))
-            {
 
-
-                <li class="drop">
-                    <a href="#">Ekspert</a>
-                    <div class="dropdownContain">
-                        <div class="dropOut">
-                            <div class="triangle"></div>
-                            <ul>
-                                <li><a asp-area="" asp-controller="Ekspert" asp-action="Index" class="dropOut-a">Søg</a></li>
-                                <li><a asp-area="" asp-controller="Ekspert" asp-action="Anmeldelser" class="dropOut-a">Se anmeldser</a></li>
-                                
-                            </ul>
-                        </div>
-                    </div>
-                </li>
             }
 
             <li class="drop">
