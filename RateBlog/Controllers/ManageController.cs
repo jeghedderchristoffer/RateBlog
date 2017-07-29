@@ -15,6 +15,9 @@ using RateBlog.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Hosting;
 
 namespace RateBlog.Controllers
 {
@@ -32,6 +35,7 @@ namespace RateBlog.Controllers
         private readonly IPlatformRepository _platformRepo;
         private readonly IKategoriRepository _kategoriRepo;
         private readonly IRatingRepository _ratingRepo;
+        private readonly IHostingEnvironment _env; 
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
@@ -43,12 +47,14 @@ namespace RateBlog.Controllers
           IInfluenterRepository influenterRepo,
           IPlatformRepository platformRepo,
           IKategoriRepository kategoriRepo,
-          IRatingRepository ratingRepo)
+          IRatingRepository ratingRepo, 
+          IHostingEnvironment env)
         {
             _influenterRepo = influenterRepo;
             _platformRepo = platformRepo;
             _kategoriRepo = kategoriRepo;
             _ratingRepo = ratingRepo;
+            _env = env; 
 
             _userManager = userManager;
             _signInManager = signInManager;
@@ -538,6 +544,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true, Duration = 0)]
         public IActionResult Anmeldelser()
         {
             return View();
@@ -587,7 +594,7 @@ namespace RateBlog.Controllers
             if (!string.IsNullOrEmpty(rating.Answer))
             {
                 rating.IsAnswerRead = true;
-                _ratingRepo.Update(rating); 
+                _ratingRepo.Update(rating);
             }
 
             var model = new MinAnmeldelseViewModel()
@@ -603,8 +610,15 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> ProfilePic()
         {
             var user = await GetCurrentUserAsync();
-
             byte[] buffer = user.ImageFile;
+
+            if(buffer == null)
+            {
+                var dir = _env.WebRootPath;
+                var path = Path.Combine(dir, "/images", "airbnb" + ".png");
+                return File(path, "image/jpeg"); 
+            }
+
             return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ImageFile));
         }
 
@@ -614,6 +628,14 @@ namespace RateBlog.Controllers
         {
             var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
             byte[] buffer = user.ImageFile;
+
+            if (buffer == null)
+            {
+                var dir = _env.WebRootPath;
+                var path = Path.Combine(dir, "/images", "airbnb" + ".png");
+                return File(path, "image/jpeg");
+            }
+
             return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ImageFile));
         }
 

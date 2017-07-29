@@ -15,11 +15,11 @@
     <div class="col-md-offset-3 col-md-6">
         @if (ViewData["ReturnUrl"] != null)
         {
-            <h2>Du skal logge ind</h2>
+            <h2 class="text-center">Du skal logge ind</h2>
         }
         else
         {
-            <h2>Log in</h2>
+            <h2 class="text-center">Log in</h2>
         }
 
         <br />
@@ -38,6 +38,7 @@
         <a class="btn btn-block btn-social btn-google btn-lg">
             <span class="fa fa-google"></span> Google
         </a>
+        <a data-toggle="modal" href="#opretModal" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Ny på Bestfluence? Opret en profil</p></a>
         <a href="/Account/ForgotPassword" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Har du glemt kodeord?</p></a>
     </div>
 </div>
@@ -46,4 +47,76 @@
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+
+    <script>
+        $(document).ready(function () {
+            var errorMsgTop = $("#errorMsgTop1");
+            var errorMsgBot = $("#errorMsgBot1");
+            var returnNothing = false;
+
+                $("#loginBtn1").click(function () {
+
+        //collect the user data
+        var data = {};
+        data.Email = $("#email1").val();
+        data.Password = $("#password1").val();
+        var token = $('input[name="__RequestVerificationToken"]').val();
+
+        if (!isEmail(data.Email)) {
+            $("#email").focus();
+            errorMsgTop.text("Dette er ikke en gyldig email.");
+            if (data.Password === '') {
+                errorMsgBot.text("Du mangler kodeord.");
+            }
+            else {
+                errorMsgBot.text("");
+            }
+            return;
+        }
+
+        $.ajax({
+            url: "/Account/Login",
+            method: "POST",
+            data: {
+                model: data,
+                __RequestVerificationToken: token
+            },
+            success: function (result) {
+                var JSONString = JSON.stringify(result);
+                var resultObj = JSON.parse(JSONString);
+
+                console.log(data.Password);
+
+                if (resultObj.result === "Missing") {
+                    if (data.Password === '') {
+                        $("#password").focus();
+                        errorMsgBot.text("Du mangler kodeord.");
+                    }
+                    if (isEmail(data.Email)) {
+                        errorMsgTop.text("");
+                    }
+                }
+                else {
+                    errorMsgBot.text("");
+                }
+
+                if (resultObj.result === "Wrong") {
+                    $("#email").focus();
+                    errorMsgTop.text("Brugernavn eller kodeordet er forkert.");
+                }
+
+                if (resultObj.result === "Accepted") {
+                    window.location = "@ViewData["ReturnUrl"]"
+                }
+
+            },
+            error: function () {
+                console.log("fail");
+            }
+        });
+    });
+});
+    </script>
+
 }

@@ -15,12 +15,6 @@
   <ItemGroup>
     <Content Include="wwwroot\css\social-buttons.css" />
     <Content Include="wwwroot\images\airbnb.png" />
-    <Content Include="wwwroot\images\beauty-kat.jpg" />
-    <Content Include="wwwroot\images\DIY-kat.jpeg" />
-    <Content Include="wwwroot\images\entertainment-kat.jpeg" />
-    <Content Include="wwwroot\images\fashion-kat.jpeg" />
-    <Content Include="wwwroot\images\food-kat.jpeg" />
-    <Content Include="wwwroot\images\gaming-kat.jpeg" />
     <Content Include="wwwroot\images\Jyllandsposten.png" />
     <Content Include="wwwroot\images\Kategori\beauty-kat.jpg" />
     <Content Include="wwwroot\images\Kategori\DIY-kat.jpeg" />
@@ -32,12 +26,9 @@
     <Content Include="wwwroot\images\Kategori\mommy-kat.jpeg" />
     <Content Include="wwwroot\images\Kategori\vlog-pic.jpeg" />
     <Content Include="wwwroot\images\kommunikation.jpeg" />
-    <Content Include="wwwroot\images\lifestyle-kat.jpeg" />
-    <Content Include="wwwroot\images\mommy-kat.jpeg" />
     <Content Include="wwwroot\images\index-img.jpeg" />
     <Content Include="wwwroot\images\programing.jpeg" />
     <Content Include="wwwroot\images\Rasmus.jpeg" />
-    <Content Include="wwwroot\images\vlog-pic.jpeg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.1" />

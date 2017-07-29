@@ -94,11 +94,9 @@
                         {
                             @foreach (var v in RatingRepository.GetRatingForInfluenter(user.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
                             {
-                                var read = (v.IsRead == true) ? "active" : "" ?? "Nej";
-
                                 <form asp-area="" asp-controller="Manage" asp-action="SeAnmeldelse" asp-route-id="@v.RatingId">
                                     <a class="feedback-link" onclick="$(this).closest('form').submit();">
-                                        <div class="col-md-12 noPadding feedback-container @read">
+                                        <div class="col-md-12 noPadding feedback-container">
                                             <div class="col-md-2 col-sm-2 noPadding">
                                                 <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
                                             </div>
@@ -123,7 +121,13 @@
                                             </div>
                                             <div class="col-md-6 col-sm-8 noPadding padding-anmeldelser">
                                                 <p>Du er blevet anmeldt af @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
-                                                <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                                                <p style="color: #989898">
+                                                    @String.Format("{0:dd/MM/yyyy}", v.RateDateTime) &ensp;
+                                                    @if (!v.IsRead)
+                                                    {
+                                                        <span class="badge" style="font-family: Arial; background: #f08301">Ny</span>
+                                                    }
+                                                </p>
                                             </div>
                                             <div class="col-md-4 col-sm-12 hidden-xs" style="height: 100%">
                                                 <div class="star-rating-feedback" style="margin-top: 10px; margin-bottom: 10px;">
@@ -209,66 +213,82 @@
             <div class="col-md-8 col-sm-12">
                 @if (RatingRepository.GetFanRatings(user.Id).Count != 0)
                 {
-                    @foreach (var v in RatingRepository.GetFanRatings(user.Id).OrderByDescending(x => x.RateDateTime))
+                @foreach (var v in RatingRepository.GetFanRatings(user.Id).OrderByDescending(x => x.RateDateTime))
                     {
-                        <form asp-area="" asp-controller="Manage" asp-action="MinAnmeldelse" asp-route-id="@v.RatingId">
-                            <a class="feedback-link" onclick="$(this).closest('form').submit();">
-                                <div class="col-md-12 noPadding feedback-container active">
-                                    <div class="col-md-2 col-sm-2 noPadding">
-                                        <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluenterId).Id })" />
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 visible-xs" style="height: 100%">
-                                        <div class="star-rating-feedback mobile-star-feedback" style="margin-top: 10px; margin-bottom: 10px;">
-                                            <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
+                <form asp-area="" asp-controller="Manage" asp-action="MinAnmeldelse" asp-route-id="@v.RatingId">
+                    <a class="feedback-link" onclick="$(this).closest('form').submit();">
+                        <div class="col-md-12 noPadding feedback-container active">
+                            <div class="col-md-2 col-sm-2 noPadding">
+                                <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluenterId).Id })" />
+                            </div>
+                            <div class="col-md-4 col-sm-12 visible-xs" style="height: 100%">
+                                <div class="star-rating-feedback mobile-star-feedback" style="margin-top: 10px; margin-bottom: 10px;">
+                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
 
-                                                <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 noPadding padding-anmeldelser">
-                                        <p>Du har anmeldt @UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == v.InfluenterId).Name</p>
-                                        <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                                    </div>
-                                    <div class="col-md-4 col-sm-4 hidden-xs" style="height: 100%">
-                                        <div class="star-rating-feedback" style="margin-top: 10px; margin-bottom: 10px;">
-                                            <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-
-                                                <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                </div>
-                                            </div>
+                                        <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                 </div>
-                            </a>                           
-                        </form>
+                            </div>
+                            <div class="col-md-6 col-sm-6 noPadding padding-anmeldelser">
+                                <p>Du har anmeldt @UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == v.InfluenterId).Name</p>
+                                <p style="color: #989898">
+                                    @String.Format("{0:dd/MM/yyyy}", v.RateDateTime)  &ensp;
+                                    @if (!v.IsAnswerRead && !string.IsNullOrEmpty(v.Answer))
+                                            {
+                                            <span class="badge" style="font-family: Arial; background: #f08301">Svar</span>
+                                            }
+                                </p>
+                            </div>
+                            <div class="col-md-4 col-sm-4 hidden-xs" style="height: 100%">
+                                <div class="star-rating-feedback" style="margin-top: 10px; margin-bottom: 10px;">
+                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                                        <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </form>
                     }
                 }
                 else
                 {
-                    <p>Du har ikke anmeldt nogle influencers endnu</p>
+                <p>Du har ikke anmeldt nogle influencers endnu</p>
                 }
             </div>
         }
     </div>
 </div>
+
+<input id="alwaysFetch" type="hidden" />
+@section Scripts{
+   <script>
+       setTimeout(function () {
+           var el = document.getElementById('alwaysFetch');
+           el.value = el.value ? location.reload() : true;
+       }, 0);
+</script>
+}
