@@ -14,7 +14,7 @@
             <div class="middle">
                 <div class="inner">
                     <h2>Søg på influencers</h2>
-                    <form method="get" asp-area="" asp-controller="Influenter" asp-action="Index">
+                    <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index">
                         <input type="text" name="search" class="search-inputsøg" placeholder="F.eks. Gaming eller Armin" />
                         <span>
                             <input class="search-button" type="submit" value="Søg" />
@@ -149,7 +149,7 @@
             $.ajax({
                 type: "GET",
                 async: true,
-                url: '/Influenter/GetNextFromList',
+                url: '/Influencer/GetNextFromList',
                 data: {
                     pageIndex: pageIndex,
                     pageSize: pageSize,
@@ -233,7 +233,7 @@
                 $.ajax({
                     type: "GET",
                     async: true,
-                    url: '/Influenter/Sorter',
+                    url: '/Influencer/Sorter',
                     data: {
                         currentUsers: jsonCurrentUsersArray,
                         platforme: jsonPlatformArray,

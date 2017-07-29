@@ -25,7 +25,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult RateInfluenter(int id)
+        public IActionResult RateInfluencer(int id)
         {
             var influenter = _influenterRepo.Get(id);
             var model = new RatingViewModel()
@@ -38,9 +38,32 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> RateInfluenter(int kvalitet, int troværdighed, int opførsel, int interaktion, bool? anbefaling, RatingViewModel model)
+        public async Task<IActionResult> RateInfluencer(int kvalitet, int troværdighed, int opførsel, int interaktion, bool? anbefaling, RatingViewModel model)
         {
             var user = await _userManger.GetUserAsync(User);
+
+            if (user.InfluenterId.HasValue)
+            {
+                if (model.Influenter.InfluenterId == user.InfluenterId.Value)
+                {
+                    TempData["Error"] = "Du kan ikke anmelde dig selv!";
+                    return RedirectToAction("RateInfluencer");
+                }
+            }
+
+            var hoursSinceLastRating = _rating.GetHoursLeftToRate(user.Id, model.Influenter.InfluenterId);
+
+            // Så har denne bruger ikke ratet denne influencer endnu
+            if (hoursSinceLastRating == 0)
+            {
+                // Gør ingenting?? :-)
+            }
+            // Så har denne bruger ratet indenfor 24 timer...
+            else if (hoursSinceLastRating < 24)
+            {
+                TempData["Error"] = "Der skal gå" + (24 - hoursSinceLastRating) + " timer før du kan anmelde en influencer igen";
+                return RedirectToAction("RateInfluencer");
+            }
 
             if (opførsel == 0 || kvalitet == 0 || troværdighed == 0 || interaktion == 0 || model.Review == null || anbefaling == null)
             {
@@ -52,22 +75,8 @@ namespace RateBlog.Controllers
                     Influenter = model.Influenter
                 }; 
 
-                return View("RateInfluenter", errorModel);
-            }
-
-            //var hoursSinceLastRating = _rating.GetHoursLeftToRate(user.Id, model.Influenter.InfluenterId);
-
-            //// Så har denne bruger ikke ratet denne influencer endnu
-            //if (hoursSinceLastRating == 0)
-            //{
-            //    // Gør ingenting?? :-)
-            //}
-            //// Så har denne bruger ratet indenfor 24 timer...
-            //else if (hoursSinceLastRating < 24)
-            //{
-            //    TempData["Error"] = "Der skal gå 24 timer før du kan rate en influencer igen";
-            //    return RedirectToAction("RateInfluenter");
-            //}
+                return View("RateInfluencer", errorModel);
+            }            
 
             var rating = new Rating()
             { 
@@ -91,7 +100,7 @@ namespace RateBlog.Controllers
             TempData["Success"] = "Du har givet din anmeldelse " + model.Influenter.Alias;
 
             // Skal ændres til Influenter Controller, ShowInfluenter Action
-            return RedirectToAction("Show", "Influenter", new { Id = model.Influenter.InfluenterId });
+            return RedirectToAction("Show", "Influencer", new { Id = model.Influenter.InfluenterId });
         }
 
         public JsonResult GetAverageRating(int influenterId)

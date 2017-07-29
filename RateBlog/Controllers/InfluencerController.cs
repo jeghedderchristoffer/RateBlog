@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Controllers
 {
-    public class InfluenterController : Controller
+    public class InfluencerController : Controller
     {
         private readonly IInfluenterRepository _influenter;
         private readonly IRatingRepository _ratingRepository;
@@ -25,7 +25,7 @@ namespace RateBlog.Controllers
         private readonly IKategoriRepository _kategori;
 
 
-        public InfluenterController(IKategoriRepository kategori, IInfluenterRepository influenter, IRatingRepository ratingRepository, UserManager<ApplicationUser> userManager, IPlatformRepository platform)
+        public InfluencerController(IKategoriRepository kategori, IInfluenterRepository influenter, IRatingRepository ratingRepository, UserManager<ApplicationUser> userManager, IPlatformRepository platform)
         {
             _influenter = influenter;
             _userManager = userManager;

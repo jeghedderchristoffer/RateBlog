@@ -56,7 +56,7 @@
                 }
                 else
                 {
-                    <h3>FAN</h3>
+                    <h3>Anmelder</h3>
 
                 }
                 <hr />
@@ -67,7 +67,7 @@
                 @if (user.InfluenterId.HasValue)
                 {
                     @if (RatingRepository.HasRatings(user.InfluenterId.Value))
-                {
+                    {
                         <h3 class="text-center">Fan rating:</h3>
 
                         <div class="outer">
@@ -118,11 +118,16 @@
                             </div>
                         </div>
                         <p class="text-center">Antal ratings: @RatingRepository.CountRatings(user.InfluenterId.Value)</p>
-                    }
+                        }
                     else
                     {
                         <h4>Du har ingen anmeldelser endnu</h4>
                     }
+                }
+                else
+                {
+                    <p>FAN ANMELDELSER</p>
+
                 }
 
             </div>
@@ -138,12 +143,12 @@
             <hr class="visible-xs" />
             <div class="col-md-4 col-sm-4">
                 @if (user.InfluenterId != null)
-            {
-                    @if (PlatformRepository.GetAllInfluenterPlatformForInfluenter(user.InfluenterId.Value) != null)
                 {
+                    @if (PlatformRepository.GetAllInfluenterPlatformForInfluenter(user.InfluenterId.Value) != null)
+                    {
 
                         @foreach (var v in PlatformRepository.GetAllInfluenterPlatformForInfluenter(user.InfluenterId.Value))
-                    {
+                        {
                             <div class="social-box">
                                 @if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Facebook")
                                 {

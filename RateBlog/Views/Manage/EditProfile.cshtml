@@ -11,17 +11,29 @@
 
 @if (TempData["Success"] != null)
 {
-    <div class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+    <div id="editUserSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Success!</strong> @TempData["Success"]
+        @TempData["Success"]
     </div>
+
+    <script>
+        window.setTimeout(function () {
+            $("#editUserSuc").fadeOut(1000);
+        }, 2000);
+    </script>
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+    <div id="editUserErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Fejl!</strong> @TempData["Error"]
+        @TempData["Error"]
     </div>
+
+    <script>
+    window.setTimeout(function () {
+        $("#editUserErr").fadeOut(1000);
+    }, 2000);
+    </script>
 }
 
 @Html.Partial("_NavbarAddonPartial")
@@ -32,12 +44,12 @@
             <h2 sstyle="margin: 0">Rediger profil</h2>
             @if (user.InfluenterId != null)
             {
-                <button id="redigerInfluenterBtn" class="active">INFLUENTER</button>
+                <button id="redigerInfluenterBtn" class="active">INFLUENCER</button>
             }
             else
             {
-                <button id="redigerFanBtn" class="active">FAN</button>
-                <button id="redigerInfluenterBtn">INFLUENTER</button>
+                <button id="redigerFanBtn" class="active">ANMELDER</button>
+                <button id="redigerInfluenterBtn">INFLUENCER</button>
             }
         </div>
 

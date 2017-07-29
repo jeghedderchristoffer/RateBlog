@@ -12,24 +12,35 @@
 
 @if (TempData["Success"] != null)
 {
-    <div class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
+    <div id="anmeldelserSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         @TempData["Success"]
     </div>
+    <script>
+        window.setTimeout(function () {
+            $("#anmeldelserSuc").fadeOut(1000);
+        }, 2000);
+    </script>
 }
 
 @if (TempData["Error"] != null)
 {
-    <div class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
+    <div id="anmeldelserErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         @TempData["Error"]
     </div>
+
+    <script>
+        window.setTimeout(function () {
+            $("#anmeldelserErr").fadeOut(1000);
+        }, 2000);
+    </script>
 }
 
 
 @Html.Partial("_NavbarAddonPartial")
 
-<div class="bottom-container">
+<div onload="closeAfter3Seconds()" class="bottom-container">
 
     <div class="container">
         <h2 class="anmeldelser-h2">Anmeldelser</h2>
@@ -125,8 +136,18 @@
                                                     @String.Format("{0:dd/MM/yyyy}", v.RateDateTime) &ensp;
                                                     @if (!v.IsRead)
                                                     {
-                                                        <span class="badge" style="font-family: Arial; background: #f08301">Ny</span>
+                                                        <span class="badge" style="font-family: Arial; background: #f08301">Ny anmeldelse</span>
                                                     }
+                                                    else if (v.IsRead && string.IsNullOrEmpty(v.Answer))
+                                                    {
+                                                        <span class="badge" style="font-family: Arial;">Læst</span>
+                                                    }
+                                                    else if (v.IsRead && !string.IsNullOrEmpty(v.Answer))
+                                                    {
+                                                        <span class="badge" style="font-family: Arial; background: #479b0a">Svaret</span>
+
+                                                    }
+
                                                 </p>
                                             </div>
                                             <div class="col-md-4 col-sm-12 hidden-xs" style="height: 100%">
@@ -213,82 +234,98 @@
             <div class="col-md-8 col-sm-12">
                 @if (RatingRepository.GetFanRatings(user.Id).Count != 0)
                 {
-                @foreach (var v in RatingRepository.GetFanRatings(user.Id).OrderByDescending(x => x.RateDateTime))
+                    @foreach (var v in RatingRepository.GetFanRatings(user.Id).OrderByDescending(x => x.RateDateTime))
                     {
-                <form asp-area="" asp-controller="Manage" asp-action="MinAnmeldelse" asp-route-id="@v.RatingId">
-                    <a class="feedback-link" onclick="$(this).closest('form').submit();">
-                        <div class="col-md-12 noPadding feedback-container active">
-                            <div class="col-md-2 col-sm-2 noPadding">
-                                <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluenterId).Id })" />
-                            </div>
-                            <div class="col-md-4 col-sm-12 visible-xs" style="height: 100%">
-                                <div class="star-rating-feedback mobile-star-feedback" style="margin-top: 10px; margin-bottom: 10px;">
-                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <form asp-area="" asp-controller="Manage" asp-action="MinAnmeldelse" asp-route-id="@v.RatingId">
+                            <a class="feedback-link" onclick="$(this).closest('form').submit();">
+                                <div class="col-md-12 noPadding feedback-container active">
+                                    <div class="col-md-2 col-sm-2 noPadding">
+                                        <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluenterId).Id })" />
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 visible-xs" style="height: 100%">
+                                        <div class="star-rating-feedback mobile-star-feedback" style="margin-top: 10px; margin-bottom: 10px;">
+                                            <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
 
-                                        <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 noPadding padding-anmeldelser">
-                                <p>Du har anmeldt @UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == v.InfluenterId).Name</p>
-                                <p style="color: #989898">
-                                    @String.Format("{0:dd/MM/yyyy}", v.RateDateTime)  &ensp;
-                                    @if (!v.IsAnswerRead && !string.IsNullOrEmpty(v.Answer))
+                                    <div class="col-md-6 col-sm-6 noPadding padding-anmeldelser">
+                                        <p>Du har anmeldt @UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == v.InfluenterId).Name</p>
+                                        <p style="color: #989898">
+                                            @String.Format("{0:dd/MM/yyyy}", v.RateDateTime)  &ensp;
+                                            @if (!v.IsAnswerRead && !string.IsNullOrEmpty(v.Answer))
                                             {
-                                            <span class="badge" style="font-family: Arial; background: #f08301">Svar</span>
+                                                <span class="badge" style="font-family: Arial; background: #f08301">Nyt svar</span>
                                             }
-                                </p>
-                            </div>
-                            <div class="col-md-4 col-sm-4 hidden-xs" style="height: 100%">
-                                <div class="star-rating-feedback" style="margin-top: 10px; margin-bottom: 10px;">
-                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                            else if (!string.IsNullOrEmpty(v.Answer))
+                                            {
+                                                <span class="badge" style="font-family: Arial; background: #479b0a">Læst</span>
+                                            }
+                                            else if (string.IsNullOrEmpty(v.Answer))
+                                            {
+                                                <span class="badge danger" style="font-family: Arial;">Intet svar</span>
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 hidden-xs" style="height: 100%">
+                                        <div class="star-rating-feedback" style="margin-top: 10px; margin-bottom: 10px;">
+                                            <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(v.RatingId), 2)% ">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
 
-                                        <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(v.RatingId)%">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </a>
-                </form>
+                            </a>
+                        </form>
                     }
                 }
                 else
                 {
-                <p>Du har ikke anmeldt nogle influencers endnu</p>
+                    <p>Du har ikke anmeldt nogle influencers endnu</p>
                 }
+            </div>
+            <div class="col-md-4 hidden-xs hidden-sm">
+                <div class="feedback-rating-all-box">
+                    <div class="feedback-rating-all-box-item" style="padding: 20px;">
+                        <h3 class="text-center">Anmeldelser</h3>
+                        <p>Efter 24 timer har du muligheden for, at anmelde en influencer igen. Dette gør, at du altid kan give din mening!</p>
+                    </div>
+                </div>
             </div>
         }
     </div>
 </div>
 
-<input id="alwaysFetch" type="hidden" />
-@section Scripts{
-   <script>
-       setTimeout(function () {
-           var el = document.getElementById('alwaysFetch');
-           el.value = el.value ? location.reload() : true;
-       }, 0);
-</script>
-}
+@*<input id="alwaysFetch" type="hidden" />
+    @section Scripts{
+        <script>
+            setTimeout(function () {
+                var el = document.getElementById('alwaysFetch');
+                el.value = el.value ? location.reload() : true;
+            }, 0);
+        </script>
+    }*@

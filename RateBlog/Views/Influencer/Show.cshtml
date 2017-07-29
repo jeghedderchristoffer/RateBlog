@@ -12,10 +12,16 @@
     <div class="container">
         @if (TempData["Success"] != null)
         {
-            <div class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
+            <div id="showSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 @TempData["Success"]
             </div>
+
+            <script>
+                window.setTimeout(function () {
+                    $("#showSuc").fadeOut(1000);
+                }, 2000);
+            </script>
         }
 
         <div class="col-md-12">
@@ -103,14 +109,14 @@
                     </div>
                     <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
 
-                    <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #08468d ">Skriv din mening</a>
-                    <a asp-controller="Influenter" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se anmeldelser</a>
+                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #08468d ">Skriv en anmeldelse</a>
+                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se anmeldelser</a>
 
                 }
                 else
                 {
                     <h4>Denne influencer har ingen anmeldelser. Bliv den første</h4>
-                    <a asp-controller="Rating" asp-action="RateInfluenter" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #08468d ">Giv din mening</a>
+                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #08468d ">Skriv en anmeldelse</a>
                 }
             </div>
 

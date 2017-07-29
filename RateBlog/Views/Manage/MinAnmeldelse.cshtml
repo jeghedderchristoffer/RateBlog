@@ -11,7 +11,7 @@
 
 <div class="bottom-container" style="background: #fff">
     <div style="background: #fff !important">
-        <div class="navbar-addon" style="padding-bottom: 20px; background:#fff">
+        <div class="navbar-addon noborderbottomMobile" style="padding-bottom: 20px; background:#fff">
             <div class="container">
                 <div class="col-md-12 col-xs-12 noPadding">
                     <div class="col-md-2 col-xs-2 noPadding addon-box">
@@ -66,7 +66,7 @@
                         <br />
                         <p style="line-height: 180%">@Model.Rating.Feedback</p>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 se-anmeldelse-padding">
                         @if (!string.IsNullOrEmpty(Model.Rating.Answer))
                         {
                             <h4><i>@UserManager.Users.SingleOrDefault(x => x.InfluenterId == Model.Rating.InfluenterId).Name har svaret på din anmeldelse:</i></h4>

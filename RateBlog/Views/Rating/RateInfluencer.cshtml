@@ -7,6 +7,20 @@
 
 <div class="navbar-allaround"></div>
 
+@if (TempData["Error"] != null)
+{
+    <div id="rateInfluencerErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["Error"]
+    </div>
+
+    <script>
+        window.setTimeout(function () {
+            $("#rateInfluencerErr").fadeOut(1000);
+        }, 2000);
+    </script>
+}
+
 <div class="navbar-addon">
     <div class="container">
         <div class="col-md-12 col-xs-12 noPadding">
@@ -17,7 +31,7 @@
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
                 <div class="addon-number" style="text-align: left">
-                    <p>Rating af</p>
+                    <p>Anmeldelse af</p>
                     <h3>@Model.Influenter.Alias</h3>
                 </div>
                 
@@ -25,7 +39,7 @@
             <div class="col-md-5 col-xs-12 addon-box">
                 <div class="addon-number">
                     <h1>@RatingRepository.GetInfluenterRatingNumber(Model.Influenter.InfluenterId)</h1>
-                    <p>Ratings</p>
+                    <p>Anmeldelser</p>
                 </div>
                 <div class="addon-number">
                     <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(Model.Influenter.InfluenterId), 1)%</h1>
@@ -37,21 +51,12 @@
 </div>
 
 <div class="bottom-container">
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            @TempData["Error"]
-        </div>
-    }
-
-    <br />
 
     @*<h2 class="text-center" style="padding: 25px 0 25px 0; margin: 0">Dit feedback</h2>
     <h2 class="text-center" style="margin: 25px 0 25px 0">Giv dit feedback til @Model.Influenter.Alias</h2>*@
 
     <div class="container">
-        <form asp-area="" asp-controller="Rating" asp-action="RateInfluenter">
+        <form asp-area="" asp-controller="Rating" asp-action="RateInfluencer">
             @Html.HiddenFor(x => x.Influenter.InfluenterId)
             @Html.HiddenFor(x => x.Influenter.Alias)
 

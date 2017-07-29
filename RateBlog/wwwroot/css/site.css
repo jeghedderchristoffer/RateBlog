@@ -829,7 +829,7 @@ body.modal-open {
 
 .star-rating-show {
     display: flex;
-    font-size: 50px;
+    font-size: 45px;
     align-items: center;
     justify-content: center;
 }
@@ -2358,9 +2358,6 @@ footer {
     font-size: 15px;
 }
 
-
-
-
 #topBtn {
     display: none;
     position: fixed;
@@ -2372,8 +2369,12 @@ footer {
     background-color: #08468d;
     color: white;
     cursor: pointer;
-    padding: 15px;
-    border-radius: 10px;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    padding-bottom: 5px;
+    border-radius: 50%;
+    transition: all 0.3s ease 0s;
 }
 
     #topBtn:hover {
@@ -2450,3 +2451,10 @@ footer {
     padding-bottom: 20px;
     border-bottom: 1px solid #ddd;
 }
+
+@media (max-width: 991px) {
+    .noborderbottomMobile {
+        border: none;
+    }
+}
+    
