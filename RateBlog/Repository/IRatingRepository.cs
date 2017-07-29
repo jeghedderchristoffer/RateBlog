@@ -139,5 +139,14 @@ namespace RateBlog.Repository
         /// <param name="id"></param>
         /// <returns></returns>
         int GetUnreadAnswer(string id);
+
+        /// <summary>
+        /// Gets the last 3 ratings by a fan
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        List<Rating> GetLast3RatingsByFan(string id);
+
     }
+
 }
