@@ -541,7 +541,7 @@ body.modal-open {
     text-align: center
 }
 
-@media(max-width: 991px){
+@media(max-width: 991px) {
     .addon-number h2 {
         font-size: 20px !important;
         display: block;
@@ -573,9 +573,7 @@ body.modal-open {
 @media (max-width: 991px) {
 
     .se-anmeldelse-padding {
-
         padding-top: 20px;
-
     }
 
     .addon-number h2 {
@@ -1001,7 +999,7 @@ body.modal-open {
     padding: 20px 15px 20px 15px;
     border-radius: 3px;
     border: 1px solid #ddd;
-    height: auto; 
+    height: auto;
     overflow: hidden;
 }
 
@@ -1010,10 +1008,10 @@ body.modal-open {
         padding-top: 0px;
     }
 
-    .sorter h4{
+    .sorter h4 {
         margin-top: 0;
         margin-bottom: 15px;
-        font-size: 16px; 
+        font-size: 16px;
     }
 
 
@@ -1974,7 +1972,7 @@ footer {
     padding: 40px;
     background: #47525e;
     color: #fff;
-    height: auto; 
+    height: auto;
     overflow: hidden
 }
 
@@ -2364,7 +2362,7 @@ footer {
     bottom: 20px;
     right: 30px;
     z-index: 99;
-    border: none;
+    border: 1px solid #fff;
     outline: none;
     background-color: #08468d;
     color: white;
@@ -2426,7 +2424,7 @@ footer {
     }
 }
 
-@media (max-width: 991px){
+@media (max-width: 991px) {
     .alert-mobile {
         left: 4% !important;
         right: 4% !important;
@@ -2450,7 +2448,6 @@ footer {
     margin-bottom: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid #ddd;
-    
 }
 
 
@@ -2462,30 +2459,30 @@ footer {
     padding-top: 10px;
     margin-bottom: 10px;
     padding: 5px;
-   
 }
+
     .last3ratingFan img {
         justify-content: center;
         height: 60px;
         width: 60px;
         border-radius: 50%;
     }
-.last3ratingFan p {
-    float: right;
-}
-.last3rating h3{
+
+    .last3ratingFan p {
+        float: right;
+    }
+
+.last3rating h3 {
     text-align: center;
     padding-top: 0px;
-    margin-top: 0px !important;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 30px;
 }
 
 .last3rating h5 {
-
     padding-top: 0px;
     margin-top: 0px;
     padding-bottom: 0px;
-    
 }
 
 
@@ -2497,7 +2494,6 @@ footer {
     font-size: 18px;
     align-items: center;
     float: right;
-    
 }
 
 @media screen and (max-width: 767px) {
@@ -2512,8 +2508,8 @@ footer {
         margin-bottom: 10px;
         padding: 5px;
     }
-
 }
+
 @media screen and (max-width: 991px) {
     .last3ratingFan {
         background: #fafafa;
@@ -2525,8 +2521,8 @@ footer {
         padding-top: 10px;
         margin-bottom: 10px;
         padding: 5px;
-
     }
+
         .last3ratingFan img {
             justify-content: center;
             margin-left: 30%;
@@ -2535,6 +2531,7 @@ footer {
             border-radius: 50%;
         }
 }
+
 }
 
 @media (max-width: 991px) {
@@ -2542,4 +2539,3 @@ footer {
         border: none;
     }
 }
-    

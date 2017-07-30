@@ -68,22 +68,28 @@
                             Resultater for @Model.SearchString
                         </h2>
 
+                        <div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px">
+                            <div class="outer">
+                                <div class="middle">
+                                    <div class="inner">
+                                        <h4 style="margin: 0">Mangler der en influencer?</h4>
+                                        <a asp-controller="Influencer" asp-action="Create" class="a-button center-block" style="background-color: #f08301; float: none; letter-spacing: 1.5px; margin-top: 20px; width: 170px"><b>Opret influencer</b></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div id="listOfInfluencers">
                             @Html.Partial("InfluencerListPartial", Model.InfluentList)
                         </div>
-                        <div class="text-center" id="loadingInfluencers" style=" margin-top: 40px;">
-                            <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
-                            <span class="sr-only">Loading...</span>
-                            <h3>Loading</h3>
-                        </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+
 </div>
+
 
 @section Scripts{
     <script>
@@ -105,7 +111,7 @@
             });
         });
 
-        
+
 
         // Får data når der bliver scrollet ned til bunden
         function GetData() {
@@ -148,7 +154,7 @@
 
             $.ajax({
                 type: "GET",
-                async: true,
+                async: false,
                 url: '/Influencer/GetNextFromList',
                 data: {
                     pageIndex: pageIndex,
@@ -158,11 +164,6 @@
                     kategorier: jsonKategoriArray,
                     currentUsers: jsonCurrentInfluencers
                 },
-                beforeSend: function () {
-                    if (!endLoading) {
-                        $("#loadingInfluencers").show();
-                    }                  
-                },
                 error: function (request, error) {
 
                 },
@@ -170,14 +171,8 @@
                     if (response.trim()) {
                         $("#listOfInfluencers").append(response);
                         pageIndex++;
-                        currentUsersArray = UpdateCurrentUserList();                       
+                        currentUsersArray = UpdateCurrentUserList();
                     }
-                    else {
-                        endLoading = true;                       
-                    }
-                },
-                complete: function () {
-                    $("#loadingInfluencers").hide();
                 }
             });
         };

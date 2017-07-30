@@ -25,6 +25,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult RateInfluencer(int id)
         {
             var influenter = _influenterRepo.Get(id);
@@ -49,6 +50,11 @@ namespace RateBlog.Controllers
                     TempData["Error"] = "Du kan ikke anmelde dig selv!";
                     return RedirectToAction("RateInfluencer");
                 }
+                else
+                {
+                    TempData["Error"] = "Influencers kan ikke anmelde andre influencers";
+                    return RedirectToAction("RateInfluencer");
+                }
             }
 
             var hoursSinceLastRating = _rating.GetHoursLeftToRate(user.Id, model.Influenter.InfluenterId);
@@ -61,7 +67,8 @@ namespace RateBlog.Controllers
             // Så har denne bruger ratet indenfor 24 timer...
             else if (hoursSinceLastRating < 24)
             {
-                TempData["Error"] = "Der skal gå" + (24 - hoursSinceLastRating) + " timer før du kan anmelde en influencer igen";
+                var hours = TimeSpan.FromHours(24 - hoursSinceLastRating);
+                TempData["Error"] = "Du kan anmelde denne influencer igen om " + hours.ToString(@"hh\:mm") + " minutter";
                 return RedirectToAction("RateInfluencer");
             }
 

@@ -320,12 +320,12 @@
     </div>
 </div>
 
-@*<input id="alwaysFetch" type="hidden" />
-    @section Scripts{
-        <script>
-            setTimeout(function () {
-                var el = document.getElementById('alwaysFetch');
-                el.value = el.value ? location.reload() : true;
-            }, 0);
-        </script>
-    }*@
+<input id="alwaysFetch" type="hidden" />
+@section Scripts{
+    <script>
+        setTimeout(function () {
+            var el = document.getElementById('alwaysFetch');
+            el.value = el.value ? location.reload() : true;
+        }, 0);
+    </script>
+}

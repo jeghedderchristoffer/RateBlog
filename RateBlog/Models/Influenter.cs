@@ -11,7 +11,7 @@ namespace RateBlog.Models
     {
         public int InfluenterId { get; set; }
 
-        [Required(ErrorMessage = "Du skal udfylde dit Alias/kaldenavn")]
+        [Required(ErrorMessage = "Du skal udfylde Alias/kaldenavn")]
         public string Alias { get; set; }
         //public string Links { get; set; }
 

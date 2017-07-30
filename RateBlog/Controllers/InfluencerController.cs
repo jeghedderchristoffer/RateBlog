@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -6,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using RateBlog.Data;
 using RateBlog.Models;
 using RateBlog.Models.InfluenterViewModels;
+using RateBlog.Models.ManageViewModels;
 using RateBlog.Repository;
 using RateBlog.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RateBlog.Controllers
@@ -69,7 +72,7 @@ namespace RateBlog.Controllers
                 influenterRating.Add(v.InfluenterId.Value, _ratingRepository.GetRatingAverage(v.InfluenterId.Value));
             }
 
-            var model = new IndexViewModel()
+            var model = new Models.InfluenterViewModels.IndexViewModel()
             {
                 SearchString = search,
                 InfluenterRatings = influenterRating
@@ -106,6 +109,94 @@ namespace RateBlog.Controllers
                 Influenter = influenter
             };
 
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Create()
+        {
+            var model = new CreateViewModel()
+            {
+                IKList = GetInfluenterKategoriList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Opret en influencer
+                var newInfluenter = new Influenter();
+                newInfluenter.Alias = model.Influenter.Alias;
+                _influenter.Add(newInfluenter);
+
+                _platform.Insert(newInfluenter.InfluenterId, _platform.GetAll().SingleOrDefault(x => x.PlatformNavn == "YouTube").PlatformId, model.YoutubeLink);
+                _platform.Insert(newInfluenter.InfluenterId, _platform.GetAll().SingleOrDefault(x => x.PlatformNavn == "Facebook").PlatformId, model.FacebookLink);
+                _platform.Insert(newInfluenter.InfluenterId, _platform.GetAll().SingleOrDefault(x => x.PlatformNavn == "Instagram").PlatformId, model.InstagramLink);
+                _platform.Insert(newInfluenter.InfluenterId, _platform.GetAll().SingleOrDefault(x => x.PlatformNavn == "SnapChat").PlatformId, model.SnapchatLink);
+                _platform.Insert(newInfluenter.InfluenterId, _platform.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitter").PlatformId, model.TwitterLink);
+                _platform.Insert(newInfluenter.InfluenterId, _platform.GetAll().SingleOrDefault(x => x.PlatformNavn == "Website").PlatformId, model.WebsiteLink);
+                _platform.Insert(newInfluenter.InfluenterId, _platform.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitch").PlatformId, model.TwitchLink);
+
+                foreach (var v in model.IKList)
+                {
+                    _kategori.Insert(newInfluenter.InfluenterId, _kategori.GetAll().SingleOrDefault(x => x.KategoriNavn == v.KategoriNavn).KategoriId, v.IsSelected);
+                }
+
+                // Lav en email baseret på deres alias... Hvis deres alias indeholde æøå vil den nok fejle...
+                var email = newInfluenter.Alias + "@" + newInfluenter.Alias + ".dk";
+
+                var user = new ApplicationUser();
+
+                if (string.IsNullOrEmpty(model.Name))
+                {
+                    user.UserName = email;
+                    user.Email = email;
+                    user.Name = model.Influenter.Alias;
+
+                    // Match applicationUser med influencer
+                    user.InfluenterId = newInfluenter.InfluenterId;
+                }
+                else
+                {
+                    user.UserName = email;
+                    user.Email = email;
+                    user.Name = model.Name;
+
+                    // Match applicationUser med influencer
+                    user.InfluenterId = newInfluenter.InfluenterId;
+                }
+
+                // Billede af influencer...
+                if (model.ProfilePic != null)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    model.ProfilePic.OpenReadStream().CopyTo(ms);
+                    user.ImageFile = ms.ToArray();
+                }
+
+                // Koden vil være: bestfluence + alias + 123
+                var result = await _userManager.CreateAsync(user, "bestfluence" + model.Influenter.Alias.ToLower() + "123");
+
+                if (result.Succeeded)
+                {
+                    TempData["Success"] = "Du har oprette denne influencer!"; 
+                    return RedirectToAction("Show", new { id = newInfluenter.InfluenterId });
+                }
+                else
+                {
+                    // Der findes allrede en bruger med denne email, ergo findes denne influenter, da emailen er baseret på alias...
+                    // ELLER så består alias af æøå, og dette må emailen ikke være....
+                    // Jeg sletter derfor influenteren igen!! 
+                    _influenter.Delete(newInfluenter.InfluenterId);
+                    TempData["Error"] = "Der skete en fejl!";
+                    return View(model);
+                }
+            }
             return View(model);
         }
 
@@ -162,6 +253,7 @@ namespace RateBlog.Controllers
         [HttpGet]
         public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search, int[] platforme, int[] kategorier, string[] currentUsers)
         {
+
             // Set string to empty string
             if (string.IsNullOrEmpty(search))
             {
@@ -199,17 +291,17 @@ namespace RateBlog.Controllers
             }
 
             // List: Keeps track of index, skip the previous and takes the next.
-            var list = new List<ApplicationUser>(); 
-            if((platforme.Count() != 0 || kategorier.Count() != 0) && listOfUsers.Count != 0)
+            var list = new List<ApplicationUser>();
+            if ((platforme.Count() != 0 || kategorier.Count() != 0) && listOfUsers.Count != 0)
             {
                 var lastUser = listOfUsers.Last();
                 var index = influenter.IndexOf(lastUser) + 1;
-                list = influenter.Skip(index).Take(pageSize).ToList(); 
+                list = influenter.Skip(index).Take(pageSize).ToList();
             }
             else
             {
                 list = influenter.Skip(pageIndex * pageSize).Take(pageSize).ToList();
-            }                      
+            }
 
             // If platform or kategori is checked, this makes sure the the next 5 (pageSize) has that kategori or platform. 
             var sortList = _influenter.SortInfluencerByPlatAndKat(platforme, kategorier, list);
@@ -226,5 +318,23 @@ namespace RateBlog.Controllers
 
             return PartialView("InfluencerListPartial", endList);
         }
+
+
+        private List<InfluenterKategoriViewModel> GetInfluenterKategoriList()
+        {
+            return new List<InfluenterKategoriViewModel>()
+            {
+                new InfluenterKategoriViewModel(){ KategoriNavn = "DIY", IsSelected = false},
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = false},
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = false},
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = false},
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Food", IsSelected = false},
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = false},
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = false },
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Mommy", IsSelected = false },
+                new InfluenterKategoriViewModel(){ KategoriNavn = "VLOG", IsSelected = false },
+            };
+        }
     }
 }
+
