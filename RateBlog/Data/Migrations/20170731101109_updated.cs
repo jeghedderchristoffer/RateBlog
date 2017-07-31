@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace RateBlog.Data.Migrations
 {
-    public partial class @new : Migration
+    public partial class updated : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,6 +24,11 @@ namespace RateBlog.Data.Migrations
 
             migrationBuilder.AddColumn<string>(
                 name: "City",
+                table: "AspNetUsers",
+                nullable: true);
+
+            migrationBuilder.AddColumn<byte[]>(
+                name: "ImageFile",
                 table: "AspNetUsers",
                 nullable: true);
 
@@ -82,21 +87,63 @@ namespace RateBlog.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EkspertRating",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Anbefaling = table.Column<bool>(nullable: true),
+                    AnbefalingString = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    BestfluenceFeedback = table.Column<string>(nullable: true),
+                    BestfluenceFeedbackString = table.Column<string>(nullable: true),
+                    InfluenterId = table.Column<int>(nullable: false),
+                    Interaktion = table.Column<int>(nullable: false),
+                    InteraktionString = table.Column<string>(nullable: true),
+                    Kvalitet = table.Column<int>(nullable: false),
+                    KvalitetString = table.Column<string>(nullable: true),
+                    OffentligFeedback = table.Column<string>(nullable: true),
+                    OffentligFeedbackString = table.Column<string>(nullable: true),
+                    Opførsel = table.Column<int>(nullable: false),
+                    OpførselString = table.Column<string>(nullable: true),
+                    RateDateTime = table.Column<DateTime>(nullable: false),
+                    Troværdighed = table.Column<int>(nullable: false),
+                    TroværdighedString = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EkspertRating", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EkspertRating_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EkspertRating_Influenter_InfluenterId",
+                        column: x => x.InfluenterId,
+                        principalTable: "Influenter",
+                        principalColumn: "InfluenterId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rating",
                 columns: table => new
                 {
                     RatingId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Aktivitet = table.Column<int>(nullable: false),
+                    Anbefaling = table.Column<bool>(nullable: true),
+                    Answer = table.Column<string>(nullable: true),
                     ApplicationUserId = table.Column<string>(nullable: true),
+                    Feedback = table.Column<string>(nullable: true),
                     InfluenterId = table.Column<int>(nullable: false),
                     Interaktion = table.Column<int>(nullable: false),
+                    IsAnswerRead = table.Column<bool>(nullable: false),
                     IsRead = table.Column<bool>(nullable: false),
                     Kvalitet = table.Column<int>(nullable: false),
-                    Orginalitet = table.Column<int>(nullable: false),
-                    Review = table.Column<string>(nullable: true),
-                    SprogBrug = table.Column<int>(nullable: false),
-                    TidFulgt = table.Column<int>(nullable: false),
+                    Opførsel = table.Column<int>(nullable: false),
+                    RateDateTime = table.Column<DateTime>(nullable: false),
                     Troværdighed = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -178,6 +225,16 @@ namespace RateBlog.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_EkspertRating_ApplicationUserId",
+                table: "EkspertRating",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EkspertRating_InfluenterId",
+                table: "EkspertRating",
+                column: "InfluenterId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InfluenterKategori_KategoriId",
                 table: "InfluenterKategori",
                 column: "KategoriId");
@@ -213,6 +270,9 @@ namespace RateBlog.Data.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "EkspertRating");
+
+            migrationBuilder.DropTable(
                 name: "InfluenterKategori");
 
             migrationBuilder.DropTable(
@@ -244,6 +304,10 @@ namespace RateBlog.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "City",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "ImageFile",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
