@@ -126,19 +126,13 @@
                 }
                 else
                 {
-
-
                     @if (RatingRepository.GetLast3RatingsByFan(user.Id).Count != 0)
                     {
                         @foreach (var v in RatingRepository.GetLast3RatingsByFan(user.Id))
                         {
-
-
                             <div class="last3rating">
                                 <h3>Sidste 3 anmeldelser</h3>
                             </div>
-
-
 
                             <div class="col-md-12 col-sm-12 col-xs-12 last3ratingFan">
                                 <div class="col-md-3 col-sm-12 col-xs-12">
@@ -189,13 +183,9 @@
                                     </div>
                                 </div>
                             </div>
-                            
                         </div>
-
                     }
-
                 }
-
             </div>
             <hr class="visible-xs" />
             <div class="col-md-4 col-sm-4 profile-text">
@@ -261,6 +251,5 @@
                 }
             </div>
         </div>
-
     </div>
 </div>
