@@ -253,7 +253,6 @@ namespace RateBlog.Controllers
         [HttpGet]
         public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search, int[] platforme, int[] kategorier, string[] currentUsers)
         {
-
             // Set string to empty string
             if (string.IsNullOrEmpty(search))
             {

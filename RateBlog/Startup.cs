@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,9 +44,12 @@ namespace RateBlog
         {
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 6;
                 options.Password.RequireLowercase = false;
@@ -60,12 +63,12 @@ namespace RateBlog
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            
+
             services.AddMemoryCache();
             services.AddSession();
             services.AddMvc();
 
-           
+
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -74,7 +77,7 @@ namespace RateBlog
             services.AddTransient<IInfluenterRepository, InfluenterRepository>();
             services.AddTransient<IKategoriRepository, KategoriRepository>();
             services.AddTransient<IRatingRepository, RatingRepository>();
-            services.AddTransient<IEkspertRatingRepository, EkspertRatingRepository> ();
+            services.AddTransient<IEkspertRatingRepository, EkspertRatingRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

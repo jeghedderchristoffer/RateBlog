@@ -2,6 +2,13 @@
     font-family: 'Raleway', sans-serif;
 }
 
+/*Iphone*/
+@media screen and (max-device-width: 480px) {
+    body {
+        -webkit-text-size-adjust: none;
+    }
+}
+
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -985,6 +992,7 @@ body.modal-open {
 
     .star-rating-search {
         justify-content: center;
+        margin-bottom: 15px;
         align-items: center;
         float: none
     }
@@ -2532,7 +2540,6 @@ footer {
         }
 }
 
-}
 
 @media (max-width: 991px) {
     .noborderbottomMobile {

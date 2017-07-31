@@ -8,8 +8,8 @@ using RateBlog.Data;
 namespace RateBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170718073237_new")]
-    partial class @new
+    [Migration("20170731101109_updated")]
+    partial class updated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -143,6 +143,8 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<byte[]>("ImageFile");
+
                     b.Property<int?>("InfluenterId");
 
                     b.Property<bool>("LockoutEnabled");
@@ -185,6 +187,54 @@ namespace RateBlog.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.EkspertRating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool?>("Anbefaling");
+
+                    b.Property<string>("AnbefalingString");
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("BestfluenceFeedback");
+
+                    b.Property<string>("BestfluenceFeedbackString");
+
+                    b.Property<int>("InfluenterId");
+
+                    b.Property<int>("Interaktion");
+
+                    b.Property<string>("InteraktionString");
+
+                    b.Property<int>("Kvalitet");
+
+                    b.Property<string>("KvalitetString");
+
+                    b.Property<string>("OffentligFeedback");
+
+                    b.Property<string>("OffentligFeedbackString");
+
+                    b.Property<int>("Opførsel");
+
+                    b.Property<string>("OpførselString");
+
+                    b.Property<DateTime>("RateDateTime");
+
+                    b.Property<int>("Troværdighed");
+
+                    b.Property<string>("TroværdighedString");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("InfluenterId");
+
+                    b.ToTable("EkspertRating");
                 });
 
             modelBuilder.Entity("RateBlog.Models.Influenter", b =>
@@ -257,25 +307,27 @@ namespace RateBlog.Data.Migrations
                     b.Property<int>("RatingId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Aktivitet");
+                    b.Property<bool?>("Anbefaling");
+
+                    b.Property<string>("Answer");
 
                     b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Feedback");
 
                     b.Property<int>("InfluenterId");
 
                     b.Property<int>("Interaktion");
 
+                    b.Property<bool>("IsAnswerRead");
+
                     b.Property<bool>("IsRead");
 
                     b.Property<int>("Kvalitet");
 
-                    b.Property<int>("Orginalitet");
+                    b.Property<int>("Opførsel");
 
-                    b.Property<string>("Review");
-
-                    b.Property<int>("SprogBrug");
-
-                    b.Property<int>("TidFulgt");
+                    b.Property<DateTime>("RateDateTime");
 
                     b.Property<int>("Troværdighed");
 
@@ -330,6 +382,18 @@ namespace RateBlog.Data.Migrations
                     b.HasOne("RateBlog.Models.Influenter", "Influenter")
                         .WithOne("ApplicationUser")
                         .HasForeignKey("RateBlog.Models.ApplicationUser", "InfluenterId");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.EkspertRating", b =>
+                {
+                    b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("RateBlog.Models.Influenter", "Influenter")
+                        .WithMany()
+                        .HasForeignKey("InfluenterId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("RateBlog.Models.InfluenterKategori", b =>
