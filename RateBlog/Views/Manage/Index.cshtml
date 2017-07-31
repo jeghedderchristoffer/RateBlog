@@ -127,6 +127,7 @@
                 else
                 {
 
+
                     @if (RatingRepository.GetLast3RatingsByFan(user.Id).Count != 0)
                     {
                         @foreach (var v in RatingRepository.GetLast3RatingsByFan(user.Id))
