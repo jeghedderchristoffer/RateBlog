@@ -83,7 +83,9 @@ namespace RateBlog.Repository
                     allRatingSums += ratingSum;
                 }
 
-                double average = (allRatingSums / numberOfRatings) * 20;
+                double average = (allRatingSums / numberOfRatings);
+
+                // Rund op eller ned!!!
 
                 return average;
             }
@@ -137,7 +139,7 @@ namespace RateBlog.Repository
             ratingSum += rating.Kvalitet;
             ratingSum = ratingSum / 4;
 
-            return ratingSum * 20;
+            return ratingSum;
         }
 
         public int GetSingleRating(int ratingId, string name)

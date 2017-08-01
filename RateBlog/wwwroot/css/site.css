@@ -883,7 +883,7 @@ body.modal-open {
     text-align: center;
     transition: all .2s ease-out;
     float: right;
-    width: 155.23px;
+    width: 165px;
 }
 
     .a-button:hover {
@@ -2544,5 +2544,162 @@ footer {
 @media (max-width: 991px) {
     .noborderbottomMobile {
         border: none;
+    }
+}
+
+
+
+
+/*Star rating*/
+
+.show-rating-box {
+    display: block;
+    float: right;
+    margin-top: 15px;
+}
+
+.show-rating {
+    display: inline-block;
+    position: relative;
+}
+
+.show-rating-front {
+    position: absolute;
+    color: #FD4;
+    z-index: 5;
+    text-shadow: 0px 0px 1px #000;
+}
+
+.show-rating-back {
+    color: #DCDCDC;
+    text-shadow: 0px 0px 1px #000;
+}
+
+    .show-rating-back i, .show-rating-front i {
+        font-size: 30px;
+        width: 30px;
+        text-align: center;
+    }
+
+@media (max-width: 767px) {
+    .show-rating-box {
+        float: none;
+        text-align: center;
+        margin-bottom: 10px
+    }
+}
+
+/*Rating Influencer Show*/
+
+.show-rating-box-show {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.show-rating-show {
+    display: inline-block;
+    position: relative;
+}
+
+.show-rating-front-show {
+    position: absolute;
+    color: #FD4;
+    z-index: 5;
+    text-shadow: 0px 0px 1px #000;
+}
+
+.show-rating-back-show {
+    color: #DCDCDC;
+    text-shadow: 0px 0px 1px #000;
+}
+
+    .show-rating-back-show i, .show-rating-front-show i {
+        font-size: 50px;
+        width: 50px;
+        text-align: center;
+    }
+
+@media (max-width: 1199px) {
+    .show-rating-back-show i, .show-rating-front-show i {
+        font-size: 35px;
+        width: 35px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 767px) {
+    .show-rating-back-show i, .show-rating-front-show i {
+        font-size: 30px;
+        width: 30px;
+        text-align: center;
+    }
+}
+
+/*Rating Manage SeAndmeldelse*/
+
+.show-rating-box-se {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.show-rating-se {
+    display: inline-block;
+    position: relative;
+}
+
+.show-rating-front-se {
+    position: absolute;
+    color: #FD4;
+    z-index: 5;
+    text-shadow: 0px 0px 1px #000;
+}
+
+.show-rating-back-se {
+    color: #DCDCDC;
+    text-shadow: 0px 0px 1px #000;
+}
+
+    .show-rating-back-se i, .show-rating-front-se i {
+        font-size: 50px;
+        width: 50px;
+        text-align: center;
+    }
+
+@media (max-width: 991px) {
+    .show-rating-se {
+        float: left;
+        text-align: unset;
+    }
+
+    .show-rating-box-se {
+        display: block;
+        margin-top: 0;
+        text-align: center;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .show-rating-back-se i, .show-rating-front-se i {
+        font-size: 40px;
+        width: 40px;
+        text-align: center;
+    }
+
+}
+
+@media (max-width: 767px) {
+    .show-rating-back-se i, .show-rating-front-se i {
+        font-size: 30px;
+        width: 30px;
+        text-align: center;
+    }
+    .show-rating-se {
+        float: none;
     }
 }

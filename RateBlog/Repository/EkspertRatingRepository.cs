@@ -70,7 +70,9 @@ namespace RateBlog.Repository
                     allRatingSums += ratingSum;
                 }
 
-                double average = (allRatingSums / numberOfRatings) * 20;
+                // Skal rundes op eller ned
+
+                double average = (allRatingSums / numberOfRatings);
 
                 return average;
             }

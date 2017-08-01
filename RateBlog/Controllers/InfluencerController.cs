@@ -27,7 +27,6 @@ namespace RateBlog.Controllers
         private readonly IPlatformRepository _platform;
         private readonly IKategoriRepository _kategori;
 
-
         public InfluencerController(IKategoriRepository kategori, IInfluenterRepository influenter, IRatingRepository ratingRepository, UserManager<ApplicationUser> userManager, IPlatformRepository platform)
         {
             _influenter = influenter;
@@ -148,7 +147,7 @@ namespace RateBlog.Controllers
                 }
 
                 // Lav en email baseret på deres alias... Hvis deres alias indeholde æøå vil den nok fejle...
-                var email = newInfluenter.Alias + "@" + newInfluenter.Alias + ".dk";
+                var email = newInfluenter.InfluenterId + "@" + newInfluenter.InfluenterId + ".dk";
 
                 var user = new ApplicationUser();
 
@@ -179,8 +178,8 @@ namespace RateBlog.Controllers
                     user.ImageFile = ms.ToArray();
                 }
 
-                // Koden vil være: bestfluence + alias + 123
-                var result = await _userManager.CreateAsync(user, "bestfluence" + model.Influenter.Alias.ToLower() + "123");
+                // Koden vil være: bestfluence + InfluenterId + 123
+                var result = await _userManager.CreateAsync(user, "bestfluence" + model.Influenter.InfluenterId + "123");
 
                 if (result.Succeeded)
                 {
@@ -201,7 +200,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Sorter(string[] currentUsers, int[] platforme, int[] kategorier, int pageIndex, int pageSize, string search)
+        public PartialViewResult Sorter(int[] platforme, int[] kategorier, int pageIndex, int pageSize, string search)
         {
             if (string.IsNullOrEmpty(search))
             {
@@ -282,6 +281,7 @@ namespace RateBlog.Controllers
                 }
             }
 
+            // Skal sende count tilbage i i stedet...
             // Gets current users...
             var listOfUsers = new List<ApplicationUser>();
             foreach (var v in currentUsers)

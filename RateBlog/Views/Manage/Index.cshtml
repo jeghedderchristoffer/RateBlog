@@ -3,6 +3,7 @@
 @inject RateBlog.Repository.IPlatformRepository PlatformRepository
 @inject RateBlog.Repository.IKategoriRepository CategoryRepository
 @inject RateBlog.Repository.IRatingRepository RatingRepository
+@inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
 @{
     ViewData["Title"] = "Vis profil";
     var user = await UserManager.GetUserAsync(User);
@@ -68,52 +69,43 @@
                 {
                     @if (RatingRepository.HasRatings(user.InfluenterId.Value))
                     {
-                        <h3 class="text-center">Fan rating:</h3>
 
-                        <div class="outer">
-                            <div class="middle">
-                                <div class="inner">
-                                    <div class="star-rating-show">
-                                        <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(user.InfluenterId.Value), 2)%">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(user.InfluenterId.Value)%">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <h3 class="text-center" style="margin-top: 0">Fan rating:</h3>
+
+                        <div class="show-rating-box-show">
+                            <div class="show-rating-show">
+                                <div class="show-rating-front-show">
+                                    @for (int i = 0; i < RatingRepository.GetRatingAverage(user.InfluenterId.Value); i++)
+                                    {
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    }
+                                </div>
+                                <div class="show-rating-back-show">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
 
-                        <h3 class="text-center">Ekspert rating:</h3>
+                        <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
 
-                        <div class="outer">
-                            <div class="middle">
-                                <div class="inner">
-                                    <div class="star-rating-show">
-                                        <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(user.InfluenterId.Value), 2)%">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(user.InfluenterId.Value)%">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="show-rating-box-show">
+                            <div class="show-rating-show">
+                                <div class="show-rating-front-show">
+                                    @for (int i = 0; i < EkspertRatingRepository.GetEkspertRatingAverage(user.InfluenterId.Value); i++)
+                                    {
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    }
+                                </div>
+                                <div class="show-rating-back-show">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
@@ -128,11 +120,13 @@
                 {
                     @if (RatingRepository.GetLast3RatingsByFan(user.Id).Count != 0)
                     {
+                        <div class="last3rating">
+                            <h3>Sidste 3 anmeldelser</h3>
+                        </div>
+
                         @foreach (var v in RatingRepository.GetLast3RatingsByFan(user.Id))
                         {
-                            <div class="last3rating">
-                                <h3>Sidste 3 anmeldelser</h3>
-                            </div>
+                            
 
                             <div class="col-md-12 col-sm-12 col-xs-12 last3ratingFan">
                                 <div class="col-md-3 col-sm-12 col-xs-12">
