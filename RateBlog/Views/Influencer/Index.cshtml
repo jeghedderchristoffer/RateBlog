@@ -147,11 +147,8 @@
 
             // Gets the current users, so i can make sure they dont appear twice in list...
             var currentInfluencers = UpdateCurrentUserList();
-            var jsonCurrentInfluencers = {};
 
-            for (i in currentInfluencers) {
-                jsonCurrentInfluencers[i] = currentInfluencers[i];
-            }
+            var lastInfluencer = currentInfluencers[currentInfluencers.length - 1];
 
             $.ajax({
                 type: "GET",
@@ -163,7 +160,7 @@
                     search: searchString,
                     platforme: jsonPlatformArray,
                     kategorier: jsonKategoriArray,
-                    currentUsers: jsonCurrentInfluencers
+                    lastUser: lastInfluencer
                 },
                 error: function (request, error) {
 
@@ -211,14 +208,9 @@
 
                 var jsonPlatformArray = {};
                 var jsonKategoriArray = {};
-                var jsonCurrentUsersArray = {};
 
                 for (i in kategoriArray) {
                     jsonKategoriArray[i] = kategoriArray[i];
-                }
-
-                for (i in currentUsersArray) {
-                    jsonCurrentUsersArray[i] = currentUsersArray[i];
                 }
 
                 for (i in platformArray) {
@@ -231,7 +223,6 @@
                     async: true,
                     url: '/Influencer/Sorter',
                     data: {
-                        currentUsers: jsonCurrentUsersArray,
                         platforme: jsonPlatformArray,
                         kategorier: jsonKategoriArray,
                         pageIndex: pageIndex,

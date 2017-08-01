@@ -250,7 +250,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search, int[] platforme, int[] kategorier, string[] currentUsers)
+        public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search, int[] platforme, int[] kategorier, string lastUser)
         {
             // Set string to empty string
             if (string.IsNullOrEmpty(search))
@@ -281,20 +281,12 @@ namespace RateBlog.Controllers
                 }
             }
 
-            // Skal sende count tilbage i i stedet...
-            // Gets current users...
-            var listOfUsers = new List<ApplicationUser>();
-            foreach (var v in currentUsers)
-            {
-                listOfUsers.Add(_userManager.Users.FirstOrDefault(x => x.Id == v));
-            }
-
             // List: Keeps track of index, skip the previous and takes the next.
             var list = new List<ApplicationUser>();
-            if ((platforme.Count() != 0 || kategorier.Count() != 0) && listOfUsers.Count != 0)
+            if ((platforme.Count() != 0 || kategorier.Count() != 0) && lastUser != null)
             {
-                var lastUser = listOfUsers.Last();
-                var index = influenter.IndexOf(lastUser) + 1;
+                var last = _userManager.Users.FirstOrDefault(x => x.Id == lastUser); 
+                var index = influenter.IndexOf(last) + 1;
                 list = influenter.Skip(index).Take(pageSize).ToList();
             }
             else
@@ -304,18 +296,8 @@ namespace RateBlog.Controllers
 
             // If platform or kategori is checked, this makes sure the the next 5 (pageSize) has that kategori or platform. 
             var sortList = _influenter.SortInfluencerByPlatAndKat(platforme, kategorier, list);
-            var endList = new List<ApplicationUser>();
 
-            // SKAL MÅSKE SENDE PAGEINDEX TILBAGE, FOR AT FORTÆLLE HVILKET SIDEN JEG STOPPEDE VED!!!!!!!!!
-            foreach (var v in sortList)
-            {
-                if (!listOfUsers.Contains(v))
-                {
-                    endList.Add(v);
-                }
-            }
-
-            return PartialView("InfluencerListPartial", endList);
+            return PartialView("InfluencerListPartial", sortList);
         }
 
 
