@@ -139,14 +139,15 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12 noPadding">
                                         <h5 style="display: inline">Score:</h5>
 
-                                        <div class="star-rating-show-Last3" style="display: inline;">
-                                            <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(v.InfluenterId), 2)%">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(v.InfluenterId)%">
+                                        <div class="show-rating-box-3">
+                                            <div class="show-rating-3">
+                                                <div class="show-rating-front-3">
+                                                    @for (int i = 0; i < RatingRepository.GetRatingAverage(v.InfluenterId); i++)
+                                                    {
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                    }
+                                                </div>
+                                                <div class="show-rating-back-3">
                                                     <i class="fa fa-star" aria-hidden="true"></i>
                                                     <i class="fa fa-star" aria-hidden="true"></i>
                                                     <i class="fa fa-star" aria-hidden="true"></i>

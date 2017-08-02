@@ -2703,3 +2703,33 @@ footer {
         float: none;
     }
 }
+
+/*Rating manage 3 sidste anmeldelser*/
+
+.show-rating-box-3 {
+    display: block;
+    float: right;
+}
+
+.show-rating-3 {
+    display: inline-block;
+    position: relative;
+}
+
+.show-rating-front-3 {
+    position: absolute;
+    color: #FD4;
+    z-index: 5;
+    text-shadow: 0px 0px 1px #000;
+}
+
+.show-rating-back-3 {
+    color: #DCDCDC;
+    text-shadow: 0px 0px 1px #000;
+}
+
+    .show-rating-back-3 i, .show-rating-front-3 i {
+        font-size: 20px;
+        width: 20px;
+        text-align: center;
+    }

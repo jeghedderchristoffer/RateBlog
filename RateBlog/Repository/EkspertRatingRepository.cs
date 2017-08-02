@@ -104,7 +104,7 @@ namespace RateBlog.Repository
             ratingSum += rating.Kvalitet;
             ratingSum = ratingSum / 4;
 
-            return ratingSum * 20;
+            return ratingSum;
         }
 
         public int GetMyEkspertRatingNumber(string applicationUserId)
