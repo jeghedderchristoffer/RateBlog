@@ -8,17 +8,20 @@ using Newtonsoft.Json;
 using RateBlog.Repository;
 using Microsoft.AspNetCore.Identity;
 using RateBlog.Models;
+using RateBlog.Helper;
 
 namespace RateBlog.Controllers
 {
     public class HomeController : Controller
     {
         private IKategoriRepository _kategoriRepo;
+        private IPlatformRepository _platformRepo;
         private IInfluenterRepository _influenterRepo;
         private UserManager<ApplicationUser> _userManger;
 
-        public HomeController(IKategoriRepository kategoriRepo, IInfluenterRepository influenterRepo, UserManager<ApplicationUser> userManger)
+        public HomeController(IPlatformRepository platformRepo, IKategoriRepository kategoriRepo, IInfluenterRepository influenterRepo, UserManager<ApplicationUser> userManger)
         {
+            _platformRepo = platformRepo;
             _kategoriRepo = kategoriRepo;
             _influenterRepo = influenterRepo;
             _userManger = userManger;
@@ -29,18 +32,36 @@ namespace RateBlog.Controllers
             return View();
         }
 
-        public JsonResult Autocomplete(string prefix)
+        public PartialViewResult SearchHelp(string search)
         {
-            var strings = _kategoriRepo.GetAll().Where(x => x.KategoriNavn.StartsWith(prefix));
+            var model = new SearchHelpModel();
+            model.InfluencerList = new List<Influenter>();
+            model.KategoriList = new List<Kategori>();
+            model.PlatformList = new List<Platform>();
 
+            if (!string.IsNullOrEmpty(search))
+            {
+                foreach (var kategori in _kategoriRepo.GetAll())
+                {
+                    if (kategori.KategoriNavn.ToLower().StartsWith(search.ToLower()))
+                    {
+                        model.KategoriList.Add(kategori); 
+                    }
+                }
 
+                foreach (var platform in _platformRepo.GetAll())
+                {
+                    if (platform.PlatformNavn.ToLower().StartsWith(search.ToLower()))
+                    {
+                        model.PlatformList.Add(platform); 
+                    }
+                }
 
-            //var st = from s in _kategoriRepo.GetAll()
-            //         where s.KategoriNavn.StartsWith(prefix)
-            //         select s.KategoriNavn; 
+                model.InfluencerList = _influenterRepo.GetAll().Where(x => x.Alias.ToLower().StartsWith(search.ToLower())).Take(5).ToList();
+            }
 
-            return Json(strings); 
-        }
+            return PartialView("_SearchHelpPartial", model);
+        } 
 
         public IActionResult About()
         {

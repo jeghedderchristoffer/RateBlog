@@ -237,6 +237,8 @@ body.modal-open {
     height: 45px;
     width: 100%;
     border-radius: 3px;
+    border-bottom-right-radius: 0; 
+    border-top-right-radius: 0;
     border: none;
 }
 
@@ -248,8 +250,10 @@ body.modal-open {
 
 .search-button {
     height: 45px;
-    margin-left: 10px;
+    margin-left: -4px;
     border-radius: 3px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
     border: none;
     width: 100px;
     background-color: #f08301;
@@ -275,14 +279,18 @@ body.modal-open {
         height: 45px;
         width: 78%;
         border-radius: 3px;
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
         border: none;
     }
 
     .search-button {
         height: 45px;
-        margin-left: 0;
+        margin-left: -4px;
         border-radius: 3px;
         border: none;
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
         width: 20%;
         background-color: #f08301;
         color: #fff;
@@ -1009,6 +1017,8 @@ body.modal-open {
     border: 1px solid #ddd;
     height: auto;
     overflow: hidden;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    margin-top: 53px;
 }
 
     .sorter h1 {
@@ -1043,7 +1053,8 @@ body.modal-open {
     height: 170px;
     background: #fff;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
     .search-result h4 {
@@ -1053,16 +1064,6 @@ body.modal-open {
 
 .search-result-box {
     height: 170px;
-}
-
-.search-inputsøg {
-    margin: 20px auto;
-    padding: 4px 16px;
-    max-width: 400px;
-    height: 45px;
-    width: 100%;
-    border-radius: 3px;
-    border: 1px solid black;
 }
 
 .search-inputsøg {
@@ -2192,10 +2193,13 @@ footer {
     width: 100%;
     border: 1px solid #ddd;
     padding: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     color: #333;
     background: #fafafa;
     border-radius: 5px;
+    -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
 }
 
     .feedback-container:hover {
@@ -2258,6 +2262,9 @@ footer {
     background: #fafafa;
     border-radius: 5px;
     margin-bottom: 10px;
+    -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
 }
 
 .star-rating-feedback-all {
@@ -2298,6 +2305,9 @@ footer {
     color: #333;
     background: #fafafa;
     border-radius: 10px;
+    -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
 }
 
 

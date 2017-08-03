@@ -66,15 +66,9 @@ namespace RateBlog.Controllers
                 }
             }
 
-            foreach (var v in influenter)
-            {
-                influenterRating.Add(v.InfluenterId.Value, _ratingRepository.GetRatingAverage(v.InfluenterId.Value));
-            }
-
             var model = new Models.InfluenterViewModels.IndexViewModel()
             {
-                SearchString = search,
-                InfluenterRatings = influenterRating
+                SearchString = search
             };
             return View(model);
         }
