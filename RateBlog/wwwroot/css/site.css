@@ -1548,6 +1548,17 @@ ul li:hover .dropOut {
     font-size: 16px;
 }
 
+.edit-button-feedback {
+    height: 40px;
+    border-radius: 6px;
+    border: none;
+    max-width: none;
+    width: 100%;
+    background-color: #08468d;
+    color: #fff;
+    font-size: 16px;
+}
+
 .edit-button-influ {
     height: 40px;
     border-radius: 6px;
@@ -1555,6 +1566,17 @@ ul li:hover .dropOut {
     max-width: none;
     width: 50%;
     background-color: #53b80a;
+    color: #fff;
+    font-size: 16px;
+}
+
+.edit-button-influ-create {
+    height: 40px;
+    border-radius: 6px;
+    border: none;
+    max-width: none;
+    width: 50%;
+    background-color: #f08301;
     color: #fff;
     font-size: 16px;
 }
@@ -2052,7 +2074,18 @@ footer {
 
 /*----footer-Rasmus----*/
 .footer-img {
-    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Rasmus.jpeg") no-repeat center;
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Footer/About.jpg") no-repeat center;
+    height: 500px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+    .footer-img h1 {
+        color: white;
+    }
+.footerjob-img {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Footer/Job.jpeg") no-repeat center;
     height: 500px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -2060,7 +2093,33 @@ footer {
     background-size: cover;
 }
 
-    .footer-img h2 {
+    .footerjob-img h1 {
+        color: white;
+    }
+
+.footerkontakt-img {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Footer/Kontakt.jpg") no-repeat center;
+    height: 500px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+    .footerkontakt-img h1 {
+        color: white;
+    }
+
+.footerFAQ-img {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Footer/FAQ.jpeg") no-repeat center;
+    height: 500px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+    .footerFAQ-img h1 {
         color: white;
     }
 

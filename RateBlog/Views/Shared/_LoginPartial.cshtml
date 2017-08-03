@@ -26,7 +26,7 @@
                             <div class="triangle"></div>
                             <ul>
                                 <li><a asp-area="" asp-controller="Ekspert" asp-action="Index" class="dropOut-a">Søg</a></li>
-                                <li><a asp-area="" asp-controller="Ekspert" asp-action="Anmeldelser" class="dropOut-a">Se anmeldser</a></li>
+                                <li><a asp-area="" asp-controller="Ekspert" asp-action="Feedback" class="dropOut-a">Se anmeldser</a></li>
 
                             </ul>
                         </div>
@@ -40,7 +40,7 @@
             {
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
-                        Anmeldelser
+                        Feedback
                         @if (RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value) != 0)
                         {
                             <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value)</span>
@@ -52,7 +52,7 @@
             {
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
-                        Anmeldelser
+                        Feedback
                         @if (RatingRepo.GetUnreadAnswer(user.Id) != 0)
                         {
                             <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadAnswer(user.Id)</span>
