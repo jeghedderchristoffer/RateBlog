@@ -241,7 +241,7 @@
                 {
                     @foreach (var v in RatingRepository.GetFanRatings(user.Id).OrderByDescending(x => x.RateDateTime))
                     {
-                        <form asp-area="" asp-controller="Manage" asp-action="MinAnmeldelse" asp-route-id="@v.RatingId">
+                        <form asp-area="" asp-controller="Manage" asp-action="MinFeedback" asp-route-id="@v.RatingId">
                             <a class="feedback-link" onclick="$(this).closest('form').submit();">
                                 <div class="col-md-12 noPadding feedback-container active">
                                     <div class="col-md-2 col-sm-2 noPadding">
