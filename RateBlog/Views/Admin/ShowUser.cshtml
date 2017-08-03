@@ -1,0 +1,149 @@
+﻿@model RateBlog.Models.InfluenterViewModels.IndexViewModel
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Redigere bruger";
+}
+
+<div class="navbar-allaround">
+
+</div>
+<div class="container">
+
+    <div class="container">
+
+
+        <div class="">
+            <div class="outer">
+                <div class="middle">
+                    <div class="inner">
+                        <h2>Søg på alle brugere</h2>
+
+                        <form method="get" asp-area="" asp-controller="Admin" asp-action="ShowUser">
+                            <input type="text" name="search" id="search" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
+                            <span>
+                                <input class="search-button" type="submit" value="Søg" />
+                            </span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table"
+            <thread>
+               <tr>
+                   <th>
+                       <p>navn</p>
+
+                   </th>
+                   <th>
+                       <p>email</p>
+
+                   </th>
+                   <th>
+                       <p>id</p>
+
+                   </th>
+                   <th>
+                       <p>tlf nummer</p>
+
+                   </th>
+                   <th>
+                       <p>profil tekst</p>
+
+                   </th></th>
+                   
+               </tr>
+          
+
+             
+            </thread>
+            <tbody>
+                
+                    @foreach (var user in Model.InfluentList)
+                    {
+                        <tr>
+                            <td>
+                                <p>@user.Name</p>
+                            </td>
+
+
+
+
+
+                            <td>
+                                <p>@user.Email</p>
+                            </td>
+
+
+
+
+
+                            <td>
+                                <p>@user.Id</p>
+                            </td>
+
+
+
+                            <td>
+                                <p>@user.PhoneNumber</p>
+                            </td>
+
+
+
+
+
+
+
+
+                            <td>
+
+                                <p>@user.ProfileText</p>
+                            </td>
+
+                            <div class="dropdown">
+                                <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+                                <div id="myDropdown" class="dropdown-content">
+                                    <td>
+                                        <a class="col-md-offset-3 col-md-6 col-xs-12">
+                                            <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Redigere bruger" />
+                                        </a>
+                                        <a class="col-md-offset-3 col-md-6 col-xs-12">
+                                            <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Opret bruger manuelt" />
+                                        </a>
+                                        <a class="col-md-offset-3 col-md-6 col-xs-12">
+                                            <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Slet bruger" />
+                                        </a>
+                                    </td>
+                                </div>
+                            </div>
+
+
+                        </tr>
+                    }
+              
+                
+            </tbody>
+
+        </table>
+       
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>

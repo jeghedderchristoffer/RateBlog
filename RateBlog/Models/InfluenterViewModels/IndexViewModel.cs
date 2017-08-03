@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace RateBlog.Models.InfluenterViewModels
 {
@@ -10,6 +11,5 @@ namespace RateBlog.Models.InfluenterViewModels
         public string SearchString { get; set; }
         public List<ApplicationUser> InfluentList  { get; set; }       
         public Dictionary<int, double> InfluenterRatings { get; set; }
-
     }
 }

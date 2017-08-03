@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RateBlog.Data;
 using RateBlog.Models;
+using RateBlog.Models.InfluenterViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,11 +15,7 @@ namespace RateBlog.Controllers
     public class AdminController : Controller
     {
         // GET: /<controller>/
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
+      
         private readonly ApplicationDbContext _context;
 
         private readonly UserManager<ApplicationUser> _userManager;
@@ -28,11 +25,47 @@ namespace RateBlog.Controllers
             _context = context;
             _userManager = userManager;
         }
-        public IActionResult Index()
-        {
-            var model =_userManager.Users.ToList();
 
-            return View(model);
+        public IndexViewModel viewmodel = new IndexViewModel();
+
+        //public IActionResult Index()
+        //{
+        //    
+        //   
+
+        
+
+        //    return View(viewmodel);
+        //}
+
+
+        public IActionResult Index(string searchString)
+        {
+            var model = _userManager.Users.ToList();
+            viewmodel.InfluentList = model.ToList();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                _context.Users.Where(s => s.Name.Contains(searchString));
+            }
+
+            viewmodel.SearchString = searchString;
+
+            return View(viewmodel);
+        }
+
+        public IActionResult ShowUser(string searchString)
+        {
+            var model = _userManager.Users.ToList();
+            viewmodel.InfluentList = model.ToList();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                _context.Users.Where(s => s.Name.Contains(searchString));
+            }
+
+            viewmodel.SearchString = searchString;
+            return View(viewmodel);
         }
 
     }

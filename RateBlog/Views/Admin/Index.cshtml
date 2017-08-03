@@ -1,23 +1,53 @@
-﻿@model List<ApplicationUser> 
+﻿
+@model RateBlog.Models.InfluenterViewModels.IndexViewModel
+@inject RateBlog.Repository.IPlatformRepository PlatformRepository
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Admin Side";
 }
+    
+
+ try
+    {
+        if (CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value) != null)
+        {
+            last = CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value).Last();
+        }
+    }
+    catch (InvalidOperationException)
+    {
+
+    };
 
 <div class="navbar-allaround">
     
 </div>
 <div class="container">
-    @foreach (var user in Model)
-    {
-        <p>@user.Name</p>
-        <p>@user.Birth</p>
-
-    }
 
 
 
 
+    <div class="">
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <h2>Søg på alle brugere</h2>
+
+                    <form method="get" asp-area="" asp-controller="Admin" asp-action="ShowUser">
+                        <input type="text" name="search" id="search" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
+                        <span>
+                            <input class="search-button" type="submit" value="Søg" />
+                        </span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+ 
 
 
 

@@ -4,7 +4,7 @@
 @inject RateBlog.Repository.IKategoriRepository CategoryRepository
 @inject RateBlog.Repository.IRatingRepository RatingRepository
 @{
-    ViewData["Title"] = "Vis profil";
+    ViewData["Title"] = "Vis profil";   
     var user = await UserManager.GetUserAsync(User);
 
     string last = "";
