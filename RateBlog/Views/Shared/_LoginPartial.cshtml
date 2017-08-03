@@ -37,7 +37,7 @@
             @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
             {
                 <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
+                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
                         Feedback
                         @if (RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value) != 0)
                         {
@@ -49,7 +49,7 @@
             else
             {
                 <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
+                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
                         Feedback
                         @if (RatingRepo.GetUnreadAnswer(user.Id) != 0)
                         {
