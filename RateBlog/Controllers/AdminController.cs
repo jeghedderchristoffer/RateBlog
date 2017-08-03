@@ -51,10 +51,6 @@ namespace RateBlog.Controllers
         //public IActionResult Index()
         //{
 
-
-
-
-
         //    return View(viewmodel);
         //}
 
@@ -87,7 +83,14 @@ namespace RateBlog.Controllers
             return View(viewmodel);
         }
 
+        public IActionResult seMere()
+        {
+            return View();
+        }
+
     }
+
+   
 
     //public IActionResult ShowUser(string searchString, bool isInfluencer)
     //    {
