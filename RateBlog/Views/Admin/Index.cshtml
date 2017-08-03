@@ -1,55 +1,81 @@
-﻿
-@model RateBlog.Models.InfluenterViewModels.IndexViewModel
-@inject RateBlog.Repository.IPlatformRepository PlatformRepository
+﻿@model RateBlog.Models.InfluenterViewModels.IndexViewModel
 @inject UserManager<ApplicationUser> UserManager
-
 @{
-    ViewData["Title"] = "Admin Side";
+    ViewData["Title"] = "Redigere bruger";
 }
-    
+
 
 <div class="navbar-allaround">
-    
+
 </div>
 <div class="container">
-    <div class="">
-        <div class="outer">
-            <div class="middle">
-                <div class="inner">
-                    <h2>Søg på alle brugere</h2>
-                    <form method="get" asp-area="" asp-controller="Admin" asp-action="ShowUser">
-                        <input type="text" name="searchString" id="searchString" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
-                        <span>
-                            <input class="search-button" type="submit" value="Søg" />
-                        </span>
-                    </form>
+    <div class="container">
+        <div class="">
+            <div class="outer">
+                <div class="middle">
+                    <div class="inner">
+                        <h2>Søg på alle brugere</h2>
+
+                        <form method="get" asp-area="" asp-controller="Admin" asp-action="Index">
+                            <input type="text" name="searchString" id="searchString" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
+                            <span>
+                                <input class="search-button" type="submit" value="Søg" />
+                            </span>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <table class="table table-striped">
+            <thread>
+               <tr>
+                   <th>
+                       <p>navn</p>
+
+                   </th>
+                   <th>
+                       <p>email</p>
+
+                   </th>
+                   <th>
+                       <p>Influenter</p>
+
+                   </th>
+                   <th>
+                       <p>    
+                    Se mere
+                       </p>
+
+                   </th>
+               </tr>
+            </thread>
+            <tbody>
+
+                    @foreach (var user in Model.InfluentList)
+                    {
+                        <tr>
+
+                            <td>
+                                <p>@user.Name</p>
+                            </td>
+                            <td>
+                                <p>@user.Email</p>
+                            </td>
+
+                            <td>
+                                <p>@user.InfluenterId</p>
+                            </td>
+
+                            <td>
+                                <a class="col-md-offset-3 col-md-6 col-xs-12">
+                                    <input type="submit" asp-action="SeMere" style="margin-bottom: 20px" class="edit-button" value="Se mere" />
+                              
+                                </a>                              
+                            </td>
+                        </tr>
+                        }
+            </tbody>
+        </table>
+
     </div>
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
-

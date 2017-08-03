@@ -16,7 +16,7 @@
                     <div class="inner">
                         <h2>Søg på alle brugere</h2>
 
-                        <form method="get" asp-area="" asp-controller="Admin" asp-action="ShowUser">
+                        <form method="get" asp-area="" asp-controller="Admin" asp-action="Index">
                             <input type="text" name="searchString" id="searchString" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
                             <span>
                                 <input class="search-button" type="submit" value="Søg" />
@@ -39,7 +39,7 @@
 
                    </th>
                    <th>
-                       <p>id</p>
+                       <p>bruger id</p>
 
                    </th>
                    <th>
@@ -50,32 +50,25 @@
                        <p>profil tekst</p>
 
                    </th>
-                   <th>
-                       <p>Indfluenter id</p>
 
-                   </th>
-                    </th>
-                   
+
+
                </tr>
-                      
+
             </thread>
             <tbody>
-                
+
                     @foreach (var user in Model.InfluentList)
                     {
                         <tr>
-                            <td>
+
                             <td>
                                 <p>@user.Name</p>
                             </td>
                             <td>
-                                <p id="show_more1" onclick="showml( @user.Email)" onmouseover="this.style.cursor='pointer'">Vis mere</p>
-
-                                <div id="content1" style="display: none; padding: 16px 20px 4px; margin-bottom: 15px; background-color: rgb(239, 239, 239);">
-
-                                </div>
+                                <p>@user.Email</p>
                             </td>
-                          
+
                             <td>
                                 <p>@user.Id</p>
                             </td>
@@ -86,45 +79,14 @@
                             <td>
                                 <p>@user.ProfileText</p>
                             </td>
-                            <td></td>
                             <td>
-                                <p>@user.InfluenterId</p>
-                            </td>
-                            <td>
-                                <div class="dropdown show">
-                                    <a class="Dropdownmenu" id="DropDownID" data-toggle="dropdown" aria-haspopup="true" aria-expanded="True">
-                                        redigere bruger
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="col-md-offset-3 col-md-6 col-xs-12">
-                                            <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Redigere bruger" />
-
-                                        </a>
-                                        <a class="col-md-offset-3 col-md-6 col-xs-12">
-                                            <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Opret bruger" />
-                                        </a>
-                                        <a class="col-md-offset-3 col-md-6 col-xs-12">
-                                            <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Slet bruger" />
-                                        </a>
-                                    </div>
-                                </div>
 
 
-                        
+
                             </td>
                         </tr>
                     }
-              
-            
             </tbody>
-
         </table>
-
-
-
-
-
-
 
     </div>

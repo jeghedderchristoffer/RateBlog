@@ -284,12 +284,12 @@ function showml(divId,inhtmText)
         if(x=="block")
         {
         document.getElementById(divId).style.display = "none";
-    document.getElementById(inhtmText).innerHTML="Show More...";
+        document.getElementById(inhtmText).innerHTML="Show More...";
         }
        if(x=="none")
        {
         document.getElementById(divId).style.display = "block";
-    document.getElementById(inhtmText).innerHTML="Show Less";
+        document.getElementById(inhtmText).innerHTML="Show Less";
         }
      }
 
