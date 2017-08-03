@@ -4,14 +4,12 @@
     ViewData["Title"] = "Redigere bruger";
 }
 
+
 <div class="navbar-allaround">
 
 </div>
 <div class="container">
-
     <div class="container">
-
-
         <div class="">
             <div class="outer">
                 <div class="middle">
@@ -19,7 +17,7 @@
                         <h2>Søg på alle brugere</h2>
 
                         <form method="get" asp-area="" asp-controller="Admin" asp-action="ShowUser">
-                            <input type="text" name="search" id="search" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
+                            <input type="text" name="searchString" id="searchString" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
                             <span>
                                 <input class="search-button" type="submit" value="Søg" />
                             </span>
@@ -51,12 +49,15 @@
                    <th>
                        <p>profil tekst</p>
 
-                   </th></th>
+                   </th>
+                   <th>
+                       <p>Indfluenter id</p>
+
+                   </th>
+                    </th>
                    
                </tr>
-          
-
-             
+                      
             </thread>
             <tbody>
                 
@@ -64,81 +65,61 @@
                     {
                         <tr>
                             <td>
+                            <td>
                                 <p>@user.Name</p>
                             </td>
-
-
-
-
-
                             <td>
-                                <p>@user.Email</p>
+                                <p id="show_more1" onclick="showml( @user.Email)" onmouseover="this.style.cursor='pointer'">Vis mere</p>
+
+                                <div id="content1" style="display: none; padding: 16px 20px 4px; margin-bottom: 15px; background-color: rgb(239, 239, 239);">
+
+                                </div>
                             </td>
-
-
-
-
-
+                          
                             <td>
                                 <p>@user.Id</p>
                             </td>
 
-
-
                             <td>
                                 <p>@user.PhoneNumber</p>
                             </td>
-
-
-
-
-
-
-
-
                             <td>
-
                                 <p>@user.ProfileText</p>
                             </td>
+                            <td></td>
+                            <td>
+                                <p>@user.InfluenterId</p>
+                            </td>
+                            <td>
+                                <div class="dropdown show">
+                                    <a class="Dropdownmenu" id="DropDownID" data-toggle="dropdown" aria-haspopup="true" aria-expanded="True">
+                                        redigere bruger
+                                    </a>
 
-                            <div class="dropdown">
-                                <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-                                <div id="myDropdown" class="dropdown-content">
-                                    <td>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                         <a class="col-md-offset-3 col-md-6 col-xs-12">
                                             <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Redigere bruger" />
+
                                         </a>
                                         <a class="col-md-offset-3 col-md-6 col-xs-12">
-                                            <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Opret bruger manuelt" />
+                                            <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Opret bruger" />
                                         </a>
                                         <a class="col-md-offset-3 col-md-6 col-xs-12">
                                             <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Slet bruger" />
                                         </a>
-                                    </td>
+                                    </div>
                                 </div>
-                            </div>
 
 
+                        
+                            </td>
                         </tr>
                     }
               
-                
+            
             </tbody>
 
         </table>
-       
-       
-
-
-
-
-
-
-
-
-
-
-
 
 
 

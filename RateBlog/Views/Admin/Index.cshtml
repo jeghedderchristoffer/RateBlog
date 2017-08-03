@@ -8,34 +8,17 @@
 }
     
 
- try
-    {
-        if (CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value) != null)
-        {
-            last = CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value).Last();
-        }
-    }
-    catch (InvalidOperationException)
-    {
-
-    };
-
 <div class="navbar-allaround">
     
 </div>
 <div class="container">
-
-
-
-
     <div class="">
         <div class="outer">
             <div class="middle">
                 <div class="inner">
                     <h2>Søg på alle brugere</h2>
-
                     <form method="get" asp-area="" asp-controller="Admin" asp-action="ShowUser">
-                        <input type="text" name="search" id="search" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
+                        <input type="text" name="searchString" id="searchString" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
                         <span>
                             <input class="search-button" type="submit" value="Søg" />
                         </span>

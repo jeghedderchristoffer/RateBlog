@@ -39,32 +39,26 @@ namespace RateBlog.Controllers
         //}
 
 
-        public IActionResult Index(string searchString)
+        public IActionResult Index()
         {
-            var model = _userManager.Users.ToList();
-            viewmodel.InfluentList = model.ToList();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                _context.Users.Where(s => s.Name.Contains(searchString));
-            }
-
-            viewmodel.SearchString = searchString;
+            
 
             return View(viewmodel);
         }
 
         public IActionResult ShowUser(string searchString)
         {
-            var model = _userManager.Users.ToList();
-            viewmodel.InfluentList = model.ToList();
-
+    
             if (!String.IsNullOrEmpty(searchString))
             {
-                _context.Users.Where(s => s.Name.Contains(searchString));
+               viewmodel.InfluentList = _userManager.Users.Where(s => s.Name.Contains(searchString)).ToList();
             }
+            else
+            {
+                viewmodel.InfluentList = _userManager.Users.ToList();
+            }
+            viewmodel.InfluentList = _userManager.Users.Where(s => s.Name.Contains(searchString)).ToList();
 
-            viewmodel.SearchString = searchString;
             return View(viewmodel);
         }
 
