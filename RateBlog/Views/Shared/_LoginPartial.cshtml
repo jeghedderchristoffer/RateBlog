@@ -17,8 +17,6 @@
  
             @if (User.IsInRole("Ekspert"))
             {
-
-
                 <li class="drop">
                     <a href="#">Ekspert</a>
                     <div class="dropdownContain">
@@ -59,7 +57,6 @@
                         }
                     </a>
                 </li>
-
             }
 
             }
@@ -88,6 +85,18 @@
                         @if (RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
                         {
                             <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
+                        }
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
+                        Anmeldelser
+                        @if (RatingRepo.GetUnreadAnswer(user.Id) != 0)
+                        {
+                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadAnswer(user.Id)</span>
                         }
                     </a>
                 </li>

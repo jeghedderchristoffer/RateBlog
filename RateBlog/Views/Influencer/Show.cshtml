@@ -60,55 +60,45 @@
                 {
                     <h3 class="text-center">Follower rating:</h3>
 
-                    <div class="outer">
-                        <div class="middle">
-                            <div class="inner">
-                                <div class="star-rating-show">
-                                    <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="show-rating-box-show">
+                        <div class="show-rating-show">
+                            <div class="show-rating-front-show">
+                                @for (int i = 0; i < RatingRepository.GetRatingAverage(Model.Influenter.InfluenterId); i++)
+                                {
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                }
+                            </div>
+                            <div class="show-rating-back-show">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
                             </div>
                         </div>
                     </div>
-                    <p class="text-center">Antal rating: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
 
-                    <h3 class="text-center">Ekspert rating:</h3>
+                    <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
 
-                    <div class="outer">
-                        <div class="middle">
-                            <div class="inner">
-                                <div class="star-rating-show">
-                                    <div class="back-stars" title="@Math.Round(EkspertRatingRepository.GetEkspertRatingAverage(Model.ApplicationUser.InfluenterId.Value), 2)%">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <div class="front-stars" style="width: @EkspertRatingRepository.GetEkspertRatingAverage(Model.ApplicationUser.InfluenterId.Value)%">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="show-rating-box-show">
+                        <div class="show-rating-show">
+                            <div class="show-rating-front-show">
+                                @for (int i = 0; i < EkspertRatingRepository.GetEkspertRatingAverage(Model.Influenter.InfluenterId); i++)
+                                {
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                }
+                            </div>
+                            <div class="show-rating-back-show">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
                             </div>
                         </div>
                     </div>
-                    <p class="text-center">Antal rating: @EkspertRatingRepository.CountEkspertRatings(Model.Influenter.InfluenterId)</p>
+                  
+                    <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
 
                     <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #08468d ">Giv feedback</a>
                     <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>

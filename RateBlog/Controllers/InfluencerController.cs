@@ -27,7 +27,6 @@ namespace RateBlog.Controllers
         private readonly IPlatformRepository _platform;
         private readonly IKategoriRepository _kategori;
 
-
         public InfluencerController(IKategoriRepository kategori, IInfluenterRepository influenter, IRatingRepository ratingRepository, UserManager<ApplicationUser> userManager, IPlatformRepository platform)
         {
             _influenter = influenter;
@@ -67,15 +66,9 @@ namespace RateBlog.Controllers
                 }
             }
 
-            foreach (var v in influenter)
-            {
-                influenterRating.Add(v.InfluenterId.Value, _ratingRepository.GetRatingAverage(v.InfluenterId.Value));
-            }
-
             var model = new Models.InfluenterViewModels.IndexViewModel()
             {
-                SearchString = search,
-                InfluenterRatings = influenterRating
+                SearchString = search
             };
             return View(model);
         }
@@ -148,7 +141,7 @@ namespace RateBlog.Controllers
                 }
 
                 // Lav en email baseret på deres alias... Hvis deres alias indeholde æøå vil den nok fejle...
-                var email = newInfluenter.Alias + "@" + newInfluenter.Alias + ".dk";
+                var email = newInfluenter.InfluenterId + "@" + newInfluenter.InfluenterId + ".dk";
 
                 var user = new ApplicationUser();
 
@@ -179,8 +172,8 @@ namespace RateBlog.Controllers
                     user.ImageFile = ms.ToArray();
                 }
 
-                // Koden vil være: bestfluence + alias + 123
-                var result = await _userManager.CreateAsync(user, "bestfluence" + model.Influenter.Alias.ToLower() + "123");
+                // Koden vil være: bestfluence + InfluenterId + 123
+                var result = await _userManager.CreateAsync(user, "bestfluence" + model.Influenter.InfluenterId + "123");
 
                 if (result.Succeeded)
                 {
@@ -201,7 +194,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Sorter(string[] currentUsers, int[] platforme, int[] kategorier, int pageIndex, int pageSize, string search)
+        public PartialViewResult Sorter(int[] platforme, int[] kategorier, int pageIndex, int pageSize, string search)
         {
             if (string.IsNullOrEmpty(search))
             {
@@ -251,7 +244,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search, int[] platforme, int[] kategorier, string[] currentUsers)
+        public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search, int[] platforme, int[] kategorier, string lastUser)
         {
             // Set string to empty string
             if (string.IsNullOrEmpty(search))
@@ -282,19 +275,12 @@ namespace RateBlog.Controllers
                 }
             }
 
-            // Gets current users...
-            var listOfUsers = new List<ApplicationUser>();
-            foreach (var v in currentUsers)
-            {
-                listOfUsers.Add(_userManager.Users.FirstOrDefault(x => x.Id == v));
-            }
-
             // List: Keeps track of index, skip the previous and takes the next.
             var list = new List<ApplicationUser>();
-            if ((platforme.Count() != 0 || kategorier.Count() != 0) && listOfUsers.Count != 0)
+            if ((platforme.Count() != 0 || kategorier.Count() != 0) && lastUser != null)
             {
-                var lastUser = listOfUsers.Last();
-                var index = influenter.IndexOf(lastUser) + 1;
+                var last = _userManager.Users.FirstOrDefault(x => x.Id == lastUser); 
+                var index = influenter.IndexOf(last) + 1;
                 list = influenter.Skip(index).Take(pageSize).ToList();
             }
             else
@@ -304,18 +290,8 @@ namespace RateBlog.Controllers
 
             // If platform or kategori is checked, this makes sure the the next 5 (pageSize) has that kategori or platform. 
             var sortList = _influenter.SortInfluencerByPlatAndKat(platforme, kategorier, list);
-            var endList = new List<ApplicationUser>();
 
-            // SKAL MÅSKE SENDE PAGEINDEX TILBAGE, FOR AT FORTÆLLE HVILKET SIDEN JEG STOPPEDE VED!!!!!!!!!
-            foreach (var v in sortList)
-            {
-                if (!listOfUsers.Contains(v))
-                {
-                    endList.Add(v);
-                }
-            }
-
-            return PartialView("InfluencerListPartial", endList);
+            return PartialView("InfluencerListPartial", sortList);
         }
 
 

@@ -89,15 +89,15 @@
 
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding">
-                    <div class="star-rating-search" style="margin-top: 20px;">
-                        <div class="back-stars" title="@Math.Round(RatingRepository.GetRatingAverage(influ.InfluenterId.Value), 2)%">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-
-                            <div class="front-stars" style="width: @RatingRepository.GetRatingAverage(influ.InfluenterId.Value)%">
+                    <div class="show-rating-box">
+                        <div class="show-rating">
+                            <div class="show-rating-front">
+                                @for (int i = 0; i < RatingRepository.GetRatingAverage(influ.InfluenterId.Value); i++)
+                                {
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                }
+                            </div>
+                            <div class="show-rating-back">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>

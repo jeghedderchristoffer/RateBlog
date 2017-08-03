@@ -237,6 +237,8 @@ body.modal-open {
     height: 45px;
     width: 100%;
     border-radius: 3px;
+    border-bottom-right-radius: 0; 
+    border-top-right-radius: 0;
     border: none;
 }
 
@@ -248,8 +250,10 @@ body.modal-open {
 
 .search-button {
     height: 45px;
-    margin-left: 10px;
+    margin-left: -4px;
     border-radius: 3px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
     border: none;
     width: 100px;
     background-color: #f08301;
@@ -275,14 +279,18 @@ body.modal-open {
         height: 45px;
         width: 78%;
         border-radius: 3px;
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
         border: none;
     }
 
     .search-button {
         height: 45px;
-        margin-left: 0;
+        margin-left: -4px;
         border-radius: 3px;
         border: none;
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
         width: 20%;
         background-color: #f08301;
         color: #fff;
@@ -883,7 +891,7 @@ body.modal-open {
     text-align: center;
     transition: all .2s ease-out;
     float: right;
-    width: 155.23px;
+    width: 165px;
 }
 
     .a-button:hover {
@@ -1009,6 +1017,8 @@ body.modal-open {
     border: 1px solid #ddd;
     height: auto;
     overflow: hidden;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    margin-top: 53px;
 }
 
     .sorter h1 {
@@ -1043,7 +1053,8 @@ body.modal-open {
     height: 170px;
     background: #fff;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
     .search-result h4 {
@@ -1053,16 +1064,6 @@ body.modal-open {
 
 .search-result-box {
     height: 170px;
-}
-
-.search-inputsøg {
-    margin: 20px auto;
-    padding: 4px 16px;
-    max-width: 400px;
-    height: 45px;
-    width: 100%;
-    border-radius: 3px;
-    border: 1px solid black;
 }
 
 .search-inputsøg {
@@ -2251,10 +2252,13 @@ footer {
     width: 100%;
     border: 1px solid #ddd;
     padding: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     color: #333;
     background: #fafafa;
     border-radius: 5px;
+    -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
 }
 
     .feedback-container:hover {
@@ -2317,6 +2321,9 @@ footer {
     background: #fafafa;
     border-radius: 5px;
     margin-bottom: 10px;
+    -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
 }
 
 .star-rating-feedback-all {
@@ -2357,6 +2364,9 @@ footer {
     color: #333;
     background: #fafafa;
     border-radius: 10px;
+    -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -2605,3 +2615,190 @@ footer {
         border: none;
     }
 }
+
+
+
+
+/*Star rating*/
+
+.show-rating-box {
+    display: block;
+    float: right;
+    margin-top: 15px;
+}
+
+.show-rating {
+    display: inline-block;
+    position: relative;
+}
+
+.show-rating-front {
+    position: absolute;
+    color: #FD4;
+    z-index: 5;
+    text-shadow: 0px 0px 1px #000;
+}
+
+.show-rating-back {
+    color: #DCDCDC;
+    text-shadow: 0px 0px 1px #000;
+}
+
+    .show-rating-back i, .show-rating-front i {
+        font-size: 30px;
+        width: 30px;
+        text-align: center;
+    }
+
+@media (max-width: 767px) {
+    .show-rating-box {
+        float: none;
+        text-align: center;
+        margin-bottom: 10px
+    }
+}
+
+/*Rating Influencer Show*/
+
+.show-rating-box-show {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.show-rating-show {
+    display: inline-block;
+    position: relative;
+}
+
+.show-rating-front-show {
+    position: absolute;
+    color: #FD4;
+    z-index: 5;
+    text-shadow: 0px 0px 1px #000;
+}
+
+.show-rating-back-show {
+    color: #DCDCDC;
+    text-shadow: 0px 0px 1px #000;
+}
+
+    .show-rating-back-show i, .show-rating-front-show i {
+        font-size: 50px;
+        width: 50px;
+        text-align: center;
+    }
+
+@media (max-width: 1199px) {
+    .show-rating-back-show i, .show-rating-front-show i {
+        font-size: 35px;
+        width: 35px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 767px) {
+    .show-rating-back-show i, .show-rating-front-show i {
+        font-size: 30px;
+        width: 30px;
+        text-align: center;
+    }
+}
+
+/*Rating Manage SeAndmeldelse*/
+
+.show-rating-box-se {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.show-rating-se {
+    display: inline-block;
+    position: relative;
+}
+
+.show-rating-front-se {
+    position: absolute;
+    color: #FD4;
+    z-index: 5;
+    text-shadow: 0px 0px 1px #000;
+}
+
+.show-rating-back-se {
+    color: #DCDCDC;
+    text-shadow: 0px 0px 1px #000;
+}
+
+    .show-rating-back-se i, .show-rating-front-se i {
+        font-size: 50px;
+        width: 50px;
+        text-align: center;
+    }
+
+@media (max-width: 991px) {
+    .show-rating-se {
+        float: left;
+        text-align: unset;
+    }
+
+    .show-rating-box-se {
+        display: block;
+        margin-top: 0;
+        text-align: center;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .show-rating-back-se i, .show-rating-front-se i {
+        font-size: 40px;
+        width: 40px;
+        text-align: center;
+    }
+
+}
+
+@media (max-width: 767px) {
+    .show-rating-back-se i, .show-rating-front-se i {
+        font-size: 30px;
+        width: 30px;
+        text-align: center;
+    }
+    .show-rating-se {
+        float: none;
+    }
+}
+
+/*Rating manage 3 sidste anmeldelser*/
+
+.show-rating-box-3 {
+    display: block;
+    float: right;
+}
+
+.show-rating-3 {
+    display: inline-block;
+    position: relative;
+}
+
+.show-rating-front-3 {
+    position: absolute;
+    color: #FD4;
+    z-index: 5;
+    text-shadow: 0px 0px 1px #000;
+}
+
+.show-rating-back-3 {
+    color: #DCDCDC;
+    text-shadow: 0px 0px 1px #000;
+}
+
+    .show-rating-back-3 i, .show-rating-front-3 i {
+        font-size: 20px;
+        width: 20px;
+        text-align: center;
+    }

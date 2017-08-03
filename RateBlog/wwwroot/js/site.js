@@ -274,4 +274,55 @@ function topFunction() {
     $('html, body').animate({
         scrollTop: 0
     }, 300);
-}  
+}
+
+
+// Ajax til search forslag
+
+$(document).ready(function () {
+
+    //setup before functions
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 500;  //time in ms, 5 second for example
+    var $input = $('#search');
+
+    //on keyup, start the countdown
+    $input.on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown 
+    $input.on('keydown', function () {
+        clearTimeout(typingTimer);
+    });
+
+    //user is "finished typing," do something
+    function doneTyping() {
+
+        var searchResult = $("#search").val();
+
+        $.ajax({
+            url: "/Home/SearchHelp",
+            method: "GET",
+            data: {
+                search: searchResult
+            },
+            success: function (result) {
+                if (result.trim()) {
+                    $("#searchSug").html(result);
+                }
+                else {
+                    $("#searchSug").html("");
+                }
+            },
+            error: function () {
+                console.log("fail");
+            }
+        });
+
+        $("#search").focus();
+
+    }
+});
+

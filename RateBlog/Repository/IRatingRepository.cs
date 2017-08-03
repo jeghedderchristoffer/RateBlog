@@ -44,7 +44,7 @@ namespace RateBlog.Repository
         /// </summary>
         /// <param name="influenterId"></param>
         /// <returns></returns>
-        double GetRatingAverage(int influenterId);
+        int GetRatingAverage(int influenterId);
 
         /// <summary>
         /// Does this influenter have ratings?
@@ -79,7 +79,7 @@ namespace RateBlog.Repository
         /// </summary>
         /// <param name="ratingId"></param>
         /// <returns></returns>
-        double GetSingleRatingAverage(int ratingId);
+        int GetSingleRatingAverage(int ratingId);
 
         int GetSingleRating(int ratingId, string name);
 

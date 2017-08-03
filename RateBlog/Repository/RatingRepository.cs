@@ -56,7 +56,7 @@ namespace RateBlog.Repository
             return false;
         }
 
-        public double GetRatingAverage(int influenterId)
+        public int GetRatingAverage(int influenterId)
         {
             if (_applicationDbContext.Rating.Any(x => x.InfluenterId == influenterId))
             {
@@ -83,9 +83,9 @@ namespace RateBlog.Repository
                     allRatingSums += ratingSum;
                 }
 
-                double average = (allRatingSums / numberOfRatings) * 20;
+                double average = (allRatingSums / numberOfRatings);
 
-                return average;
+                return (int)Math.Round(average, 0, MidpointRounding.AwayFromZero); 
             }
 
             return 0;
@@ -125,7 +125,7 @@ namespace RateBlog.Repository
             }
         }
 
-        public double GetSingleRatingAverage(int ratingId)
+        public int GetSingleRatingAverage(int ratingId)
         {
             var rating = Get(ratingId);
             double ratingSum = 0;
@@ -137,7 +137,7 @@ namespace RateBlog.Repository
             ratingSum += rating.Kvalitet;
             ratingSum = ratingSum / 4;
 
-            return ratingSum * 20;
+            return (int)Math.Round(ratingSum, 0, MidpointRounding.AwayFromZero);
         }
 
         public int GetSingleRating(int ratingId, string name)

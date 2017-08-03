@@ -31,14 +31,15 @@
                                 <div class="se-anmeldelse-center se-anmeldelse-padding">
                                     <h2 class="text-center">Samlet score</h2>
                                     <br />
-                                    <div class="star-rating-response se-anmeldelse-star">
-                                        <div class="back-stars" title="@Math.Round(RatingRepository.GetSingleRatingAverage(Model.Rating.RatingId), 2)%">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <div class="front-stars" style="width: @RatingRepository.GetSingleRatingAverage(Model.Rating.RatingId)%">
+                                    <div class="show-rating-box-se">
+                                        <div class="show-rating-se">
+                                            <div class="show-rating-front-se">
+                                                @for (int i = 0; i < RatingRepository.GetSingleRatingAverage(Model.Rating.RatingId); i++)
+                                                {
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                }
+                                            </div>
+                                            <div class="show-rating-back-se">
                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                 <i class="fa fa-star" aria-hidden="true"></i>
