@@ -19,7 +19,7 @@
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
                 <div class="addon-number" style="text-align: left">
-                    <p>Se anmeldelser af</p>
+                   
                     <h3>@Model.Influenter.Alias</h3>
                 </div>
 
@@ -27,7 +27,7 @@
             <div class="col-md-5 col-xs-12 addon-box">
                 <div class="addon-number">
                     <h1>@RatingRepository.GetInfluenterRatingNumber(Model.Influenter.InfluenterId)</h1>
-                    <p>Ratings</p>
+                    <p>Feedback</p>
                 </div>
                 <div class="addon-number">
                     <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(Model.Influenter.InfluenterId), 1)%</h1>
@@ -44,7 +44,7 @@
         @*Fans*@
 
         <div class="col-md-7 col-sm-6 readrating hidden-xs">
-            <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Anmeldere</h2>
+            <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Followers</h2>
             <h4><i>Samlet rating:</i></h4>
             <div class="outer">
                 <div class="middle">
@@ -75,7 +75,7 @@
 
         <div class="col-md-5 col-sm-6 col-xs-12 readrating">
             <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Eksperter</h2>
-            <h4><i>Ekspert rating:</i></h4>
+            <h4><i>Samlet rating:</i></h4>
             <div class="outer">
                 <div class="middle">
                     <div class="inner">
@@ -113,9 +113,9 @@
                     </div>
 
                     <div class="col-md-8 col-xs-12 noPadding">
-                        <p><b>Mening fra Ekspert</b></p>
+                        <p><b>Ekspert</b></p>
                         <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                        <h5><i>Ekspert anmeldelse:</i></h5>
+                        <h5><i>Feedback:</i></h5>
                         <p class="feedback-text">@v.OffentligFeedback</p>
                     </div>
 
@@ -146,7 +146,7 @@
     </div>
 
     <div class="col-xs-12 readrating visible-xs">
-        <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Anmeldere</h2>
+        <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Followers</h2>
         <h4><i>Samlet rating:</i></h4>
         <div class="outer">
             <div class="middle">
@@ -191,9 +191,9 @@
                             </div>
 
                             <div class="col-md-6 col-xs-12 noPadding">
-                                <p><b>Mening fra @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</b></p>
+                                <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</b></p>
                                 <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                                <h5><i>Anmeldelse:</i></h5>
+                                <h5><i>Feedback:</i></h5>
                                 <p class="feedback-text">@v.Feedback</p>
                             </div>
 
@@ -236,7 +236,7 @@
                 }
                 else
                 {
-                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har ikke fået nogle anmeldelser endnu</p>
+                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har ikke fået nogle feedback</p>
                 }
 
             }
@@ -260,9 +260,9 @@
                             </div>
 
                             <div class="col-md-8 col-xs-12 noPadding">
-                                <p><b>Mening fra Ekspert</b></p>
+                                <p><b>Ekspert</b></p>
                                 <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                                <h5><i>Ekspert anmeldelse:</i></h5>
+                                <h5><i>Feedback:</i></h5>
                                 <p class="feedback-text">@v.OffentligFeedback</p>
                             </div>
 
@@ -294,7 +294,7 @@
                 else
                 {
 
-                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har ikke fået nogle ekspert anmeldelser endnu</p>
+                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har ikke fået nogle ekspert feedback.</p>
                 }
 
             }

@@ -58,7 +58,7 @@
             <div class="col-md-4">
                 @if (RatingRepository.HasRatings(Model.Influenter.InfluenterId))
                 {
-                    <h3 class="text-center">Fan rating:</h3>
+                    <h3 class="text-center">Follower rating:</h3>
 
                     <div class="outer">
                         <div class="middle">
@@ -82,6 +82,7 @@
                             </div>
                         </div>
                     </div>
+                    <p class="text-center">Antal rating: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
 
                     <h3 class="text-center">Ekspert rating:</h3>
 
@@ -107,17 +108,20 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
+                    <p class="text-center">Antal rating: @EkspertRatingRepository.CountEkspertRatings(Model.Influenter.InfluenterId)</p>
 
-                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #08468d ">Skriv en anmeldelse</a>
-                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se anmeldelser</a>
+                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #08468d ">Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>
 
                 }
                 else
                 {
-                    <h4>Denne influencer har ingen anmeldelser. Bliv den første</h4>
+                    <h4>Denne influencer har ingen feedback. Bliv den første</h4>
                     <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #08468d ">Skriv en anmeldelse</a>
                 }
+                   
+
+  
             </div>
 
             <hr class="hidden-md hidden-lg" />

@@ -27,5 +27,9 @@ namespace RateBlog.Repository
         int GetMyEkspertRatingNumber(string applicationUserId);
 
         List<EkspertRating> GetAllForEkspert(string id);
+
+        int CountEkspertRatings(int influenterId);
+
+        bool HasEkspertRatings(int influenterId);
     }
 }
