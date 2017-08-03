@@ -23,7 +23,7 @@
 
                     <div class="addon-number" style="width: 33.3%">
                         <h1>@EkspertRatingRepository.GetMyEkspertRatingNumber(user.Id.ToString())</h1>
-                        <p>Anmeldelser</p>
+                        <p>Ratings</p>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@ else
                     }
                     else
                     {
-                        <p style="margin-top: 10px;">Anmelder</p>
+                        <p style="margin-top: 10px;">Follower</p>
                     }
 
                 </div>
@@ -62,22 +62,22 @@ else
                 {
                     <div class="addon-number" style="width: 50%">
                         <h1>@RatingRepository.GetMyRatingNumber(user.Id)</h1>
-                        <p>Anmeldelser</p>
+                        <p>Ratings</p>
                     </div>
                     <div class="addon-number" style="width: 50%">
                         <h1>@RatingRepository.GetMyRatingAnswerNumber(user.Id)</h1>
-                        <p>Feedback</p>
+                        <p>Svar på feedback</p>
                     </div>
                 }
                 else
                 {
                     <div class="addon-number" style="width: 33.3%">
                         <h1>@RatingRepository.GetInfluenterRatingNumber(user.InfluenterId.Value)</h1>
-                        <p>Anmeldelser</p>
+                        <p>Ratings</p>
                     </div>
                     <div class="addon-number" style="width: 33.3%">
                         <h1>@RatingRepository.GetInfluenterAnswerNumber(user.InfluenterId.Value)</h1>
-                        <p>Svar</p>
+                        <p>Svaret</p>
                     </div>
                     <div class="addon-number" style="width: 33.3%">
                         <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(user.InfluenterId.Value), 1) %</h1>
