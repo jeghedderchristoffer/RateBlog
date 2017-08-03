@@ -19,7 +19,7 @@
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
                 <div class="addon-number" style="text-align: left">
-                   
+                   <p>Feedback for</p>
                     <h3>@Model.Influenter.Alias</h3>
                 </div>
 
@@ -27,11 +27,11 @@
             <div class="col-md-5 col-xs-12 addon-box">
                 <div class="addon-number">
                     <h1>@RatingRepository.GetInfluenterRatingNumber(Model.Influenter.InfluenterId)</h1>
-                    <p>Feedback</p>
+                    <p>Ratings</p>
                 </div>
                 <div class="addon-number">
                     <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(Model.Influenter.InfluenterId), 1)%</h1>
-                    <p>Svar procent</p>
+                    <p>Svarprocent</p>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
         @*Fans*@
 
         <div class="col-md-7 col-sm-6 readrating hidden-xs">
-            <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Followers</h2>
+            <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Følgere</h2>
             <h4><i>Samlet rating:</i></h4>
             <div class="show-rating-box-show">
                 <div class="show-rating-show">
@@ -71,7 +71,7 @@
 
         <div class="col-md-5 col-sm-6 col-xs-12 readrating">
             <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Eksperter</h2>
-            <h4><i>Ekspert rating:</i></h4>
+            <h4><i>Samlet rating:</i></h4>
             <div class="show-rating-box-show">
                 <div class="show-rating-show">
                     <div class="show-rating-front-show">
@@ -224,7 +224,7 @@
                 }
                 else
                 {
-                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har ikke fået nogle feedback</p>
+                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har ikke modtaget ekspert feedback</p>
                 }
 
             }

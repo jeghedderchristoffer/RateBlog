@@ -24,6 +24,7 @@
     <Content Include="wwwroot\images\Footer\Job.jpeg" />
     <Content Include="wwwroot\images\Footer\Kontakt.jpg" />
     <Content Include="wwwroot\images\Footer\Rasmus.jpeg" />
+    <Content Include="wwwroot\images\Forside.jpeg" />
     <Content Include="wwwroot\images\Jyllandsposten.png" />
     <Content Include="wwwroot\images\Kategori\beauty-kat.jpg" />
     <Content Include="wwwroot\images\Kategori\DIY-kat.jpeg" />

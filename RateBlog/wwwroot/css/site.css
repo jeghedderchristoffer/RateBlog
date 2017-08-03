@@ -212,7 +212,7 @@ body.modal-open {
 /*--------------Home Index page----------------------*/
 
 .home-img {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/index-img.jpeg") no-repeat center;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/Forside.jpeg") no-repeat center;
     height: 700px;
     -webkit-background-size: cover;
     -moz-background-size: cover;

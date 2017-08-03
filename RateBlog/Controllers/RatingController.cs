@@ -104,7 +104,7 @@ namespace RateBlog.Controllers
             // Der mangler at tjekke om denne user allerede har rated denne influenter....!!!!!!
 
             // Lidt feedback til brugeren
-            TempData["Success"] = "Du har givet din anmeldelse " + model.Influenter.Alias;
+            TempData["Success"] = "Du har givet din feedback til " + model.Influenter.Alias;
 
             // Skal ændres til Influenter Controller, ShowInfluenter Action
             return RedirectToAction("Show", "Influencer", new { Id = model.Influenter.InfluenterId });

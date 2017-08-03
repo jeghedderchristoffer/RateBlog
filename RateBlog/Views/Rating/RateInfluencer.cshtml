@@ -31,7 +31,7 @@
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
                 <div class="addon-number" style="text-align: left">
-                    <p>Rating</p>
+                    <p>Feedback til</p>
                     <h3>@Model.Influenter.Alias</h3>
                 </div>
                 
@@ -39,7 +39,7 @@
             <div class="col-md-5 col-xs-12 addon-box">
                 <div class="addon-number">
                     <h1>@RatingRepository.GetInfluenterRatingNumber(Model.Influenter.InfluenterId)</h1>
-                    <p>feedback</p>
+                    <p>Ratings</p>
                 </div>
                 <div class="addon-number">
                     <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(Model.Influenter.InfluenterId), 1)%</h1>
@@ -190,7 +190,7 @@
 
                 </div>
                 <div class="col-md-2 col-sm-2 hidden-xs">
-                    <a style="padding-left: 5px" class="pull-right" title="Anbefaling" data-content="Vil du anbefale influenceren til en ven eller et familiemedlem?" data-toggle="popover" data-trigger="hover" data-placement="left">
+                    <a style="padding-left: 5px" class="pull-right" title="Anbefaling" data-content="Vil du anbefale influenceren til en ven?" data-toggle="popover" data-trigger="hover" data-placement="left">
                         <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #08468d;"></i>
                     </a>
                 </div>
@@ -202,7 +202,7 @@
                     <h4>Feedback</h4>
                 </div>
                 <div class="col-md-6 col-sm-6">
-                    <textarea class="rating-input" asp-for="@Model.Review" rows="8" placeholder="Hvad kan du godt lide ved influenceren og dennes indhold, hvad mener du der kan gøres bedre og hvad baserer du din feedback på?"></textarea>
+                    <textarea class="rating-input" asp-for="@Model.Review" rows="8" placeholder="Hvad kan du godt lide ved influenceren og dennes indhold, hvad kan gøres bedre og hvad baserer du din feedback på?"></textarea>
                 </div>
  
             </div>

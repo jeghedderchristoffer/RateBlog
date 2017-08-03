@@ -56,6 +56,12 @@ namespace RateBlog.Controllers
             return View();
         }
 
+        // GET: /<controller>/
+        public IActionResult Retningslinjer()
+        {
+            return View();
+        }
+
 
     }
 }

@@ -48,7 +48,7 @@
             }
             else
             {
-                <button id="redigerFanBtn" class="active">ANMELDER</button>
+                <button id="redigerFanBtn" class="active">FØLGER</button>
                 <button id="redigerInfluenterBtn">INFLUENCER</button>
             }
         </div>
@@ -79,19 +79,19 @@
                 <input asp-for="@Model.City" class="edit-input-influ" />
                 <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Telefon nummer:</p>
+                <p>Telefonnummer:</p>
                 <input asp-for="@Model.PhoneNumber" class="edit-input-influ" />
                 <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Profil billede:</p>
+                <p>Profilbillede:</p>
                 <input type="file" name="profilePic" class="input-files" />
                 <br />
 
-                <p>Profil tekst:</p>
-                <textarea asp-for="@Model.ProfileText" class="edit-input-influ" rows="7" style="height: auto;"></textarea>
+                <p>Profiltekst:</p>
+                <textarea asp-for="@Model.ProfileText" class="edit-input-influ" rows="7" style="height: auto;" placeholder="Skriv om dig selv og dine interesser"></textarea>
                 <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
 
-                <input type="submit" class="edit-button-influ" value="Gem" />
+                <input type="submit" class="edit-button-influ-create " value="Gem" />
 
             </form>
         </div>
@@ -115,11 +115,11 @@
                 <input asp-for="@Model.City" class="edit-input-influ" />
                 <span asp-validation-for="@Model.City" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Telefon nummer:</p>
+                <p>Telefonnummer:</p>
                 <input asp-for="@Model.PhoneNumber" class="edit-input-influ" />
                 <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Profil billede:</p>
+                <p>Profilbillede:</p>
                 <input type="file" name="ProfilePic" asp-for="@Model.ProfilePic"/>
                 <br />
 
@@ -129,7 +129,7 @@
                 <h4><b>Influencer oplysninger:</b></h4>
                 <br />
 
-                <p>Alias/kaldenavn:</p>
+                <p>Alias</p>
                 <input asp-for="@Model.Influenter.Alias" class="edit-input-influ" />
                 <span asp-validation-for="@Model.Influenter.Alias" class="text-danger" style="margin-left: 5px;"></span>
 
@@ -185,10 +185,10 @@
 
                 <br />
                 <p>Profiltekst:</p>
-                <textarea asp-for="@Model.ProfileText" class="edit-input-influ" rows="6" style="height: auto;"></textarea>
-                <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
+                <textarea asp-for="@Model.ProfileText" class="edit-input-influ" rows="6" style="height: auto;" placeholder="Skriv om dig selv og dine interesser"></textarea>
+                <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;" ></span>
 
-                <input type="submit" class="edit-button-influ" value="Gem" />
+                <input type="submit" class="edit-button-influ-create" value="Gem" />
             </form>
 
 
