@@ -77,9 +77,9 @@
         <div class="col-md-12 noPadding">
             <div class="col-md-offset-3 col-md-6">
                 <form asp-area="" asp-controller="Manage" asp-action="Answer">
-                    <h4 class="text-center">Hvad har du af svar til din feedback:</h4>
+                    <h4 class="text-center">Besvar din feedback</h4>
                     @Html.HiddenFor(x => x.Rating.RatingId)
-                    <textarea asp-for="@Model.Rating.Answer" class="rating-input" style="margin-bottom: 15px" rows="8" placeholder="Hvad har du at sige om din feedback?"></textarea>
+                    <textarea asp-for="@Model.Rating.Answer" class="rating-input" style="margin-bottom: 15px" rows="8" placeholder="Hvad tænker du om den feedback du har modtaget?"></textarea>
                     <input type="submit" style="margin-bottom: 20px" class="edit-button" value="Send" />
                 </form>
             </div>
