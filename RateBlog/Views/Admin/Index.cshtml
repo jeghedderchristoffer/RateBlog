@@ -1,0 +1,42 @@
+﻿@model List<ApplicationUser> 
+
+@{
+    ViewData["Title"] = "Admin Side";
+}
+
+<div class="navbar-allaround">
+    
+</div>
+<div class="container">
+    @foreach (var user in Model)
+    {
+        <p>@user.Name</p>
+        <p>@user.Birth</p>
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
