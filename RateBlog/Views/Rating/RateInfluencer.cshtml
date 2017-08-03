@@ -31,7 +31,7 @@
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
                 <div class="addon-number" style="text-align: left">
-                    <p>Anmeldelse af</p>
+                    <p>Rating</p>
                     <h3>@Model.Influenter.Alias</h3>
                 </div>
                 
@@ -39,7 +39,7 @@
             <div class="col-md-5 col-xs-12 addon-box">
                 <div class="addon-number">
                     <h1>@RatingRepository.GetInfluenterRatingNumber(Model.Influenter.InfluenterId)</h1>
-                    <p>Anmeldelser</p>
+                    <p>feedback</p>
                 </div>
                 <div class="addon-number">
                     <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(Model.Influenter.InfluenterId), 1)%</h1>

@@ -119,7 +119,7 @@ namespace RateBlog.Controllers
                 TempData["Success"] = "Du har nu givet din ekspert anmeldelse til " + model.Influenter.Alias;
 
 
-                return RedirectToAction("Show", "Influenter", new { Id = model.Influenter.InfluenterId });
+                return RedirectToAction("Show", "Influencer", new { Id = model.Influenter.InfluenterId });
             }
 
             TempData["Error"] = "Du skal udfylde alle felterne for at give dit feedback";

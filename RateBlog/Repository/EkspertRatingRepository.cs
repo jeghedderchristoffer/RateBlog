@@ -119,6 +119,27 @@ namespace RateBlog.Repository
             return _applicationDbContext.EkspertRating.Where(x => x.ApplicationUserId == id).ToList();
         }
 
+        public int CountEkspertRatings(int influenterId)
+        {
+            try
+            {
+                return _applicationDbContext.EkspertRating.Where(x => x.InfluenterId == influenterId).Count();
+            }
+            catch (ArgumentNullException)
+            {
+                return 0;
+            }
+        }
+
+        public bool HasEkspertRatings(int influenterId)
+        {
+            if (_applicationDbContext.EkspertRating.Any(x => x.InfluenterId == influenterId))
+            {
+                return true;
+            }
+            return false;
+        }
+
 
     }
 }
