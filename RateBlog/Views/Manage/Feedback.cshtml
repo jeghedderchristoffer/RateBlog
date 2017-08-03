@@ -2,7 +2,7 @@
 @inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
 @inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = "Anmeldelser";
+    ViewData["Title"] = "Feedback";
     var user = await UserManager.GetUserAsync(User);
 }
 
@@ -44,7 +44,7 @@
 <div onload="closeAfter3Seconds()" class="bottom-container">
 
     <div class="container">
-        <h2 class="anmeldelser-h2">Anmeldelser</h2>
+        <h2 class="anmeldelser-h2">Feedback</h2>
 
         @if (user.InfluenterId.HasValue)
         {
@@ -52,7 +52,7 @@
                 <div class="col-md-4 padding-anmeldelser-responsive">
                     <div class="feedback-rating-all-box">
                         <div class="feedback-rating-all-box-item">
-                            <h3 class="text-center">Fan rating</h3>
+                            <h3 class="text-center">Følger rating</h3>
                             <div class="show-rating-box-show">
                                 <div class="show-rating-show">
                                     <div class="show-rating-front-show">
@@ -108,7 +108,7 @@
                         {
                             @foreach (var v in RatingRepository.GetRatingForInfluenter(user.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
                             {
-                                <form asp-area="" asp-controller="Manage" asp-action="SeAnmeldelse" asp-route-id="@v.RatingId">
+                                <form asp-area="" asp-controller="Manage" asp-action="SeFeedback" asp-route-id="@v.RatingId">
                                     <a class="feedback-link" onclick="$(this).closest('form').submit();">
                                         <div class="col-md-12 noPadding feedback-container">
                                             <div class="col-md-2 col-sm-2 noPadding">
@@ -134,7 +134,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-sm-8 noPadding padding-anmeldelser">
-                                                <p>Du er blevet anmeldt af @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
+                                                <p>Du har fået feedback af @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
                                                 <p style="color: #989898">
                                                     @String.Format("{0:dd/MM/yyyy}", v.RateDateTime) &ensp;
                                                     @if (!v.IsRead)
@@ -180,14 +180,14 @@
                         }
                         else
                         {
-                            <p> Du har desværre ingen anmeldelser</p>
+                            <p> Du har desværre intet feedback</p>
                         }
                     }
                 </div>
                 <div class="col-md-4 col-sm-4 hidden-xs">
                     <div class="feedback-rating-all-box">
                         <div class="feedback-rating-all-box-item">
-                            <h3 class="text-center">Fan rating</h3>
+                            <h3 class="text-center">Følger rating</h3>
                             <div class="show-rating-box-show">
                                 <div class="show-rating-show">
                                     <div class="show-rating-front-show">
@@ -241,7 +241,7 @@
                 {
                     @foreach (var v in RatingRepository.GetFanRatings(user.Id).OrderByDescending(x => x.RateDateTime))
                     {
-                        <form asp-area="" asp-controller="Manage" asp-action="MinAnmeldelse" asp-route-id="@v.RatingId">
+                        <form asp-area="" asp-controller="Manage" asp-action="MinFeedback" asp-route-id="@v.RatingId">
                             <a class="feedback-link" onclick="$(this).closest('form').submit();">
                                 <div class="col-md-12 noPadding feedback-container active">
                                     <div class="col-md-2 col-sm-2 noPadding">
@@ -268,7 +268,7 @@
 
                                     </div>
                                     <div class="col-md-6 col-sm-6 noPadding padding-anmeldelser">
-                                        <p>Du har anmeldt @UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == v.InfluenterId).Name</p>
+                                        <p>Du har givet feedback til @UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == v.InfluenterId).Name</p>
                                         <p style="color: #989898">
                                             @String.Format("{0:dd/MM/yyyy}", v.RateDateTime)  &ensp;
                                             @if (!v.IsAnswerRead && !string.IsNullOrEmpty(v.Answer))
@@ -312,14 +312,14 @@
                 }
                 else
                 {
-                    <p>Du har ikke anmeldt nogle influencers endnu</p>
+                    <p>Du har givet noget feedback endnu</p>
                 }
             </div>
             <div class="col-md-4 hidden-xs hidden-sm">
                 <div class="feedback-rating-all-box">
                     <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                        <h3 class="text-center">Anmeldelser</h3>
-                        <p>Efter 24 timer har du muligheden for, at anmelde en influencer igen. Dette gør, at du altid kan give din mening!</p>
+                        <h3 class="text-center">Feedback</h3>
+                        <p>Efter 24 timer har du muligheden for, at give feedback til en influencer igen. Dette gør, at du altid kan give din mening!</p>
                     </div>
                 </div>
             </div>

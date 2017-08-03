@@ -545,13 +545,13 @@ namespace RateBlog.Controllers
 
         [HttpGet]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true, Duration = 0)]
-        public IActionResult Anmeldelser()
+        public IActionResult Feedback()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult SeAnmeldelse(int id)
+        public IActionResult SeFeedback(int id)
         {
             var rating = _ratingRepo.Get(id);
             rating.IsRead = true;
@@ -583,11 +583,11 @@ namespace RateBlog.Controllers
 
 
 
-            return RedirectToAction("Anmeldelser");
+            return RedirectToAction("Feedback");
         }
 
         [HttpPost]
-        public IActionResult MinAnmeldelse(int id)
+        public IActionResult MinFeedback(int id)
         {
             var rating = _ratingRepo.Get(id);
 
