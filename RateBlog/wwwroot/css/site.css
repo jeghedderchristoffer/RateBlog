@@ -237,7 +237,7 @@ body.modal-open {
     height: 45px;
     width: 100%;
     border-radius: 3px;
-    border-bottom-right-radius: 0; 
+    border-bottom-right-radius: 0;
     border-top-right-radius: 0;
     border: none;
 }
@@ -1014,7 +1014,6 @@ body.modal-open {
     background-color: #fff;
     padding: 20px 15px 20px 15px;
     border-radius: 3px;
-    border: 1px solid #ddd;
     height: auto;
     overflow: hidden;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
@@ -1049,7 +1048,6 @@ body.modal-open {
 }
 
 .search-result {
-    border: 1px solid #ddd;
     height: 170px;
     background: #fff;
     border-radius: 5px;
@@ -1091,12 +1089,11 @@ body.modal-open {
     }
 
     .search-result {
-        border: 1px solid #ddd;
         height: auto;
         overflow: hidden;
         background: #fff;
-        border-radius: 10px;
-        margin-bottom: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
     }
 
     .a-center {
@@ -2090,9 +2087,11 @@ footer {
     -o-background-size: cover;
     background-size: cover;
 }
+
     .footer-img h1 {
         color: white;
     }
+
 .footerjob-img {
     background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Footer/Job.jpeg") no-repeat center;
     height: 500px;
@@ -2250,9 +2249,8 @@ footer {
 .feedback-container {
     height: 70px;
     width: 100%;
-    border: 1px solid #ddd;
     padding: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     color: #333;
     background: #fafafa;
     border-radius: 5px;
@@ -2315,7 +2313,6 @@ footer {
 .feedback-rating-all-box {
     height: 100%;
     width: 100%;
-    border: 1px solid #ddd;
     padding: 5px;
     color: #333;
     background: #fafafa;
@@ -2357,7 +2354,6 @@ footer {
 .feedback-containerRead {
     height: 100%;
     width: 100%;
-    border: 1px solid #ddd;
     padding: 5px;
     padding-left: 0px;
     margin-bottom: 50px;
@@ -2416,6 +2412,9 @@ footer {
 
 @media (max-width: 767px) {
 
+    .mobile-margin-bot {
+        margin-bottom: 30px;
+    }
 
     .anmeldelser-h2 {
         padding: 25px 0 25px 0;
@@ -2759,7 +2758,6 @@ footer {
         width: 40px;
         text-align: center;
     }
-
 }
 
 @media (max-width: 767px) {
@@ -2768,6 +2766,7 @@ footer {
         width: 30px;
         text-align: center;
     }
+
     .show-rating-se {
         float: none;
     }
