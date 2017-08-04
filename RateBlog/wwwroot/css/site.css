@@ -360,7 +360,8 @@ body.modal-open {
 
         .navbar-default .navbar-brand:hover,
         .navbar-default .navbar-brand:focus {
-            color: #f08301;
+            /*color: #f08301;*/
+            color: #FFA500
         }
     /* Link */
     .navbar-default .navbar-nav > li > a {
@@ -482,7 +483,8 @@ body.modal-open {
 
 .navbar-allaround {
     height: 70px;
-    background-color: #08468d;
+    /*background-color: #08468d;*/
+    background-color: #089de3; 
     width: 100%
 }
 
@@ -529,6 +531,7 @@ body.modal-open {
 
     .addon-number h1 {
         margin-bottom: 15px;
+        font-family: 'Mada', sans-serif;
     }
 
     .addon-number p {
@@ -2317,7 +2320,7 @@ footer {
     color: #333;
     background: #fafafa;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
