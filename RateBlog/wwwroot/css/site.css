@@ -484,7 +484,7 @@ body.modal-open {
 .navbar-allaround {
     height: 70px;
     /*background-color: #08468d;*/
-    background-color: #089de3; 
+    background-color: #089de3;
     width: 100%
 }
 
@@ -895,6 +895,7 @@ body.modal-open {
     transition: all .2s ease-out;
     float: right;
     width: 165px;
+    letter-spacing: 1px;
 }
 
     .a-button:hover {
@@ -2260,6 +2261,7 @@ footer {
     -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ddd;
 }
 
     .feedback-container:hover {
@@ -2324,6 +2326,7 @@ footer {
     -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ddd;
 }
 
 .star-rating-feedback-all {
@@ -2804,3 +2807,56 @@ footer {
         width: 20px;
         text-align: center;
     }
+
+.dropdown-sort {
+    border: 1px solid #ddd;
+    font-size: 16px;
+    padding: 8px 10px 8px 15px;
+    border-radius: 5px;
+}
+
+    .dropdown-sort:focus {
+        outline: none;
+    }
+
+    .dropdown-sort option {
+        padding: 5px;
+    }
+
+
+.feedback-influencer-btn {
+    display: block;
+    text-decoration: none;
+    background-color: #53b80a;
+    color: #fff;
+    padding: 10px 10px 10px 17px;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: all .2s ease-out;
+    float: right;
+    width: 165px;
+    letter-spacing: 1px;
+}
+
+    .feedback-influencer-btn:hover {
+        text-decoration: none;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .feedback-influencer-btn:focus {
+        text-decoration: none;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .feedback-influencer-btn:hover .icon-hover-heart {
+        transition: all .3s ease-out;
+        color: red !important;
+    }
+
+    .feedback-influencer-btn:hover .icon-hover-star {
+        transition: all .3s ease-out;
+        color: #FD4 !important;
+    }
+
