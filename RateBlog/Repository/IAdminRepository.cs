@@ -7,6 +7,7 @@ namespace RateBlog.Repository
     {
         void Add(ApplicationUser user);
         ApplicationUser Get(string Id);
+        void EditUser(ApplicationUser user);
         List<ApplicationUser> GetAll();
     }
 }

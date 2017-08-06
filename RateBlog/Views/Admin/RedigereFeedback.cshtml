@@ -1,0 +1,87 @@
+﻿@model RateBlog.Models.AdminViewModels.SeFeedbackViewModel
+
+
+<div class="navbar-allaround"></div>
+
+<form method="post" asp-controller="Admin" asp-action="RedigereFeedback">
+    <table class="table"
+            <thread>
+               <tr>
+                   <th>
+                       <p>Kvalitet</p>
+
+                   </th>
+                   <th>
+                       <p>Opførsel</p>
+
+                   </th>
+                   <th>
+                       <p>Interaktion</p>
+
+                   </th>
+                   <th>
+                       <p>Troværdighed</p>
+
+                   </th>
+                   <th>
+                       <p>Feedback</p>
+                   </th>
+                   <th>
+                       <p>Svar</p>
+                   </th>
+                   <th>
+                       <p>Anmelder</p>
+                   </th>
+
+
+
+
+               </tr>
+
+            </thread>
+
+            <tbody>
+
+                    <tr>
+                        <td>
+                            <textarea rows="1" asp-for="@Model.Rating.Kvalitet"></textarea>
+                        </td>
+                        <td>
+                            <textarea rows="1" asp-for="@Model.Rating.Opførsel"></textarea>
+                        </td>
+
+                        <td>
+                            <textarea rows="1" asp-for="@Model.Rating.Interaktion"></textarea>
+                        </td>
+
+                        <td>
+                            <textarea rows="1" asp-for="@Model.Rating.Troværdighed"></textarea>
+                        </td>
+                        <td>
+                            <textarea rows="1" asp-for="@Model.Rating.Feedback"></textarea>
+                        </td>
+                        <td>
+                            <textarea rows="1" asp-for="@Model.Rating.Answer"></textarea>
+                        </td>
+                        <td>
+                            <textarea rows="1" asp-for="@Model.AnmelderNavn"></textarea>
+                        </td>
+                        @Html.HiddenFor(x => x.Rating.RatingId)
+                        <td>
+                            <input type="submit" value="Opdater Denne Feedback" />
+                        </td>
+
+
+                        <td></td>
+                    </tr>
+                }
+
+
+
+
+            </tbody>
+
+        </table>
+</form>
+
+

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using RateBlog.Data;
 using RateBlog.Models;
 
@@ -18,7 +19,11 @@ namespace RateBlog.Repository
             _context = context;
             
         }
-
+        public void EditUser(ApplicationUser user)
+        {
+            _context.Entry(user).State = EntityState.Modified;
+            _context.SaveChanges();
+        } 
         public void Add(ApplicationUser user)
         {
             _context.ApplicationUser.Add(user);

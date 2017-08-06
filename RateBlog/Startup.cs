@@ -78,6 +78,7 @@ namespace RateBlog
             services.AddTransient<IKategoriRepository, KategoriRepository>();
             services.AddTransient<IRatingRepository, RatingRepository>();
             services.AddTransient<IEkspertRatingRepository, EkspertRatingRepository>();
+            services.AddTransient<IAdminRepository, AdminRepository >();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

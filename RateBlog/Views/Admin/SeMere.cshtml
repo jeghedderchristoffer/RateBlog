@@ -23,24 +23,24 @@
               
               <tbody>
 
-                  @*@foreach (var user in Model.InfluentList)
+                  @*@foreach (var user in Model.ApplicationUser.UserName)
                   {*@
 
-                      @*<tr>
+                      <tr>
                           <th>
                               <p>navn</p>
                           </th>
                           <td>
-                             @user.InfluenterId
+                             @Model.ApplicationUser.UserName
                           </td>
                       </tr>
-                  }*@
-                      @*<tr>
+                  }
+                      <tr>
                           <th>
                               <p>email</p>
                           </th>
                           <td>
-                              <p>@user.Email</p>
+                              <p>@Model.ApplicationUser.Email</p>
                           </td>
                       </tr>
                       <tr>
@@ -48,7 +48,7 @@
                               <p>By stad</p>
                           </th>
                           <td>
-                              <p>@user.City</p>
+                              <p>@Model.ApplicationUser.City</p>
                           </td>
                       </tr>
 
@@ -57,7 +57,7 @@
                               <p>Influenter ID</p>
                           </th>
                           <td>
-                              <p>@user.InfluenterId</p>
+                              <p>@Model.ApplicationUser.InfluenterId</p>
                           </td>
                       </tr>
                       <tr>
@@ -65,10 +65,35 @@
                               <p>ProfilText</p>
                           </th>
                           <td>
-                              <p>@user.ProfileText</p>
+                              <p>@Model.ApplicationUser.ProfileText</p>
                           </td>
-                      </tr>*@
+                      </tr>
+                  <tr>
+                      <th>
+                          <p>PhoneNumber</p>
+                      </th>
+                      <td>
+                          <p>@Model.ApplicationUser.PhoneNumber</p>
+                      </td>
+                  </tr>
+                  <tr>
+                      <th>
+                          <p>Bruger ID</p>
+                      </th>
+                      <td>
+                          <p>@Model.ApplicationUser.Id</p>
+                      </td>
+                  </tr>
+                  <tr>
+                      <th>
+                          <p>Password hashed </p>
+                      </th>
+                      <td>
+                          <p>@Model.ApplicationUser.PasswordHash</p>
+                      </td>
+                  </tr>
 
+            
 
 
                      
