@@ -117,15 +117,16 @@
             // Gets the data first
             GetData();
 
-            $(window).scroll(function () {
-                if ($(window).scrollTop() ==
-                    $(document).height() - $(window).height()) {
-                    GetData();
-                }
+            $(document).ajaxStop(function () {
+
+                $(window).scroll(function () {
+                    if ($(window).scrollTop() ==
+                        $(document).height() - $(window).height()) {
+                        GetData();
+                    }
+                });
             });
         });
-
-
 
         // Får data når der bliver scrollet ned til bunden
         function GetData() {
@@ -165,7 +166,7 @@
 
             $.ajax({
                 type: "GET",
-                async: false,
+                async: true,
                 url: '/Influencer/GetNextFromList',
                 data: {
                     pageIndex: pageIndex,
