@@ -19,7 +19,7 @@
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
                 <div class="addon-number" style="text-align: left">
-                   <p>Feedback for</p>
+                    <p>Feedback for</p>
                     <h3>@Model.Influenter.Alias</h3>
                 </div>
 
@@ -247,14 +247,12 @@
                                 <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
                             </div>
 
-                            <div class="col-md-8 col-xs-12 noPadding">
+                            <div class="col-md-4 col-xs-12 noPadding">
                                 <p><b>Ekspert</b></p>
                                 <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                                <h5><i>Feedback:</i></h5>
-                                <p class="feedback-text">@v.OffentligFeedback</p>
                             </div>
 
-                            <div class="col-md-2 col-xs-12" style="height: 100%">
+                            <div class="col-md-6 col-xs-12" style="height: 100%">
                                 <div class="show-rating-box">
                                     <div class="show-rating">
                                         <div class="show-rating-front">
@@ -274,6 +272,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-offset-2 col-md-12" style=" padding-left:0px;">
+                                <h5><i>Feedback:</i></h5>
+                                <p class="feedback-text">@v.OffentligFeedback</p>
+                            </div>
+
                         </div>
                     }
                 }
