@@ -9,103 +9,121 @@
 <div class="navbar-allaround">
 
 </div>
-    <div class="container">
-        <div class="">
-            <div class="outer">
-                <div class="middle">
-                    <div class="inner">
-                        <h2>Søg på alle brugere</h2>
+<div class="container">
+    <div class="">
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <h2>Søg på alle brugere</h2>
 
-                        <form method="get" asp-area="" asp-controller="Admin" asp-action="Index">
-                            <input type="text" name="searchString" id="searchString" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
-                            <span>
-                                <input class="search-button" type="submit" value="Søg" />
-                            </span>
-                        </form>
-                    </div>
+                    <form method="get" asp-area="" asp-controller="Admin" asp-action="Index">
+                        <input type="text" name="searchString" id="searchString" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
+                        <span>
+                            <input class="search-button" type="submit" value="Søg" />
+                        </span>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <table class="table table-striped">
-            <thread>
-               <tr>
-                   <th>
-                       <p>navn</p>
-
-                   </th>
-                   <th>
-                       <p>email</p>
-
-                   </th>
-                   <th>
-                       <p>Influenter</p>
-
-                   </th>
-                   <th>
-                       <p>Se mere</p>                     
-                   </th>
-                   <th>
-                       <p>Redigere brugeren</p>
-                           
-                   </th>
-                   <th>
-                       <p>Se feedback</p>
-                   </th>
-                   <th>
-                       <p>Ban en bruger</p>
-                   </th>
-               </tr>
-            </thread>
-            <tbody>
-
-                    @foreach (var user in Model.InfluentList)
-                    {
-                        var isInfluente = (user.InfluenterId.HasValue) ? "Ja" : "Nej" ?? "Nej";
-
-                        <tr>
-                            <td>
-                                <p>@user.Name</p>
-                            </td>
-                            <td>
-                                <p>@user.Email</p>
-                            </td>
-                            <td>
-                                <p>@isInfluente </p>
-                            </td>
-                            <td>
-                                <form asp-controller="Admin" asp-action="SeMere" asp-route-id="@user.Id" method="get" >
-                                    <a>
-                                        <input type="submit"  style="margin-bottom: 20px" value="Se mere" />
-                                    </a>  
-                                   </form>
-                                </td>
-                            <td>
-                                <form asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" method="get">
-                                    <a>
-                                        <input type="submit" style="margin-bottom: 20px" value="Redigere brugeren" />
-                                    </a>
-                                </form>
-
-                            </td>
-                            <td>
-                                <form asp-action="SeFeedBack" asp-route-id="@user.InfluenterId" method="get">
-                                    <a>
-                                        <input type="submit" style="margin-bottom: 20px" value="SeFeedback" />
-                                    </a>
-                                </form>
-                            </td>
-
-                            <td>
-                                <form asp-action="BanUser" asp-route-id="@user.InfluenterId" method="get">
-                                    <a>
-                                        <input type="submit" style="margin-bottom: 20px" value="Banbrugeren" />
-                                    </a>
-                                </form>
-                            </td>
-                        </tr>
-                        }
-            </tbody>
-        </table>
-
     </div>
+
+    <table class="table table-striped">
+        <thread>
+            <tr>
+                <th>
+                    <p>navn</p>
+
+                </th>
+                <th>
+                    <p>email</p>
+
+                </th>
+                <th>
+                    <p>Influenter</p>
+
+                </th>
+                <th>
+                    <p>Se mere</p>
+                </th>
+                <th>
+                    <p>Redigere brugeren</p>
+
+                </th>
+                <th>
+                    <p>Se feedback</p>
+                </th>
+                <th>
+                    <p>Ban en bruger</p>
+                </th>
+            </tr>
+        </thread>
+        <tbody>
+
+            @foreach (var user in Model.InfluentList)
+            {
+                var isInfluente = (user.InfluenterId.HasValue) ? "Ja" : "Nej" ?? "Nej";
+
+                <tr>
+                    <td>
+                        <p>@user.Name</p>
+                    </td>
+                    <td>
+                        <p>@user.Email</p>
+                    </td>
+                    <td>
+                        <p>@isInfluente </p>
+                    </td>
+                    <td>
+                        <form asp-controller="Admin" asp-action="SeMere" asp-route-id="@user.Id" method="get">
+                            <a>
+                                <input type="submit" style="margin-bottom: 20px" value="Se mere" />
+                            </a>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" method="get">
+                            <a>
+                                <input type="submit" style="margin-bottom: 20px" value="Redigere brugeren" />
+                            </a>
+                        </form>
+
+                    </td>
+                    <td>
+                        <form asp-action="SeFeedBack" asp-route-id="@user.InfluenterId" method="get">
+                            <a>
+                                <input type="submit" style="margin-bottom: 20px" value="SeFeedback" />
+                            </a>
+                        </form>
+                    </td>
+
+                    <td>
+                        <form asp-action="BanUser" asp-route-id="@user.InfluenterId" method="get" asp-controller="Admin">
+                            <a>
+                                <input onclick="BanUserFunction()" type="submit" style="margin-bottom: 20px" value="Ban brugeren" />
+
+
+
+
+
+                                <p id="demo"></p>
+
+                                <script>
+                                    function BanUserFunction() {
+                                        var txt;
+                                        if (confirm("Du har nu blokeret en bruger for 10 dage") == true)
+                                        {
+                                            txt = "Ok";
+                                        }                                         
+                                        }
+                                </script>
+
+                            </a>
+
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

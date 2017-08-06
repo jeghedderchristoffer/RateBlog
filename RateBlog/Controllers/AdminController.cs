@@ -194,14 +194,11 @@ namespace RateBlog.Controllers
         public IActionResult BanUser(int id)
         {
             var user = _userManager.Users.First();
-            user.LockoutEnd = DateTime.Now.AddDays(10);
-         
-            _context.SaveChanges();
-
-           
-                return RedirectToAction("Index");
-           
+            user.LockoutEnd = DateTime.Now.AddDays(10);    
+            _context.SaveChanges();    
+            return RedirectToAction("Index");
             
+
         }
 
 
