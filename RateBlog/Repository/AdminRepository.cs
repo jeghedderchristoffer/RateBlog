@@ -29,6 +29,14 @@ namespace RateBlog.Repository
             _context.ApplicationUser.Add(user);
             _context.SaveChanges();
         }
+
+        public void Delete(int Id)
+        {            
+                ApplicationUser user = _context.ApplicationUser.Find(Id);
+                _context.ApplicationUser.Remove(user);
+                _context.SaveChanges();
+          
+        }
         //public void Delete(int Id)
         //{
         //    EkspertRating ekspertrating = _context.EkspertRating.Find(Id);

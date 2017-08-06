@@ -13,20 +13,11 @@
     <input type="submit" asp-action="" style="margin-bottom: 20px" class="edit-button" value="Slet" />
 </a>
 
-<a class="col-md-offset-3 col-md-6 col-xs-12">
-    <input type="submit" asp-action="Edit" style="margin-bottom: 20px" class="edit-button" value="Redigere" />
-</a>
-
   <div class="container">
       <table class="table table-striped">
-          <thread>
-              
+          <thread>           
               <tbody>
-
-                  @*@foreach (var user in Model.ApplicationUser.UserName)
-                  {*@
-
-                      <tr>
+                        <tr>
                           <th>
                               <p>navn</p>
                           </th>
@@ -34,7 +25,7 @@
                              @Model.ApplicationUser.UserName
                           </td>
                       </tr>
-                  }
+                
                       <tr>
                           <th>
                               <p>email</p>

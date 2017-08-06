@@ -173,6 +173,14 @@ namespace RateBlog.Controllers
             return View();
         }
 
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteUser(int Id)
+        {
+            _admin.Delete(Id);
+            return View();
+        }
+
         //    public IActionResult SeMere(string searchString, string id)
         //    {
         //        users med ID
