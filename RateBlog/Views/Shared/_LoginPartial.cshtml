@@ -41,7 +41,7 @@
                         Feedback
                         @if (RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value)</span>
                         }
                     </a>
                 </li>
@@ -53,7 +53,7 @@
                         Feedback
                         @if (RatingRepo.GetUnreadAnswer(user.Id) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadAnswer(user.Id)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@RatingRepo.GetUnreadAnswer(user.Id)</span>
                         }
                     </a>
                 </li>
@@ -84,7 +84,7 @@
                         Feedback
                         @if (RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
                         }
                     </a>
                 </li>
@@ -96,7 +96,7 @@
                         Anmeldelser
                         @if (RatingRepo.GetUnreadAnswer(user.Id) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadAnswer(user.Id)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@RatingRepo.GetUnreadAnswer(user.Id)</span>
                         }
                     </a>
                 </li>
