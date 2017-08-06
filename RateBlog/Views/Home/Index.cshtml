@@ -9,14 +9,14 @@
             <div class="middle">
                 <div class="inner">
                     <h2>Søg efter influencere</h2>
-
-                    <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index">
-                        <input autocomplete="off" type="text" name="search" id="search" class="search-input" list="searchSug" placeholder="F.eks. Anna, Fashion eller YouTube" />
-                        <datalist id="searchSug">
-                            
-                        </datalist>
-                        <input class="search-button" type="submit" value="&#xf002;"/>
-                    </form>
+                    <div class="row">
+                        <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index">
+                            <input autocomplete="off" type="text" name="search" id="search" class="search-input" list="searchSug" placeholder="F.eks. Anna, Fashion eller YouTube" />
+                            <datalist id="searchSug">
+                            </datalist>
+                            <input class="search-button" type="submit" value="Søg" />
+                        </form>
+                    </div>                   
                 </div>
             </div>
         </div>

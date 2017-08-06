@@ -19,6 +19,7 @@
   <ItemGroup>
     <Content Include="wwwroot\css\social-buttons.css" />
     <Content Include="wwwroot\images\airbnb.png" />
+    <Content Include="wwwroot\images\BF.png" />
     <Content Include="wwwroot\images\Footer\About.jpg" />
     <Content Include="wwwroot\images\Footer\FAQ.jpeg" />
     <Content Include="wwwroot\images\Footer\Job.jpeg" />
