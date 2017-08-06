@@ -259,6 +259,7 @@ body.modal-open {
     background-color: #f08301;
     color: #fff;
     transition: all 0.5s ease 0s;
+    font-family: FontAwesome;
 }
 
     .search-button:hover {
@@ -2378,6 +2379,7 @@ footer {
     -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ddd;
 }
 
 
@@ -2866,6 +2868,18 @@ footer {
 
     .feedback-influencer-btn:hover .icon-hover-star {
         transition: all .3s ease-out;
-        color: #FD4 !important;
+        color: #ff0 !important;
     }
 
+@media (max-width: 767px){
+    .feedback-influencer-btn {
+        width: 100%;
+        text-align: center;
+        padding: 10px 10px 10px 10px;
+    }
+
+    .feedback-margin-bot{
+        margin-bottom: 20px;
+    }
+
+}
