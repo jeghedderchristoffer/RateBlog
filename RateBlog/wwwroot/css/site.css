@@ -2166,6 +2166,7 @@ footer {
 .kontaktMail {
     margin: 20px auto;
     padding: 4px 16px;
+    margin-bottom:0px;
     max-width: 450px;
     height: 45px;
     width: 100%;
