@@ -93,7 +93,7 @@
             {
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Anmeldelser
+                        Feedback
                         @if (RatingRepo.GetUnreadAnswer(user.Id) != 0)
                         {
                             <span class="badge" style="font-family: Arial; background: #FFA500">@RatingRepo.GetUnreadAnswer(user.Id)</span>
