@@ -30,7 +30,7 @@
             <div class="col-md-12 noPaddingLeft">
                 <div class="col-md-3 hidden-sm hidden-xs noPaddingLeft">
                     <div class="sorter">
-                       
+
                         <div class="col-md-12 noPadding">
                             <h4><b>Kategorier</b></h4>
 
@@ -59,7 +59,7 @@
                                 <label class="checkbox-inline"><input type="checkbox" name="platforme" value="6" style="background: #fff">Twitter</label><br />
                                 <label class="checkbox-inline" style="padding-bottom: 0;"><input type="checkbox" name="platforme" value="5" style="background: #fff;">Twitch</label>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -68,6 +68,17 @@
                     <div class="infoInfluenter">
                         <h2 style="margin-top: 0; margin-bottom: 20px;">
                             Resultater for @Model.SearchString
+
+                            <span style="float: right;" class="hidden-xs">
+                                <select class="dropdown-sort">
+                                    <option value="" disabled selected hidden>Sorter influencers</option>
+                                    <option>Højest score</option>
+                                    <option>Lavest score</option>
+                                    <option>Flest anmeldelser</option>
+                                    <option>Færreste anmeldelser</option>
+                                </select>
+                            </span>
+
                         </h2>
 
                         <div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px">
