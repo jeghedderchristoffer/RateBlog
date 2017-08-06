@@ -128,7 +128,7 @@
                     </div>
                     <p class="text-center">Antal ratings: @EkspertRatingRepository.CountEkspertRatings(Model.Influenter.InfluenterId)</p>
                     <br />
-                    <h4 class="text-center">Denne influencer har ingen feedback. Bliv den første</h4>
+                    <h4 class="text-center">Bliv den første til at give denne influencer feedback</h4>
                     <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #08468d ">Giv feedback</a>
                     <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se ekspert feedback</a>
 
@@ -166,7 +166,7 @@
 
                 else
                 {
-                    <h4 class="text-center">Denne influencer har ingen feedback. Bliv den første</h4>
+                    <h4 class="text-center">Bliv den første til at give denne influencer feedback</h4>
                     <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #08468d ">Giv feedback</a>
                 }
 
@@ -179,7 +179,7 @@
             <div class="col-md-4 profile-text">
                 @if (string.IsNullOrEmpty(Model.ApplicationUser.ProfileText))
                 {
-                    <h4>Denne influencer har ikke skrevet nogen profil tekst</h4>
+                    <h4>Denne influencer har ikke skrevet nogen profiltekst</h4>
                 }
                 else
                 {
@@ -230,7 +230,7 @@
                             else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Website")
                             {
                                 <a href="http://@v.Link" target="_blank" class="fa fa-profile fa-globe fa-globe-profile"></a>
-                                <span>Personlig hjemmeside</span>
+                                <span>Hjemmeside</span>
                             }
                         </div>
                     }
