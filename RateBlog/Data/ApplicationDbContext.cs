@@ -24,6 +24,7 @@ namespace RateBlog.Data
         public DbSet<InfluenterPlatform> InfluenterPlatform { get; set; }
         public DbSet<InfluenterKategori> InfluenterKategori { get; set; } 
         public DbSet<EkspertRating> EkspertRating { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

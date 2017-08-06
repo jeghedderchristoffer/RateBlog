@@ -110,10 +110,15 @@ namespace RateBlog.Repository
             }
 
             return endList;
-          
 
 
 
+        }
+
+        public ApplicationUser GetByStringID(string id)
+        {
+
+            return _applicationDbContext.ApplicationUser.FirstOrDefault(x => x.Id == id);
         }
     }
 }

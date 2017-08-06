@@ -22,16 +22,16 @@ namespace RateBlog.Controllers
 
 
 
-        public EkspertController( IInfluenterRepository influenter, IEkspertRatingRepository ekspertrating, UserManager<ApplicationUser> userManager)
+        public EkspertController(IInfluenterRepository influenter, IEkspertRatingRepository ekspertrating, UserManager<ApplicationUser> userManager)
         {
             _influenter = influenter;
             _userManager = userManager;
             _ekspertrating = ekspertrating;
-            
+
         }
 
 
-       
+
         public IActionResult Index(string search)
         {
             Dictionary<int, double> influenterRating = new Dictionary<int, double>();
@@ -50,7 +50,7 @@ namespace RateBlog.Controllers
             {
                 SearchString = search,
                 InfluentList = influenter,
-                
+
             };
             return View(model);
         }
@@ -84,7 +84,7 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> EkspertRating( EkspertRatingViewModel model)
+        public async Task<IActionResult> EkspertRating(EkspertRatingViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -94,7 +94,7 @@ namespace RateBlog.Controllers
                 var ekspertrating = new EkspertRating()
                 {
                     Kvalitet = model.Kvalitet,
-                    KvalitetString = model.KvalitetString,                    
+                    KvalitetString = model.KvalitetString,
                     Troværdighed = model.Troværdighed,
                     TroværdighedString = model.TroværdighedString,
                     Opførsel = model.Opførsel,
@@ -124,7 +124,7 @@ namespace RateBlog.Controllers
 
             TempData["Error"] = "Du skal udfylde alle felterne for at give dit feedback";
 
-            
+
 
             return View("EkspertRating", model);
 

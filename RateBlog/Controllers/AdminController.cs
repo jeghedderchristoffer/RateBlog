@@ -8,52 +8,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RateBlog.Data;
 using RateBlog.Models;
-using RateBlog.Models.InfluenterViewModels;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using RateBlog.Models.AdminViewModels;
+using RateBlog.Repository;
+//using RateBlog.Models.InfluenterViewModels;
 
 namespace RateBlog.Controllers
 {
     public class AdminController : Controller
     {
-        // GET: /<controller>/
+
 
         private readonly ApplicationDbContext _context;
-
+        private IInfluenterRepository _influenter;
         private readonly UserManager<ApplicationUser> _userManager;
+        // private IAdminRepository _admin;
 
-        public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IInfluenterRepository influenter)
         {
+            _influenter = influenter;
             _context = context;
             _userManager = userManager;
+            // _admin = admin;
         }
 
 
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(string id)
-        {
-            var model = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
-            _context.Users.Remove(model);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Admin", "Index");
-
-        }
-        //[http]
-        //public async Task<IActionResult> Edit()
-        //{
-
-        //}
         public IndexViewModel viewmodel = new IndexViewModel();
-
-        //public IActionResult Index()
-        //{
-
-        //    return View(viewmodel);
-        //}
-
 
         public IActionResult Index(string searchString, bool isInfluencer)
         {
@@ -68,11 +47,6 @@ namespace RateBlog.Controllers
                 model = _userManager.Users;
             }
 
-            //if (SortByRole != 0)
-            //{
-            //    model = model.Where(s => !s.InfluenterId.Equals(0));
-            //}
-
             if (isInfluencer)
             {
                 model = model.Where(x => x.InfluenterId.HasValue);
@@ -82,62 +56,81 @@ namespace RateBlog.Controllers
 
             return View(viewmodel);
         }
-
-        public IActionResult seMere()
+        [HttpGet]
+        public IActionResult SeMere(string id)
         {
-            return View();
+
+
+            var user = _influenter.GetByStringID(id);
+
+            var model = new SeMereViewModel()
+            {
+                ApplicationUser = user,
+
+
+
+            };
+
+            return View(model);
+
         }
-
-    }
-
-   
-
-    //public IActionResult ShowUser(string searchString, bool isInfluencer)
+    //    public IActionResult SeMere(string searchString, string id)
     //    {
-    //        var model = _userManager.Users;
+    //        users med ID
+    //        var user = _influenter.GetByStringID(id);
+    //        Uden id, det er dem her som skal skal sendes over, og mens detblvier sendt over skal de seperares
+    //        var users = _userManager.Users;
 
-    //        if (!String.IsNullOrEmpty(searchString))
+    //        var model = new SeMereViewModel()
+    //        {
+    //           if (!String.IsNullOrEmpty(searchString))
     //        {
     //            model = _userManager.Users.Where(s => s.Name.ToLower().Contains(searchString.ToLower()));
     //        }
-    //        else
-    //        {
-    //            model = _userManager.Users;
-    //        }
+    //    };
 
-    //        //if (SortByRole != 0)
-    //        //{
-    //        //    model = model.Where(s => !s.InfluenterId.Equals(0));
-    //        //}
+    //        return View(model);
 
-    //        if (isInfluencer)
-    //        {
-    //            model = model.Where(x => x.InfluenterId.HasValue);
-    //        }
 
-    //        viewmodel.InfluentList = model.ToList();
-
-    //        return View(viewmodel);
-    //    }
-
-    //public IActionResult ShowUser(string searchString)
+    //}
+    //public IActionResult SeMere(string searchString, bool isInfluencer)
     //{
     //    var model = _userManager.Users;
 
     //    if (!String.IsNullOrEmpty(searchString))
     //    {
-    //        model = _userManager.Users.Where(s => s.Name.Contains(searchString));
+    //        model = _userManager.Users.Where(s => s.Name.ToLower().Contains(searchString.ToLower()));
     //    }
     //    else
     //    {
     //        model = _userManager.Users;
     //    }
 
+    //    if (isInfluencer)
+    //    {
+    //        model = model.Where(x => x.InfluenterId.HasValue);
+    //    }
 
     //    viewmodel.InfluentList = model.ToList();
 
     //    return View(viewmodel);
+
     //}
 
-//    }
+    //[HttpPost, ActionName("Delete")]
+    //[ValidateAntiForgeryToken]
+    //public async Task<IActionResult> Delete(string id)
+    //{
+    //    var model = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
+    //    _context.Users.Remove(model);
+    //    await _context.SaveChangesAsync();
+
+    //    return RedirectToAction("Admin", "Index");
+
+    //}
+
+
+
 }
+}
+

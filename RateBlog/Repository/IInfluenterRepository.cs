@@ -18,6 +18,8 @@ namespace RateBlog.Repository
 
         void Delete(int InfluenterId);
 
+        ApplicationUser GetByStringID(string id);
+
         /// <summary>
         /// Sort influenters (ApplicationUsers)
         /// </summary>
