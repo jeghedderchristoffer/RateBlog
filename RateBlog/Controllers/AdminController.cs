@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,8 @@ using RateBlog.Repository;
 
 namespace RateBlog.Controllers
 {
+
+    //[Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
 
@@ -95,7 +98,15 @@ namespace RateBlog.Controllers
         public IActionResult EditUser(SeMereViewModel vmodel)
         {
             var getUser = _influenter.GetByStringID(vmodel.ApplicationUser.Id);
+            getUser.Email = vmodel.ApplicationUser.Email;
             getUser.Name = vmodel.ApplicationUser.Name;
+
+            getUser.City = vmodel.ApplicationUser.City;
+            getUser.InfluenterId = vmodel.ApplicationUser.InfluenterId;
+            getUser.ProfileText = vmodel.ApplicationUser.ProfileText;
+            getUser.PhoneNumber = vmodel.ApplicationUser.PhoneNumber;
+            getUser.PasswordHash = vmodel.ApplicationUser.PasswordHash;
+
 
             _admin.EditUser(getUser);
 
@@ -128,6 +139,7 @@ namespace RateBlog.Controllers
             var getRating = _rating.Get(Id);
 
             var getUserName = _userManager.Users.SingleOrDefault(x => x.Id == getRating.ApplicationUserId).Name;
+
 
 
             var rating = new SeFeedbackViewModel()
@@ -165,76 +177,33 @@ namespace RateBlog.Controllers
 
 
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+       [HttpPost]
         public IActionResult DeleteFeedback(int Id)
         {
             _rating.Delete(Id);
-            return View();
+            return RedirectToAction("Index");
         }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteUser(int Id)
+        [HttpPost]
+        public IActionResult DeleteUser(string Id)
         {
             _admin.Delete(Id);
-            return View();
+            return RedirectToAction("Index");
         }
 
-        //    public IActionResult SeMere(string searchString, string id)
-        //    {
-        //        users med ID
-        //        var user = _influenter.GetByStringID(id);
-        //        Uden id, det er dem her som skal skal sendes over, og mens detblvier sendt over skal de seperares
-        //        var users = _userManager.Users;
+        public IActionResult BanUser(int id)
+        {
+            var user = _userManager.Users.First();
+            user.LockoutEnd = DateTime.Now.AddDays(10);
+         
+            _context.SaveChanges();
 
-        //        var model = new SeMereViewModel()
-        //        {
-        //           if (!String.IsNullOrEmpty(searchString))
-        //        {
-        //            model = _userManager.Users.Where(s => s.Name.ToLower().Contains(searchString.ToLower()));
-        //        }
-        //    };
+           
+                return RedirectToAction("Index");
+           
+            
+        }
 
-        //        return View(model);
-
-
-        //}
-        //public IActionResult SeMere(string searchString, bool isInfluencer)
-        //{
-        //    var model = _userManager.Users;
-
-        //    if (!String.IsNullOrEmpty(searchString))
-        //    {
-        //        model = _userManager.Users.Where(s => s.Name.ToLower().Contains(searchString.ToLower()));
-        //    }
-        //    else
-        //    {
-        //        model = _userManager.Users;
-        //    }
-
-        //    if (isInfluencer)
-        //    {
-        //        model = model.Where(x => x.InfluenterId.HasValue);
-        //    }
-
-        //    viewmodel.InfluentList = model.ToList();
-
-        //    return View(viewmodel);
-
-        //}
-
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete(string id)
-        //{
-        //    var model = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
-        //    _context.Users.Remove(model);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction("Admin", "Index");
-
-        //}
 
 
 

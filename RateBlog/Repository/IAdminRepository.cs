@@ -9,6 +9,7 @@ namespace RateBlog.Repository
         ApplicationUser Get(string Id);
         void EditUser(ApplicationUser user);
         List<ApplicationUser> GetAll();
-        void Delete(int Id);
+        void Delete(string Id);
+
     }
 }
