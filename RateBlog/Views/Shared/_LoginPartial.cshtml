@@ -81,7 +81,7 @@
             {
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Anmeldelser
+                        Feedback
                         @if (RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
                         {
                             <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>

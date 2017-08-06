@@ -60,13 +60,13 @@ else
             <div class="col-md-5 col-xs-12 addon-box">
                 @if (!user.InfluenterId.HasValue)
                 {
-                    <div class="addon-number" style="width: 50%">
+                    <div class="addon-number" style="width: 50%; padding-right:50px;">
                         <h1>@RatingRepository.GetMyRatingNumber(user.Id)</h1>
                         <p>Ratings</p>
                     </div>
                     <div class="addon-number" style="width: 50%">
                         <h1>@RatingRepository.GetMyRatingAnswerNumber(user.Id)</h1>
-                        <p>Svar på din feedback</p>
+                        <p>Svar</p>
                     </div>
                 }
                 else

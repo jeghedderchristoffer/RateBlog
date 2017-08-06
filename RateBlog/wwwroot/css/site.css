@@ -212,7 +212,7 @@ body.modal-open {
 /*--------------Home Index page----------------------*/
 
 .home-img {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/Forside.jpeg") no-repeat center;
+    background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url("../images/Forside.jpeg") no-repeat center;
     height: 700px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -256,15 +256,25 @@ body.modal-open {
     border-top-left-radius: 0;
     border: none;
     width: 100px;
-    background-color: #f08301;
+    background-color: #FFA500;
     color: #fff;
     transition: all 0.5s ease 0s;
     font-family: FontAwesome;
 }
 
-    .search-button:hover {
-        background-color: #d87500
-    }
+.search-button-profil {
+    height: 45px;
+    border-radius: 3px;
+    border: none;
+    width: 100%;
+    background-color: #FFA500;
+    color: #fff;
+    transition: all 0.5s ease 0s;
+    font-family: 'Raleway',sans-serif;
+    font-size: 14px;
+}
+
+
 
     .search-button:focus {
         outline: none;
@@ -293,13 +303,13 @@ body.modal-open {
         border-bottom-left-radius: 0;
         border-top-left-radius: 0;
         width: 20%;
-        background-color: #f08301;
+        background-color: #FFA500;
         color: #fff;
         transition: all 0.5s ease 0s;
     }
 
     .home-img {
-        background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/index-img.jpeg") no-repeat center;
+        background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url("../images/index-img.jpeg") no-repeat center;
         height: 700px;
         -webkit-background-size: cover;
         -moz-background-size: cover;
@@ -484,7 +494,7 @@ body.modal-open {
 
 .navbar-allaround {
     height: 70px;
-    /*background-color: #08468d;*/
+    /*background-color: #089de3;*/
     background-color: #089de3;
     width: 100%
 }
@@ -719,12 +729,12 @@ body.modal-open {
 }
 
 .fa-search-video {
-    background: #f08301;
+    background: #FFA500;
     color: #fff;
 }
 
 .fa-star-video {
-    background: #08468d;
+    background: #089de3;
     color: #fff;
 }
 
@@ -887,7 +897,7 @@ body.modal-open {
 .a-button {
     display: block;
     text-decoration: none;
-    background-color: #53b80a;
+    background-color: #FFA500;
     color: #fff;
     padding: 10px 10px;
     border-radius: 5px;
@@ -940,7 +950,7 @@ body.modal-open {
 .a-button-blue-100 {
     display: block;
     text-decoration: none;
-    background-color: #08468d;
+    background-color: #089de3;
     color: #fff;
     padding: 10px 52px;
     border-radius: 5px;
@@ -1484,9 +1494,9 @@ ul li:hover .dropOut {
             margin-left: 10px;
             margin-right: 10px;
             padding: 2px 20px;
-            background: #E67E22;
+            background: #FFA500;
             color: #fff;
-            border: 1px solid #E67E22;
+            border: 1px solid #FFA500;
             border-radius: 3px;
             font-size: 12px;
             outline: none;
@@ -1574,7 +1584,7 @@ ul li:hover .dropOut {
     border: none;
     max-width: none;
     width: 100%;
-    background-color: #08468d;
+    background-color: #089de3;
     color: #fff;
     font-size: 16px;
 }
@@ -1596,7 +1606,7 @@ ul li:hover .dropOut {
     border: none;
     max-width: none;
     width: 50%;
-    background-color: #f08301;
+    background-color: #FFA500;
     color: #fff;
     font-size: 16px;
 }
@@ -2458,7 +2468,7 @@ footer {
     z-index: 99;
     border: 1px solid #fff;
     outline: none;
-    background-color: #08468d;
+    background-color: #089de3;
     color: white;
     cursor: pointer;
     height: 50px;
@@ -2470,7 +2480,7 @@ footer {
 }
 
     #topBtn:hover {
-        background-color: #d87500;
+        background-color: #FFA500;
     }
 
 .influ-read-img {
