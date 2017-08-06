@@ -157,7 +157,7 @@
                     </div>
                     <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
 
-                    <h4 class="text-center">Denne influencer har ingen ekspert feedback.</h4>
+                
 
                     <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #089de3 ">Giv feedback</a>
                     <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>

@@ -171,14 +171,14 @@ body.modal-open {
     border: none;
     max-width: none;
     width: 100%;
-    background-color: #f08301;
+    background-color: #FFA500;
     color: #fff;
     font-size: 18px;
     transition: all 0.3s ease 0s
 }
 
     .login-button:hover {
-        background-color: #E67E22
+        background-color: #FFA500
     }
 
 .divider {
@@ -372,7 +372,7 @@ body.modal-open {
 
         .navbar-default .navbar-brand:hover,
         .navbar-default .navbar-brand:focus {
-            /*color: #f08301;*/
+            /*color: #FFA500;*/
             color: #FFA500
         }
     /* Link */
@@ -470,7 +470,7 @@ body.modal-open {
     }
 
     .navbar-default .navbar-brand {
-        color: #E67E22;
+        color: #FFA500;
         font-weight: bold;
         height: 100%;
         font-size: 24px;
@@ -771,7 +771,7 @@ body.modal-open {
 
     .banner-container h3 {
         margin: 0;
-        color: #f08301;
+        color: #FFA500;
         font-weight: bold;
         letter-spacing: 1.1px;
     }
@@ -938,7 +938,7 @@ body.modal-open {
 
     .a-button-discover:hover {
         text-decoration: none !important;
-        background: #f08301 !important;
+        background: #FFA500 !important;
         color: #fff !important;
     }
 
@@ -1205,9 +1205,9 @@ body.modal-open {
     float: right;
     margin-top: 10px;
     padding: 10px 30px;
-    background: #E67E22;
+    background: #FFA500;
     color: #fff;
-    border: 1px solid #E67E22;
+    border: 1px solid #FFA500;
     border-radius: 3px;
     font-size: 13px;
     outline: none;
@@ -1812,8 +1812,8 @@ ul li:hover .dropOut {
     }
 
     .choose-category :checked + span {
-        background: #E67E22;
-        border-color: #E67E22;
+        background: #FFA500;
+        border-color: #FFA500;
         display: inline-block;
         border-radius: 4px;
         color: #fff;
