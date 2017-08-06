@@ -52,24 +52,26 @@
                             </div>
                             <div class="col-md-4 col-sm-12 hidden-xs" style="height: 100%">
                                 <div class="star-rating-feedback" style="margin-top: 10px; margin-bottom: 10px;">
-                                    <div class="back-stars" title="@Math.Round(EkspertRatingRepository.GetSingleEkspertRatingAverage(v.Id), 2)% ">
+
+                                    <div class="show-rating-front-show">
+                                        @for (int i = 0; i < EkspertRatingRepository.GetSingleEkspertRatingAverage(v.Id); i++)
+                                        {
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        }
+                                    </div>
+                                    <div class="show-rating-back-show">
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
 
-                                        <div class="front-stars" style="width: @EkspertRatingRepository.GetSingleEkspertRatingAverage(v.Id)%">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
                     </a>
 
                 }

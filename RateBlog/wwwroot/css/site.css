@@ -1068,7 +1068,16 @@ body.modal-open {
 }
 
 .search-inputsøg {
-    outline: none;
+    margin: 20px auto;
+    padding: 4px 16px;
+    max-width: 400px;
+    min-width: 0;
+    height: 45px;
+    width: 100%;
+    border-radius: 3px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    border: 1px solid #888 ;
 }
 
 
@@ -2804,3 +2813,7 @@ footer {
         width: 20px;
         text-align: center;
     }
+
+  .footerp{
+      padding-left: 15px;
+  }

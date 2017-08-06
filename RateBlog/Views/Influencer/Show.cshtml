@@ -56,7 +56,7 @@
         </div>
         <div class="col-md-12">
             <div class="col-md-4">
-                @if (RatingRepository.HasRatings(Model.Influenter.InfluenterId))
+                @if (RatingRepository.HasRatings(Model.Influenter.InfluenterId) && (EkspertRatingRepository.HasEkspertRatings(Model.Influenter.InfluenterId)))
                 {
                     <h3 class="text-center">Følger rating:</h3>
 
@@ -77,6 +77,7 @@
                             </div>
                         </div>
                     </div>
+                    <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
 
                     <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
 
@@ -97,21 +98,80 @@
                             </div>
                         </div>
                     </div>
-                  
-                    <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
+
+                    <p class="text-center">Antal ratings: @EkspertRatingRepository.CountEkspertRatings(Model.Influenter.InfluenterId)</p>
 
                     <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #08468d ">Giv feedback</a>
                     <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>
 
                 }
+                else if (RatingRepository.HasRatings(Model.Influenter.InfluenterId).Equals(false) && (EkspertRatingRepository.HasEkspertRatings(Model.Influenter.InfluenterId)))
+                {
+                    <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
+
+                    <div class="show-rating-box-show">
+                        <div class="show-rating-show">
+                            <div class="show-rating-front-show">
+                                @for (int i = 0; i < EkspertRatingRepository.GetEkspertRatingAverage(Model.Influenter.InfluenterId); i++)
+                                {
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                }
+                            </div>
+                            <div class="show-rating-back-show">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center">Antal ratings: @EkspertRatingRepository.CountEkspertRatings(Model.Influenter.InfluenterId)</p>
+                    <br />
+                    <h4 class="text-center">Denne influencer har ingen feedback. Bliv den første</h4>
+                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #08468d ">Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se ekspert feedback</a>
+
+
+                }
+                else if (RatingRepository.HasRatings(Model.Influenter.InfluenterId) && (EkspertRatingRepository.HasEkspertRatings(Model.Influenter.InfluenterId)).Equals(false))
+                {
+                    <h3 class="text-center">Følger rating:</h3>
+
+                    <div class="show-rating-box-show">
+                        <div class="show-rating-show">
+                            <div class="show-rating-front-show">
+                                @for (int i = 0; i < RatingRepository.GetRatingAverage(Model.Influenter.InfluenterId); i++)
+                                {
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                }
+                            </div>
+                            <div class="show-rating-back-show">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
+
+                    <h4 class="text-center">Denne influencer har ingen ekspert feedback.</h4>
+
+                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #08468d ">Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>
+
+                }
+
                 else
                 {
-                    <h4>Denne influencer har ingen feedback. Bliv den første</h4>
-                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #08468d ">Skriv en anmeldelse</a>
+                    <h4 class="text-center">Denne influencer har ingen feedback. Bliv den første</h4>
+                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #08468d ">Giv feedback</a>
                 }
-                   
 
-  
+
+
             </div>
 
             <hr class="hidden-md hidden-lg" />
