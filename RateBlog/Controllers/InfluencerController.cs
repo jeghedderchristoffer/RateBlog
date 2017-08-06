@@ -291,6 +291,9 @@ namespace RateBlog.Controllers
             // If platform or kategori is checked, this makes sure the the next 5 (pageSize) has that kategori or platform. 
             var sortList = _influenter.SortInfluencerByPlatAndKat(platforme, kategorier, list);
 
+
+
+
             return PartialView("InfluencerListPartial", sortList);
         }
 

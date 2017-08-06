@@ -96,43 +96,51 @@
     <div class="col-xs-12 visible-xs">
         @if (Model.ApplicationUser.InfluenterId.HasValue)
         {
-            @foreach (var v in EkspertRatingRepository.GetEkspertRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+            @if (EkspertRatingRepository.GetEkspertRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).Count != 0)
+            {
+                @foreach (var v in EkspertRatingRepository.GetEkspertRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
                 {
-                <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
-                    <div class="col-md-2 col-xs-12 noPadding read-img-container">
-                        <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
-                    </div>
+                    <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
+                        <div class="col-md-2 col-xs-12 noPadding read-img-container">
+                            <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
+                        </div>
 
-                    <div class="col-md-8 col-xs-12 noPadding">
-                        <p><b>Ekspert</b></p>
-                        <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                        <h5><i>Feedback:</i></h5>
-                        <p class="feedback-text">@v.OffentligFeedback</p>
-                    </div>
+                        <div class="col-md-8 col-xs-12 noPadding">
+                            <p><b>Ekspert</b></p>
+                            <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                            <h5><i>Feedback:</i></h5>
+                            <p class="feedback-text">@v.OffentligFeedback</p>
+                        </div>
 
-                    <div class="col-md-2 col-xs-12" style="height: 100%">
-                        <div class="show-rating-box">
-                            <div class="show-rating">
-                                <div class="show-rating-front">
-                                    @for (int i = 0; i < EkspertRatingRepository.GetSingleEkspertRatingAverage(v.Id); i++)
-                                    {
+                        <div class="col-md-2 col-xs-12" style="height: 100%">
+                            <div class="show-rating-box">
+                                <div class="show-rating">
+                                    <div class="show-rating-front">
+                                        @for (int i = 0; i < EkspertRatingRepository.GetSingleEkspertRatingAverage(v.Id); i++)
+                                        {
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        }
+                                    </div>
+                                    <div class="show-rating-back">
                                         <i class="fa fa-star" aria-hidden="true"></i>
-                                    }
-                                </div>
-                                <div class="show-rating-back">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
+                }
+            }
+            else
+            {
+                <p class="text-center">Denne influencer har endnu ikke modtaget ekspert feedback</p>
 
-
-                </div>
             }
         }
     </div>
@@ -224,7 +232,8 @@
                 }
                 else
                 {
-                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har ikke modtaget ekspert feedback</p>
+                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har endnu ikke modtaget følger feedback</p>
+                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="feedback-influencer-btn center-block feedback-margin-bot" style="background: #08468d; float: none !important"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
                 }
 
             }

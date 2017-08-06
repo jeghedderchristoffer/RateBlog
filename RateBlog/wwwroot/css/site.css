@@ -229,6 +229,8 @@ body.modal-open {
         margin-bottom: 10px
     }
 
+
+
 .search-input {
     margin: 20px auto;
     padding: 4px 16px;
@@ -259,7 +261,6 @@ body.modal-open {
     background-color: #FFA500;
     color: #fff;
     transition: all 0.5s ease 0s;
-    font-family: FontAwesome;
 }
 
 .search-button-profil {

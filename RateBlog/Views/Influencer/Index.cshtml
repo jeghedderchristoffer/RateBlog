@@ -95,6 +95,12 @@
                         <div id="listOfInfluencers">
                             @Html.Partial("InfluencerListPartial", Model.InfluentList)
                         </div>
+
+                        <div id="loadingBox" class="text-center" style="display: none">
+                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -111,21 +117,22 @@
         var pageIndex = 0;
         var searchString = "@Model.SearchString";
         var currentUsersArray;
-        var endLoading = false;
+        var ajaxDone = 0;
+        var loadingComplete = false; 
 
         $(document).ready(function () {
             // Gets the data first
             GetData();
-
-            $(window).scroll(function () {
-                if ($(window).scrollTop() ==
-                    $(document).height() - $(window).height()) {
-                    GetData();
-                }
-            });
         });
 
 
+        $(window).scroll(function () {
+            if (ajaxDone === 0) {
+                if ($(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
+                    GetData();
+                }
+            }
+        });
 
         // Får data når der bliver scrollet ned til bunden
         function GetData() {
@@ -163,10 +170,18 @@
 
             var lastInfluencer = currentInfluencers[currentInfluencers.length - 1];
 
+            
+
             $.ajax({
                 type: "GET",
-                async: false,
+                async: true,
                 url: '/Influencer/GetNextFromList',
+                beforeSend: function () {
+                    ajaxDone++;
+                    if (!loadingComplete) {
+                        $("#loadingBox").css("display", "block");
+                    }                    
+                },
                 data: {
                     pageIndex: pageIndex,
                     pageSize: pageSize,
@@ -176,14 +191,21 @@
                     lastUser: lastInfluencer
                 },
                 error: function (request, error) {
-
+                    ajaxDone--; 
                 },
                 success: function (response) {
+                    ajaxDone--; 
                     if (response.trim()) {
                         $("#listOfInfluencers").append(response);
                         pageIndex++;
                         currentUsersArray = UpdateCurrentUserList();
                     }
+                    else {
+                        loadingComplete = true;
+                    }
+                },
+                complete: function () {
+                        $("#loadingBox").css("display", "none");
                 }
             });
         };
@@ -205,7 +227,6 @@
 
                 var platformArray = new Array();
                 var kategoriArray = new Array();
-                endLoading = false;
 
                 $("input[type='checkbox'][name='platforme']").each(function () {
                     if ($(this).is(":checked")) {

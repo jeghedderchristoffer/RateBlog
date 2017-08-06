@@ -615,7 +615,7 @@ namespace RateBlog.Controllers
             if(buffer == null)
             {
                 var dir = _env.WebRootPath;
-                var path = Path.Combine(dir, "/images", "airbnb" + ".png");
+                var path = Path.Combine(dir, "/images", "BF" + ".png");
                 return File(path, "image/jpeg"); 
             }
 
@@ -632,7 +632,7 @@ namespace RateBlog.Controllers
             if (buffer == null)
             {
                 var dir = _env.WebRootPath;
-                var path = Path.Combine(dir, "/images", "airbnb" + ".png");
+                var path = Path.Combine(dir, "/images", "BF" + ".png");
                 return File(path, "image/jpeg");
             }
 
