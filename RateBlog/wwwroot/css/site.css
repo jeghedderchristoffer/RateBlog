@@ -1628,6 +1628,10 @@ ul li:hover .dropOut {
         color: #fff;
         font-size: 18px;
     }
+
+    .edit-button-influ-create {
+        width: 100%;
+    }
 }
 
 .edit-social-box {
