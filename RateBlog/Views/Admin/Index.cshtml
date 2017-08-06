@@ -100,23 +100,10 @@
                         <form asp-action="BanUser" asp-route-id="@user.InfluenterId" method="get" asp-controller="Admin">
                             <a>
                                 <input onclick="BanUserFunction()" type="submit" style="margin-bottom: 20px" value="Ban brugeren" />
+                                
+                                <p id="Ban"></p>
 
-
-
-
-
-                                <p id="demo"></p>
-
-                                <script>
-                                    function BanUserFunction() {
-                                        var txt;
-                                        if (confirm("Du har nu blokeret en bruger for 10 dage") == true)
-                                        {
-                                            txt = "Ok";
-                                        }                                         
-                                        }
-                                </script>
-
+                             
                             </a>
 
                         </form>
@@ -125,5 +112,13 @@
             }
         </tbody>
     </table>
+    <script>
+        function BanUserFunction() {
+            var txt;
+            if (confirm("Du har nu blokeret en bruger for 10 dage") == true) {
+                txt = "Ok";
+            }
+        }
+    </script>
 
 </div>

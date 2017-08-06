@@ -1,13 +1,13 @@
 ﻿@model RateBlog.Models.AdminViewModels.SeMereViewModel
-@inject UserManager<ApplicationUser> UserManager    
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Redigere bruger";
 }
 
 <div class="navbar-allaround">
-    </div>
-    <div class="container">
+</div>
+<div class="container">
 
 
     <form method="post" asp-controller="Admin" asp-action="EditUser">
@@ -103,25 +103,32 @@
 
         </table>
         <div class="col-md-offset-3 col-md-6 col-xs-12">
-            <input type="submit" style="margin-bottom: 20px" value="Redigere brugeren" />
+            <input onclick="SuccesFunction()" type="submit" style="margin-bottom: 20px" value="Gem ændringer" />
         </div>
     </form>
 
-        <form method="post" asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@Model.ApplicationUser.Id">
-            <input type="submit" value="Delete" />
-        </form>
-    
-
-        <form asp-controller="Admin" asp-action="Index">
-            <a class="col-md-offset-3 col-md-6 col-xs-12">
-                <input type="submit" style="margin-bottom: 20px" value="Home" />
-            </a>
-        </form>
+    <form method="post" asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@Model.ApplicationUser.Id">
+        <input onclick="BanUserFunction()" type="submit" value="Delete" />
+    </form>
 
 
+    <form asp-controller="Admin" asp-action="Index">
+        <a class="col-md-offset-3 col-md-6 col-xs-12">
+            <input type="submit" style="margin-bottom: 20px" value="Home" />
+        </a>
+    </form>
 
 
 
+
+    <script>
+        function SuccesFunction() {
+            var txt;
+            if (confirm("SUCCES") == true) {
+                txt = "Ok";
+            }
+        }
+    </script>
 
 
 

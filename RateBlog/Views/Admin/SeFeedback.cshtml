@@ -73,7 +73,7 @@
                         <td>
                             <a asp-action="RedigereFeedback" asp-route-id="@m.RatingId">Edit</a> 
                           <form method="post" asp-action="DeleteFeedback" asp-controller="Admin" asp-route-id="@m.RatingId">
-                            <input type="submit" value="Delete" />
+                            <input onclick="SuccesFunction()" type="submit" value="Delete" />
 
                           </form>
                       
@@ -90,4 +90,13 @@
 
             </tbody>
 
+   
         </table>
+<script>
+     function SuccesFunction() {
+         var txt;
+         if (confirm("SUCCES") == true) {
+             txt = "Ok";
+         }
+     }
+</script>

@@ -197,10 +197,10 @@ namespace RateBlog.Controllers
             user.LockoutEnd = DateTime.Now.AddDays(10);    
             _context.SaveChanges();    
             return RedirectToAction("Index");
-            
+         
 
         }
-
+     
 
 
 

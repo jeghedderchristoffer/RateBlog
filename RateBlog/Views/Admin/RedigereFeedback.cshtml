@@ -3,8 +3,9 @@
 
 <div class="navbar-allaround"></div>
 
-<form method="post" asp-controller="Admin" asp-action="RedigereFeedback">
-    <table class="table"
+
+    <form method="post" asp-controller="Admin" asp-action="RedigereFeedback">
+        <table class="table"
             <thread>
                <tr>
                    <th>
@@ -32,14 +33,8 @@
                    <th>
                        <p>Anmelder</p>
                    </th>
-
-
-
-
                </tr>
-
             </thread>
-
             <tbody>
 
                     <tr>
@@ -68,20 +63,30 @@
                         </td>
                         @Html.HiddenFor(x => x.Rating.RatingId)
                         <td>
-                            <input type="submit" value="Opdater Denne Feedback" />
+                            <input onclick="Succes()" type="submit" value="Opdater Denne Feedback"  />                            
                         </td>
-
-
-                        <td></td>
+                        <td>
+                            <form asp-controller="Admin" asp-action="Index">
+                                <a class="col-md-offset-3 col-md-6 col-xs-12">
+                                    <input type="submit" style="margin-bottom: 20px" value="Home" />
+                                </a>
+                            </form>
+                        </td>
+                        <p id="BanFuck"></p>                 
                     </tr>
-                }
-
-
-
-
-            </tbody>
-
+                }            
+            </tbody>       
         </table>
-</form>
+        <script> 
+
+                 function Succes() {
+                     var txt;
+                     if (confirm("Succes") == true)
+                     {
+                         txt = "Ok";
+                     }
+                 }
+        </script>
+    </form>
 
 
