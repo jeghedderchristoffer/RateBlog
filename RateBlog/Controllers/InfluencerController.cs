@@ -173,7 +173,7 @@ namespace RateBlog.Controllers
                 }
 
                 // Koden vil være: bestfluence + InfluenterId + 123
-                var result = await _userManager.CreateAsync(user, "bestfluence" + model.Influenter.InfluenterId + "123");
+                var result = await _userManager.CreateAsync(user, "bestfluence" + newInfluenter.InfluenterId + "123");
 
                 if (result.Succeeded)
                 {
