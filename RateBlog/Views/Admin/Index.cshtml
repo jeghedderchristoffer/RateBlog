@@ -53,8 +53,9 @@
                     <p>Se feedback</p>
                 </th>
                 <th>
-                    <p>Ban en bruger</p>
+                    <p>Blokerings længde</p>
                 </th>
+
             </tr>
         </thread>
         <tbody>
@@ -96,18 +97,26 @@
                         </form>
                     </td>
 
+                   
                     <td>
-                        <form asp-action="BanUser" asp-route-id="@user.InfluenterId" method="get" asp-controller="Admin">
+                        <p>@user.LockoutEnd</p>
+                    </td>
+
+                    <td>
+
+                    @*<td>
+
+                        <form asp-action="BanUser10" asp-route-id="@user.InfluenterId" method="get" asp-controller="Admin">
                             <a>
                                 <input onclick="BanUserFunction()" type="submit" style="margin-bottom: 20px" value="Ban brugeren" />
-                                
+
                                 <p id="Ban"></p>
+                                
+                                </form>
+                    </td>*@
 
-                             
-                            </a>
-
-                        </form>
                     </td>
+
                 </tr>
             }
         </tbody>
@@ -117,7 +126,8 @@
             var txt;
             if (confirm("Du har nu blokeret en bruger for 10 dage") == true) {
                 txt = "Ok";
-            }
+                 
+                            
         }
     </script>
 

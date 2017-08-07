@@ -257,6 +257,17 @@ body.modal-open {
     transition: all 0.5s ease 0s;
 }
 
+.admin-button {
+    height: 45px;
+    margin-left: 10px;
+    border-radius: 3px;
+    border: none;
+    width: 100px;
+    background-color: #f08301;
+    color: #fff;
+    transition: all 0.5s ease 0s;
+}
+
     .search-button:hover {
         background-color: #d87500
     }

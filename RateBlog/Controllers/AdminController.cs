@@ -65,13 +65,14 @@ namespace RateBlog.Controllers
         [HttpGet]
         public IActionResult SeMere(string id)
         {
-          //  var influenterlist = _influenter.GetAll();
+        
 
             var user = _influenter.GetByStringID(id);
 
             var model = new SeMereViewModel()
             {
                 ApplicationUser = user,
+
                
              };
 
@@ -82,13 +83,11 @@ namespace RateBlog.Controllers
         public IActionResult EditUser(string id)
         {
             
-
             var user = _influenter.GetByStringID(id);
            
             var model = new SeMereViewModel()
             {
                 ApplicationUser = user,
-
             };
 
             return View(model);
@@ -106,6 +105,7 @@ namespace RateBlog.Controllers
             getUser.ProfileText = vmodel.ApplicationUser.ProfileText;
             getUser.PhoneNumber = vmodel.ApplicationUser.PhoneNumber;
             getUser.PasswordHash = vmodel.ApplicationUser.PasswordHash;
+            getUser.LockoutEnd = vmodel.ApplicationUser.LockoutEnd;
 
 
             _admin.EditUser(getUser);
@@ -191,16 +191,31 @@ namespace RateBlog.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult BanUser(int id)
+        public IActionResult BanUser10(int id)
         {
             var user = _userManager.Users.First();
-            user.LockoutEnd = DateTime.Now.AddDays(10);    
-            _context.SaveChanges();    
+            user.LockoutEnd = DateTime.Now.AddDays(10);
+            _context.SaveChanges();
             return RedirectToAction("Index");
-         
-
         }
-     
+
+        public IActionResult BanUser25(int id)
+        {
+            var user = _userManager.Users.First();
+            user.LockoutEnd = DateTime.Now.AddDays(25);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult BanUser100(int id)
+        {
+            var user = _userManager.Users.First();
+            user.LockoutEnd = DateTime.Now.AddDays(25);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
 
 
 

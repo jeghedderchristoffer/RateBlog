@@ -2,12 +2,13 @@
 @inject UserManager<ApplicationUser> UserManager
 
 
+
 @{
     ViewData["Title"] = "Se mere om brugeren";
 
 }
 <div class="navbar-allaround">
-    </div>
+</div>
 
 <form asp-controller="Admin" asp-action="Index">
     <a class="col-md-offset-3 col-md-6 col-xs-12">
@@ -15,85 +16,102 @@
     </a>
 </form>
 
-  <div class="container">
-      <table class="table table-striped">
-          <thread>           
-              <tbody>
-                        <tr>
-                          <th>
-                              <p>navn</p>
-                          </th>
-                          <td>
-                             @Model.ApplicationUser.UserName
-                          </td>
-                      </tr>
-                
-                      <tr>
-                          <th>
-                              <p>email</p>
-                          </th>
-                          <td>
-                              <p>@Model.ApplicationUser.Email</p>
-                          </td>
-                      </tr>
-                      <tr>
-                          <th>
-                              <p>By stad</p>
-                          </th>
-                          <td>
-                              <p>@Model.ApplicationUser.City</p>
-                          </td>
-                      </tr>
+<div class="container">
+    <table class="table table-striped">
+        <thread>
+            <tbody>
+                <tr>
+                    <th>
+                        <p>navn</p>
+                    </th>
+                    <td>
+                        @Model.ApplicationUser.UserName
+                    </td>
+                </tr>
 
-                      <tr>
-                          <th>
-                              <p>Influenter ID</p>
-                          </th>
-                          <td>
-                              <p>@Model.ApplicationUser.InfluenterId</p>
-                          </td>
-                      </tr>
-                      <tr>
-                          <th>
-                              <p>ProfilText</p>
-                          </th>
-                          <td>
-                              <p>@Model.ApplicationUser.ProfileText</p>
-                          </td>
-                      </tr>
-                  <tr>
-                      <th>
-                          <p>PhoneNumber</p>
-                      </th>
-                      <td>
-                          <p>@Model.ApplicationUser.PhoneNumber</p>
-                      </td>
-                  </tr>
-                  <tr>
-                      <th>
-                          <p>Bruger ID</p>
-                      </th>
-                      <td>
-                          <p>@Model.ApplicationUser.Id</p>
-                      </td>
-                  </tr>
-                  <tr>
-                      <th>
-                          <p>Password hashed </p>
-                      </th>
-                      <td>
-                          <p>@Model.ApplicationUser.PasswordHash</p>
-                      </td>
-                  </tr>
+                <tr>
+                    <th>
+                        <p>email</p>
+                    </th>
+                    <td>
+                        <p>@Model.ApplicationUser.Email</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <p>By stad</p>
+                    </th>
+                    <td>
+                        <p>@Model.ApplicationUser.City</p>
+                    </td>
+                </tr>
 
-            
+                <tr>
+                    <th>
+                        <p>Influenter ID</p>
+                    </th>
+                    <td>
+                        <p>@Model.ApplicationUser.InfluenterId</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <p>ProfilText</p>
+                    </th>
+                    <td>
+                        <p>@Model.ApplicationUser.ProfileText</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <p>PhoneNumber</p>
+                    </th>
+                    <td>
+                        <p>@Model.ApplicationUser.PhoneNumber</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <p>Bruger ID</p>
+                    </th>
+                    <td>
+                        <p>@Model.ApplicationUser.Id</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <p>Password hashed </p>
+                    </th>
+                    <td>
+                        <p>@Model.ApplicationUser.PasswordHash</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <p>Blokerings længde hvis blokeret</p>
+                    </th>
+                    <td>
+                        <p>@Model.ApplicationUser.LockoutEnd</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <p>Blokerings længde hvis blokeret</p>
+                    </th>
+                    <td>
+                        <p>@Model.ApplicationUser.</p>
+                    </td>
+                </tr>
 
 
-                     
-                  }
-              </tbody>
-                  </thread>
-                  
-              </table>
+
+
+
+
+                }
+            </tbody>
+        </thread>
+
+    </table>
 
 </div>

@@ -13,7 +13,7 @@ namespace RateBlog.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            
         }
     }
 }
