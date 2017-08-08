@@ -79,8 +79,8 @@ else
                         <p>Svaret</p>
                     </div>
                     <div class="addon-number" style="width: 33.3%">
-                        <h1>@Math.Round(FeedbackService.GetInfluencerAnswerPercentage(user.InfluenterId.Value), 1)%</h1>
-                        <p>Svarprocent</p>
+                        <h1>@FeedbackService.GetTotalScore(user.InfluenterId.Value)</h1>
+                        <p>Total Score</p>
                     </div>
                 }
             </div>

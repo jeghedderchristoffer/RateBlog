@@ -109,6 +109,13 @@ namespace RateBlog.Services
         /// <returns></returns>
         IEnumerable<Feedback> GetLast3Feedback(string id);
 
+        /// <summary>
+        /// Gets the total score for a influencer. 
+        /// </summary>
+        /// <param name="id">Influencer ID</param>
+        /// <returns></returns>
+        double GetTotalScore(int id); 
+
         // -------------------------------------------------------- Feedback expert ---------------------------------------------------- // 
 
         /// <summary>
