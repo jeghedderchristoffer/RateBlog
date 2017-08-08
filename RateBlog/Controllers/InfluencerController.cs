@@ -38,7 +38,7 @@ namespace RateBlog.Controllers
             _platformRepo = platformRepo;
             _categoryRepo = categoryRepo;
             _platformCategoryService = platformCategoryService;
-            _feedbackService = feedbackService; 
+            _feedbackService = feedbackService;
         }
 
         [HttpGet]
@@ -183,7 +183,7 @@ namespace RateBlog.Controllers
 
                 if (result.Succeeded)
                 {
-                    TempData["Success"] = "Du har oprette denne influencer!"; 
+                    TempData["Success"] = "Du har oprette denne influencer!";
                     return RedirectToAction("Show", new { id = newInfluenter.Id });
                 }
                 else
@@ -234,20 +234,20 @@ namespace RateBlog.Controllers
                 }
             }
 
-            var hoursSinceLastRating = _feedbackService.GetHoursLeftToRate(user.Id, model.Influenter.Id);
+            //var hoursSinceLastRating = _feedbackService.GetHoursLeftToRate(user.Id, model.Influenter.Id);
 
-            // Så har denne bruger ikke ratet denne influencer endnu
-            if (hoursSinceLastRating == 0)
-            {
-                // Gør ingenting?? :-)
-            }
-            // Så har denne bruger ratet indenfor 24 timer...
-            else if (hoursSinceLastRating < 24)
-            {
-                var hours = TimeSpan.FromHours(24 - hoursSinceLastRating);
-                TempData["Error"] = "Du kan anmelde denne influencer igen om " + hours.ToString(@"hh\:mm") + " minutter";
-                return RedirectToAction("Give");
-            }
+            //// Så har denne bruger ikke ratet denne influencer endnu
+            //if (hoursSinceLastRating == 0)
+            //{
+            //    // Gør ingenting?? :-)
+            //}
+            //// Så har denne bruger ratet indenfor 24 timer...
+            //else if (hoursSinceLastRating < 24)
+            //{
+            //    var hours = TimeSpan.FromHours(24 - hoursSinceLastRating);
+            //    TempData["Error"] = "Du kan anmelde denne influencer igen om " + hours.ToString(@"hh\:mm") + " minutter";
+            //    return RedirectToAction("Give");
+            //}
 
             if (opførsel == 0 || kvalitet == 0 || troværdighed == 0 || interaktion == 0 || model.Review == null || anbefaling == null)
             {
@@ -288,7 +288,7 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Sorter(int[] platforme, int[] kategorier, int pageIndex, int pageSize, string search)
+        public PartialViewResult Sorter(int[] platforme, int[] kategorier, int pageIndex, int pageSize, string search, int sortBy)
         {
             if (string.IsNullOrEmpty(search))
             {
@@ -334,6 +334,23 @@ namespace RateBlog.Controllers
                 sortList = _platformCategoryService.SortInfluencerByPlatAndCat(platforme, kategorier, list).ToList();
             }
 
+            if (sortBy == 1)
+            {
+                sortList
+            }
+            else if (sortBy == 2)
+            {
+
+            }
+            else if (sortBy == 3)
+            {
+
+            }
+            else if (sortBy == 4)
+            {
+
+            }
+
             return PartialView("InfluencerListPartial", sortList);
         }
 
@@ -373,7 +390,7 @@ namespace RateBlog.Controllers
             var list = new List<ApplicationUser>();
             if ((platforme.Count() != 0 || kategorier.Count() != 0) && lastUser != null)
             {
-                var last = _userManager.Users.FirstOrDefault(x => x.Id == lastUser); 
+                var last = _userManager.Users.FirstOrDefault(x => x.Id == lastUser);
                 var index = influenter.IndexOf(last) + 1;
                 list = influenter.Skip(index).Take(pageSize).ToList();
             }

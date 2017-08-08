@@ -217,6 +217,42 @@ namespace RateBlog.Services
             return (int)Math.Round(feedbackSum, 0, MidpointRounding.AwayFromZero);
         }
 
+        public double GetTotalScore(int id)
+        {
+            if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id))
+            {
+                var feedbacks = _feedbackRepo.GetAll().Where(x => x.InfluenterId == id);
+                int numberOfFeedbacks = 0;
+                double allFeedbackSums = 0;
+
+                foreach (var f in feedbacks)
+                {
+                    double feedbackSum = 0;
+
+                    // Tager alle værdier, plusser dem sammen og dividere dem med antallet af ratings == gennemsnit
+                    var feedback = _feedbackRepo.Get(f.Id);
+
+                    feedbackSum += feedback.Interaktion;
+                    feedbackSum += feedback.Opførsel;
+                    feedbackSum += feedback.Troværdighed;
+                    feedbackSum += feedback.Kvalitet;
+                    feedbackSum = feedbackSum / 4;
+
+                    // Antal ratings
+                    numberOfFeedbacks++;
+
+                    // Tilføjer dem til samlingen
+                    allFeedbackSums += feedbackSum;
+                }
+
+                double average = (allFeedbackSums / numberOfFeedbacks);
+
+                return Math.Round(average, 1);
+            }
+
+            return 0;
+        }
+
         public int GetUnreadAnswerCount(string id)
         {
             var allFeedbacks = _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id);

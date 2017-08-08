@@ -73,12 +73,12 @@
                             Resultater for @Model.SearchString
 
                             <span style="float: right;" class="hidden-xs">
-                                <select class="dropdown-sort">
+                                <select id="sortBy" class="dropdown-sort">
                                     <option value="" disabled selected hidden>Sorter influencers</option>
-                                    <option>Højest score</option>
-                                    <option>Lavest score</option>
-                                    <option>Flest anmeldelser</option>
-                                    <option>Færreste anmeldelser</option>
+                                    <option value="1">Højest score</option>
+                                    <option value="2">Lavest score</option>
+                                    <option value="3">Flest anmeldelser</option>
+                                    <option value="4">Færreste anmeldelser</option>
                                 </select>
                             </span>
 
@@ -216,6 +216,57 @@
             });
         };
 
+        function Sort() {
+            var platformArray = new Array();
+            var kategoriArray = new Array();
+
+            $("input[type='checkbox'][name='platforme']").each(function () {
+                if ($(this).is(":checked")) {
+                    platformArray.push($(this).attr("value"));
+                }
+            });
+
+            $("input[type='checkbox'][name='kategorier']").each(function () {
+                if ($(this).is(":checked")) {
+                    kategoriArray.push($(this).attr("value"));
+                }
+            });
+
+            var jsonPlatformArray = {};
+            var jsonKategoriArray = {};
+
+            for (i in kategoriArray) {
+                jsonKategoriArray[i] = kategoriArray[i];
+            }
+
+            for (i in platformArray) {
+                jsonPlatformArray[i] = platformArray[i];
+            }
+
+            var sortBy = $("#sortBy").val();
+
+            // Get ajax
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: '/Influencer/Sorter',
+                data: {
+                    platforme: jsonPlatformArray,
+                    kategorier: jsonKategoriArray,
+                    pageIndex: pageIndex,
+                    pageSize: pageSize,
+                    search: searchString,
+                    sortBy: sortBy
+                },
+                error: function (request, error) {
+
+                },
+                success: function (response) {
+                    $("#listOfInfluencers").html(response);
+                }
+            });
+        }
+
         function UpdateCurrentUserList() {
             var currentUsersArray = new Array();
 
@@ -230,54 +281,13 @@
             currentUsersArray = UpdateCurrentUserList();
 
             $("input[type='checkbox'][name='platforme'], input[type='checkbox'][name='kategorier']").click(function () {
-
-                var platformArray = new Array();
-                var kategoriArray = new Array();
-
-                $("input[type='checkbox'][name='platforme']").each(function () {
-                    if ($(this).is(":checked")) {
-                        platformArray.push($(this).attr("value"));
-                    }
-                });
-
-                $("input[type='checkbox'][name='kategorier']").each(function () {
-                    if ($(this).is(":checked")) {
-                        kategoriArray.push($(this).attr("value"));
-                    }
-                });
-
-                var jsonPlatformArray = {};
-                var jsonKategoriArray = {};
-
-                for (i in kategoriArray) {
-                    jsonKategoriArray[i] = kategoriArray[i];
-                }
-
-                for (i in platformArray) {
-                    jsonPlatformArray[i] = platformArray[i];
-                }
-
-                // Get ajax
-                $.ajax({
-                    type: "GET",
-                    async: true,
-                    url: '/Influencer/Sorter',
-                    data: {
-                        platforme: jsonPlatformArray,
-                        kategorier: jsonKategoriArray,
-                        pageIndex: pageIndex,
-                        pageSize: pageSize,
-                        search: searchString
-                    },
-                    error: function (request, error) {
-
-                    },
-                    success: function (response) {
-                        $("#listOfInfluencers").html(response);
-                    }
-                });
-
+                Sort(); 
             });
+
+            $('#sortBy').on('change', function () {
+                Sort();
+            });
+
         });
 
     </script>
