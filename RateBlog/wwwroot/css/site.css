@@ -2919,3 +2919,25 @@ footer {
         font-size: 24px !important;
     }
 }
+
+
+.kontakt-button {
+    margin-top: 20px;
+    height: 45px;
+    border-radius: 6px;
+    border: none;
+    max-width: 450px;
+    width: 100%;
+    background-color: #4BB543;
+    color: #fff;
+    font-size: 18px;
+}
+
+    .kontakt-button:hover {
+        background-color: #4BB533;
+    }
+
+.faq-kontakt{
+    margin-top: 50px;
+}
+
