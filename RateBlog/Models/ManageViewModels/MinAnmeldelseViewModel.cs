@@ -7,6 +7,6 @@ namespace RateBlog.Models.ManageViewModels
 {
     public class MinAnmeldelseViewModel
     {
-        public Rating Rating { get; set; }
+        public Feedback Rating { get; set; }
     }
 }

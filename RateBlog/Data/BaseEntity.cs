@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Models
+namespace RateBlog.Data
 {
-    public class Links
+    public class BaseEntity
     {
-
+        public int Id { get; set; } 
     }
 }

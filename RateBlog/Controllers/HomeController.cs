@@ -14,16 +14,16 @@ namespace RateBlog.Controllers
 {
     public class HomeController : Controller
     {
-        private IKategoriRepository _kategoriRepo;
-        private IPlatformRepository _platformRepo;
-        private IInfluenterRepository _influenterRepo;
-        private UserManager<ApplicationUser> _userManger;
+        private readonly IRepository<Category> _categoryRepo;
+        private readonly IRepository<Platform> _platformRepo;
+        private readonly IRepository<Influencer> _influencerRepo; 
+        private readonly UserManager<ApplicationUser> _userManger;
 
-        public HomeController(IPlatformRepository platformRepo, IKategoriRepository kategoriRepo, IInfluenterRepository influenterRepo, UserManager<ApplicationUser> userManger)
+        public HomeController(IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IRepository<Influencer> influencerRepo, UserManager<ApplicationUser> userManger)
         {
             _platformRepo = platformRepo;
-            _kategoriRepo = kategoriRepo;
-            _influenterRepo = influenterRepo;
+            _categoryRepo = categoryRepo;
+            _influencerRepo = influencerRepo;
             _userManger = userManger;
         }
 
@@ -35,15 +35,15 @@ namespace RateBlog.Controllers
         public PartialViewResult SearchHelp(string search)
         {
             var model = new SearchHelpModel();
-            model.InfluencerList = new List<Influenter>();
-            model.KategoriList = new List<Kategori>();
+            model.InfluencerList = new List<Influencer>();
+            model.KategoriList = new List<Category>();
             model.PlatformList = new List<Platform>();
 
             if (!string.IsNullOrEmpty(search))
             {
-                foreach (var kategori in _kategoriRepo.GetAll())
+                foreach (var kategori in _categoryRepo.GetAll())
                 {
-                    if (kategori.KategoriNavn.ToLower().StartsWith(search.ToLower()))
+                    if (kategori.Name.ToLower().StartsWith(search.ToLower()))
                     {
                         model.KategoriList.Add(kategori); 
                     }
@@ -51,13 +51,13 @@ namespace RateBlog.Controllers
 
                 foreach (var platform in _platformRepo.GetAll())
                 {
-                    if (platform.PlatformNavn.ToLower().StartsWith(search.ToLower()))
+                    if (platform.Name.ToLower().StartsWith(search.ToLower()))
                     {
                         model.PlatformList.Add(platform); 
                     }
                 }
 
-                model.InfluencerList = _influenterRepo.GetAll().Where(x => x.Alias.ToLower().StartsWith(search.ToLower())).Take(5).ToList();
+                model.InfluencerList = _influencerRepo.GetAll().Where(x => x.Alias.ToLower().StartsWith(search.ToLower())).Take(5).ToList();
             }
 
             return PartialView("_SearchHelpPartial", model);

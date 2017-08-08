@@ -31,7 +31,7 @@ namespace RateBlog.Controllers
             return View();
         }
         // GET: /<controller>/
-        public IActionResult Kontakt()
+        public IActionResult Contact() 
         {
             return View();
         }
@@ -41,7 +41,7 @@ namespace RateBlog.Controllers
             return View();
         }
         // GET: /<controller>/
-        public IActionResult Forældre()
+        public IActionResult Parents()
         {
             return View();
         }
@@ -57,7 +57,7 @@ namespace RateBlog.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Retningslinjer()
+        public IActionResult UserGuidelines()
         {
             return View();
         }

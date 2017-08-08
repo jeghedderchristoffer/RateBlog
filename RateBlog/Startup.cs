@@ -15,6 +15,7 @@ using RateBlog.Services;
 using Microsoft.AspNetCore.Http;
 using RateBlog.Repository;
 using System.Globalization;
+using RateBlog.Services.Interfaces;
 
 namespace RateBlog
 {
@@ -68,16 +69,17 @@ namespace RateBlog
             services.AddSession();
             services.AddMvc();
 
-
-
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddTransient<IPlatformRepository, PlatformRepository>();
-            services.AddTransient<IInfluenterRepository, InfluenterRepository>();
-            services.AddTransient<IKategoriRepository, KategoriRepository>();
-            services.AddTransient<IRatingRepository, RatingRepository>();
-            services.AddTransient<IEkspertRatingRepository, EkspertRatingRepository>();
+            services.AddTransient<IFeedbackService, FeedbackService>();
+            services.AddTransient<IPlatformCategoryService, PlatformCategoryService>();
+            //services.AddScoped(typeof(IRepository<>), typeof(IRepository<>)); VIRKER IKKE
+            services.AddTransient<IRepository<Platform>, Repository<Platform>>();
+            services.AddTransient<IRepository<Category>, Repository<Category>>();
+            services.AddTransient<IRepository<ExpertFeedback>, Repository<ExpertFeedback>>();
+            services.AddTransient<IRepository<Feedback>, Repository<Feedback>>();
+            services.AddTransient<IRepository<Influencer>, Repository<Influencer>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

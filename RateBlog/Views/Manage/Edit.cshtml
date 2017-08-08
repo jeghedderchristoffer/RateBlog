@@ -1,12 +1,11 @@
 ﻿@model EditProfileViewModel
 @inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Repository.IKategoriRepository KategoriRepository
 @{
     var user = await UserManager.GetUserAsync(User);
     ViewData["Title"] = "Rediger din profil";
 }
 
-
+ 
 <div class="navbar-allaround"></div>
 
 @if (TempData["Success"] != null)
@@ -60,7 +59,7 @@
 
 
         <div id="redigerFanContainer">
-            <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="EditProfile">
+            <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="Edit">
                 <input asp-for="@Model.IsInfluenter" value="false" hidden="hidden" />
                 <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
                 <p>Fulde navn:</p>

@@ -26,37 +26,37 @@ namespace RateBlog.Models
                      new Platform
                      {
 
-                         PlatformNavn = "YouTube"
+                         Name = "YouTube"
                      },
 
                      new Platform
                      {
-                         PlatformNavn = "Instagram",
+                         Name = "Instagram",
                      },
 
                      new Platform
                      {
-                         PlatformNavn = "SnapChat",
+                         Name = "SnapChat",
                      },
 
                    new Platform
                    {
 
-                       PlatformNavn = "Facebook",
+                       Name = "Facebook",
                    },
 
                    new Platform
                    {
 
-                       PlatformNavn = "Twitch"
+                       Name = "Twitch"
                    },
                    new Platform
                    {
-                       PlatformNavn = "Twitter"
+                       Name = "Twitter"
                    },
                    new Platform
                    {
-                       PlatformNavn = "Website"
+                       Name = "Website"
                    }
 
                 );

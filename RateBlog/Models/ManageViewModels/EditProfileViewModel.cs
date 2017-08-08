@@ -38,7 +38,7 @@ namespace RateBlog.Models.ManageViewModels
 
         public List<InfluenterKategoriViewModel> IKList { get; set; }
 
-        public Influenter Influenter { get; set; }
+        public Influencer Influenter { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

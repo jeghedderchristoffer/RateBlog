@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Models
 {
-    public class InfluenterPlatform
+    public class InfluencerPlatform
     {
 
-        public int InfluenterId { get; set; }
-        public Influenter Influenter { get; set; }
+        public int InfluencerId { get; set; }
+        public Influencer Influencer { get; set; }
 
         public int PlatformId { get; set; }
         public Platform Platform { get; set; }

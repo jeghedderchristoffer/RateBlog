@@ -1,8 +1,7 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.ShowViewModel
-@inject RateBlog.Repository.IKategoriRepository CategoryRepository
-@inject RateBlog.Repository.IPlatformRepository PlatformRepository
-@inject RateBlog.Repository.IRatingRepository RatingRepository
-@inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
+@inject RateBlog.Services.IFeedbackService FeedbackService
+@inject RateBlog.Services.Interfaces.IPlatformCategoryService PlatformCategoryService
+@inject RateBlog.Repository.IRepository<Platform> PlatformRepo
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s profil";
 }
@@ -29,11 +28,11 @@
             <div class="text-center">
                 <h2>@Model.ApplicationUser.Name</h2>
                 <h3>
-                    @if (CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value) != null)
+                    @if (PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.InfluenterId.Value) != null)
                     {
-                        @foreach (var v in CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value))
+                        @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.InfluenterId.Value))
                         {
-                            if (v.Equals(CategoryRepository.GetInfluentersCategories(Model.ApplicationUser.InfluenterId.Value).Last()))
+                            if (v.Equals(PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.InfluenterId.Value).Last()))
                             {
                                 @v
                             }
@@ -46,9 +45,7 @@
                     else
                     {
                         <span>Ukendte kategorier</span>
-
                     }
-
                 </h3>
 
                 <hr />
@@ -56,14 +53,14 @@
         </div>
         <div class="col-md-12">
             <div class="col-md-4">
-                @if (RatingRepository.HasRatings(Model.Influenter.InfluenterId) && (EkspertRatingRepository.HasEkspertRatings(Model.Influenter.InfluenterId)))
+                @if (FeedbackService.HasFeedback(Model.Influenter.Id) && (FeedbackService.HasExpertFeedback(Model.Influenter.Id)))
                 {
                     <h3 class="text-center">Følger rating:</h3>
 
                     <div class="show-rating-box-show">
                         <div class="show-rating-show">
                             <div class="show-rating-front-show">
-                                @for (int i = 0; i < RatingRepository.GetRatingAverage(Model.Influenter.InfluenterId); i++)
+                                @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.Influenter.Id); i++)
                                 {
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                 }
@@ -77,14 +74,14 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
+                    <p class="text-center">Antal ratings: @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id)</p>
 
                     <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
 
                     <div class="show-rating-box-show">
                         <div class="show-rating-show">
                             <div class="show-rating-front-show">
-                                @for (int i = 0; i < EkspertRatingRepository.GetEkspertRatingAverage(Model.Influenter.InfluenterId); i++)
+                                @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(Model.Influenter.Id); i++)
                                 {
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                 }
@@ -99,20 +96,20 @@
                         </div>
                     </div>
 
-                    <p class="text-center">Antal ratings: @EkspertRatingRepository.CountEkspertRatings(Model.Influenter.InfluenterId)</p>
+                    <p class="text-center">Antal ratings: @FeedbackService.GetExpertFeedbackCountForInfluencer(Model.Influenter.Id)</p>
 
-                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #089de3 ">Giv feedback</a>
-                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>
+                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background-color: #089de3 ">Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>
 
                 }
-                else if (RatingRepository.HasRatings(Model.Influenter.InfluenterId).Equals(false) && (EkspertRatingRepository.HasEkspertRatings(Model.Influenter.InfluenterId)))
+                else if (FeedbackService.HasFeedback(Model.Influenter.Id).Equals(false) && (FeedbackService.HasExpertFeedback(Model.Influenter.Id)))
                 {
                     <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
 
                     <div class="show-rating-box-show">
                         <div class="show-rating-show">
                             <div class="show-rating-front-show">
-                                @for (int i = 0; i < EkspertRatingRepository.GetEkspertRatingAverage(Model.Influenter.InfluenterId); i++)
+                                @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(Model.Influenter.Id); i++)
                                 {
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                 }
@@ -126,22 +123,22 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center">Antal ratings: @EkspertRatingRepository.CountEkspertRatings(Model.Influenter.InfluenterId)</p>
+                    <p class="text-center">Antal ratings: @FeedbackService.GetExpertFeedbackCountForInfluencer(Model.Influenter.Id)</p>
                     <br />
                     <h4 class="text-center">Bliv den første til at give denne influencer feedback</h4>
-                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #089de3 ">Giv feedback</a>
-                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se ekspert feedback</a>
+                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background: #089de3 ">Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background-color:#53b80a">Se ekspert feedback</a>
 
 
                 }
-                else if (RatingRepository.HasRatings(Model.Influenter.InfluenterId) && (EkspertRatingRepository.HasEkspertRatings(Model.Influenter.InfluenterId)).Equals(false))
+                else if (FeedbackService.HasFeedback(Model.Influenter.Id) && (FeedbackService.HasExpertFeedback(Model.Influenter.Id)).Equals(false))
                 {
                     <h3 class="text-center">Følger rating:</h3>
 
                     <div class="show-rating-box-show">
                         <div class="show-rating-show">
                             <div class="show-rating-front-show">
-                                @for (int i = 0; i < RatingRepository.GetRatingAverage(Model.Influenter.InfluenterId); i++)
+                                @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.Influenter.Id); i++)
                                 {
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                 }
@@ -155,19 +152,19 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center">Antal ratings: @RatingRepository.CountRatings(Model.Influenter.InfluenterId)</p>
+                    <p class="text-center">Antal ratings: @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id)</p>
 
                 
 
-                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color: #089de3 ">Giv feedback</a>
-                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>
+                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background-color: #089de3 ">Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>
 
                 }
 
                 else
                 {
                     <h4 class="text-center">Bliv den første til at give denne influencer feedback</h4>
-                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="a-button-green-100" style="background: #089de3 ">Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background: #089de3 ">Giv feedback</a>
                 }
 
 
@@ -185,49 +182,48 @@
                 {
                     <p>@Model.ApplicationUser.ProfileText</p>
                 }
-
             </div>
 
             <hr class="hidden-md hidden-lg" />
 
             <div class="col-md-4">
-                @if (PlatformRepository.GetAllInfluenterPlatformForInfluenter(Model.ApplicationUser.InfluenterId.Value) != null)
+                @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.ApplicationUser.InfluenterId.Value) != null)
                 {
 
-                    @foreach (var v in PlatformRepository.GetAllInfluenterPlatformForInfluenter(Model.ApplicationUser.InfluenterId.Value))
+                    @foreach (var v in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.ApplicationUser.InfluenterId.Value))
                     {
                         <div class="social-box">
-                            @if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Facebook")
+                            @if (PlatformRepo.Get(v.PlatformId).Name == "Facebook")
                             {
                                 <a href="http://www.facebook.com/@v.Link" target="_blank" class="fa fa-profile fa-facebook fa-facebook-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                             }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "YouTube")
+                            else if (PlatformRepo.Get(v.PlatformId).Name == "YouTube")
                             {
                                 <a href="http://www.youtube.com/user/@v.Link" target="_blank" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                             }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "SnapChat")
+                            else if (PlatformRepo.Get(v.PlatformId).Name == "SnapChat")
                             {
                                 <a href="http://www.snapchat.com/add/@v.Link" target="_blank" class="fa fa-profile fa-snapchat-ghost fa-snapchat-ghost-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                             }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Instagram")
+                            else if (PlatformRepo.Get(v.PlatformId).Name == "Instagram")
                             {
                                 <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-profile fa-instagram fa-instagram-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                             }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitter")
+                            else if (PlatformRepo.Get(v.PlatformId).Name == "Twitter")
                             {
                                 <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-profile fa-twitter fa-twitter-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                             }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitch")
+                            else if (PlatformRepo.Get(v.PlatformId).Name == "Twitch")
                             {
                                 <a href="http://www.twitch.tv/@v.Link" target="_blank" class="fa fa-profile fa-twitch fa-twitch-profile"></a>
-                                <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                             }
-                            else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Website")
+                            else if (PlatformRepo.Get(v.PlatformId).Name == "Website")
                             {
                                 <a href="http://@v.Link" target="_blank" class="fa fa-profile fa-globe fa-globe-profile"></a>
                                 <span>Hjemmeside</span>

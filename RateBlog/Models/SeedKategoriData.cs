@@ -16,47 +16,47 @@ namespace RateBlog.Models
                 serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
 
-                if (context.Kategori.ToList().Count != 0)
+                if (context.Category.ToList().Count != 0)
                 {
                     return;   // DB has been seeded
                 }
 
-                context.Kategori.AddRange(
-                     new Kategori
+                context.Category.AddRange(
+                     new Category
                      {
-                         KategoriNavn = "Lifestyle"
+                         Name = "Lifestyle"
                      }, 
-                     new Kategori
+                     new Category
                      {
-                         KategoriNavn = "DIY"
+                         Name = "DIY"
                      },
-                     new Kategori
+                     new Category
                      {
-                         KategoriNavn = "VLOG"
+                         Name = "VLOG"
                      },
-                     new Kategori
+                     new Category
                      {
-                         KategoriNavn = "Beauty"
+                         Name = "Beauty"
                      }, 
-                     new Kategori
+                     new Category
                      {
-                         KategoriNavn = "Gaming"
+                         Name = "Gaming"
                      },
-                     new Kategori
+                     new Category
                      {
-                         KategoriNavn = "Entertainment"
+                         Name = "Entertainment"
                      },
-                     new Kategori
+                     new Category
                      {
-                         KategoriNavn = "Food"
+                         Name = "Food"
                      },
-                     new Kategori
+                     new Category
                      {
-                         KategoriNavn = "Fashion"
+                         Name = "Fashion"
                      }, 
-                     new Kategori
+                     new Category
                      {
-                         KategoriNavn = "Mommy"
+                         Name = "Mommy"
                      }
 
                 );

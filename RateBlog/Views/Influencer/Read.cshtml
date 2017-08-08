@@ -1,6 +1,5 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.ReadViewModel
-@inject RateBlog.Repository.IRatingRepository RatingRepository
-@inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
+@inject RateBlog.Services.IFeedbackService FeedbackService
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s ratings";
@@ -14,7 +13,7 @@
         <div class="col-md-12 col-xs-12 noPadding">
             <div class="col-md-2 col-xs-2 noPadding addon-box">
                 <div class="addon-img-container">
-                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == Model.Influenter.InfluenterId).Id })" />
+                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == Model.Influenter.Id).Id })" />
                 </div>
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
@@ -26,11 +25,11 @@
             </div>
             <div class="col-md-5 col-xs-12 addon-box">
                 <div class="addon-number">
-                    <h1>@RatingRepository.GetInfluenterRatingNumber(Model.Influenter.InfluenterId)</h1>
+                    <h1>@FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id)</h1>
                     <p>Ratings</p>
                 </div>
                 <div class="addon-number">
-                    <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(Model.Influenter.InfluenterId), 1)%</h1>
+                    <h1>@Math.Round(FeedbackService.GetInfluencerAnswerPercentage(Model.Influenter.Id), 1)%</h1>
                     <p>Svarprocent</p>
                 </div>
             </div>
@@ -49,7 +48,7 @@
             <div class="show-rating-box-show">
                 <div class="show-rating-show">
                     <div class="show-rating-front-show">
-                        @for (int i = 0; i < RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value); i++)
+                        @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.ApplicationUser.InfluenterId.Value); i++)
                         {
                             <i class="fa fa-star" aria-hidden="true"></i>
                         }
@@ -75,7 +74,7 @@
             <div class="show-rating-box-show">
                 <div class="show-rating-show">
                     <div class="show-rating-front-show">
-                        @for (int i = 0; i < EkspertRatingRepository.GetEkspertRatingAverage(Model.ApplicationUser.InfluenterId.Value); i++)
+                        @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(Model.ApplicationUser.InfluenterId.Value); i++)
                         {
                             <i class="fa fa-star" aria-hidden="true"></i>
                         }
@@ -86,7 +85,6 @@
                         <i class="fa fa-star" aria-hidden="true"></i>
                         <i class="fa fa-star" aria-hidden="true"></i>
                         <i class="fa fa-star" aria-hidden="true"></i>
-
                     </div>
                 </div>
             </div>
@@ -96,9 +94,9 @@
     <div class="col-xs-12 visible-xs">
         @if (Model.ApplicationUser.InfluenterId.HasValue)
         {
-            @if (EkspertRatingRepository.GetEkspertRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).Count != 0)
+            @if (FeedbackService.GetAllExpertFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).ToList().Count != 0)
             {
-                @foreach (var v in EkspertRatingRepository.GetEkspertRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                @foreach (var v in FeedbackService.GetAllExpertFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
                 {
                     <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
                         <div class="col-md-2 col-xs-12 noPadding read-img-container">
@@ -116,7 +114,7 @@
                             <div class="show-rating-box">
                                 <div class="show-rating">
                                     <div class="show-rating-front">
-                                        @for (int i = 0; i < EkspertRatingRepository.GetSingleEkspertRatingAverage(v.Id); i++)
+                                        @for (int i = 0; i < FeedbackService.GetSingleExpertFeedbackScoreAverage(v.Id); i++)
                                         {
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                         }
@@ -140,7 +138,6 @@
             else
             {
                 <p class="text-center">Denne influencer har endnu ikke modtaget ekspert feedback</p>
-
             }
         }
     </div>
@@ -151,7 +148,7 @@
         <div class="show-rating-box-show">
             <div class="show-rating-show">
                 <div class="show-rating-front-show">
-                    @for (int i = 0; i < RatingRepository.GetRatingAverage(Model.ApplicationUser.InfluenterId.Value); i++)
+                    @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.ApplicationUser.InfluenterId.Value); i++)
                     {
                         <i class="fa fa-star" aria-hidden="true"></i>
                     }
@@ -176,9 +173,9 @@
         <div class="col-md-7 col-sm-6 noPadding">
             @if (Model.ApplicationUser.InfluenterId.HasValue)
             {
-                @if (RatingRepository.GetRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).Count != 0)
+                @if (FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).ToList().Count != 0)
                 {
-                    @foreach (var v in RatingRepository.GetRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                    @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
                     {
                         <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
                             <div class="col-md-2 col-xs-12 noPadding read-img-container">
@@ -189,14 +186,14 @@
                                 <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</b></p>
                                 <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
                                 <h5><i>Feedback:</i></h5>
-                                <p class="feedback-text">@v.Feedback</p>
+                                <p class="feedback-text">@v.FeedbackText</p>
                             </div>
 
                             <div class="col-md-4 col-xs-12" style="margin-bottom: 5px;">
                                 <div class="show-rating-box">
                                     <div class="show-rating">
                                         <div class="show-rating-front">
-                                            @for (int i = 0; i < RatingRepository.GetSingleRatingAverage(v.RatingId); i++)
+                                            @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
                                             {
                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                             }
@@ -232,7 +229,7 @@
                 else
                 {
                     <p class="text-center" style="margin-bottom: 20px;">Denne influencer har endnu ikke modtaget følger feedback</p>
-                    <a asp-controller="Rating" asp-action="RateInfluencer" asp-route-id="@Model.Influenter.InfluenterId" class="feedback-influencer-btn center-block feedback-margin-bot" style="background: #08468d; float: none !important"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn center-block feedback-margin-bot" style="background: #08468d; float: none !important"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
                 }
 
             }
@@ -245,10 +242,10 @@
         <div class="col-md-5 col-sm-6 noPaddingRight hidden-xs">
             @if (Model.ApplicationUser.InfluenterId.HasValue)
             {
-                @if (EkspertRatingRepository.GetEkspertRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).Count != 0)
+                @if (FeedbackService.GetAllExpertFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).ToList().Count != 0)
                 {
 
-                    @foreach (var v in EkspertRatingRepository.GetEkspertRatingForInfluenter(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                    @foreach (var v in FeedbackService.GetAllExpertFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
                     {
                         <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
                             <div class="col-md-2 col-xs-12 noPadding read-img-container">
@@ -264,7 +261,7 @@
                                 <div class="show-rating-box">
                                     <div class="show-rating">
                                         <div class="show-rating-front">
-                                            @for (int i = 0; i < EkspertRatingRepository.GetEkspertRatingAverage(Model.ApplicationUser.InfluenterId.Value); i++)
+                                            @for (int i = 0; i < FeedbackService.GetSingleExpertFeedbackScoreAverage(v.Id); i++)
                                             {
                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                             }

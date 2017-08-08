@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RateBlog.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -6,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Models
 {
-    public class EkspertRating
+    public class ExpertFeedback : BaseEntity
     {
-        public int Id { get; set; }
-
         public int Kvalitet { get; set; }
         public string KvalitetString { get; set; }
 
@@ -37,7 +36,6 @@ namespace RateBlog.Models
         public ApplicationUser ApplicationUser { get; set; }
 
         public int InfluenterId { get; set; }
-        public Influenter Influenter { get; set; }
-
+        public Influencer Influenter { get; set; }
     }
 }

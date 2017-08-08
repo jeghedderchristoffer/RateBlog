@@ -1,5 +1,4 @@
-﻿@inject RateBlog.Repository.IRatingRepository RatingRepository
-@inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
+﻿@inject RateBlog.Services.IFeedbackService FeedbackService
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Feedback";
@@ -56,7 +55,7 @@
                             <div class="show-rating-box-show">
                                 <div class="show-rating-show">
                                     <div class="show-rating-front-show">
-                                        @for (int i = 0; i < RatingRepository.GetRatingAverage(user.InfluenterId.Value); i++)
+                                        @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(user.InfluenterId.Value); i++)
                                         {
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                         }
@@ -79,7 +78,7 @@
                             <div class="show-rating-box-show">
                                 <div class="show-rating-show">
                                     <div class="show-rating-front-show">
-                                        @for (int i = 0; i < EkspertRatingRepository.GetEkspertRatingAverage(user.InfluenterId.Value); i++)
+                                        @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(user.InfluenterId.Value); i++)
                                         {
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                         }
@@ -104,11 +103,11 @@
                 <div class="col-md-8 col-xs-12 col-sm-8 noPadding">
                     @if (user.InfluenterId.HasValue)
                     {
-                        @if (RatingRepository.GetRatingForInfluenter(user.InfluenterId.Value).Count != 0)
+                        @if (FeedbackService.GetAllFeedbackByInfluencer(user.InfluenterId.Value).ToList().Count != 0)
                         {
-                            @foreach (var v in RatingRepository.GetRatingForInfluenter(user.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                            @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(user.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
                             {
-                                <form asp-area="" asp-controller="Manage" asp-action="SeFeedback" asp-route-id="@v.RatingId">
+                                <form asp-area="" asp-controller="Manage" asp-action="Answer" asp-route-id="@v.Id">
                                     <a class="feedback-link" onclick="$(this).closest('form').submit();">
                                         <div class="col-md-12 noPadding feedback-container">
                                             <div class="col-md-2 col-sm-2 noPadding">
@@ -118,7 +117,7 @@
                                                 <div class="show-rating-box">
                                                     <div class="show-rating">
                                                         <div class="show-rating-front">
-                                                            @for (int i = 0; i < RatingRepository.GetSingleRatingAverage(v.RatingId); i++)
+                                                            @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
                                                             {
                                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                             }
@@ -157,7 +156,7 @@
                                                 <div class="show-rating-box">
                                                     <div class="show-rating">
                                                         <div class="show-rating-front">
-                                                            @for (int i = 0; i < RatingRepository.GetSingleRatingAverage(v.RatingId); i++)
+                                                            @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
                                                             {
                                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                             }
@@ -191,7 +190,7 @@
                             <div class="show-rating-box-show">
                                 <div class="show-rating-show">
                                     <div class="show-rating-front-show">
-                                        @for (int i = 0; i < RatingRepository.GetRatingAverage(user.InfluenterId.Value); i++)
+                                        @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(user.InfluenterId.Value); i++)
                                         {
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                         }
@@ -214,7 +213,7 @@
                             <div class="show-rating-box-show">
                                 <div class="show-rating-show">
                                     <div class="show-rating-front-show">
-                                        @for (int i = 0; i < EkspertRatingRepository.GetEkspertRatingAverage(user.InfluenterId.Value); i++)
+                                        @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(user.InfluenterId.Value); i++)
                                         {
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                         }
@@ -237,11 +236,11 @@
         else
         {
             <div class="col-md-8 col-sm-12">
-                @if (RatingRepository.GetFanRatings(user.Id).Count != 0)
+                @if (FeedbackService.GetAllFeedbackByUser(user.Id).ToList().Count != 0)
                 {
-                    @foreach (var v in RatingRepository.GetFanRatings(user.Id).OrderByDescending(x => x.RateDateTime))
+                    @foreach (var v in FeedbackService.GetAllFeedbackByUser(user.Id).OrderByDescending(x => x.RateDateTime))
                     {
-                        <form asp-area="" asp-controller="Manage" asp-action="MinFeedback" asp-route-id="@v.RatingId">
+                        <form asp-area="" asp-controller="Manage" asp-action="Read" asp-route-id="@v.Id">
                             <a class="feedback-link" onclick="$(this).closest('form').submit();">
                                 <div class="col-md-12 noPadding feedback-container active">
                                     <div class="col-md-2 col-sm-2 noPadding">
@@ -251,7 +250,7 @@
                                         <div class="show-rating-box">
                                             <div class="show-rating">
                                                 <div class="show-rating-front">
-                                                    @for (int i = 0; i < RatingRepository.GetSingleRatingAverage(v.RatingId); i++)
+                                                    @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
                                                     {
                                                         <i class="fa fa-star" aria-hidden="true"></i>
                                                     }
@@ -289,7 +288,7 @@
                                         <div class="show-rating-box">
                                             <div class="show-rating">
                                                 <div class="show-rating-front">
-                                                    @for (int i = 0; i < RatingRepository.GetSingleRatingAverage(v.RatingId); i++)
+                                                    @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
                                                     {
                                                         <i class="fa fa-star" aria-hidden="true"></i>
                                                     }
@@ -340,9 +339,12 @@
 
 @section Scripts{
     <script>
-        setTimeout(function () {
-            var el = document.getElementById('alwaysFetch');
-            el.value = el.value ? location.reload() : true;
-        }, 0);
+        $(document).ready(function () {
+            setTimeout(function () {
+                var el = document.getElementById('alwaysFetch');
+                el.value = el.value ? location.reload() : true;
+            }, 0);
+        });
+        
     </script>
 }

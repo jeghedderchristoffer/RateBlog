@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RateBlog.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,18 +8,13 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Models
 {
-    public class Rating
+    public class Feedback : BaseEntity
     {
-        // tror den mangler en FK til applicationUser, da man skal kunne fortælle
-        // hvem der har givet denne rating. Og det skulle gerne være 1-1 forhold. 
-
-        public int RatingId { get; set; }
-
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
         public int InfluenterId { get; set; }
-        public Influenter Influenter { get; set; }
+        public Influencer Influenter { get; set; }
 
         public DateTime RateDateTime { get; set; } 
 
@@ -29,7 +25,7 @@ namespace RateBlog.Models
 
         public bool? Anbefaling { get; set; }
 
-        public string Feedback { get; set; }
+        public string FeedbackText { get; set; } 
 
         [DefaultValue(null)]
         public string Answer { get; set; }

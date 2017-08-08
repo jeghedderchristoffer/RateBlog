@@ -1,5 +1,5 @@
 ﻿@model RateBlog.Models.RatingViewModels.RatingViewModel
-@inject RateBlog.Repository.IRatingRepository RatingRepository
+@inject RateBlog.Services.IFeedbackService FeedbackService
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Feedback til " + Model.Influenter.Alias;
@@ -26,7 +26,7 @@
         <div class="col-md-12 col-xs-12 noPadding">
             <div class="col-md-2 col-xs-2 noPadding addon-box">
                 <div class="addon-img-container">
-                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == Model.Influenter.InfluenterId).Id })" />
+                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == Model.Influenter.Id).Id })" />
                 </div>
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
@@ -38,11 +38,11 @@
             </div>
             <div class="col-md-5 col-xs-12 addon-box">
                 <div class="addon-number">
-                    <h1>@RatingRepository.GetInfluenterRatingNumber(Model.Influenter.InfluenterId)</h1>
+                    <h1>@FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id)</h1>
                     <p>Ratings</p>
                 </div>
                 <div class="addon-number">
-                    <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(Model.Influenter.InfluenterId), 1)%</h1>
+                    <h1>@Math.Round(FeedbackService.GetInfluencerAnswerPercentage(Model.Influenter.Id), 1)%</h1>
                     <p>Svarprocent</p>
                 </div>
             </div>
@@ -56,8 +56,8 @@
     <h2 class="text-center" style="margin: 25px 0 25px 0">Giv dit feedback til @Model.Influenter.Alias</h2>*@
 
     <div class="container">
-        <form asp-area="" asp-controller="Rating" asp-action="RateInfluencer">
-            @Html.HiddenFor(x => x.Influenter.InfluenterId)
+        <form asp-area="" asp-controller="Influencer" asp-action="Give" method="post">
+            @Html.HiddenFor(x => x.Influenter.Id)
             @Html.HiddenFor(x => x.Influenter.Alias)
 
             <div class="col-md-12 col-sm-12 rating-box" id="kvalitetBox">
@@ -201,13 +201,13 @@
                 <div class="col-md-4 col-sm-4">
                     <h4>Feedback</h4>
                 </div>
-                <div class="col-md-6 col-sm-6">
+                <div class="col-md-6 col-sm-6 noPadding">
                     <textarea class="rating-input" asp-for="@Model.Review" rows="8" placeholder="Hvad kan du godt lide ved influenceren og dennes indhold, hvad kan gøres bedre og hvad baserer du din feedback på?"></textarea>
                 </div>
  
             </div>
 
-            <div class="col-md-offset-4 col-md-6 col-xs-12">
+            <div class="col-md-offset-4 col-md-6 col-xs-12 noPadding">
                 <input type="submit" style="margin-bottom: 20px" class="edit-button-feedback" value="Send" />
             </div>
 

@@ -8,7 +8,7 @@ namespace RateBlog.Models.InfluenterViewModels
     public class ReadViewModel
     {
 
-        public Influenter Influenter { get; set; }
+        public Influencer Influenter { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public List<ApplicationUser> InfluentList { get; set; }
         public int MyProperty { get; set; }

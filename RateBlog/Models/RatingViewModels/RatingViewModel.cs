@@ -9,7 +9,7 @@ namespace RateBlog.Models.RatingViewModels
     public class RatingViewModel
     {
         // Hvem er influenteren??
-        public Influenter Influenter { get; set; }
+        public Influencer Influenter { get; set; }
 
         // Hvad står der i Rating-reviewet? Teksten altså...
         public string Review { get; set; }

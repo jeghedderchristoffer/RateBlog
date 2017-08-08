@@ -1,6 +1,5 @@
 ﻿@inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Repository.IRatingRepository RatingRepository
-@inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
+@inject RateBlog.Services.IFeedbackService FeedbackService
 @{
     var user = await UserManager.GetUserAsync(User);
 }
@@ -22,7 +21,7 @@
                     </div>
 
                     <div class="addon-number" style="width: 33.3%">
-                        <h1>@EkspertRatingRepository.GetMyEkspertRatingNumber(user.Id.ToString())</h1>
+                        <h1>@FeedbackService.GetExpertFeedbackCount(user.Id.ToString())</h1>
                         <p>Ratings</p>
                     </div>
                 </div>
@@ -61,26 +60,26 @@ else
                 @if (!user.InfluenterId.HasValue)
                 {
                     <div class="addon-number" style="width: 50%; padding-right:50px;">
-                        <h1>@RatingRepository.GetMyRatingNumber(user.Id)</h1>
+                        <h1>@FeedbackService.GetUserFeedbackCount(user.Id)</h1>
                         <p>Ratings</p>
                     </div>
                     <div class="addon-number" style="width: 50%">
-                        <h1>@RatingRepository.GetMyRatingAnswerNumber(user.Id)</h1>
+                        <h1>@FeedbackService.GetUserFeedbackAnswersCount(user.Id)</h1>
                         <p>Svar</p>
                     </div>
                 }
                 else
                 {
                     <div class="addon-number" style="width: 33.3%">
-                        <h1>@RatingRepository.GetInfluenterRatingNumber(user.InfluenterId.Value)</h1>
+                        <h1>@FeedbackService.GetInfluencerFeedbackCount(user.InfluenterId.Value)</h1>
                         <p>Ratings</p>
                     </div>
                     <div class="addon-number" style="width: 33.3%">
-                        <h1>@RatingRepository.GetInfluenterAnswerNumber(user.InfluenterId.Value)</h1>
+                        <h1>@FeedbackService.GetInfluencerFeedbackAnswersCount(user.InfluenterId.Value)</h1>
                         <p>Svaret</p>
                     </div>
                     <div class="addon-number" style="width: 33.3%">
-                        <h1>@Math.Round(RatingRepository.GetAnswerPercentageForInfluencer(user.InfluenterId.Value), 1)%</h1>
+                        <h1>@Math.Round(FeedbackService.GetInfluencerAnswerPercentage(user.InfluenterId.Value), 1)%</h1>
                         <p>Svarprocent</p>
                     </div>
                 }

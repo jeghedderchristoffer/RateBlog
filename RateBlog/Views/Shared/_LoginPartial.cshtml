@@ -3,7 +3,7 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Repository.IRatingRepository RatingRepo
+@inject RateBlog.Services.IFeedbackService FeedbackService
 @{ 
     var user = await UserManager.GetUserAsync(User);
 }
@@ -38,10 +38,10 @@
             {
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Feedback
-                        @if (RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value) != 0)
+                        Min feedback
+                        @if (FeedbackService.GetUnreadFeedbackCount(user.InfluenterId.Value) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(user.InfluenterId.Value)</span>
                         }
                     </a>
                 </li>
@@ -50,10 +50,10 @@
             {
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Feedback
-                        @if (RatingRepo.GetUnreadAnswer(user.Id) != 0)
+                        Min feedback
+                        @if (FeedbackService.GetUnreadAnswerCount(user.Id) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@RatingRepo.GetUnreadAnswer(user.Id)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadAnswerCount(user.Id)</span>
                         }
                     </a>
                 </li>
@@ -67,9 +67,9 @@
                     <div class="dropOut">
                         <div class="triangle"></div>
                         <ul>
-                            <li><a asp-area="" asp-controller="Manage" asp-action="Index" class="dropOut-a">Vis profil</a></li>
-                            <li><a asp-area="" asp-controller="Manage" asp-action="EditProfile" class="dropOut-a">Rediger profil</a></li>
-                            <li><a asp-area="" asp-controller="Manage" asp-action="ChangePassword" class="dropOut-a">Skift kodeord</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Profile" class="dropOut-a">Vis profil</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Edit" class="dropOut-a">Rediger profil</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Password" class="dropOut-a">Skift kodeord</a></li>
                             <li><a id="logOut" href="#" class="dropOut-a">Log af</a></li>
                         </ul>
                     </div>
@@ -81,10 +81,10 @@
             {
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Feedback
-                        @if (RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
+                        Min feedback
+                        @if (FeedbackService.GetUnreadFeedbackCount(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
                         }
                     </a>
                 </li>
@@ -93,17 +93,17 @@
             {
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Feedback
-                        @if (RatingRepo.GetUnreadAnswer(user.Id) != 0)
+                        Min feedback
+                        @if (FeedbackService.GetUnreadAnswerCount(user.Id) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@RatingRepo.GetUnreadAnswer(user.Id)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadAnswerCount(user.Id)</span>
                         }
                     </a>
                 </li>
             }
-            <li><a asp-area="" asp-controller="Manage" asp-action="Index">Vis profil</a></li>
-            <li><a asp-area="" asp-controller="Manage" asp-action="EditProfile">Rediger profil</a></li>
-            <li><a asp-area="" asp-controller="Manage" asp-action="ChangePassword">Skift kodeord</a></li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="Profile">Vis profil</a></li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="Edit">Rediger profil</a></li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="Password">Skift kodeord</a></li>
             <li><a id="logOutMobile" href="#">Log af</a></li>
         </ul>
     </form>

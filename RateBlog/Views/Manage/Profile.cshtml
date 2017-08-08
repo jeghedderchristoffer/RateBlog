@@ -1,9 +1,8 @@
 ﻿@model IndexViewModel
 @inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Repository.IPlatformRepository PlatformRepository
-@inject RateBlog.Repository.IKategoriRepository CategoryRepository
-@inject RateBlog.Repository.IRatingRepository RatingRepository
-@inject RateBlog.Repository.IEkspertRatingRepository EkspertRatingRepository
+@inject RateBlog.Services.IFeedbackService FeedbackService
+@inject RateBlog.Services.Interfaces.IPlatformCategoryService PlatformCategoryService
+@inject RateBlog.Repository.IRepository<Platform> PlatformRepo
 @{
     ViewData["Title"] = "Vis profil";
     var user = await UserManager.GetUserAsync(User);
@@ -12,9 +11,9 @@
 
     try
     {
-        if (CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value) != null)
+        if (PlatformCategoryService.GetInfluencerCategoryNames(user.InfluenterId.Value) != null)
         {
-            last = CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value).Last();
+            last = PlatformCategoryService.GetInfluencerCategoryNames(user.InfluenterId.Value).Last();
         }
     }
     catch (InvalidOperationException)
@@ -32,11 +31,11 @@
             <img class="profil-img center-block" src="@Url.Action("ProfilePic", "Manage")" />
             <div class="text-center">
                 <h2 class="responsive-visProfil-h2">@user.Name</h2>
-                @if (user.InfluenterId != null && CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value) != null)
+                @if (user.InfluenterId != null && PlatformCategoryService.GetInfluencerCategoryNames(user.InfluenterId.Value) != null)
                 {
                     <h3 class="responsive-visProfil-h3">
 
-                        @foreach (var v in CategoryRepository.GetInfluentersCategories(user.InfluenterId.Value))
+                        @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(user.InfluenterId.Value))
                         {
                             if (v.Equals(last))
                             {
@@ -56,7 +55,6 @@
                 else
                 {
                     <h3>Følger</h3>
-
                 }
                 <hr />
             </div>
@@ -65,7 +63,7 @@
             <div class="col-md-4 col-sm-4">
                 @if (user.InfluenterId.HasValue)
                 {
-                    @if (RatingRepository.HasRatings(user.InfluenterId.Value))
+                    @if (FeedbackService.HasFeedback(user.InfluenterId.Value))
                     {
 
                         <h3 class="text-center" style="margin-top: 0">Fan rating:</h3>
@@ -73,7 +71,7 @@
                         <div class="show-rating-box-show">
                             <div class="show-rating-show">
                                 <div class="show-rating-front-show">
-                                    @for (int i = 0; i < RatingRepository.GetRatingAverage(user.InfluenterId.Value); i++)
+                                    @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(user.InfluenterId.Value); i++)
                                     {
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                     }
@@ -88,26 +86,26 @@
                             </div>
                         </div>
 
-                        <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
+                            <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
 
-                        <div class="show-rating-box-show">
-                            <div class="show-rating-show">
-                                <div class="show-rating-front-show">
-                                    @for (int i = 0; i < EkspertRatingRepository.GetEkspertRatingAverage(user.InfluenterId.Value); i++)
-                                    {
+                            <div class="show-rating-box-show">
+                                <div class="show-rating-show">
+                                    <div class="show-rating-front-show">
+                                        @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(user.InfluenterId.Value); i++)
+                                        {
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        }
+                                    </div>
+                                    <div class="show-rating-back-show">
                                         <i class="fa fa-star" aria-hidden="true"></i>
-                                    }
-                                </div>
-                                <div class="show-rating-back-show">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <p class="text-center">Antal ratings: @RatingRepository.CountRatings(user.InfluenterId.Value)</p>
+                            <p class="text-center">Antal ratings: @FeedbackService.GetInfluencerFeedbackCount(user.InfluenterId.Value)</p>
                     }
                     else
                     {
@@ -116,16 +114,14 @@
                 }
                 else
                 {
-                    @if (RatingRepository.GetLast3RatingsByFan(user.Id).Count != 0)
+                    @if (FeedbackService.GetLast3Feedback(user.Id).ToList().Count != 0)
                     {
                         <div class="last3rating">
                             <h3>Sidste 3 ratings</h3>
                         </div>
 
-                        @foreach (var v in RatingRepository.GetLast3RatingsByFan(user.Id))
+                        @foreach (var v in FeedbackService.GetLast3Feedback(user.Id))
                         {
-                            
-
                             <div class="col-md-12 col-sm-12 col-xs-12 last3ratingFan">
                                 <div class="col-md-3 col-sm-12 col-xs-12">
                                     <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == v.InfluenterId).Id })" />
@@ -142,7 +138,7 @@
                                         <div class="show-rating-box-3">
                                             <div class="show-rating-3">
                                                 <div class="show-rating-front-3">
-                                                    @for (int i = 0; i < RatingRepository.GetRatingAverage(v.InfluenterId); i++)
+                                                    @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
                                                     {
                                                         <i class="fa fa-star" aria-hidden="true"></i>
                                                     }
@@ -178,8 +174,8 @@
                             </div>
                         </div>
                     }
-                    
-                }           
+
+                }
             </div>
 
             <div class="col-xs-12 visible-xs">
@@ -198,43 +194,43 @@
             <div class="col-md-4 col-sm-4">
                 @if (user.InfluenterId != null)
                 {
-                    @if (PlatformRepository.GetAllInfluenterPlatformForInfluenter(user.InfluenterId.Value) != null)
+                    @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(user.InfluenterId.Value) != null)
                     {
 
-                        @foreach (var v in PlatformRepository.GetAllInfluenterPlatformForInfluenter(user.InfluenterId.Value))
+                        @foreach (var v in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(user.InfluenterId.Value))
                         {
                             <div class="social-box">
-                                @if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Facebook")
+                                @if (PlatformRepo.Get(v.PlatformId).Name == "Facebook")
                                 {
                                     <a href="http://www.facebook.com/@v.Link" target="_blank" class="fa fa-profile fa-facebook fa-facebook-profile"></a>
-                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                    <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                                 }
-                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "YouTube")
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "YouTube")
                                 {
                                     <a href="http://www.youtube.com/user/@v.Link" target="_blank" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
-                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                    <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                                 }
-                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "SnapChat")
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "SnapChat")
                                 {
                                     <a href="http://www.snapchat.com/add/@v.Link" target="_blank" class="fa fa-profile fa-snapchat-ghost fa-snapchat-ghost-profile"></a>
-                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                    <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                                 }
-                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Instagram")
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Instagram")
                                 {
                                     <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-profile fa-instagram fa-instagram-profile"></a>
-                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                    <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                                 }
-                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitter")
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Twitter")
                                 {
                                     <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-profile fa-twitter fa-twitter-profile"></a>
-                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                    <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                                 }
-                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Twitch")
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Twitch")
                                 {
                                     <a href="http://www.twitch.tv/@v.Link" target="_blank" class="fa fa-profile fa-twitch fa-twitch-profile"></a>
-                                    <span>@PlatformRepository.Get(v.PlatformId).PlatformNavn</span>
+                                    <span>@PlatformRepo.Get(v.PlatformId).Name</span>
                                 }
-                                else if (PlatformRepository.Get(v.PlatformId).PlatformNavn == "Website")
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Website")
                                 {
                                     <a href="http://@v.Link" target="_blank" class="fa fa-profile fa-globe fa-globe-profile"></a>
                                     <span>Hjemmeside</span>
