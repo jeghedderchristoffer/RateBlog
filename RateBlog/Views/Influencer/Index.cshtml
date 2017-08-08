@@ -176,7 +176,7 @@
 
             var lastInfluencer = currentInfluencers[currentInfluencers.length - 1];
 
-            
+            var sortBy = $("#sortBy").val();
 
             $.ajax({
                 type: "GET",
@@ -194,7 +194,8 @@
                     search: searchString,
                     platforme: jsonPlatformArray,
                     kategorier: jsonKategoriArray,
-                    lastUser: lastInfluencer
+                    lastUser: lastInfluencer,
+                    sortBy: sortBy
                 },
                 error: function (request, error) {
                     ajaxDone--; 

@@ -29,8 +29,9 @@ namespace RateBlog.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IPlatformCategoryService _platformCategoryService;
         private readonly IFeedbackService _feedbackService;
+        private readonly ISortService _sortService; 
 
-        public InfluencerController(IRepository<Category> categoryRepo, IRepository<Influencer> influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IPlatformCategoryService platformCategoryService, IFeedbackService feedbackService)
+        public InfluencerController(IRepository<Category> categoryRepo, IRepository<Influencer> influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IPlatformCategoryService platformCategoryService, IFeedbackService feedbackService, ISortService sortService)
         {
             _influencerRepo = influencer;
             _userManager = userManager;
@@ -39,6 +40,7 @@ namespace RateBlog.Controllers
             _categoryRepo = categoryRepo;
             _platformCategoryService = platformCategoryService;
             _feedbackService = feedbackService;
+            _sortService = sortService; 
         }
 
         [HttpGet]
@@ -184,7 +186,7 @@ namespace RateBlog.Controllers
                 if (result.Succeeded)
                 {
                     TempData["Success"] = "Du har oprette denne influencer!";
-                    return RedirectToAction("Show", new { id = newInfluenter.Id });
+                    return RedirectToAction("Profile", new { id = newInfluenter.Id });
                 }
                 else
                 {
@@ -318,11 +320,10 @@ namespace RateBlog.Controllers
                 }
             }
 
-
             var list = influenter.Take(pageSize * pageIndex).ToList();
 
             // If platform or kategori is checked, this makes sure the the next 5 (pageSize) has that kategori or platform. 
-            var sortList = _platformCategoryService.SortInfluencerByPlatAndCat(platforme, kategorier, list).ToList();
+            var sortList = _sortService.InfluencerSortByPlatAndCat(platforme, kategorier, list).ToList();
 
             // If you sort, but the current users dont have enough to return pageSize, loop through until you get 5 or at worst, return all (under pageSize)
             // Den burde gerne returnere pageSize + næste index. Så hvis pageSize med index 1 indeholder 7 med gaming, og næste indeholder 2
@@ -331,31 +332,14 @@ namespace RateBlog.Controllers
             for (int i = pageIndex; sortList.Count < pageSize && i <= maxPageIndex; i++)
             {
                 list = influenter.Take(pageSize * i).ToList();
-                sortList = _platformCategoryService.SortInfluencerByPlatAndCat(platforme, kategorier, list).ToList();
-            }
-
-            if (sortBy == 1)
-            {
-                sortList
-            }
-            else if (sortBy == 2)
-            {
-
-            }
-            else if (sortBy == 3)
-            {
-
-            }
-            else if (sortBy == 4)
-            {
-
+                sortList = _sortService.InfluencerSortByPlatAndCat(platforme, kategorier, list).ToList();
             }
 
             return PartialView("InfluencerListPartial", sortList);
         }
 
         [HttpGet]
-        public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search, int[] platforme, int[] kategorier, string lastUser)
+        public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search, int[] platforme, int[] kategorier, string lastUser, int sortBy)
         {
             // Set string to empty string
             if (string.IsNullOrEmpty(search))
@@ -400,10 +384,7 @@ namespace RateBlog.Controllers
             }
 
             // If platform or kategori is checked, this makes sure the the next 5 (pageSize) has that kategori or platform. 
-            var sortList = _platformCategoryService.SortInfluencerByPlatAndCat(platforme, kategorier, list);
-
-
-
+            var sortList = _sortService.InfluencerSortByPlatAndCat(platforme, kategorier, list).ToList();
 
             return PartialView("InfluencerListPartial", sortList);
         }

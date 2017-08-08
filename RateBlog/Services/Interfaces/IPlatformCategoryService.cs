@@ -9,15 +9,6 @@ namespace RateBlog.Services.Interfaces
     public interface IPlatformCategoryService
     {
         /// <summary>
-        /// Sorts influencers by platform and category
-        /// </summary>
-        /// <param name="platformIds">Platform IDs</param>
-        /// <param name="categoryIds">Category IDs</param>
-        /// <param name="users">Current users</param>
-        /// <returns></returns>
-        IEnumerable<ApplicationUser> SortInfluencerByPlatAndCat(int[] platformIds, int[] categoryIds, List<ApplicationUser> users);
-
-        /// <summary>
         /// Gets category id by its name
         /// </summary>
         /// <param name="name">Category Name</param>
