@@ -269,27 +269,6 @@ $(document).ready(function () {
 });
 
 
-
-// Scroll top button
-
-window.onscroll = function () { scrollFunction() };
-
-function scrollFunction() {
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        document.getElementById("topBtn").style.display = "block";
-    } else {
-        document.getElementById("topBtn").style.display = "none";
-    }
-}
-
-
-function topFunction() {
-    $('html, body').animate({
-        scrollTop: 0
-    }, 300);
-}
-
-
 // Ajax til search forslag
 
 $(document).ready(function () {

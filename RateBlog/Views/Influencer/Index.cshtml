@@ -9,16 +9,19 @@
 
     <div class="navbar-allaround"></div>
 
-    <div style="background-color: #fff; padding-bottom: 15px;">
+    <div style="background-color: #fff; height: 188px">
         <div class="outer">
             <div class="middle">
                 <div class="inner">
-                    <h2>Søg på influencere</h2>
-                    <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index">
-                        <input type="text" name="search" class="search-input" style="border: 1px solid #888" placeholder="F.eks. Gaming, Youtube eller Armin" />
-                        <span>
-                            <input class="search-button" type="submit" value="Søg" />
-                        </span>
+                    <h2 style="margin-bottom: 30px; margin-top: 0">Søg på influencere</h2>
+                    <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index" class="form-inline">
+                        <div class="input-group">
+                            <input autocomplete="off" type="text" name="search" id="search" style="border: 1px solid #ddd" class="form-control search-input" list="searchSug" placeholder="F.eks. Anna, Fashion eller YouTube" />
+                            <datalist id="searchSug"></datalist>
+                            <div class="input-group-btn">
+                                <button class="btn search-button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
