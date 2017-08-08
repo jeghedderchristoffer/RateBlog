@@ -39,6 +39,7 @@
     <Content Include="wwwroot\images\kommunikation.jpeg" />
     <Content Include="wwwroot\images\index-img.jpeg" />
     <Content Include="wwwroot\images\programing.jpeg" />
+    <Content Include="wwwroot\images\User icon.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.4.337" />
