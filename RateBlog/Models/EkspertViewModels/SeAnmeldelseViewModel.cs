@@ -7,6 +7,6 @@ namespace RateBlog.Models.EkspertViewModels
 {
     public class SeAnmeldelseViewModel
     {
-        public EkspertRating EkspertRating { get; set; }
+        public ExpertFeedback EkspertRating { get; set; }
     }
 }

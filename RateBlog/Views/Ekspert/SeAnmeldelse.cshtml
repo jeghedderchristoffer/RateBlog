@@ -36,19 +36,21 @@
                             <div class="se-anmeldelse-center se-anmeldelse-padding">
                                 <h2 class="text-center">Samlet score</h2>
                                 <br />
-                                <div class="star-rating-response se-anmeldelse-star">
-                                    <div class="back-stars" title="@Math.Round(EkspertRatingRepository.GetSingleEkspertRatingAverage(Model.EkspertRating.Id), 2)%">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <div class="front-stars" style="width: @EkspertRatingRepository.GetSingleEkspertRatingAverage(Model.EkspertRating.Id)%">
+                                <div class="show-rating-box-show">
+                                    <div class="show-rating-show">
+                                        <div class="show-rating-front-show">
+                                            @for (int i = 0; i < EkspertRatingRepository.GetSingleEkspertRatingAverage(Model.EkspertRating.Id); i++)
+                                            {
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            }
+                                        </div>
+                                        <div class="show-rating-back-show">
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                             <i class="fa fa-star" aria-hidden="true"></i>
+
                                         </div>
                                     </div>
                                 </div>

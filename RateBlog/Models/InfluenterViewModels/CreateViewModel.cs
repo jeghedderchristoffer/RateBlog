@@ -23,6 +23,6 @@ namespace RateBlog.Models.InfluenterViewModels
 
         public List<InfluenterKategoriViewModel> IKList { get; set; }
 
-        public Influenter Influenter { get; set; }
+        public Influencer Influenter { get; set; }
     }
 }

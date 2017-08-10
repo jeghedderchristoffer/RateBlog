@@ -17,44 +17,43 @@ namespace RateBlog.Data
         {
         }
 
-        public DbSet<Influenter> Influenter { get; set; }
+        public DbSet<Influencer> Influencer { get; set; }
         public DbSet<Platform> Platform { get; set; }
-        public DbSet<Rating> Rating { get; set; }
-        public DbSet<Kategori> Kategori { get; set; }
-        public DbSet<InfluenterPlatform> InfluenterPlatform { get; set; }
-        public DbSet<InfluenterKategori> InfluenterKategori { get; set; } 
-        public DbSet<EkspertRating> EkspertRating { get; set; }
-        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<Feedback> Feedback { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<InfluencerPlatform> InfluencerPlatform { get; set; }
+        public DbSet<InfluencerCategory> InfluencerCategory { get; set; } 
+        public DbSet<ExpertFeedback> ExpertFeedback { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<InfluenterPlatform>()
-                .HasKey(t => new { t.InfluenterId, t.PlatformId });
+            builder.Entity<InfluencerPlatform>()
+                .HasKey(t => new { t.InfluencerId, t.PlatformId });
 
-            builder.Entity<InfluenterPlatform>()
-                .HasOne(pt => pt.Influenter)
+            builder.Entity<InfluencerPlatform>()
+                .HasOne(pt => pt.Influencer)
                 .WithMany(p => p.InfluenterPlatform)
-                .HasForeignKey(pt => pt.InfluenterId);
+                .HasForeignKey(pt => pt.InfluencerId);
 
-            builder.Entity<InfluenterPlatform>()
+            builder.Entity<InfluencerPlatform>()
                 .HasOne(pt => pt.Platform)
                 .WithMany(t => t.InfluenterPlatform)
                 .HasForeignKey(pt => pt.PlatformId);
 
-            builder.Entity<InfluenterKategori>()
-                .HasKey(t => new { t.InfluenterId, t.KategoriId });
+            builder.Entity<InfluencerCategory>()
+                .HasKey(t => new { t.InfluencerId, t.CategoryId });
 
-            builder.Entity<InfluenterKategori>()
-                .HasOne(pt => pt.Influenter)
+            builder.Entity<InfluencerCategory>()
+                .HasOne(pt => pt.Influencer)
                 .WithMany(p => p.InfluenterKategori)
-                .HasForeignKey(pt => pt.InfluenterId);
+                .HasForeignKey(pt => pt.InfluencerId);
 
-            builder.Entity<InfluenterKategori>()
-                .HasOne(pt => pt.Kategori)
+            builder.Entity<InfluencerCategory>()
+                .HasOne(pt => pt.Category)
                 .WithMany(t => t.InfluenterKategori)
-                .HasForeignKey(pt => pt.KategoriId);
+                .HasForeignKey(pt => pt.CategoryId);
 
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.

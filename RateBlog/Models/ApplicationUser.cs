@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace RateBlog.Models
 {
@@ -10,11 +11,16 @@ namespace RateBlog.Models
     public class ApplicationUser : IdentityUser
     {
         public string Name { get; set; }
-        public DateTime? Birth { get; set; }
-        public string City { get; set; }
+       
+        public int? Year { get; set; }
+       
+        public int? Postnummer { get; set; } 
+
         public string ProfileText { get; set; }
-        public Byte[] ImageFile { get; set; }
-        public virtual Influenter Influenter { get; set; }
+
+        public Byte[] ProfilePicture { get; set; } 
+
+        public virtual Influencer Influenter { get; set; }
         public int? InfluenterId { get; set; }
 
 

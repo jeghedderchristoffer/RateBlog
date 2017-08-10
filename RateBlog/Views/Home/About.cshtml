@@ -1,7 +1,14 @@
 ﻿@{
     ViewData["Title"] = "About";
 }
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
+@inject RateBlog.Repository.IRatingRepository RatingRepository
 
-<p>Use this area to provide additional information.</p>
+<div class="navbar-allaround"></div>
+
+<div class="container">
+
+    <a href="#" class="feedback-influencer-btn"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br /><br /><br /><br /><br />
+    <a href="#" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
+</div>
+
+

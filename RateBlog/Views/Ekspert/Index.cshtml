@@ -48,7 +48,7 @@
 
                         <div class="col-md-12 search-result noPaddingLeft">
                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">
-                                <a asp-controller="Influenter" asp-action="Show" asp-route-id="@influ.InfluenterId">
+                                <a asp-controller="Influencer" asp-action="Show" asp-route-id="@influ.InfluenterId">
                                     <img class="influ-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = influ.Id })" />
                                 </a>
 
@@ -126,8 +126,8 @@
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding">
                                     
-                                    <a asp-controller="Ekspert" asp-action="EkspertRating" asp-route-id="@influ.InfluenterId" class="a-button" style="background-color: #08468d; margin-top: 40px;">Anmeld</a>
-                                    <a asp-controller="Influenter" asp-action="Read" asp-route-id="@influ.InfluenterId" class="a-button" style="margin-bottom:15px;">Se anmeldelser</a>
+                                    <a asp-controller="Ekspert" asp-action="EkspertRating" asp-route-id="@influ.InfluenterId" class="a-button" style="background-color: #089de3; margin-top: 40px;">Anmeld</a>
+                                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@influ.InfluenterId" class="a-button" style="margin-bottom:15px;">Se anmeldelser</a>
 
                                 </div>
                             </div>

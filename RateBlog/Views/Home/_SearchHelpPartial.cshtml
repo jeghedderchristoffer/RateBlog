@@ -1,0 +1,19 @@
+﻿@model RateBlog.Helper.SearchHelpModel
+
+
+
+@foreach (var v in Model.PlatformList)
+            {
+    <option value="@v.Name">Platform</option>
+}
+
+@foreach (var v in Model.KategoriList)
+{
+    <option value="@v.Name">Kategori</option>
+}
+
+
+@foreach (var v in Model.InfluencerList)
+            {
+    <option value="@v.Alias">Influencer</option>
+}

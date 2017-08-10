@@ -7,7 +7,7 @@ namespace RateBlog.Models.ManageViewModels
 {
     public class FeedbackResponseViewModel
     {
-        public Rating Rating { get; set; } 
+        public Feedback Rating { get; set; } 
 
     }
 }

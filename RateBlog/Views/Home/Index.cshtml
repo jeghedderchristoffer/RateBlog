@@ -4,19 +4,20 @@
 
 <div id="noPaddingBottomBody">
 
-
     <div class="home-img">
         <div class="outer">
             <div class="middle">
                 <div class="inner">
-                    <h2>Søg på influencers</h2>
-
-                        <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index">
-                            <input type="text" name="search" id="search" class="search-input" style="border: solid 1px" placeholder="F.eks. Gaming eller Armin" />
-                            <span>
-                                <input class="search-button" type="submit" value="Søg" />
-                            </span>
-                        </form>
+                    <h2>Søg efter influencere</h2>
+                    <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index" class="form-inline">
+                        <div class="input-group">
+                            <input autocomplete="off" type="text" name="search" id="search" class="form-control search-input" list="searchSug" placeholder="F.eks. Anna, Fashion eller YouTube" />
+                            <datalist id="searchSug"></datalist>
+                            <div class="input-group-btn">
+                                <button class="btn search-button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>                          
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -26,16 +27,16 @@
         <div class="container">
             <div class="col-md-12">
                 <div class="col-md-4 col-sm-4">
-                    <h3>Tag kampen op</h3>
-                    <p>Bestfluence tager kampen op mod mobning, løgne og utroværdighed på de sociale medier, ved at hylde influencers med kvalitetsindhold.</p>
+                    <h3>Behold integriteten</h3>
+                    <p>Bestfluence tager kampen op mod click-bait, løgne og utroværdighed på sociale medier ved at hylde dem, som er troværdige og skaber kvalitetsindhold   </p>
                 </div>
                 <div class="col-md-4 col-sm-4">
                     <h3>Gør en forskel</h3>
-                    <p>Bestfluence gør en forskel, ved at lade seernes og læsernes meninger bliver hørt gennem konstruktiv feedback til influencerne.</p>
+                    <p>Bestfluence lader følgernes meninger blive hørt gennem konstruktiv feedback til influencerne og deres ucensurerede budskab gør en forskel</p>
                 </div>
                 <div class="col-md-4 col-sm-4">
-                    <h3>Opdag det nye</h3>
-                    <p style="margin-bottom: 0;">Bestfluence er med på beatet og ønsker at nye influencers som producerer kvalitetsunderholdning nemt skal kunne opdages.</p>
+                    <h3>Opdag de bedste</h3>
+                    <p style="margin-bottom: 0;">Bestfluence er drevet af passionerede følgere som aktivt opretter, giver feedback til og hjælper andre følgere med at finde nye kvalitetsinfluencere</p>
                 </div>
             </div>
         </div>
@@ -54,18 +55,17 @@
 
                     <div class="icon-box">
                         <span class="fa fa-video fa-search fa-search-video"></span>
-                        <span class="margin-left">Find din influencer</span>
+                        <span class="margin-left">Find eller opret influencere</span>
                     </div>
 
                     <div class="icon-box">
                         <span class="fa fa-video fa-star fa-star-video"></span>
-
-                        <span class="margin-left">Giv konstruktiv feedback</span>
+                        <span class="margin-left">Giv dem konstruktiv feedback</span>
                     </div>
 
                     <div class="icon-box" style="margin-bottom: 0;">
                         <span class="fa fa-video fa-heart fa-heart-video"></span>
-                        <span class="margin-left">Hjælp andre</span>
+                        <span class="margin-left">Del din mening og hjælp andre</span>
                     </div>
 
                 </div>
@@ -75,7 +75,7 @@
 
     <div class="categori-container">
         <div class="container">
-            <h1 class="text-center">Opdag influencers</h1>
+            <h1 class="text-center">Opdag nye influencere</h1>
             <div class="col-sm-12" style="padding-bottom: 60px;">
                 <div class="col-sm-4 responsive-padding">
                     <div class="ih-item circle effect19 center-block">
@@ -83,7 +83,7 @@
                             <div class="img"><img src="~/images/Kategori/beauty-kat.jpg" alt="img"></div>
                             <div class="info">
                                 <h3>Beauty</h3>
-                                <p>Find beauty influencer</p>
+                                <p>Alt indenfor kosmetik og personlig pleje</p>
                             </div>
                         </a>
                     </div>

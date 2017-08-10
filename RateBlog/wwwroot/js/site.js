@@ -1,76 +1,89 @@
 ﻿// Login ajax
 
 $(document).ready(function () {
+
+    $("#email").keydown(function (e) {
+        if (e.keyCode == 13) {
+            loginFunction();
+        }
+    });
+
+    $("#password").keydown(function (e) {
+        if (e.keyCode == 13) {
+            loginFunction();
+        }
+    });
+
+    $("#loginBtn").click(function () {
+        loginFunction();
+    });
+});
+
+function loginFunction() {
     var errorMsgTop = $("#errorMsgTop");
     var errorMsgBot = $("#errorMsgBot");
     var returnNothing = false;
 
-    $("#loginBtn").click(function () {
-        //errorMsgTop.text("");
-        //errorMsgBot.text(""); 
+    //collect the user data
+    var data = {};
+    data.Email = $("#email").val();
+    data.Password = $("#password").val();
+    var token = $('input[name="__RequestVerificationToken"]').val();
 
-        //collect the user data
-        var data = {};
-        data.Email = $("#email").val();
-        data.Password = $("#password").val();
-        var token = $('input[name="__RequestVerificationToken"]').val();
+    if (!isEmail(data.Email)) {
+        $("#email").focus();
+        errorMsgTop.text("Dette er ikke en gyldig email.");
+        if (data.Password === '') {
+            errorMsgBot.text("Du mangler kodeord.");
+        }
+        else {
+            errorMsgBot.text("");
+        }
+        return;
+    }
 
-        if (!isEmail(data.Email)) {
-            $("#email").focus();
-            errorMsgTop.text("Dette er ikke en gyldig email.");
-            if (data.Password === '') {
-                errorMsgBot.text("Du mangler kodeord.");
+    $.ajax({
+        url: "/Account/Login",
+        method: "POST",
+        data: {
+            model: data,
+            __RequestVerificationToken: token,
+            returnUrl: "Home/Index"   // you can modify the returnUrl value here
+        },
+        success: function (result) {
+            var JSONString = JSON.stringify(result);
+            var resultObj = JSON.parse(JSONString);
+
+            console.log(data.Password);
+
+            if (resultObj.result === "Missing") {
+                if (data.Password === '') {
+                    $("#password").focus();
+                    errorMsgBot.text("Du mangler kodeord.");
+                }
+                if (isEmail(data.Email)) {
+                    errorMsgTop.text("");
+                }
             }
             else {
                 errorMsgBot.text("");
             }
-            return;
-        }
 
-        $.ajax({
-            url: "/Account/Login",
-            method: "POST",
-            data: {
-                model: data,
-                __RequestVerificationToken: token,
-                returnUrl: "Home/Index"   // you can modify the returnUrl value here
-            },
-            success: function (result) {
-                var JSONString = JSON.stringify(result);
-                var resultObj = JSON.parse(JSONString);
-
-                console.log(data.Password);
-
-                if (resultObj.result === "Missing") {
-                    if (data.Password === '') {
-                        $("#password").focus();
-                        errorMsgBot.text("Du mangler kodeord.");
-                    }
-                    if (isEmail(data.Email)) {
-                        errorMsgTop.text("");
-                    }
-                }
-                else {
-                    errorMsgBot.text("");
-                }
-
-                if (resultObj.result === "Wrong") {
-                    $("#email").focus();
-                    errorMsgTop.text("Brugernavn eller kodeordet er forkert.");
-                }
-
-                if (resultObj.result === "Accepted") {
-                    location.reload();
-                }
-
-            },
-            error: function () {
-                console.log("fail");
+            if (resultObj.result === "Wrong") {
+                $("#email").focus();
+                errorMsgTop.text("Brugernavn eller kodeordet er forkert.");
             }
-        });
-    });
-});
 
+            if (resultObj.result === "Accepted") {
+                location.reload();
+            }
+
+        },
+        error: function () {
+            console.log("fail");
+        }
+    });
+}
 
 function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -256,41 +269,84 @@ $(document).ready(function () {
 });
 
 
+// Ajax til search forslag
 
-// Scroll top button
+$(document).ready(function () {
 
-window.onscroll = function () { scrollFunction() };
+    //setup before functions
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 500;  //time in ms, 5 second for example
+    var $input = $('#search');
 
-function scrollFunction() {
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        document.getElementById("topBtn").style.display = "block";
-    } else {
-        document.getElementById("topBtn").style.display = "none";
+    //on keyup, start the countdown
+    $input.on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown 
+    $input.on('keydown', function () {
+        clearTimeout(typingTimer);
+    });
+
+    //user is "finished typing," do something
+    function doneTyping() {
+
+        var searchResult = $("#search").val();
+
+        $.ajax({
+            url: "/Home/SearchHelp",
+            method: "GET",
+            data: {
+                search: searchResult
+            },
+            success: function (result) {
+                if (result.trim()) {
+                    $("#searchSug").html(result);
+                }
+                else {
+                    $("#searchSug").html("");
+                }
+            },
+            error: function () {
+                console.log("fail");
+            }
+        });
+
+        $("#search").focus();
+
     }
-}
+});
 
 
-function topFunction() {
-    $('html, body').animate({
-        scrollTop: 0
-    }, 300);
-}  
+// Email button create
+$(document).ready(function () {
 
+    var isOpenCreate = false;
 
-function showml(divId,inhtmText)
-     {  
-        var x = document.getElementById(divId).style.display;
-
-        if(x=="block")
-        {
-        document.getElementById(divId).style.display = "none";
-        document.getElementById(inhtmText).innerHTML="Show More...";
+    $("#emailCreateButton").click(function () {
+        if (isOpenCreate) {
+            $("#emailCreate").slideUp();
+            isOpenCreate ^= true;
         }
-       if(x=="none")
-       {
-        document.getElementById(divId).style.display = "block";
-        document.getElementById(inhtmText).innerHTML="Show Less";
-        }
-     }
+        else {
+            $("#emailCreate").slideDown();
+            isOpenCreate ^= true;
+        }        
+    });
 
+    var isOpenLogin = false; 
+
+    $("#emailLoginButton").click(function () {
+        if (isOpenLogin) {
+            $("#emailLogin").slideUp();
+            isOpenLogin ^= true;
+        }
+        else {
+            $("#emailLogin").slideDown();
+            isOpenLogin ^= true;
+        }
+    });
+
+});
 

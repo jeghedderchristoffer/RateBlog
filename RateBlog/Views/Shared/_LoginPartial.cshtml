@@ -3,7 +3,7 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Repository.IRatingRepository RatingRepo
+@inject RateBlog.Services.IFeedbackService FeedbackService
 @{ 
     var user = await UserManager.GetUserAsync(User);
 }
@@ -17,8 +17,6 @@
  
             @if (User.IsInRole("Ekspert"))
             {
-
-
                 <li class="drop">
                     <a href="#">Ekspert</a>
                     <div class="dropdownContain">
@@ -39,11 +37,11 @@
             @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
             {
                 <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
-                        Anmeldelser
-                        @if (RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value) != 0)
+                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
+                        Min feedback
+                        @if (FeedbackService.GetUnreadFeedbackCount(user.InfluenterId.Value) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(user.InfluenterId.Value)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(user.InfluenterId.Value)</span>
                         }
                     </a>
                 </li>
@@ -51,15 +49,14 @@
             else
             {
                 <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
-                        Anmeldelser
-                        @if (RatingRepo.GetUnreadAnswer(user.Id) != 0)
+                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
+                        Min feedback
+                        @if (FeedbackService.GetUnreadAnswerCount(user.Id) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadAnswer(user.Id)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadAnswerCount(user.Id)</span>
                         }
                     </a>
                 </li>
-
             }
 
             }
@@ -70,9 +67,9 @@
                     <div class="dropOut">
                         <div class="triangle"></div>
                         <ul>
-                            <li><a asp-area="" asp-controller="Manage" asp-action="Index" class="dropOut-a">Vis profil</a></li>
-                            <li><a asp-area="" asp-controller="Manage" asp-action="EditProfile" class="dropOut-a">Rediger profil</a></li>
-                            <li><a asp-area="" asp-controller="Manage" asp-action="ChangePassword" class="dropOut-a">Skift kodeord</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Profile" class="dropOut-a">Vis profil</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Edit" class="dropOut-a">Rediger profil</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Password" class="dropOut-a">Skift kodeord</a></li>
                             <li><a id="logOut" href="#" class="dropOut-a">Log af</a></li>
                         </ul>
                     </div>
@@ -83,18 +80,30 @@
             @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
             {
                 <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Anmeldelser">
-                        Anmeldelser
-                        @if (RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
+                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
+                        Min feedback
+                        @if (FeedbackService.GetUnreadFeedbackCount(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #f08301">@RatingRepo.GetUnreadRatingsNumber(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
                         }
                     </a>
                 </li>
             }
-            <li><a asp-area="" asp-controller="Manage" asp-action="Index">Vis profil</a></li>
-            <li><a asp-area="" asp-controller="Manage" asp-action="EditProfile">Rediger profil</a></li>
-            <li><a asp-area="" asp-controller="Manage" asp-action="ChangePassword">Skift kodeord</a></li>
+            else
+            {
+                <li>
+                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
+                        Min feedback
+                        @if (FeedbackService.GetUnreadAnswerCount(user.Id) != 0)
+                        {
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadAnswerCount(user.Id)</span>
+                        }
+                    </a>
+                </li>
+            }
+            <li><a asp-area="" asp-controller="Manage" asp-action="Profile">Vis profil</a></li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="Edit">Rediger profil</a></li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="Password">Skift kodeord</a></li>
             <li><a id="logOutMobile" href="#">Log af</a></li>
         </ul>
     </form>
@@ -103,6 +112,6 @@ else
 {
     <ul class="nav navbar-nav navbar-right">
         <li><a class="login-links" data-toggle="modal" data-target="#opretModal">Opret</a></li>
-        <li><a class="login-links" data-toggle="modal" data-target="#loginModal">Log in</a></li>
+        <li><a class="login-links" data-toggle="modal" data-target="#loginModal">Log ind</a></li>
     </ul>
 }

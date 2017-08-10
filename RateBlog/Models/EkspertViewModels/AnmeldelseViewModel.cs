@@ -7,7 +7,8 @@ namespace RateBlog.Models.EkspertViewModels
 {
     public class AnmeldelseViewModel
     {
-        public Influenter Influenter { get; internal set; }
-       
+        public Influencer Influenter { get; internal set; }
+        
+
     }
 }

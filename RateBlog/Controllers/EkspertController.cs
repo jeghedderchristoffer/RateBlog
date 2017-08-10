@@ -15,23 +15,18 @@ namespace RateBlog.Controllers
     public class EkspertController : Controller
     {
 
-        private IInfluenterRepository _influenter;
-        private UserManager<ApplicationUser> _userManager;
-        private IEkspertRatingRepository _ekspertrating;
+        private readonly IRepository<Influencer> _influencerRepo;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IRepository<ExpertFeedback> _expertFeedbackRepo;
 
-
-
-
-        public EkspertController(IInfluenterRepository influenter, IEkspertRatingRepository ekspertrating, UserManager<ApplicationUser> userManager)
+        public EkspertController( IRepository<Influencer> influencer, IRepository<ExpertFeedback> expertFeedback, UserManager<ApplicationUser> userManager)
         {
-            _influenter = influenter;
+            _influencerRepo = influencer;
             _userManager = userManager;
-            _ekspertrating = ekspertrating;
-
+            _expertFeedbackRepo = expertFeedback;
+            
         }
-
-
-
+   
         public IActionResult Index(string search)
         {
             Dictionary<int, double> influenterRating = new Dictionary<int, double>();
@@ -58,7 +53,7 @@ namespace RateBlog.Controllers
         [HttpGet]
         public IActionResult EkspertRating(int id)
         {
-            var influenter = _influenter.Get(id);
+            var influenter = _influencerRepo.Get(id);
             var model = new EkspertRatingViewModel()
             {
                 Influenter = influenter
@@ -71,7 +66,7 @@ namespace RateBlog.Controllers
         [HttpGet]
         public IActionResult Anmeldelser(int id)
         {
-            var influenter = _influenter.Get(id);
+            var influenter = _influencerRepo.Get(id);
             var model = new AnmeldelseViewModel()
             {
                 Influenter = influenter
@@ -91,7 +86,7 @@ namespace RateBlog.Controllers
 
             if (ModelState.IsValid)
             {
-                var ekspertrating = new EkspertRating()
+                var ekspertrating = new ExpertFeedback()
                 {
                     Kvalitet = model.Kvalitet,
                     KvalitetString = model.KvalitetString,
@@ -106,12 +101,12 @@ namespace RateBlog.Controllers
                     Anbefaling = model.Anbefaling,
                     AnbefalingString = model.AnbefalingString,
                     ApplicationUserId = user.Id,
-                    InfluenterId = model.Influenter.InfluenterId,
+                    InfluenterId = model.Influenter.Id,
                     RateDateTime = DateTime.Now
                 };
 
                 // Tilføjer til EkspertRating tabellen
-                _ekspertrating.Add(ekspertrating);
+                _expertFeedbackRepo.Add(ekspertrating);
 
                 // Der mangler at tjekke om denne user allerede har rated denne influenter....!!!!!!
 
@@ -119,7 +114,7 @@ namespace RateBlog.Controllers
                 TempData["Success"] = "Du har nu givet din ekspert anmeldelse til " + model.Influenter.Alias;
 
 
-                return RedirectToAction("Show", "Influenter", new { Id = model.Influenter.InfluenterId });
+                return RedirectToAction("Show", "Influencer", new { Id = model.Influenter.Id });
             }
 
             TempData["Error"] = "Du skal udfylde alle felterne for at give dit feedback";
@@ -133,7 +128,7 @@ namespace RateBlog.Controllers
         [HttpGet]
         public IActionResult SeAnmeldelse(int id)
         {
-            var ekspertrating = _ekspertrating.Get(id);
+            var ekspertrating = _expertFeedbackRepo.Get(id);
 
             var model = new SeAnmeldelseViewModel()
             {
@@ -147,16 +142,16 @@ namespace RateBlog.Controllers
         [HttpPost]
         public IActionResult SeAnmeldelse(SeAnmeldelseViewModel model)
         {
-            var ekspertRating = _ekspertrating.Get(model.EkspertRating.Id);
+            var ekspertRating = _expertFeedbackRepo.Get(model.EkspertRating.Id);
             ekspertRating.KvalitetString = model.EkspertRating.KvalitetString;
             ekspertRating.InteraktionString = model.EkspertRating.InteraktionString;
             ekspertRating.OffentligFeedbackString = model.EkspertRating.OffentligFeedbackString;
             ekspertRating.OffentligFeedback = model.EkspertRating.OffentligFeedback;
             ekspertRating.OpførselString = model.EkspertRating.OpførselString;
             ekspertRating.TroværdighedString = model.EkspertRating.TroværdighedString;
-            _ekspertrating.Update(ekspertRating);
+            _expertFeedbackRepo.Update(ekspertRating);
 
-            var ekspertrating = _ekspertrating.Get(model.EkspertRating.Id);
+            var ekspertrating = _expertFeedbackRepo.Get(model.EkspertRating.Id);
 
             var newModel = new SeAnmeldelseViewModel()
             {

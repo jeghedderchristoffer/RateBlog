@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Hosting;
+using RateBlog.Services.Interfaces;
 
 namespace RateBlog.Controllers
 {
@@ -31,10 +32,11 @@ namespace RateBlog.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
-        private readonly IInfluenterRepository _influenterRepo;
-        private readonly IPlatformRepository _platformRepo;
-        private readonly IKategoriRepository _kategoriRepo;
-        private readonly IRatingRepository _ratingRepo;
+        private readonly IRepository<Influencer> _influencerRepo;
+        private readonly IRepository<Platform> _platformRepo;
+        private readonly IRepository<Category> _categoryRepo;
+        private readonly IRepository<Feedback> _feedbackRepo;
+        private readonly IPlatformCategoryService _platformCategoryService; 
         private readonly IHostingEnvironment _env; 
 
         public ManageController(
@@ -44,18 +46,19 @@ namespace RateBlog.Controllers
           IEmailSender emailSender,
           ISmsSender smsSender,
           ILoggerFactory loggerFactory,
-          IInfluenterRepository influenterRepo,
-          IPlatformRepository platformRepo,
-          IKategoriRepository kategoriRepo,
-          IRatingRepository ratingRepo, 
+          IRepository<Influencer> influencerRepo,
+          IRepository<Platform> platformRepo,
+          IRepository<Category> categoryRepo,
+          IRepository<Feedback> feedbackRepo, 
+          IPlatformCategoryService platformCategoryService,
           IHostingEnvironment env)
         {
-            _influenterRepo = influenterRepo;
+            _influencerRepo = influencerRepo;
             _platformRepo = platformRepo;
-            _kategoriRepo = kategoriRepo;
-            _ratingRepo = ratingRepo;
+            _categoryRepo = categoryRepo;
+            _feedbackRepo = feedbackRepo;
+            _platformCategoryService = platformCategoryService;
             _env = env; 
-
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
@@ -67,7 +70,7 @@ namespace RateBlog.Controllers
         //
         // GET: /Manage/Index
         [HttpGet]
-        public async Task<IActionResult> Index(ManageMessageId? message = null)
+        public async Task<IActionResult> Profile(ManageMessageId? message = null)
         {
             ViewData["StatusMessage"] =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -96,156 +99,158 @@ namespace RateBlog.Controllers
 
         //
         // POST: /Manage/RemoveLogin
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel account)
-        {
-            ManageMessageId? message = ManageMessageId.Error;
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                var result = await _userManager.RemoveLoginAsync(user, account.LoginProvider, account.ProviderKey);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    message = ManageMessageId.RemoveLoginSuccess;
-                }
-            }
-            return RedirectToAction(nameof(ManageLogins), new { Message = message });
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel account)
+        //{
+        //    ManageMessageId? message = ManageMessageId.Error;
+        //    var user = await GetCurrentUserAsync();
+        //    if (user != null)
+        //    {
+        //        var result = await _userManager.RemoveLoginAsync(user, account.LoginProvider, account.ProviderKey);
+        //        if (result.Succeeded)
+        //        {
+        //            await _signInManager.SignInAsync(user, isPersistent: false);
+        //            message = ManageMessageId.RemoveLoginSuccess;
+        //        }
+        //    }
+        //    return RedirectToAction(nameof(ManageLogins), new { Message = message });
+        //}
 
         //
         // GET: /Manage/AddPhoneNumber
-        public IActionResult AddPhoneNumber()
-        {
-            return View();
-        }
+        //public IActionResult AddPhoneNumber()
+        //{
+        //    return View();
+        //}
 
-        //
-        // POST: /Manage/AddPhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            // Generate the token and send it
-            var user = await GetCurrentUserAsync();
-            if (user == null)
-            {
-                return View("Error");
-            }
-            var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, model.PhoneNumber);
-            await _smsSender.SendSmsAsync(model.PhoneNumber, "Your security code is: " + code);
-            return RedirectToAction(nameof(VerifyPhoneNumber), new { PhoneNumber = model.PhoneNumber });
-        }
+        ////
+        //// POST: /Manage/AddPhoneNumber
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+        //    // Generate the token and send it
+        //    var user = await GetCurrentUserAsync();
+        //    if (user == null)
+        //    {
+        //        return View("Error");
+        //    }
+        //    var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, model.PhoneNumber);
+        //    await _smsSender.SendSmsAsync(model.PhoneNumber, "Your security code is: " + code);
+        //    return RedirectToAction(nameof(VerifyPhoneNumber), new { PhoneNumber = model.PhoneNumber });
+        //}
 
         //
         // POST: /Manage/EnableTwoFactorAuthentication
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EnableTwoFactorAuthentication()
-        {
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                await _userManager.SetTwoFactorEnabledAsync(user, true);
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                _logger.LogInformation(1, "User enabled two-factor authentication.");
-            }
-            return RedirectToAction(nameof(Index), "Manage");
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> EnableTwoFactorAuthentication()
+        //{
+        //    var user = await GetCurrentUserAsync();
+        //    if (user != null)
+        //    {
+        //        await _userManager.SetTwoFactorEnabledAsync(user, true);
+        //        await _signInManager.SignInAsync(user, isPersistent: false);
+        //        _logger.LogInformation(1, "User enabled two-factor authentication.");
+        //    }
+        //    return RedirectToAction(nameof(Index), "Manage");
+        //}
 
         //
         // POST: /Manage/DisableTwoFactorAuthentication
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DisableTwoFactorAuthentication()
-        {
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                await _userManager.SetTwoFactorEnabledAsync(user, false);
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                _logger.LogInformation(2, "User disabled two-factor authentication.");
-            }
-            return RedirectToAction(nameof(Index), "Manage");
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DisableTwoFactorAuthentication()
+        //{
+        //    var user = await GetCurrentUserAsync();
+        //    if (user != null)
+        //    {
+        //        await _userManager.SetTwoFactorEnabledAsync(user, false);
+        //        await _signInManager.SignInAsync(user, isPersistent: false);
+        //        _logger.LogInformation(2, "User disabled two-factor authentication.");
+        //    }
+        //    return RedirectToAction(nameof(Index), "Manage");
+        //}
 
         //
         // GET: /Manage/VerifyPhoneNumber
-        [HttpGet]
-        public async Task<IActionResult> VerifyPhoneNumber(string phoneNumber)
-        {
-            var user = await GetCurrentUserAsync();
-            if (user == null)
-            {
-                return View("Error");
-            }
-            var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
-            // Send an SMS to verify the phone number
-            return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> VerifyPhoneNumber(string phoneNumber)
+        //{
+        //    var user = await GetCurrentUserAsync();
+        //    if (user == null)
+        //    {
+        //        return View("Error");
+        //    }
+        //    var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
+        //    // Send an SMS to verify the phone number
+        //    return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
+        //}
 
         //
         // POST: /Manage/VerifyPhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                var result = await _userManager.ChangePhoneNumberAsync(user, model.PhoneNumber, model.Code);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.AddPhoneSuccess });
-                }
-            }
-            // If we got this far, something failed, redisplay the form
-            ModelState.AddModelError(string.Empty, "Failed to verify phone number");
-            return View(model);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+        //    var user = await GetCurrentUserAsync();
+        //    if (user != null)
+        //    {
+        //        var result = await _userManager.ChangePhoneNumberAsync(user, model.PhoneNumber, model.Code);
+        //        if (result.Succeeded)
+        //        {
+        //            await _signInManager.SignInAsync(user, isPersistent: false);
+        //            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.AddPhoneSuccess });
+        //        }
+        //    }
+        //    // If we got this far, something failed, redisplay the form
+        //    ModelState.AddModelError(string.Empty, "Failed to verify phone number");
+        //    return View(model);
+        //}
 
         //
         // POST: /Manage/RemovePhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemovePhoneNumber()
-        {
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                var result = await _userManager.SetPhoneNumberAsync(user, null);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.RemovePhoneSuccess });
-                }
-            }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> RemovePhoneNumber()
+        //{
+        //    var user = await GetCurrentUserAsync();
+        //    if (user != null)
+        //    {
+        //        var result = await _userManager.SetPhoneNumberAsync(user, null);
+        //        if (result.Succeeded)
+        //        {
+        //            await _signInManager.SignInAsync(user, isPersistent: false);
+        //            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.RemovePhoneSuccess });
+        //        }
+        //    }
+        //    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        //}
 
         //
         // GET: /Manage/ChangePassword
         [HttpGet]
-        public IActionResult ChangePassword()
+        [Route("/[controller]/Change/[action]")]
+        public IActionResult Password()
         {
             return View();
         }
-
+         
         //
         // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        [Route("/[controller]/Change/[action]")]
+        public async Task<IActionResult> Password(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -259,47 +264,47 @@ namespace RateBlog.Controllers
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User changed their password successfully.");
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
+                    return RedirectToAction(nameof(Profile), new { Message = ManageMessageId.ChangePasswordSuccess });
                 }
                 AddErrors(result);
                 return View(model);
             }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return RedirectToAction(nameof(Profile), new { Message = ManageMessageId.Error });
         }
 
         //
         // GET: /Manage/SetPassword
-        [HttpGet]
-        public IActionResult SetPassword()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult SetPassword()
+        //{
+        //    return View();
+        //}
 
         //
         // POST: /Manage/SetPassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
 
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                var result = await _userManager.AddPasswordAsync(user, model.NewPassword);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.SetPasswordSuccess });
-                }
-                AddErrors(result);
-                return View(model);
-            }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
-        }
+        //    var user = await GetCurrentUserAsync();
+        //    if (user != null)
+        //    {
+        //        var result = await _userManager.AddPasswordAsync(user, model.NewPassword);
+        //        if (result.Succeeded)
+        //        {
+        //            await _signInManager.SignInAsync(user, isPersistent: false);
+        //            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.SetPasswordSuccess });
+        //        }
+        //        AddErrors(result);
+        //        return View(model);
+        //    }
+        //    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        //}
 
         //GET: /Manage/ManageLogins
         [HttpGet]
@@ -367,7 +372,8 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditProfile()
+        [Route("/[controller]/Profile/[action]")]
+        public async Task<IActionResult> Edit() 
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -375,25 +381,24 @@ namespace RateBlog.Controllers
 
             if (user.InfluenterId.HasValue)
             {
-                var influenter = _influenterRepo.Get(user.InfluenterId.Value);
+                var influenter = _influencerRepo.Get(user.InfluenterId.Value);
 
                 model = new EditProfileViewModel
                 {
                     Name = user.Name,
                     Email = user.Email,
-                    Birth = user.Birth,
-                    City = user.City,
+                    Year = user.Year,
+                    Postnummer = user.Postnummer,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
-                    Influenter = _influenterRepo.Get(user.InfluenterId.Value),
-                    YoutubeLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "YouTube").PlatformId),
-                    FacebookLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Facebook").PlatformId),
-                    InstagramLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Instagram").PlatformId),
-                    SnapchatLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "SnapChat").PlatformId),
-                    TwitterLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitter").PlatformId),
-                    WebsiteLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Website").PlatformId),
-                    TwitchLink = _platformRepo.GetLink(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitch").PlatformId),
-
+                    Influenter = _influencerRepo.Get(user.InfluenterId.Value),
+                    YoutubeLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id),
+                    FacebookLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id),
+                    InstagramLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Instagram").Id),
+                    SnapchatLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SnapChat").Id),
+                    TwitterLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitter").Id),
+                    WebsiteLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Website").Id),
+                    TwitchLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitch").Id),
                     IKList = await GetInfluenterKategoriList()
                 };
             }
@@ -403,8 +408,8 @@ namespace RateBlog.Controllers
                 {
                     Name = user.Name,
                     Email = user.Email,
-                    Birth = user.Birth,
-                    City = user.City,
+                    Year = user.Year,
+                    Postnummer = user.Postnummer,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
                     IKList = await GetInfluenterKategoriList()
@@ -413,8 +418,9 @@ namespace RateBlog.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditProfile(EditProfileViewModel model, IFormFile profilePic)
+        [HttpPost] 
+        [Route("/[controller]/Profile/[action]")]
+        public async Task<IActionResult> Edit(EditProfileViewModel model, IFormFile profilePic)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -428,8 +434,8 @@ namespace RateBlog.Controllers
                 user.Email = model.Email;
                 user.UserName = model.Email;
                 user.Name = model.Name;
-                user.Birth = model.Birth;
-                user.City = model.City;
+                user.Year = model.Year;
+                user.Postnummer = model.Postnummer;
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
 
@@ -438,7 +444,7 @@ namespace RateBlog.Controllers
                 {
                     MemoryStream ms = new MemoryStream();
                     profilePic.OpenReadStream().CopyTo(ms);
-                    user.ImageFile = ms.ToArray();
+                    user.ProfilePicture = ms.ToArray();
                 }
 
 
@@ -454,6 +460,10 @@ namespace RateBlog.Controllers
                 return View(model);
             }
 
+            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+            var message = allErrors.First();
+            TempData["Error"] = message.ErrorMessage;
+
             return View(model);
         }
 
@@ -467,8 +477,8 @@ namespace RateBlog.Controllers
                 user.Email = model.Email;
                 user.UserName = model.Email;
                 user.Name = model.Name;
-                user.Birth = model.Birth;
-                user.City = model.City;
+                user.Year = model.Year;
+                user.Postnummer = model.Postnummer;
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
 
@@ -476,7 +486,7 @@ namespace RateBlog.Controllers
                 {
                     MemoryStream ms = new MemoryStream();
                     model.ProfilePic.OpenReadStream().CopyTo(ms);
-                    user.ImageFile = ms.ToArray();
+                    user.ProfilePicture = ms.ToArray();
                 }
 
                 var result = await _userManager.UpdateAsync(user);
@@ -484,78 +494,80 @@ namespace RateBlog.Controllers
                 if (result.Succeeded != true)
                 {
                     TempData["Error"] = "Der findes allerede en bruger med denne email!";
-                    return View("EditProfile", model);
+                    return RedirectToAction("Edit", model);
                 }
 
                 // Add if influenterId is null
                 if (user.InfluenterId == null)
                 {
-                    var newInfluenter = new Influenter();
+                    var newInfluenter = new Influencer();
                     newInfluenter.Alias = model.Influenter.Alias;
-                    _influenterRepo.Add(newInfluenter);
-                    user.InfluenterId = newInfluenter.InfluenterId;
+                    _influencerRepo.Add(newInfluenter);
+                    user.InfluenterId = newInfluenter.Id;
                 }
 
-                var influenter = _influenterRepo.Get(user.InfluenterId.Value);
+                var influenter = _influencerRepo.Get(user.InfluenterId.Value);
                 influenter.Alias = model.Influenter.Alias;
-                _influenterRepo.Update(influenter);
+                _influencerRepo.Update(influenter);
 
                 // Indsætter links og platforme, hvis de ikke er null. Koden skal nok laves om...
 
-                _platformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "YouTube").PlatformId, model.YoutubeLink);
-                _platformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Facebook").PlatformId, model.FacebookLink);
-                _platformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Instagram").PlatformId, model.InstagramLink);
-                _platformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "SnapChat").PlatformId, model.SnapchatLink);
-                _platformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitter").PlatformId, model.TwitterLink);
-                _platformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Website").PlatformId, model.WebsiteLink);
-                _platformRepo.Insert(influenter.InfluenterId, _platformRepo.GetAll().SingleOrDefault(x => x.PlatformNavn == "Twitch").PlatformId, model.TwitchLink);
+                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id, model.YoutubeLink);
+                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id, model.FacebookLink);
+                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Instagram").Id, model.InstagramLink);
+                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SnapChat").Id, model.SnapchatLink);
+                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitter").Id, model.TwitterLink);
+                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Website").Id, model.WebsiteLink);
+                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitch").Id, model.TwitchLink);
 
 
                 // Insætter kategori
                 foreach (var v in model.IKList)
                 {
-                    _kategoriRepo.Insert(influenter.InfluenterId, _kategoriRepo.GetAll().SingleOrDefault(x => x.KategoriNavn == v.KategoriNavn).KategoriId, v.IsSelected);
+                    _platformCategoryService.InsertCategory(influenter.Id, _categoryRepo.GetAll().SingleOrDefault(x => x.Name == v.KategoriNavn).Id, v.IsSelected);
                 }
 
                 if (result.Succeeded)
                 {
                     TempData["Success"] = "Din profil blev opdateret!";
-                    return RedirectToAction("EditProfile");
+                    return RedirectToAction("Edit");
                 }
 
                 TempData["Error"] = "Der findes allerede en bruger med denne email!";
-                return View("EditProfile", model);
+                return RedirectToAction("Edit", model);
             }
 
             if (ModelState["ProfilePic"] != null)
             {
-                var dd = ModelState["ProfilePic"];
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 var message = allErrors.First();
                 TempData["Error"] = message.ErrorMessage;
             }
             else
             {
-                TempData["Error"] = "Du skal udfylde dine informationer for at kunne blive influenter!";
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                var message = allErrors.First();
+                TempData["Error"] = message.ErrorMessage;
             }
 
 
-            return View("EditProfile", model);
+            return RedirectToAction("Edit", model);
         }
 
         [HttpGet]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true, Duration = 0)]
-        public IActionResult Anmeldelser()
+        public IActionResult Feedback()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult SeAnmeldelse(int id)
+        [Route("/[controller]/Feedback/[action]/{id}")]
+        public IActionResult Answer(int id)
         {
-            var rating = _ratingRepo.Get(id);
+            var rating = _feedbackRepo.Get(id); 
             rating.IsRead = true;
-            _ratingRepo.Update(rating);
+            _feedbackRepo.Update(rating);
 
             var model = new FeedbackResponseViewModel()
             {
@@ -564,13 +576,13 @@ namespace RateBlog.Controllers
 
             return View(model);
         }
-
-        public IActionResult Answer(FeedbackResponseViewModel model)
+        
+        public IActionResult AnswerFeedback(FeedbackResponseViewModel model)
         {
-            var rating = _ratingRepo.Get(model.Rating.RatingId);
+            var rating = _feedbackRepo.Get(model.Rating.Id);
             rating.Answer = model.Rating.Answer;
 
-            _ratingRepo.Update(rating);
+            _feedbackRepo.Update(rating);
 
             if (model.Rating.Answer == null)
             {
@@ -583,18 +595,19 @@ namespace RateBlog.Controllers
 
 
 
-            return RedirectToAction("Anmeldelser");
+            return RedirectToAction("Feedback");
         }
 
         [HttpPost]
-        public IActionResult MinAnmeldelse(int id)
+        [Route("/[controller]/Feedback/[action]/{id}")]
+        public IActionResult Read(int id)
         {
-            var rating = _ratingRepo.Get(id);
+            var rating = _feedbackRepo.Get(id);
 
             if (!string.IsNullOrEmpty(rating.Answer))
             {
                 rating.IsAnswerRead = true;
-                _ratingRepo.Update(rating);
+                _feedbackRepo.Update(rating);
             }
 
             var model = new MinAnmeldelseViewModel()
@@ -610,16 +623,16 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> ProfilePic()
         {
             var user = await GetCurrentUserAsync();
-            byte[] buffer = user.ImageFile;
+            byte[] buffer = user.ProfilePicture;
 
             if(buffer == null)
             {
                 var dir = _env.WebRootPath;
-                var path = Path.Combine(dir, "/images", "airbnb" + ".png");
+                var path = Path.Combine(dir, "/images", "BF" + ".png");
                 return File(path, "image/jpeg"); 
             }
 
-            return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ImageFile));
+            return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ProfilePicture));
         }
 
         [HttpGet]
@@ -627,16 +640,16 @@ namespace RateBlog.Controllers
         public IActionResult UsersProfilePic(string id)
         {
             var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
-            byte[] buffer = user.ImageFile;
+            byte[] buffer = user.ProfilePicture;
 
             if (buffer == null)
             {
                 var dir = _env.WebRootPath;
-                var path = Path.Combine(dir, "/images", "airbnb" + ".png");
+                var path = Path.Combine(dir, "/images", "BF" + ".png");
                 return File(path, "image/jpeg");
             }
 
-            return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ImageFile));
+            return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ProfilePicture));
         }
 
         #region Helpers
@@ -672,19 +685,19 @@ namespace RateBlog.Controllers
 
             if (user.InfluenterId.HasValue)
             {
-                var influenter = _influenterRepo.Get(user.InfluenterId.Value);
+                var influenter = _influencerRepo.Get(user.InfluenterId.Value);
 
                 return new List<InfluenterKategoriViewModel>()
                     {
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "DIY", IsSelected = _kategoriRepo.IsKategoriSelected(influenter.InfluenterId , _kategoriRepo.GetIdByName("DIY")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = _kategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Beauty")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = _kategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Entertainment"))  },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = _kategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Fashion")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Food", IsSelected = _kategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Food"))},
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = _kategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Gaming"))},
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = _kategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Lifestyle")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Mommy", IsSelected = _kategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("Mommy")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "VLOG", IsSelected = _kategoriRepo.IsKategoriSelected(influenter.InfluenterId, _kategoriRepo.GetIdByName("VLOG")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "DIY", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id , _platformCategoryService.GetCategoryIdByName("DIY")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Beauty")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Entertainment"))  },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Fashion")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Food", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Food"))},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Gaming"))},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Lifestyle")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Mommy", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Mommy")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "VLOG", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("VLOG")) },
                     };
             }
             else

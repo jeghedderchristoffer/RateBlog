@@ -130,10 +130,6 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<DateTime?>("Birth");
-
-                    b.Property<string>("City");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -141,8 +137,6 @@ namespace RateBlog.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<byte[]>("ImageFile");
 
                     b.Property<int?>("InfluenterId");
 
@@ -164,6 +158,10 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int?>("Postnummer");
+
+                    b.Property<byte[]>("ProfilePicture");
+
                     b.Property<string>("ProfileText");
 
                     b.Property<string>("SecurityStamp");
@@ -172,6 +170,8 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
+
+                    b.Property<int?>("Year");
 
                     b.HasKey("Id");
 
@@ -188,7 +188,19 @@ namespace RateBlog.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.EkspertRating", b =>
+            modelBuilder.Entity("RateBlog.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.ExpertFeedback", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -233,77 +245,12 @@ namespace RateBlog.Data.Migrations
 
                     b.HasIndex("InfluenterId");
 
-                    b.ToTable("EkspertRating");
+                    b.ToTable("ExpertFeedback");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.Influenter", b =>
+            modelBuilder.Entity("RateBlog.Models.Feedback", b =>
                 {
-                    b.Property<int>("InfluenterId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Alias")
-                        .IsRequired();
-
-                    b.HasKey("InfluenterId");
-
-                    b.ToTable("Influenter");
-                });
-
-            modelBuilder.Entity("RateBlog.Models.InfluenterKategori", b =>
-                {
-                    b.Property<int>("InfluenterId");
-
-                    b.Property<int>("KategoriId");
-
-                    b.HasKey("InfluenterId", "KategoriId");
-
-                    b.HasIndex("KategoriId");
-
-                    b.ToTable("InfluenterKategori");
-                });
-
-            modelBuilder.Entity("RateBlog.Models.InfluenterPlatform", b =>
-                {
-                    b.Property<int>("InfluenterId");
-
-                    b.Property<int>("PlatformId");
-
-                    b.Property<string>("Link");
-
-                    b.HasKey("InfluenterId", "PlatformId");
-
-                    b.HasIndex("PlatformId");
-
-                    b.ToTable("InfluenterPlatform");
-                });
-
-            modelBuilder.Entity("RateBlog.Models.Kategori", b =>
-                {
-                    b.Property<int>("KategoriId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("KategoriNavn");
-
-                    b.HasKey("KategoriId");
-
-                    b.ToTable("Kategori");
-                });
-
-            modelBuilder.Entity("RateBlog.Models.Platform", b =>
-                {
-                    b.Property<int>("PlatformId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("PlatformNavn");
-
-                    b.HasKey("PlatformId");
-
-                    b.ToTable("Platform");
-                });
-
-            modelBuilder.Entity("RateBlog.Models.Rating", b =>
-                {
-                    b.Property<int>("RatingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool?>("Anbefaling");
@@ -312,7 +259,7 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("Feedback");
+                    b.Property<string>("FeedbackText");
 
                     b.Property<int>("InfluenterId");
 
@@ -330,13 +277,66 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<int>("Troværdighed");
 
-                    b.HasKey("RatingId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("InfluenterId");
 
-                    b.ToTable("Rating");
+                    b.ToTable("Feedback");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.Influencer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Alias")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Influencer");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.InfluencerCategory", b =>
+                {
+                    b.Property<int>("InfluencerId");
+
+                    b.Property<int>("CategoryId");
+
+                    b.HasKey("InfluencerId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("InfluencerCategory");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.InfluencerPlatform", b =>
+                {
+                    b.Property<int>("InfluencerId");
+
+                    b.Property<int>("PlatformId");
+
+                    b.Property<string>("Link");
+
+                    b.HasKey("InfluencerId", "PlatformId");
+
+                    b.HasIndex("PlatformId");
+
+                    b.ToTable("InfluencerPlatform");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.Platform", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Platform");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -378,58 +378,58 @@ namespace RateBlog.Data.Migrations
 
             modelBuilder.Entity("RateBlog.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("RateBlog.Models.Influenter", "Influenter")
+                    b.HasOne("RateBlog.Models.Influencer", "Influenter")
                         .WithOne("ApplicationUser")
                         .HasForeignKey("RateBlog.Models.ApplicationUser", "InfluenterId");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.EkspertRating", b =>
+            modelBuilder.Entity("RateBlog.Models.ExpertFeedback", b =>
                 {
                     b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("RateBlog.Models.Influenter", "Influenter")
+                    b.HasOne("RateBlog.Models.Influencer", "Influenter")
                         .WithMany()
                         .HasForeignKey("InfluenterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RateBlog.Models.InfluenterKategori", b =>
+            modelBuilder.Entity("RateBlog.Models.Feedback", b =>
                 {
-                    b.HasOne("RateBlog.Models.Influenter", "Influenter")
-                        .WithMany("InfluenterKategori")
-                        .HasForeignKey("InfluenterId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("RateBlog.Models.Kategori", "Kategori")
-                        .WithMany("InfluenterKategori")
-                        .HasForeignKey("KategoriId")
+                    b.HasOne("RateBlog.Models.Influencer", "Influenter")
+                        .WithMany("Ratings")
+                        .HasForeignKey("InfluenterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RateBlog.Models.InfluenterPlatform", b =>
+            modelBuilder.Entity("RateBlog.Models.InfluencerCategory", b =>
                 {
-                    b.HasOne("RateBlog.Models.Influenter", "Influenter")
+                    b.HasOne("RateBlog.Models.Category", "Category")
+                        .WithMany("InfluenterKategori")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RateBlog.Models.Influencer", "Influencer")
+                        .WithMany("InfluenterKategori")
+                        .HasForeignKey("InfluencerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("RateBlog.Models.InfluencerPlatform", b =>
+                {
+                    b.HasOne("RateBlog.Models.Influencer", "Influencer")
                         .WithMany("InfluenterPlatform")
-                        .HasForeignKey("InfluenterId")
+                        .HasForeignKey("InfluencerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("RateBlog.Models.Platform", "Platform")
                         .WithMany("InfluenterPlatform")
                         .HasForeignKey("PlatformId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RateBlog.Models.Rating", b =>
-                {
-                    b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("RateBlog.Models.Influenter", "Influenter")
-                        .WithMany("Ratings")
-                        .HasForeignKey("InfluenterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

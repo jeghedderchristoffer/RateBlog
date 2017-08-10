@@ -8,7 +8,7 @@ namespace RateBlog.Models.EkspertViewModels
 {
     public class EkspertRatingViewModel
     {
-        public Influenter Influenter { get; set; }
+        public Influencer Influenter { get; set; }
 
         [Required]
         public string Offentligfeedback { get; set; }
