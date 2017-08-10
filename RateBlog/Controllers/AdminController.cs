@@ -82,8 +82,8 @@ namespace RateBlog.Controllers
 
         public IActionResult EditUser(string id)
         {
-            
-            var user = _influenter.GetByStringID(id);
+
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id); 
            
             var model = new SeMereViewModel()
             {
