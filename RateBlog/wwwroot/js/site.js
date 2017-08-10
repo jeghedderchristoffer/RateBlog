@@ -319,5 +319,34 @@ $(document).ready(function () {
 });
 
 
-// Submit form on enter
+// Email button create
+$(document).ready(function () {
+
+    var isOpenCreate = false;
+
+    $("#emailCreateButton").click(function () {
+        if (isOpenCreate) {
+            $("#emailCreate").slideUp();
+            isOpenCreate ^= true;
+        }
+        else {
+            $("#emailCreate").slideDown();
+            isOpenCreate ^= true;
+        }        
+    });
+
+    var isOpenLogin = false; 
+
+    $("#emailLoginButton").click(function () {
+        if (isOpenLogin) {
+            $("#emailLogin").slideUp();
+            isOpenLogin ^= true;
+        }
+        else {
+            $("#emailLogin").slideDown();
+            isOpenLogin ^= true;
+        }
+    });
+
+});
 

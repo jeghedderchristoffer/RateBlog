@@ -250,7 +250,7 @@ namespace RateBlog.Services
                 return Math.Round(average, 1);
             }
 
-            return 0;
+            return 0.0;
         }
 
         public int GetUnreadAnswerCount(string id)

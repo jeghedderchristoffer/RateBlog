@@ -15,9 +15,11 @@ namespace RateBlog.Models.ManageViewModels
         [Required(ErrorMessage = "Du skal udfylde din email.")]
         public string Email { get; set; }
 
-        public DateTime? Birth { get; set; }
+        [Range(1900, 2017, ErrorMessage = "Du skal vælge det år, som du er født i")]
+        public int? Year { get; set; }
 
-        public string City { get; set; }
+        [Range(1000, 9999, ErrorMessage = "Du skal vælge et gyldigt postnummer")]
+        public int? Postnummer { get; set; } 
 
         public string ProfileText { get; set; }
 

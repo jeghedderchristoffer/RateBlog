@@ -69,31 +69,8 @@
                                     </div>
                                 </div>
                             </div>
+                            <p class="text-center" style="margin-top: 20px; margin-bottom: 0">@FeedbackService.GetTotalScore(user.InfluenterId.Value).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(user.InfluenterId.Value) ratings</p>
                         </div>
-                    </div>
-
-                    <div class="feedback-rating-all-box">
-                        <div class="feedback-rating-all-box-item" style="border: none">
-                            <h3 class="text-center">Ekspert rating</h3>
-                            <div class="show-rating-box-show">
-                                <div class="show-rating-show">
-                                    <div class="show-rating-front-show">
-                                        @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(user.InfluenterId.Value); i++)
-                                        {
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        }
-                                    </div>
-                                    <div class="show-rating-back-show">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                     <hr />
                 </div>
@@ -204,31 +181,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                            <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 20px">@FeedbackService.GetTotalScore(user.InfluenterId.Value).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(user.InfluenterId.Value) ratings</p>
 
-                    <div class="feedback-rating-all-box">
-                        <div class="feedback-rating-all-box-item" style="border: none">
-                            <h3 class="text-center">Ekspert rating</h3>
-                            <div class="show-rating-box-show">
-                                <div class="show-rating-show">
-                                    <div class="show-rating-front-show">
-                                        @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(user.InfluenterId.Value); i++)
-                                        {
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        }
-                                    </div>
-                                    <div class="show-rating-back-show">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -345,6 +300,6 @@
                 el.value = el.value ? location.reload() : true;
             }, 0);
         });
-        
+
     </script>
 }

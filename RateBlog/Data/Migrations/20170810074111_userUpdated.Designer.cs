@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170810074111_userUpdated")]
+    partial class userUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -158,7 +159,7 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<int?>("Postnummer");
+                    b.Property<int>("Postnummer");
 
                     b.Property<byte[]>("ProfilePicture");
 
@@ -171,7 +172,7 @@ namespace RateBlog.Data.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("Year");
+                    b.Property<int>("Year");
 
                     b.HasKey("Id");
 

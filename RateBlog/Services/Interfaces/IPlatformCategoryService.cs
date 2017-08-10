@@ -80,6 +80,7 @@ namespace RateBlog.Services.Interfaces
         /// </summary>
         /// <param name="name">Category Name</param>
         /// <returns></returns>
-        IEnumerable<ApplicationUser> GetAllInfluencersWithCategory(string name); 
+        IEnumerable<ApplicationUser> GetAllInfluencersWithCategory(string name);
+
     }
 }

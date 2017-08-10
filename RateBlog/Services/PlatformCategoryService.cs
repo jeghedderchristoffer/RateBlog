@@ -15,12 +15,15 @@ namespace RateBlog.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _dbContext;
         private readonly IRepository<Category> _categoryRepo;
+        private readonly IRepository<Platform> _platformRepo; 
+        
 
-        public PlatformCategoryService(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext, IRepository<Category> categoryRepo)
+        public PlatformCategoryService(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo)
         {
             _userManager = userManager;
             _dbContext = dbContext;
-            _categoryRepo = categoryRepo; 
+            _categoryRepo = categoryRepo;
+            _platformRepo = platformRepo; 
         }
 
         public IEnumerable<InfluencerPlatform> GetAllInfluencerPlatformForInfluencer(int id)
@@ -47,7 +50,7 @@ namespace RateBlog.Services
 
             return userList;
         }
-
+       
         public IEnumerable<ApplicationUser> GetAllInfluencersWithPlatform(string name)
         {
             var id = GetPlatformIdByName(name);

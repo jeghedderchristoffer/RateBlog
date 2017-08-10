@@ -1,5 +1,5 @@
 ﻿body {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Oxygen', sans-serif;
 }
 
 /*Iphone*/
@@ -375,6 +375,7 @@ body.modal-open {
         height: 100%;
         font-size: 24px;
         transition: all 0.3s ease 0s;
+        font-family: 'Raleway', sans-serif;
     }
 
         .navbar-default .navbar-brand:hover,
@@ -550,7 +551,6 @@ body.modal-open {
 
     .addon-number h1 {
         margin-bottom: 15px;
-        font-family: 'Mada', sans-serif;
     }
 
     .addon-number p {
@@ -988,7 +988,7 @@ body.modal-open {
     color: #fff;
     padding: 10px 52px;
     border-radius: 5px;
-    margin-top: 20px;
+    margin-top: 15px;
     text-align: center;
     transition: all .2s ease-out;
     width: 100%;
@@ -1071,7 +1071,7 @@ body.modal-open {
 }
 
 .search-result {
-    height: 170px;
+    height: 190px;
     background: #fff;
     border-radius: 5px;
     margin-bottom: 30px;
@@ -1079,12 +1079,12 @@ body.modal-open {
 }
 
     .search-result h4 {
-        margin-top: 30px;
+        margin-top: 42px;
         font-weight: bold;
     }
 
 .search-result-box {
-    height: 170px;
+    height: 190px;
 }
 
 .search-inputsøg {
@@ -2378,7 +2378,8 @@ footer {
 
     .feedback-rating-all-box-item h3 {
         margin: 0;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+        font-size: 28px;
     }
 
 .readrating h1 {
@@ -2425,7 +2426,7 @@ footer {
 
 
 .anmeldelser-h2 {
-    padding: 25px 0 25px 33px;
+    padding: 25px 0 25px 3px;
     margin: 0
 }
 
@@ -2446,7 +2447,7 @@ footer {
     }
 
     .feedback-rating-all-box-item h3 {
-        font-size: 18px
+        font-size: 24px
     }
 }
 
@@ -2663,7 +2664,7 @@ footer {
 .show-rating-box {
     display: block;
     float: right;
-    margin-top: 15px;
+    margin-top: 16px;
 }
 
 .show-rating {
@@ -2689,7 +2690,7 @@ footer {
         text-align: center;
     }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
     .show-rating-box {
         float: none;
         text-align: center;
@@ -2872,6 +2873,12 @@ footer {
     letter-spacing: 1px;
 }
 
+    .feedback-influencer-btn.width100 {
+        width: 100% !important;
+        float: none !important;
+        text-align: center !important
+    }
+
     .feedback-influencer-btn:hover {
         text-decoration: none;
         color: #fff;
@@ -2914,8 +2921,8 @@ footer {
     padding-left: 30px;
 }
 
-@media (max-width: 767px){
-    .feedback-helper{
+@media (max-width: 767px) {
+    .feedback-helper {
         font-size: 24px !important;
     }
 }
@@ -2937,7 +2944,6 @@ footer {
         background-color: #4BB533;
     }
 
-.faq-kontakt{
+.faq-kontakt {
     margin-top: 50px;
 }
-

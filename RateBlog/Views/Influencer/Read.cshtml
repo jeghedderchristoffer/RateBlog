@@ -8,7 +8,6 @@
 <div class="navbar-allaround"></div>
 
 <div class="navbar-addon">
-
     <div class="container">
         <div class="col-md-12 col-xs-12 noPadding">
             <div class="col-md-2 col-xs-2 noPadding addon-box">
@@ -38,264 +37,140 @@
 </div>
 
 <div class=" container">
-    <div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
+    <div class="col-md-12 col-xs-12 noPadding" style="margin-bottom: 20px;">
+        <div class="col-md-7 col-sm-6 readrating hidden-xs noPadding">
+            <h2 class="anmeldelser-h2">Følger feedback</h2>
+        </div>
 
-        @*Fans*@
+        <div class="col-xs-12 readrating visible-xs noPadding">
+            <h2 class="anmeldelser-h2">Følger feedback</h2>         
+            <div class="feedback-rating-all-box" style="margin-bottom: 0">
+                <div class="feedback-rating-all-box-item">
+                    <h2 class="text-center" style="margin-top: 0; margin-bottom: 20px">Følger rating</h2>
+                    <div class="show-rating-box-show">
+                        <div class="show-rating-show">
+                            <div class="show-rating-front-show">
+                                @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.Influenter.Id); i++)
+                                {
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                }
+                            </div>
+                            <div class="show-rating-back-show">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 20px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
+                </div>
+            </div>
 
-        <div class="col-md-7 col-sm-6 readrating hidden-xs">
-            <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Følgere</h2>
-            <h4><i>Samlet rating:</i></h4>
-            <div class="show-rating-box-show">
-                <div class="show-rating-show">
-                    <div class="show-rating-front-show">
-                        @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.ApplicationUser.InfluenterId.Value); i++)
+            <hr />
+
+        </div>
+
+        <div class="col-md-12 col-xs-12 noPadding">
+            <div class="col-md-7 col-sm-6 noPadding">
+                @if (Model.ApplicationUser.InfluenterId.HasValue)
+                {
+                    @if (FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).ToList().Count != 0)
+                    {
+                        @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
                         {
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        }
-                    </div>
-                    <div class="show-rating-back-show">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        @*Eksperter*@
-
-        <div class="col-md-5 col-sm-6 col-xs-12 readrating">
-            <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Eksperter</h2>
-            <h4><i>Samlet rating:</i></h4>
-            <div class="show-rating-box-show">
-                <div class="show-rating-show">
-                    <div class="show-rating-front-show">
-                        @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(Model.ApplicationUser.InfluenterId.Value); i++)
-                        {
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        }
-                    </div>
-                    <div class="show-rating-back-show">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xs-12 visible-xs">
-        @if (Model.ApplicationUser.InfluenterId.HasValue)
-        {
-            @if (FeedbackService.GetAllExpertFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).ToList().Count != 0)
-            {
-                @foreach (var v in FeedbackService.GetAllExpertFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
-                {
-                    <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
-                        <div class="col-md-2 col-xs-12 noPadding read-img-container">
-                            <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
-                        </div>
-
-                        <div class="col-md-8 col-xs-12 noPadding">
-                            <p><b>Ekspert</b></p>
-                            <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                            <h5><i>Feedback:</i></h5>
-                            <p class="feedback-text">@v.OffentligFeedback</p>
-                        </div>
-
-                        <div class="col-md-2 col-xs-12" style="height: 100%">
-                            <div class="show-rating-box">
-                                <div class="show-rating">
-                                    <div class="show-rating-front">
-                                        @for (int i = 0; i < FeedbackService.GetSingleExpertFeedbackScoreAverage(v.Id); i++)
-                                        {
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        }
-                                    </div>
-                                    <div class="show-rating-back">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-
-                                    </div>
+                            <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
+                                <div class="col-md-2 col-xs-12 col-lg-2 noPadding read-img-container">
+                                    <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
                                 </div>
-                            </div>
-                        </div>
 
+                                <div class="col-md-5 col-xs-12 col-lg-6 noPadding">
+                                    <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</b></p>
+                                    <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
+                                    <h5><i>Feedback:</i></h5>
+                                    <p class="feedback-text">@v.FeedbackText</p>
+                                </div>
 
-                    </div>
-                }
-            }
-            else
-            {
-                <p class="text-center">Denne influencer har endnu ikke modtaget ekspert feedback</p>
-            }
-        }
-    </div>
-
-    <div class="col-xs-12 readrating visible-xs mobile-margin-bot">
-        <h2 style="padding: 25px 0 10px 0; margin: 0; text-align: center;">Følgere</h2>
-        <h4><i>Samlet rating:</i></h4>
-        <div class="show-rating-box-show">
-            <div class="show-rating-show">
-                <div class="show-rating-front-show">
-                    @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.ApplicationUser.InfluenterId.Value); i++)
-                    {
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                    }
-                </div>
-                <div class="show-rating-back-show">
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="col-md-12 col-xs-12">
-
-        @*Fan*@
-
-        <div class="col-md-7 col-sm-6 noPadding">
-            @if (Model.ApplicationUser.InfluenterId.HasValue)
-            {
-                @if (FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).ToList().Count != 0)
-                {
-                    @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
-                    {
-                        <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
-                            <div class="col-md-2 col-xs-12 noPadding read-img-container">
-                                <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
-                            </div>
-
-                            <div class="col-md-6 col-xs-12 noPadding">
-                                <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</b></p>
-                                <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                                <h5><i>Feedback:</i></h5>
-                                <p class="feedback-text">@v.FeedbackText</p>
-                            </div>
-
-                            <div class="col-md-4 col-xs-12" style="margin-bottom: 5px;">
-                                <div class="show-rating-box">
-                                    <div class="show-rating">
-                                        <div class="show-rating-front">
-                                            @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
-                                            {
+                                <div class="col-md-5 col-xs-12 col-lg-4" style="margin-bottom: 5px;">
+                                    <div class="show-rating-box">
+                                        <div class="show-rating">
+                                            <div class="show-rating-front">
+                                                @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
+                                                {
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                }
+                                            </div>
+                                            <div class="show-rating-back">
                                                 <i class="fa fa-star" aria-hidden="true"></i>
-                                            }
-                                        </div>
-                                        <div class="show-rating-back">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @if (v.Answer != null)
-                            {
-                                <div class="col-md-12 col-xs-12" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 5px; padding-left: 0; padding-bottom:10px;">
-                                    <div class="col-md-2 noPadding read-img-container">
-                                        <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
-                                    </div>
-                                    <div class="col-md-6 col-xs-12 noPadding">
-                                        <p><b>@Model.ApplicationUser.Name</b></p>
-                                        <h5><i>Svar:</i></h5>
-                                        <p style="line-height: 150%">@v.Answer</p>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                }
-                else
-                {
-                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har endnu ikke modtaget følger feedback</p>
-                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn center-block feedback-margin-bot" style="background: #08468d; float: none !important"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
-                }
-
-            }
-
-        </div>
-
-        @*Eksperter*@
-
-
-        <div class="col-md-5 col-sm-6 noPaddingRight hidden-xs">
-            @if (Model.ApplicationUser.InfluenterId.HasValue)
-            {
-                @if (FeedbackService.GetAllExpertFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).ToList().Count != 0)
-                {
-
-                    @foreach (var v in FeedbackService.GetAllExpertFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
-                    {
-                        <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
-                            <div class="col-md-2 col-xs-12 noPadding read-img-container">
-                                <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
-                            </div>
-
-                            <div class="col-md-4 col-xs-12 noPadding">
-                                <p><b>Ekspert</b></p>
-                                <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                            </div>
-
-                            <div class="col-md-6 col-xs-12" style="height: 100%">
-                                <div class="show-rating-box">
-                                    <div class="show-rating">
-                                        <div class="show-rating-front">
-                                            @for (int i = 0; i < FeedbackService.GetSingleExpertFeedbackScoreAverage(v.Id); i++)
-                                            {
                                                 <i class="fa fa-star" aria-hidden="true"></i>
-                                            }
-                                        </div>
-                                        <div class="show-rating-back">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-offset-2 col-md-12" style=" padding-left:0px;">
-                                <h5><i>Feedback:</i></h5>
-                                <p class="feedback-text">@v.OffentligFeedback</p>
-                            </div>
 
-                        </div>
+                                @if (v.Answer != null)
+                                {
+                                    <div class="col-md-12 col-xs-12" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 5px; padding-left: 0; padding-bottom:10px;">
+                                        <div class="col-md-2 noPadding read-img-container">
+                                            <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
+                                        </div>
+                                        <div class="col-md-6 col-xs-12 noPadding">
+                                            <p><b>@Model.ApplicationUser.Name</b></p>
+                                            <h5><i>Svar:</i></h5>
+                                            <p style="line-height: 150%">@v.Answer</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
                     }
+                    else
+                    {
+                        <h4>Denne influencer har ikke modtaget noget feedback</h4>
+                    }
+
                 }
-                else
-                {
 
-                    <p class="text-center" style="margin-bottom: 20px;">Denne influencer har ikke fået nogle ekspert feedback.</p>
-                }
+            </div>
+            <div class="col-md-5 col-sm-6 hidden-xs">
+                <div class="feedback-rating-all-box">
+                    <div class="feedback-rating-all-box-item">
+                        <h2 class="text-center" style="margin-top: 0; margin-bottom: 20px">Følger rating</h2>
+                        <div class="show-rating-box-show">
+                            <div class="show-rating-show">
+                                <div class="show-rating-front-show">
+                                    @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.Influenter.Id); i++)
+                                    {
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    }
+                                </div>
+                                <div class="show-rating-back-show">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 20px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
+                    </div>
+                </div>
 
-            }
+                <div class="feedback-rating-all-box">
+                    <div class="feedback-rating-all-box-item" style="padding: 20px;">
+                        <h2 class="text-center" style="margin-top: 0; margin-bottom: 20px">Giv dit feedback</h2>
+                        <p style="font-size: 16px">Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
+                        <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3; margin-top: 20px"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>      
+                    </div>
+                </div>
 
+            </div>
         </div>
-
     </div>
 </div>
-
-

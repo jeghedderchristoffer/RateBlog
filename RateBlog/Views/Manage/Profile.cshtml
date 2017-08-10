@@ -65,8 +65,7 @@
                 {
                     @if (FeedbackService.HasFeedback(user.InfluenterId.Value))
                     {
-
-                        <h3 class="text-center" style="margin-top: 0">Fan rating:</h3>
+                        <h3 class="text-center" style="margin-top: 0">Følger rating:</h3>
 
                         <div class="show-rating-box-show">
                             <div class="show-rating-show">
@@ -85,27 +84,7 @@
                                 </div>
                             </div>
                         </div>
-
-                            <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
-
-                            <div class="show-rating-box-show">
-                                <div class="show-rating-show">
-                                    <div class="show-rating-front-show">
-                                        @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(user.InfluenterId.Value); i++)
-                                        {
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        }
-                                    </div>
-                                    <div class="show-rating-back-show">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-center">Antal ratings: @FeedbackService.GetInfluencerFeedbackCount(user.InfluenterId.Value)</p>
+                        <p class="text-center" style="margin-top: 20px; margin-bottom: 20px; font-size: 18px">@FeedbackService.GetTotalScore(user.InfluenterId.Value).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(user.InfluenterId.Value) ratings</p>
                     }
                     else
                     {

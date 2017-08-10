@@ -387,8 +387,8 @@ namespace RateBlog.Controllers
                 {
                     Name = user.Name,
                     Email = user.Email,
-                    Birth = user.Birth,
-                    City = user.City,
+                    Year = user.Year,
+                    Postnummer = user.Postnummer,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
                     Influenter = _influencerRepo.Get(user.InfluenterId.Value),
@@ -408,8 +408,8 @@ namespace RateBlog.Controllers
                 {
                     Name = user.Name,
                     Email = user.Email,
-                    Birth = user.Birth,
-                    City = user.City,
+                    Year = user.Year,
+                    Postnummer = user.Postnummer,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
                     IKList = await GetInfluenterKategoriList()
@@ -434,8 +434,8 @@ namespace RateBlog.Controllers
                 user.Email = model.Email;
                 user.UserName = model.Email;
                 user.Name = model.Name;
-                user.Birth = model.Birth;
-                user.City = model.City;
+                user.Year = model.Year;
+                user.Postnummer = model.Postnummer;
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
 
@@ -460,6 +460,10 @@ namespace RateBlog.Controllers
                 return View(model);
             }
 
+            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+            var message = allErrors.First();
+            TempData["Error"] = message.ErrorMessage;
+
             return View(model);
         }
 
@@ -473,8 +477,8 @@ namespace RateBlog.Controllers
                 user.Email = model.Email;
                 user.UserName = model.Email;
                 user.Name = model.Name;
-                user.Birth = model.Birth;
-                user.City = model.City;
+                user.Year = model.Year;
+                user.Postnummer = model.Postnummer;
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
 
@@ -535,14 +539,15 @@ namespace RateBlog.Controllers
 
             if (ModelState["ProfilePic"] != null)
             {
-                var dd = ModelState["ProfilePic"];
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 var message = allErrors.First();
                 TempData["Error"] = message.ErrorMessage;
             }
             else
             {
-                TempData["Error"] = "Du skal udfylde dine informationer for at kunne blive influenter!";
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                var message = allErrors.First();
+                TempData["Error"] = message.ErrorMessage;
             }
 
 

@@ -102,7 +102,9 @@
                                 <i class="fa fa-star" aria-hidden="true"></i>
                             </div>
                         </div>
+                        <p style="margin-bottom: 0; margin-top: 6px; text-align: center">@FeedbackService.GetTotalScore(influ.InfluenterId.Value).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(influ.InfluenterId.Value) ratings</p>
                     </div>
+                    
                     <a asp-controller="Influencer" asp-action="Give" asp-route-id="@influ.InfluenterId" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
                     <a asp-controller="Influencer" asp-action="Read" asp-route-id="@influ.InfluenterId" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />
 

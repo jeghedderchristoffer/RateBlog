@@ -53,9 +53,9 @@
         </div>
         <div class="col-md-12">
             <div class="col-md-4">
-                @if (FeedbackService.HasFeedback(Model.Influenter.Id) && (FeedbackService.HasExpertFeedback(Model.Influenter.Id)))
+                @if (FeedbackService.HasFeedback(Model.Influenter.Id))
                 {
-                    <h3 class="text-center">Følger rating:</h3>
+                    <h3 class="text-center" style="margin-top: 0">Følger rating:</h3>
 
                     <div class="show-rating-box-show">
                         <div class="show-rating-show">
@@ -74,101 +74,17 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center">Antal ratings: @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id)</p>
+                    <p class="text-center" style="margin-top: 20px; margin-bottom: 20px; font-size: 18px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
 
-                    <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
+                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #53b80a;"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a>
 
-                    <div class="show-rating-box-show">
-                        <div class="show-rating-show">
-                            <div class="show-rating-front-show">
-                                @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(Model.Influenter.Id); i++)
-                                {
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                }
-                            </div>
-                            <div class="show-rating-back-show">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p class="text-center">Antal ratings: @FeedbackService.GetExpertFeedbackCountForInfluencer(Model.Influenter.Id)</p>
-
-                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background-color: #089de3 ">Giv feedback</a>
-                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>
-
-                }
-                else if (FeedbackService.HasFeedback(Model.Influenter.Id).Equals(false) && (FeedbackService.HasExpertFeedback(Model.Influenter.Id)))
-                {
-                    <h3 class="text-center" style="margin-top: 30px;">Ekspert rating:</h3>
-
-                    <div class="show-rating-box-show">
-                        <div class="show-rating-show">
-                            <div class="show-rating-front-show">
-                                @for (int i = 0; i < FeedbackService.GetAverageExpertFeedbackScore(Model.Influenter.Id); i++)
-                                {
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                }
-                            </div>
-                            <div class="show-rating-back-show">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-center">Antal ratings: @FeedbackService.GetExpertFeedbackCountForInfluencer(Model.Influenter.Id)</p>
-                    <br />
-                    <h4 class="text-center">Bliv den første til at give denne influencer feedback</h4>
-                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background: #089de3 ">Giv feedback</a>
-                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background-color:#53b80a">Se ekspert feedback</a>
-
-
-                }
-                else if (FeedbackService.HasFeedback(Model.Influenter.Id) && (FeedbackService.HasExpertFeedback(Model.Influenter.Id)).Equals(false))
-                {
-                    <h3 class="text-center">Følger rating:</h3>
-
-                    <div class="show-rating-box-show">
-                        <div class="show-rating-show">
-                            <div class="show-rating-front-show">
-                                @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.Influenter.Id); i++)
-                                {
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                }
-                            </div>
-                            <div class="show-rating-back-show">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-center">Antal ratings: @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id)</p>
-
-                
-
-                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background-color: #089de3 ">Giv feedback</a>
-                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background-color:#53b80a">Se feedback</a>
-
-                }
-
+                }                
                 else
                 {
                     <h4 class="text-center">Bliv den første til at give denne influencer feedback</h4>
-                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="a-button-green-100" style="background: #089de3 ">Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
                 }
-
-
-
             </div>
 
             <hr class="hidden-md hidden-lg" />
