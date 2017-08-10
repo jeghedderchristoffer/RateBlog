@@ -7,8 +7,8 @@ namespace RateBlog.Models.AdminViewModels
 {
     public class SeFeedbackViewModel
     {
-        public List<Rating> ListRating { get; set; }
-        public Rating Rating { get; set; }
+        public List<Feedback> ListRating { get; set; }
+        public Feedback feedBack { get; set; }
         public string AnmelderNavn { get; set; }
 
     }

@@ -34,16 +34,7 @@
                                 </textarea>
                     </td>
                 </tr>
-                <tr>
-                    <th>
-                        <p>By stad</p>
-                    </th>
-                    <td>
-                        <textarea asp-for="@Model.ApplicationUser.City">
-                                   
-                                </textarea>
-                    </td>
-                </tr>
+       
 
                 <tr>
                     <th>
@@ -123,17 +114,17 @@
         </table>
     </form>
     <table>           
-               <form asp-action="BanUser10" asp-route-id="@Model.ApplicationUser.InfluenterId" method="get" asp-controller="Admin">
-                   <button class="btn btn-default" type="submit" style="background-color:#FF0000;width:20%;height:45px" onclick="SuccesFunction()"><i class="fa fa-ban" aria-hidden="true"></i> Blokere for 10 dage </button>
+               <form asp-action="BanUser" asp-route-id="@Model.ApplicationUser.InfluenterId" method="get" asp-controller="Admin">
+                   <button class="btn btn-default" type="submit" style="background-color:#FF0000;width:20%;height:45px"><i class="fa fa-ban" aria-hidden="true"></i> Blokere for 10 dage </button>
                </form>
 
-               <form asp-action="BanUser25" asp-route-id="@Model.ApplicationUser.InfluenterId" method="get" asp-controller="Admin">
+               @*<form asp-action="BanUser25" asp-route-id="@Model.ApplicationUser.InfluenterId" method="get" asp-controller="Admin">
                    <button class="btn btn-default" type="submit" style="background-color:#FF0000;width:20%;height:45px" onclick="SuccesFunction()"><i class="fa fa-ban" aria-hidden="true"></i> Blokere for 25 dage </button>
                </form>
 
                <form asp-action="BanUser100" asp-route-id="@Model.ApplicationUser.InfluenterId" method="get" asp-controller="Admin">
                    <button class="btn btn-default" type="submit" style="background-color:#FF0000;width:20%;height:45px" onclick="SuccesFunction()"><i class="fa fa-ban" aria-hidden="true"></i> Blokere for 100 dage </button>
-               </form>
+               </form>*@
 
                <form asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@Model.ApplicationUser.Id" method="post">
                    <button class="btn btn-default" type="submit" style="background-color:#990000;width:20%;height:45px" onclick="SuccesFunction()"> <i class="fa fa-trash" aria-hidden="true"></i> Slet en bruger </button>

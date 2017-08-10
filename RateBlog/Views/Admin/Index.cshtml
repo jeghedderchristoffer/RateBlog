@@ -62,7 +62,7 @@
 
             @foreach (var user in Model.InfluentList)
             {
-                var isInfluente = (user.InfluenterId.HasValue) ? "Ja" : "Nej" ?? "Nej";
+                var isInfluente = (user.InfluenterId.HasValue) ? "Influenter" : "Bruger" ?? "Bruger";
 
                 <tr>
                     <td>
@@ -74,13 +74,7 @@
                     <td>
                         <p>@isInfluente </p>
                     </td>
-                    <td>
-                        <form asp-controller="Admin" asp-action="SeMere" asp-route-id="@user.Id" method="get">
-                            <a>
-                                <input type="submit" style="margin-bottom: 20px" value="Se mere" />
-                            </a>
-                        </form>
-                    </td>
+                 
                     <td>
                         <form asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" method="get">
                             <a>

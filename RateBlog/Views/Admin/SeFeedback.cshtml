@@ -61,7 +61,7 @@
                             <p>@m.Troværdighed</p>
                         </td>
                         <td>
-                            <p>@m.Feedback</p>
+                            <p>@m.FeedbackText</p>
                         </td>
                         <td>
                             <p>@m.Answer</p>
@@ -71,8 +71,8 @@
                         </td>
 
                         <td>
-                            <a asp-action="RedigereFeedback" asp-route-id="@m.RatingId">Edit</a> 
-                          <form method="post" asp-action="DeleteFeedback" asp-controller="Admin" asp-route-id="@m.RatingId">
+                            <a asp-action="RedigereFeedback" asp-route-id="@m.Id">Edit</a> 
+                          <form method="post" asp-action="DeleteFeedback" asp-controller="Admin" asp-route-id="@m.Id">
                             <input onclick="SuccesFunction()" type="submit" value="Delete" />
 
                           </form>

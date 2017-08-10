@@ -39,29 +39,29 @@
 
                     <tr>
                         <td>
-                            <textarea rows="1" asp-for="@Model.Rating.Kvalitet"></textarea>
+                            <textarea rows="1" asp-for="@Model.feedBack.Kvalitet"></textarea>
                         </td>
                         <td>
-                            <textarea rows="1" asp-for="@Model.Rating.Opførsel"></textarea>
-                        </td>
-
-                        <td>
-                            <textarea rows="1" asp-for="@Model.Rating.Interaktion"></textarea>
+                            <textarea rows="1" asp-for="@Model.feedBack.Opførsel"></textarea>
                         </td>
 
                         <td>
-                            <textarea rows="1" asp-for="@Model.Rating.Troværdighed"></textarea>
+                            <textarea rows="1" asp-for="@Model.feedBack.Interaktion"></textarea>
+                        </td>
+
+                        <td>
+                            <textarea rows="1" asp-for="@Model.feedBack.Troværdighed"></textarea>
                         </td>
                         <td>
-                            <textarea rows="1" asp-for="@Model.Rating.Feedback"></textarea>
+                            <textarea rows="1" asp-for="@Model.feedBack.FeedbackText"></textarea>
                         </td>
                         <td>
-                            <textarea rows="1" asp-for="@Model.Rating.Answer"></textarea>
+                            <textarea rows="1" asp-for="@Model.feedBack.Answer"></textarea>
                         </td>
                         <td>
                             <textarea rows="1" asp-for="@Model.AnmelderNavn"></textarea>
                         </td>
-                        @Html.HiddenFor(x => x.Rating.RatingId)
+                        @Html.HiddenFor(x => x.feedBack.Id)
                         <td>
                             <input onclick="Succes()" type="submit" value="Opdater Denne Feedback"  />                            
                         </td>

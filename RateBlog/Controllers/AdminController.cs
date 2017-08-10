@@ -19,21 +19,17 @@ namespace RateBlog.Controllers
     //[Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-
-
-        private readonly ApplicationDbContext _context;
-        private IInfluenterRepository _influenter;
+        private readonly IRepository<Influencer> _influenter;
         private readonly UserManager<ApplicationUser> _userManager;
-        private IAdminRepository _admin;
-        private IRatingRepository _rating;
+        private readonly IRepository<Feedback> _feedBack;
 
-        public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IInfluenterRepository influenter, IAdminRepository admin, IRatingRepository rating)
+        public AdminController(UserManager<ApplicationUser> userManager, IRepository<Influencer> influenter, IRepository<Feedback> feedBack)
         {
-            _rating = rating;
+            _feedBack = feedBack;
             _influenter = influenter;
-            _context = context;
+      
             _userManager = userManager;
-            _admin = admin;
+      
         }
 
 
@@ -65,9 +61,9 @@ namespace RateBlog.Controllers
         [HttpGet]
         public IActionResult SeMere(string id)
         {
-        
 
-            var user = _influenter.GetByStringID(id);
+
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
 
             var model = new SeMereViewModel()
             {
@@ -94,13 +90,13 @@ namespace RateBlog.Controllers
 
         }
         [HttpPost]
-        public IActionResult EditUser(SeMereViewModel vmodel)
+        public async Task<IActionResult> EditUser(SeMereViewModel vmodel)
         {
-            var getUser = _influenter.GetByStringID(vmodel.ApplicationUser.Id);
+            var getUser = _userManager.Users.SingleOrDefault(x => x.Id == vmodel.ApplicationUser.Id);
             getUser.Email = vmodel.ApplicationUser.Email;
             getUser.Name = vmodel.ApplicationUser.Name;
+           
 
-            getUser.City = vmodel.ApplicationUser.City;
             getUser.InfluenterId = vmodel.ApplicationUser.InfluenterId;
             getUser.ProfileText = vmodel.ApplicationUser.ProfileText;
             getUser.PhoneNumber = vmodel.ApplicationUser.PhoneNumber;
@@ -108,7 +104,9 @@ namespace RateBlog.Controllers
             getUser.LockoutEnd = vmodel.ApplicationUser.LockoutEnd;
 
 
-            _admin.EditUser(getUser);
+            // _userManager.EditUser(getUser);
+            var result = await _userManager.UpdateAsync(getUser);
+         
 
             var model = new SeMereViewModel()
             {
@@ -121,13 +119,13 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult SeFeedback(int Id)
+        public IActionResult SeFeedback()
         {
-            var getAllRatings = _rating.GetRatingForInfluenter(Id);
-
+            //var getAllRatings = _rating.GetRatingForInfluenter(Id);
+            var getAllRatings = _feedBack.GetAll();
             var rating = new SeFeedbackViewModel()
             {
-                ListRating = getAllRatings
+                ListRating = getAllRatings.ToList()
             };
 
             return View(rating);
@@ -136,7 +134,7 @@ namespace RateBlog.Controllers
         [HttpGet]
         public IActionResult RedigereFeedback(int Id)
         {
-            var getRating = _rating.Get(Id);
+            var getRating = _feedBack.Get(Id);
 
             var getUserName = _userManager.Users.SingleOrDefault(x => x.Id == getRating.ApplicationUserId).Name;
 
@@ -144,7 +142,7 @@ namespace RateBlog.Controllers
 
             var rating = new SeFeedbackViewModel()
             {
-                Rating = getRating,
+                feedBack = getRating,
                 AnmelderNavn = getUserName
 
             };
@@ -157,19 +155,19 @@ namespace RateBlog.Controllers
         [HttpPost]
         public IActionResult RedigereFeedback(SeFeedbackViewModel SeFeedBackModel)
         {
-            var getRating = _rating.Get(SeFeedBackModel.Rating.RatingId);
-            getRating.Kvalitet = SeFeedBackModel.Rating.Kvalitet;
-            getRating.Opførsel = SeFeedBackModel.Rating.Opførsel;
-            getRating.Interaktion = SeFeedBackModel.Rating.Interaktion;
-            getRating.Troværdighed = SeFeedBackModel.Rating.Troværdighed;
-            getRating.Feedback = SeFeedBackModel.Rating.Feedback;
-            getRating.Answer = SeFeedBackModel.Rating.Answer;
-            _rating.Update(getRating);
-            var getrating = _rating.Get(SeFeedBackModel.Rating.RatingId);
+            var getRating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
+            getRating.Kvalitet = SeFeedBackModel.feedBack.Kvalitet;
+            getRating.Opførsel = SeFeedBackModel.feedBack.Opførsel;
+            getRating.Interaktion = SeFeedBackModel.feedBack.Interaktion;
+            getRating.Troværdighed = SeFeedBackModel.feedBack.Troværdighed;
+           // getRating.Feedback = SeFeedBackModel.Rating.Feedback;
+            getRating.Answer = SeFeedBackModel.feedBack.Answer;
+            _feedBack.Update(getRating);
+            var getrating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
 
             var rating = new SeFeedbackViewModel()
             {
-                Rating = getrating
+               feedBack = getrating
             };
 
             return View(rating);
@@ -180,40 +178,63 @@ namespace RateBlog.Controllers
        [HttpPost]
         public IActionResult DeleteFeedback(int Id)
         {
-            _rating.Delete(Id);
+             var getfeedback = _feedBack.Get(Id);
+            _feedBack.Delete(getfeedback);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult DeleteUser(string Id)
+        public IActionResult DeleteUser(string id)
         {
-            _admin.Delete(Id);
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            _userManager.DeleteAsync(user);
             return RedirectToAction("Index");
         }
 
-        public IActionResult BanUser10(int id)
+        //public IActionResult BanUser10(int id)
+        //{
+        //    var user = _userManager.Users.First();
+        //    user.LockoutEnd = DateTime.Now.AddDays(10);
+            
+        //    _context.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
+        public async Task<IActionResult> BanUser(string id, int dage)
         {
-            var user = _userManager.Users.First();
-            user.LockoutEnd = DateTime.Now.AddDays(10);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            user.LockoutEnd = DateTime.Now.AddDays(dage);
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewData["ErrorMessage"] = "Der skete en fejl"; 
+                return View(); 
+            }
+
+            
+
         }
 
-        public IActionResult BanUser25(int id)
-        {
-            var user = _userManager.Users.First();
-            user.LockoutEnd = DateTime.Now.AddDays(25);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //public IActionResult BanUser25(string id)
+        //{
+        //    var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+        //    user.LockoutEnd = DateTime.Now.AddDays(25);
+        //    _context.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
-        public IActionResult BanUser100(int id)
-        {
-            var user = _userManager.Users.First();
-            user.LockoutEnd = DateTime.Now.AddDays(25);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //public IActionResult BanUser100(int id)
+        //{
+        //    var user = _userManager.Users.First();
+        //    user.LockoutEnd = DateTime.Now.AddDays(25);
+        //    _context.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
 
 

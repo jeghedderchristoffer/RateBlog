@@ -322,10 +322,6 @@ namespace RateBlog.Data.Migrations
                 name: "ProfileText",
                 table: "AspNetUsers");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_UserId",
-                table: "AspNetUserRoles",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
