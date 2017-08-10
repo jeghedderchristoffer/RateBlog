@@ -113,7 +113,8 @@
 
 
                     <th>
-                        <input type="submit" value="Home" asp-controller="Admin" asp-action="Index" />
+                        <button> type="submit" value="Home" asp-controller="Admin" asp-action="Index" <i class="fa fa-floppy-o" aria-hidden="true"></i> </button>
+                        
                     </th>
 
                 </tr>
@@ -121,14 +122,7 @@
             </tbody>
         </table>
     </form>
-    <table>
-
-
-       <div class="dropdown">
-        <button class="dropbtn">Ban bruger</button>
-           <div class="dropdown-content">
-
-            
+    <table>           
                <form asp-action="BanUser10" asp-route-id="@Model.ApplicationUser.InfluenterId" method="get" asp-controller="Admin">
                    <button class="btn btn-default" type="submit" style="background-color:#FF0000;width:20%;height:45px" onclick="SuccesFunction()"><i class="fa fa-ban" aria-hidden="true"></i> Blokere for 10 dage </button>
                </form>
@@ -145,32 +139,9 @@
                    <button class="btn btn-default" type="submit" style="background-color:#990000;width:20%;height:45px" onclick="SuccesFunction()"> <i class="fa fa-trash" aria-hidden="true"></i> Slet en bruger </button>
                </form>
 
-           </div>
-        </div>  
+      
 
 
-        <div class="container">
-            <select id="search-pax" name="pax" class="ls-select ">
-                <p>Start the selection</p>
-                <option>
-                    <form asp-action="BanUser10" asp-route-id="@Model.ApplicationUser.InfluenterId" method="get" asp-controller="Admin">
-                        <button class="btn btn-default" type="submit" style="background-color:#FF0000;width:20%;height:45px" onclick="SuccesFunction()"><i class="fa fa-ban" aria-hidden="true"></i> Blokere for 10 dage </button>
-                    </form>
-                </option>
-
-                <form asp-action="BanUser25" asp-route-id="@Model.ApplicationUser.InfluenterId" method="get" asp-controller="Admin">
-                    <button class="btn btn-default" type="submit" style="background-color:#FF0000;width:20%;height:45px" onclick="SuccesFunction()"><i class="fa fa-ban" aria-hidden="true"></i> Blokere for 25 dage </button>
-                </form>
-
-                <form asp-action="BanUser100" asp-route-id="@Model.ApplicationUser.InfluenterId" method="get" asp-controller="Admin">
-                    <button class="btn btn-default" type="submit" style="background-color:#FF0000;width:20%;height:45px" onclick="SuccesFunction()"><i class="fa fa-ban" aria-hidden="true"></i> Blokere for 100 dage </button>
-                </form>
-
-                <form asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@Model.ApplicationUser.Id" method="post">
-                    <button class="btn btn-default" type="submit" style="background-color:#990000;width:20%;height:45px" onclick="SuccesFunction()"> <i class="fa fa-trash" aria-hidden="true"></i> Slet en bruger </button>
-                </form>
-            </select>
-        </div>
 
 </table>
 
