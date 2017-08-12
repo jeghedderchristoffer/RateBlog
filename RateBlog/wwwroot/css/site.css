@@ -2960,3 +2960,7 @@ footer {
 .faq-kontakt {
     margin-top: 50px;
 }
+
+.green-checkbox {
+    background-color: green;
+}

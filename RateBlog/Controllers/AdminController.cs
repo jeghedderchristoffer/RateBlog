@@ -27,9 +27,9 @@ namespace RateBlog.Controllers
         {
             _feedBack = feedBack;
             _influenter = influenter;
-      
+
             _userManager = userManager;
-      
+
         }
 
 
@@ -69,8 +69,8 @@ namespace RateBlog.Controllers
             {
                 ApplicationUser = user,
 
-               
-             };
+
+            };
 
             return View(model);
 
@@ -79,8 +79,8 @@ namespace RateBlog.Controllers
         public IActionResult EditUser(string id)
         {
 
-            var user = _userManager.Users.FirstOrDefault(x => x.Id == id); 
-           
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+
             var model = new SeMereViewModel()
             {
                 ApplicationUser = user,
@@ -95,7 +95,7 @@ namespace RateBlog.Controllers
             var getUser = _userManager.Users.SingleOrDefault(x => x.Id == vmodel.ApplicationUser.Id);
             getUser.Email = vmodel.ApplicationUser.Email;
             getUser.Name = vmodel.ApplicationUser.Name;
-           
+
 
             getUser.InfluenterId = vmodel.ApplicationUser.InfluenterId;
             getUser.ProfileText = vmodel.ApplicationUser.ProfileText;
@@ -106,7 +106,7 @@ namespace RateBlog.Controllers
 
             // _userManager.EditUser(getUser);
             var result = await _userManager.UpdateAsync(getUser);
-         
+
 
             var model = new SeMereViewModel()
             {
@@ -118,128 +118,165 @@ namespace RateBlog.Controllers
 
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> EditInfluencer(SeMereViewModel vmmodel)
+        //{
+        //    var getUser2 = _userManager.Users.SingleOrDefault(x => x.Id == vmmodel.ApplicationUser.Id);
+        //    getUser2.Email = vmmodel.ApplicationUser.Email;
+        //    getUser2.Name = vmmodel.ApplicationUser.Name;
+
+
+        //    getUser2.InfluenterId = vmmodel.ApplicationUser.InfluenterId;
+        //    getUser2.ProfileText = vmmodel.ApplicationUser.ProfileText;
+        //    getUser2.PhoneNumber = vmmodel.ApplicationUser.PhoneNumber;
+        //    getUser2.PasswordHash = vmmodel.ApplicationUser.PasswordHash;
+        //    getUser2.LockoutEnd = vmmodel.ApplicationUser.LockoutEnd;
+
+
+        //    //_userManager.EditUser(getUser);
+        //    var result = await _userManager.UpdateAsync(getUser2);
+
+
+        //    var model2 = new SeMereViewModel()
+        //    {
+        //        ApplicationUser = getUser2,
+
+        //    };
+
+        //    return View(model2);
+        //    //return View();
+        //}
+
+ 
+        public IActionResult EditInfluencer()
+        {
+            
+            return View();
+        }
+
+
         [HttpGet]
-        public IActionResult SeFeedback()
+    public IActionResult SeFeedback()
+    {
+        //var getAllRatings = _rating.GetRatingForInfluenter(Id);
+        var getAllRatings = _feedBack.GetAll();
+        var rating = new SeFeedbackViewModel()
         {
-            //var getAllRatings = _rating.GetRatingForInfluenter(Id);
-            var getAllRatings = _feedBack.GetAll();
-            var rating = new SeFeedbackViewModel()
-            {
-                ListRating = getAllRatings.ToList()
-            };
+            ListRating = getAllRatings.ToList()
+        };
 
-            return View(rating);
-        }
+        return View(rating);
+    }
 
-        [HttpGet]
-        public IActionResult RedigereFeedback(int Id)
+    [HttpGet]
+    public IActionResult RedigereFeedback(int Id)
+    {
+        var getRating = _feedBack.Get(Id);
+
+        var getUserName = _userManager.Users.SingleOrDefault(x => x.Id == getRating.ApplicationUserId).Name;
+
+
+
+        var rating = new SeFeedbackViewModel()
         {
-            var getRating = _feedBack.Get(Id);
+            feedBack = getRating,
+            AnmelderNavn = getUserName
 
-            var getUserName = _userManager.Users.SingleOrDefault(x => x.Id == getRating.ApplicationUserId).Name;
+        };
 
-
-
-            var rating = new SeFeedbackViewModel()
-            {
-                feedBack = getRating,
-                AnmelderNavn = getUserName
-
-            };
-
-            return View(rating);
-        }
+        return View(rating);
+    }
 
 
-        //update rateing
-        [HttpPost]
-        public IActionResult RedigereFeedback(SeFeedbackViewModel SeFeedBackModel)
+    //update rateing
+    [HttpPost]
+    public IActionResult RedigereFeedback(SeFeedbackViewModel SeFeedBackModel)
+    {
+        var getRating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
+        getRating.Kvalitet = SeFeedBackModel.feedBack.Kvalitet;
+        getRating.Opførsel = SeFeedBackModel.feedBack.Opførsel;
+        getRating.Interaktion = SeFeedBackModel.feedBack.Interaktion;
+        getRating.Troværdighed = SeFeedBackModel.feedBack.Troværdighed;
+        // getRating.Feedback = SeFeedBackModel.Rating.Feedback;
+        getRating.Answer = SeFeedBackModel.feedBack.Answer;
+        _feedBack.Update(getRating);
+        var getrating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
+
+        var rating = new SeFeedbackViewModel()
         {
-            var getRating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
-            getRating.Kvalitet = SeFeedBackModel.feedBack.Kvalitet;
-            getRating.Opførsel = SeFeedBackModel.feedBack.Opførsel;
-            getRating.Interaktion = SeFeedBackModel.feedBack.Interaktion;
-            getRating.Troværdighed = SeFeedBackModel.feedBack.Troværdighed;
-           // getRating.Feedback = SeFeedBackModel.Rating.Feedback;
-            getRating.Answer = SeFeedBackModel.feedBack.Answer;
-            _feedBack.Update(getRating);
-            var getrating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
+            feedBack = getrating
+        };
 
-            var rating = new SeFeedbackViewModel()
-            {
-               feedBack = getrating
-            };
-
-            return View(rating);
-        }
+        return View(rating);
+    }
 
 
 
-       [HttpPost]
-        public IActionResult DeleteFeedback(int Id)
+    [HttpPost]
+    public IActionResult DeleteFeedback(int Id)
+    {
+        var getfeedback = _feedBack.Get(Id);
+        _feedBack.Delete(getfeedback);
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult DeleteUser(string id)
+    {
+        var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+        _userManager.DeleteAsync(user);
+        return RedirectToAction("Index");
+    }
+
+    //public IActionResult BanUser10(int id)
+    //{
+    //    var user = _userManager.Users.First();
+    //    user.LockoutEnd = DateTime.Now.AddDays(10);
+
+    //    _context.SaveChanges();
+    //    return RedirectToAction("Index");
+    //}
+
+    public async Task<IActionResult> BanUser(string id, int dage)
+    {
+        var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+        user.LockoutEnd = DateTime.Now.AddDays(dage);
+        var result = await _userManager.UpdateAsync(user);
+
+        if (result.Succeeded)
         {
-             var getfeedback = _feedBack.Get(Id);
-            _feedBack.Delete(getfeedback);
             return RedirectToAction("Index");
         }
-
-        [HttpPost]
-        public IActionResult DeleteUser(string id)
+        else
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-            _userManager.DeleteAsync(user);
-            return RedirectToAction("Index");
+            ViewData["ErrorMessage"] = "Der skete en fejl";
+            return View();
         }
-
-        //public IActionResult BanUser10(int id)
-        //{
-        //    var user = _userManager.Users.First();
-        //    user.LockoutEnd = DateTime.Now.AddDays(10);
-            
-        //    _context.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
-        public async Task<IActionResult> BanUser(string id, int dage)
-        {
-            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-            user.LockoutEnd = DateTime.Now.AddDays(dage);
-            var result = await _userManager.UpdateAsync(user);
-
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                ViewData["ErrorMessage"] = "Der skete en fejl"; 
-                return View(); 
-            }
-
-            
-
-        }
-
-        //public IActionResult BanUser25(string id)
-        //{
-        //    var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-        //    user.LockoutEnd = DateTime.Now.AddDays(25);
-        //    _context.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
-        //public IActionResult BanUser100(int id)
-        //{
-        //    var user = _userManager.Users.First();
-        //    user.LockoutEnd = DateTime.Now.AddDays(25);
-        //    _context.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
-
 
 
 
     }
+
+    //public IActionResult BanUser25(string id)
+    //{
+    //    var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+    //    user.LockoutEnd = DateTime.Now.AddDays(25);
+    //    _context.SaveChanges();
+    //    return RedirectToAction("Index");
+    //}
+
+    //public IActionResult BanUser100(int id)
+    //{
+    //    var user = _userManager.Users.First();
+    //    user.LockoutEnd = DateTime.Now.AddDays(25);
+    //    _context.SaveChanges();
+    //    return RedirectToAction("Index");
+    //}
+
+
+
+
+
+}
 }
 

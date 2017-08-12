@@ -31,30 +31,27 @@
         <thread>
             <tr>
                 <th>
-                    <p>navn</p>
+                    <p>Navn</p>
 
                 </th>
                 <th>
-                    <p>email</p>
+                    <p>Email</p>
 
                 </th>
                 <th>
-                    <p>Influenter</p>
+                    <p>Profil status</p>
 
                 </th>
                 <th>
-                    <p>Se mere</p>
+                    <p>Bruger status</p>
                 </th>
-                <th>
-                    <p>Redigere brugeren</p>
 
-                </th>
+
+
                 <th>
-                    <p>Se feedback</p>
+                    <p>Redigere</p>
                 </th>
-                <th>
-                    <p>Blokerings længde</p>
-                </th>
+
 
             </tr>
         </thread>
@@ -63,6 +60,7 @@
             @foreach (var user in Model.InfluentList)
             {
                 var isInfluente = (user.InfluenterId.HasValue) ? "Influenter" : "Bruger" ?? "Bruger";
+                var IsAktive = (user.LockoutEnd.HasValue) ? "Blokeret" : "Aktiv" ?? "Aktiv";
 
                 <tr>
                     <td>
@@ -74,40 +72,52 @@
                     <td>
                         <p>@isInfluente </p>
                     </td>
-                 
-                    <td>
-                        <form asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" method="get">
-                            <a>
-                                <input type="submit" style="margin-bottom: 20px" value="Redigere brugeren" />
-                            </a>
-                        </form>
 
-                    </td>
                     <td>
+                        <p>@IsAktive</p>
+                    </td>
+
+                    <td>
+                        @if (user.InfluenterId.HasValue)
+                        {
+                            <form asp-controller="Admin" asp-action="EditInfluencer" asp-route-id="@user.Id" method="get">
+
+
+                                <input type="submit" style="float:left;margin-right:5px;" value="Profil" />
+
+                            </form>
+                        }
+
+                        else
+                        {
+                            <form asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" method="get">
+
+
+                                <input type="submit" style="float:left;margin-right:5px;" value="Profil" />
+
+                            </form>
+                        }
+                        
+
                         <form asp-action="SeFeedBack" asp-route-id="@user.InfluenterId" method="get">
-                            <a>
-                                <input type="submit" style="margin-bottom: 20px" value="SeFeedback" />
-                            </a>
+
+                            <input rel="stylesheet" style="float:left;margin-right:5px;" type="submit" value="Feedback" />
                         </form>
-                    </td>
 
-                   
-                    <td>
-                        <p>@user.LockoutEnd</p>
                     </td>
 
                     <td>
 
-                    @*<td>
+                        @*<td>
 
-                        <form asp-action="BanUser10" asp-route-id="@user.InfluenterId" method="get" asp-controller="Admin">
-                            <a>
-                                <input onclick="BanUserFunction()" type="submit" style="margin-bottom: 20px" value="Ban brugeren" />
+                                <form asp-action="BanUser10" asp-route-id="@user.InfluenterId" method="get" asp-controller="Admin">
+                                    <a>
+                                        <input onclick="BanUserFunction()" type="submit" style="margin-bottom: 20px" value="Ban brugeren" />
 
-                                <p id="Ban"></p>
-                                
-                                </form>
-                    </td>*@
+                                        <p id="Ban"></p>
+
+                                        </form>
+                            </td>*@
 
                     </td>
 
@@ -120,9 +130,7 @@
             var txt;
             if (confirm("Du har nu blokeret en bruger for 10 dage") == true) {
                 txt = "Ok";
-                 
-                            
-        }
+            }
     </script>
 
 </div>
