@@ -78,6 +78,18 @@
                 <input asp-for="@Model.Postnummer" class="edit-input-influ" />
                 <span asp-validation-for="@Model.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
 
+                <p style="margin-top: 20px;">Køn</p>
+                <label>
+                    <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
+                    Mand
+                </label>
+                <br />
+
+                <label>
+                    <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
+                    Dame
+                </label>
+
                 <p>Profilbillede:</p>
                 <input type="file" name="profilePic" class="input-files" />
                 <br />
@@ -113,6 +125,18 @@
                 <p>Telefonnummer:</p>
                 <input asp-for="@Model.PhoneNumber" class="edit-input-influ" />
                 <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
+
+                <p style="margin-top: 20px;">Køn</p>
+                <label>
+                    <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
+                    Mand
+                </label>
+                <br />
+
+                <label>
+                    <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
+                    Dame
+                </label>
 
                 <p>Profilbillede:</p>
                 <input type="file" name="ProfilePic" asp-for="@Model.ProfilePic"/>
@@ -181,10 +205,11 @@
                 <br />
                 <p>Profiltekst:</p>
                 <textarea asp-for="@Model.ProfileText" class="edit-input-influ" rows="6" style="height: auto;" placeholder="Skriv om dig selv og dine interesser"></textarea>
-                <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;" ></span>
+                <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;" ></span>              
 
                 <input type="submit" class="edit-button-influ-create" value="Gem" />
             </form>
+            <h5>* Der kan gå op til 24 timer før din influencer profil bliver godkendt og bliver offentlig </h5>
 
 
         </div>

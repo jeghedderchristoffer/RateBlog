@@ -28,36 +28,30 @@ namespace RateBlog.Models
                      }, 
                      new Category
                      {
-                         Name = "DIY"
-                     },
-                     new Category
-                     {
-                         Name = "VLOG"
-                     },
-                     new Category
-                     {
                          Name = "Beauty"
                      }, 
                      new Category
                      {
-                         Name = "Gaming"
-                     },
-                     new Category
-                     {
-                         Name = "Entertainment"
-                     },
-                     new Category
-                     {
-                         Name = "Food"
-                     },
-                     new Category
-                     {
                          Name = "Fashion"
+                     },
+                     new Category
+                     {
+                         Name = "Gaming"
                      }, 
                      new Category
                      {
-                         Name = "Mommy"
+                         Name = "Entertainment"
+                     }, 
+                     new Category
+                     {
+                         Name = "Personal"
+                     }, 
+                     new Category
+                     {
+                         Name = "Interests"
                      }
+
+
 
                 );
                 context.SaveChanges();

@@ -1,12 +1,13 @@
-﻿@model ExternalLoginConfirmationViewModel
+﻿@model RegisterConfirmationViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Bekræft din konto";
 }
+
 <div class="navbar-allaround"></div>
 
 <div class="container">
     <div class="col-md-offset-3 col-md-6" style="padding-bottom: 100px;">
-        <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+        <form asp-controller="Account" asp-action="RegisterConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
             <h2 class="text-center">Opret din profil</h2>
             <hr />
             <div class="no-list-style">
@@ -29,6 +30,14 @@
             <input asp-for="@Model.Postnummer" class="create-profile-input" placeholder="I hvilket postnummer bor du?" />
             <span asp-validation-for="@Model.Postnummer" class="text-danger"></span>
 
+            <p style="margin-top: 20px;">Kodeord</p>
+            <input asp-for="@Model.Password" class="create-profile-input" />
+            <span asp-validation-for="@Model.Password" class="text-danger"></span>
+
+            <p style="margin-top: 20px;">Gentag kodeord</p>
+            <input asp-for="@Model.ConfirmPassword" class="create-profile-input" />
+            <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
+
             <p style="margin-top: 20px;">Køn</p>
             <label>
                 <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
@@ -40,19 +49,12 @@
                 <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
                 Dame
             </label>
+            <br />
+            <span asp-validation-for="@Model.Gender" class="text-danger"></span>
 
-            <button type="submit" class="edit-button-influ-create" style="width: 100%; margin-top: 40px;">Opret profil</button>
+            <button type="submit" class="edit-button-influ-create" style="width: 100%; margin-top: 40px">Opret profil</button>
 
         </form>
     </div>
 
 </div>
-
-
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-
-
-
-
-}

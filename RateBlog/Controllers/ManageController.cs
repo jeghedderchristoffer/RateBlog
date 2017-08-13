@@ -32,6 +32,7 @@ namespace RateBlog.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
+
         private readonly IRepository<Influencer> _influencerRepo;
         private readonly IRepository<Platform> _platformRepo;
         private readonly IRepository<Category> _categoryRepo;
@@ -238,6 +239,7 @@ namespace RateBlog.Controllers
 
         //
         // GET: /Manage/ChangePassword
+
         [HttpGet]
         [Route("/[controller]/Change/[action]")]
         public IActionResult Password()
@@ -307,6 +309,7 @@ namespace RateBlog.Controllers
         //}
 
         //GET: /Manage/ManageLogins
+
         [HttpGet]
         public async Task<IActionResult> ManageLogins(ManageMessageId? message = null)
         {
@@ -391,6 +394,7 @@ namespace RateBlog.Controllers
                     Postnummer = user.Postnummer,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
+                    Gender = user.Gender,
                     Influenter = _influencerRepo.Get(user.InfluenterId.Value),
                     YoutubeLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id),
                     FacebookLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id),
@@ -412,6 +416,7 @@ namespace RateBlog.Controllers
                     Postnummer = user.Postnummer,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
+                    Gender = user.Gender,
                     IKList = await GetInfluenterKategoriList()
                 };
             }
@@ -593,8 +598,6 @@ namespace RateBlog.Controllers
                 TempData["Success"] = "Du har sendt dit svar!";
             }
 
-
-
             return RedirectToAction("Feedback");
         }
 
@@ -640,6 +643,7 @@ namespace RateBlog.Controllers
         public IActionResult UsersProfilePic(string id)
         {
             var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
+
             byte[] buffer = user.ProfilePicture;
 
             if (buffer == null)
@@ -689,30 +693,26 @@ namespace RateBlog.Controllers
 
                 return new List<InfluenterKategoriViewModel>()
                     {
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "DIY", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id , _platformCategoryService.GetCategoryIdByName("DIY")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id , _platformCategoryService.GetCategoryIdByName("Lifestyle")) },
                         new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Beauty")) },
                         new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Entertainment"))  },
                         new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Fashion")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Food", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Food"))},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Interests", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Interests"))},
                         new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Gaming"))},
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Lifestyle")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Mommy", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Mommy")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "VLOG", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("VLOG")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Personal", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Personal")) },
                     };
             }
             else
             {
                 return new List<InfluenterKategoriViewModel>()
                     {
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "DIY", IsSelected = false },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = false },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = false  },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = false},
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Food", IsSelected = false},
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = false},
                         new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = false },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Mommy", IsSelected = false },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "VLOG", IsSelected = false },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = false },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = false },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = false },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Interests", IsSelected = false },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = false},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Personal", IsSelected = false },
                     };
             }
 

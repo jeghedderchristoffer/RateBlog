@@ -66,13 +66,18 @@
                     <div class="col-md-6 se-anmeldelse-padding">
                         <h4><i>Du har skrevet følgende om @UserManager.Users.SingleOrDefault(x => x.InfluenterId == Model.Rating.InfluenterId).Name:</i></h4>
                         <br />
-                        <p style="line-height: 180%">@Model.Rating.FeedbackText</p>
+                        <h4><b>Hvad gør influenceren godt?</b></h4>
+                        <p style="line-height: 180%">@Model.Rating.FeedbackGood</p>
+
+                        <h4 style="margin-top: 50px;"><b>Hvad kan influenceren gøre bedre?</b></h4>
+                        <p style="line-height: 180%">@Model.Rating.FeedbackBetter</p>
                     </div>
                     <div class="col-md-6 se-anmeldelse-padding">
                         @if (!string.IsNullOrEmpty(Model.Rating.Answer))
                         {
                             <h4><i>@UserManager.Users.SingleOrDefault(x => x.InfluenterId == Model.Rating.InfluenterId).Name har svaret på din feedback:</i></h4>
                             <br />
+                            <h4><b>Svar:</b></h4>
                             <p style="line-height: 180%">@Model.Rating.Answer</p>
                         }
                         else

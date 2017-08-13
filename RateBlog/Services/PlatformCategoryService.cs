@@ -15,15 +15,17 @@ namespace RateBlog.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _dbContext;
         private readonly IRepository<Category> _categoryRepo;
-        private readonly IRepository<Platform> _platformRepo; 
-        
+        private readonly IRepository<Platform> _platformRepo;
+        private readonly IRepository<Influencer> _influencerRepo;
 
-        public PlatformCategoryService(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo)
+
+        public PlatformCategoryService(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IRepository<Influencer> influencerRepo)
         {
             _userManager = userManager;
             _dbContext = dbContext;
             _categoryRepo = categoryRepo;
-            _platformRepo = platformRepo; 
+            _platformRepo = platformRepo;
+            _influencerRepo = influencerRepo; 
         }
 
         public IEnumerable<InfluencerPlatform> GetAllInfluencerPlatformForInfluencer(int id)
@@ -45,7 +47,13 @@ namespace RateBlog.Services
 
             foreach (var v in ik)
             {
-                userList.Add(_userManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluencerId));
+                var user = _userManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluencerId);
+                var influencer = _influencerRepo.Get(user.InfluenterId.Value);
+
+                if (!user.Name.ToLower().Contains(name) && !influencer.Alias.ToLower().Contains(name))
+                {
+                    userList.Add(user);
+                }
             }
 
             return userList;
@@ -60,16 +68,22 @@ namespace RateBlog.Services
 
             foreach (var v in ik)
             {
-                userList.Add(_userManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluencerId));
+                var user = _userManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluencerId);
+                var influencer = _influencerRepo.Get(user.InfluenterId.Value);
+
+                if (!user.Name.ToLower().Contains(name) && !influencer.Alias.ToLower().Contains(name))
+                {
+                    userList.Add(user);
+                }
             }
             return userList;
         }
 
         public int GetCategoryIdByName(string name)
         {
-            if (_categoryRepo.GetAll().Any(x => x.Name == name))
+            if (_categoryRepo.GetAll().Any(x => x.Name.ToLower() == name))
             {
-                return _categoryRepo.GetAll().SingleOrDefault(x => x.Name == name).Id;
+                return _categoryRepo.GetAll().SingleOrDefault(x => x.Name.ToLower() == name).Id;
             }
             return 0;
         }
@@ -90,7 +104,7 @@ namespace RateBlog.Services
 
         public int GetPlatformIdByName(string name)
         {
-            if (_dbContext.Platform.Any(x => x.Name == name))
+            if (_dbContext.Platform.Any(x => x.Name.ToLower() == name))
             {
                 return _dbContext.Platform.SingleOrDefault(x => x.Name == name).Id;
             }

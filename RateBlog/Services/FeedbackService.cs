@@ -138,9 +138,9 @@ namespace RateBlog.Services
             if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == influenterId && x.ApplicationUserId == userId))
             {
                 var user = _userManager.Users.SingleOrDefault(x => x.Id == userId);
-                var feedback = _feedbackRepo.GetAll().Where(x => x.InfluenterId == influenterId && x.ApplicationUserId == userId).OrderByDescending(x => x.RateDateTime).FirstOrDefault();
+                var feedback = _feedbackRepo.GetAll().Where(x => x.InfluenterId == influenterId && x.ApplicationUserId == userId).OrderByDescending(x => x.FeedbackDateTime).FirstOrDefault();
 
-                var timeSpan = DateTime.Now - feedback.RateDateTime;
+                var timeSpan = DateTime.Now - feedback.FeedbackDateTime;
                 var hours = timeSpan.TotalHours;
 
                 return hours;
@@ -184,7 +184,7 @@ namespace RateBlog.Services
 
         public IEnumerable<Feedback> GetLast3Feedback(string id)
         {
-            return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id).OrderByDescending(x => x.RateDateTime).Take(3);
+            return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id).OrderByDescending(x => x.FeedbackDateTime).Take(3);
         }
 
         public int GetSingleExpertFeedbackScoreAverage(int id)

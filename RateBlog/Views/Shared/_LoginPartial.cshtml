@@ -4,7 +4,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Services.IFeedbackService FeedbackService
-@{ 
+@{
     var user = await UserManager.GetUserAsync(User);
 }
 
@@ -13,8 +13,8 @@
 
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right" id="dropdownPc">
-            
- 
+
+
             @if (User.IsInRole("Ekspert"))
             {
                 <li class="drop">
@@ -34,30 +34,30 @@
             else
             {
 
-            @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
-            {
-                <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Min feedback
-                        @if (FeedbackService.GetUnreadFeedbackCount(user.InfluenterId.Value) != 0)
+                @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
+                {
+                    <li>
+                        <a asp-area="" asp-controller="Manage" asp-action="Feedback">
+                            Min feedback
+                            @if (FeedbackService.GetUnreadFeedbackCount(user.InfluenterId.Value) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(user.InfluenterId.Value)</span>
-                        }
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Min feedback
-                        @if (FeedbackService.GetUnreadAnswerCount(user.Id) != 0)
+                                <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(user.InfluenterId.Value)</span>
+                            }
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a asp-area="" asp-controller="Manage" asp-action="Feedback">
+                            Min feedback
+                            @if (FeedbackService.GetUnreadAnswerCount(user.Id) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadAnswerCount(user.Id)</span>
-                        }
-                    </a>
-                </li>
-            }
+                                <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadAnswerCount(user.Id)</span>
+                            }
+                        </a>
+                    </li>
+                }
 
             }
 

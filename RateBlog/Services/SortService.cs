@@ -109,7 +109,7 @@ namespace RateBlog.Services
             {
                 if (search.ToLower().Equals(kategori.Name.ToLower()))
                 {
-                    influencers.AddRange(_platformCategoryService.GetAllInfluencersWithCategory(search));
+                    influencers.AddRange(_platformCategoryService.GetAllInfluencersWithCategory(search.ToLower()));
                 }
             }
 
@@ -117,7 +117,7 @@ namespace RateBlog.Services
             {
                 if (search.ToLower().Equals(platform.Name.ToLower()))
                 {
-                    influencers.AddRange(_platformCategoryService.GetAllInfluencersWithPlatform(search));
+                    influencers.AddRange(_platformCategoryService.GetAllInfluencersWithPlatform(search.ToLower()));
                 }
             }
 

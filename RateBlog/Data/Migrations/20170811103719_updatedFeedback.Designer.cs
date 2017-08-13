@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170811103719_updatedFeedback")]
+    partial class updatedFeedback
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -137,8 +138,6 @@ namespace RateBlog.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<string>("Gender");
 
                     b.Property<int?>("InfluenterId");
 
@@ -311,8 +310,6 @@ namespace RateBlog.Data.Migrations
 
                     b.Property<string>("Alias")
                         .IsRequired();
-
-                    b.Property<bool>("IsApproved");
 
                     b.HasKey("Id");
 

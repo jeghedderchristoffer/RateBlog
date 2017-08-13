@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@inject SignInManager<ApplicationUser> SignInManager
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +17,26 @@
 
         ga('create', 'UA-103687513-1', 'auto');
         ga('send', 'pageview');
+    </script>
+
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '326842804433660',
+                cookie: true,
+                xfbml: true,
+                version: 'v2.8'
+            });
+            FB.AppEvents.logPageView();
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
     </script>
 
     <environment names="Development">
@@ -59,7 +80,12 @@
         </div>
     </nav>
 
-    <!-- Modal -->
+
+    @{ 
+        var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
+    }
+    <!-- Login Modal -->
+
     <div id="loginModal" class="modal fade" role="dialog">
         <div class="modal-dialog" style="max-width: 400px;">
             <div class="modal-content">
@@ -68,13 +94,17 @@
                     <h3 class="modal-title text-center">Velkommen tilbage!</h3>
                 </div>
                 <div class="modal-body">
+
+                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                        <button name="provider" value="@loginProviders.SingleOrDefault(x => x.DisplayName == "Facebook").AuthenticationScheme" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
+                            <span class="fa fa-facebook"></span> Log ind via Facebook
+                        </button>
+                        <a class="btn btn-block btn-social btn-google btn-lg" style="margin-top: 20px;">
+                            <span class="fa fa-google"></span> Log ind via Google
+                        </a>
+                    </form>
                           
-                    <a class="btn btn-block btn-social btn-facebook btn-lg">
-                        <span class="fa fa-facebook"></span> Log ind via Facebook
-                    </a>
-                    <a class="btn btn-block btn-social btn-google btn-lg" style="margin-top: 20px;">
-                        <span class="fa fa-google"></span> Log ind via Google
-                    </a>
+                    
 
                     <div class="divider">
                         <h4><span>ELLER</span></h4>
@@ -113,7 +143,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h3 class="modal-title text-center">Opret en profil idag</h3>
                 </div>
-                <div class="modal-body">                   
+                <div class="modal-body">                 
 
                     <a class="btn btn-block btn-social btn-facebook btn-lg">
                         <span class="fa fa-facebook"></span> Tilmeld via Facebook
@@ -131,14 +161,12 @@
                     </a>
 
                     <div id="emailCreate" style="display: none">
-                        <div style="margin-top: 20px;"></div>
-                        <span id="opretErrorMsgTop" style="color: red;"></span>
-                        @Html.AntiForgeryToken()
-                        <input id="opretNavn" type="text" class="text-input" placeholder="Navn" />
-                        <input id="opretEmail" type="email" class="text-input" placeholder="Email" />
-                        <input id="opretPassword" class="text-input" placeholder="Kodeord" type="password" />
-                        <input id="opretPassword2" class="text-input" placeholder="Gentag Kodeord" type="password" />
-                        <input type="button" class="login-button" id="opretBtn" value="Opret profil" />
+                        <form method="get" asp-controller="Account" asp-action="RegisterConfirmation">
+                            <div style="margin-top: 20px;"></div>
+                            <input name="registerName" type="text" class="text-input" placeholder="Navn" />
+                            <input name="registerEmail" type="email" class="text-input" placeholder="Email" />
+                            <input type="submit" class="login-button" id="opretBtn" value="Fortsæt" />
+                        </form>
                     </div>
 
                     <p style="margin-top: 20px; font-size: 12px">* Ved at oprette en profil godkender du Bestfluence's betingelser, vilkår og persondatapolitik</p>
@@ -175,7 +203,7 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    <script>
+    @*<script>
         $(document).ready(function () {
     var opretErrorMsg = $("#opretErrorMsgTop");
 
@@ -239,7 +267,7 @@
         });
     });
 });
-    </script>
+    </script>*@
 
     @RenderSection("Scripts", required: false)
     @RenderSection("SearchStar", required: false)

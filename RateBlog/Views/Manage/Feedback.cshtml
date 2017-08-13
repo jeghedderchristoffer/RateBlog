@@ -82,7 +82,7 @@
                     {
                         @if (FeedbackService.GetAllFeedbackByInfluencer(user.InfluenterId.Value).ToList().Count != 0)
                         {
-                            @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(user.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                            @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(user.InfluenterId.Value).OrderByDescending(x => x.FeedbackDateTime))
                             {
                                 <form asp-area="" asp-controller="Manage" asp-action="Answer" asp-route-id="@v.Id">
                                     <a class="feedback-link" onclick="$(this).closest('form').submit();">
@@ -112,7 +112,7 @@
                                             <div class="col-md-6 col-sm-8 noPadding padding-anmeldelser">
                                                 <p>Du har fået feedback af @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
                                                 <p style="color: #989898">
-                                                    @String.Format("{0:dd/MM/yyyy}", v.RateDateTime) &ensp;
+                                                    @String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime) &ensp;
                                                     @if (!v.IsRead)
                                                     {
                                                         <span class="badge" style="font-family: Arial; background: #FFA500">Ny feedback</span>
@@ -193,7 +193,7 @@
             <div class="col-md-8 col-sm-12">
                 @if (FeedbackService.GetAllFeedbackByUser(user.Id).ToList().Count != 0)
                 {
-                    @foreach (var v in FeedbackService.GetAllFeedbackByUser(user.Id).OrderByDescending(x => x.RateDateTime))
+                    @foreach (var v in FeedbackService.GetAllFeedbackByUser(user.Id).OrderByDescending(x => x.FeedbackDateTime))
                     {
                         <form asp-area="" asp-controller="Manage" asp-action="Read" asp-route-id="@v.Id">
                             <a class="feedback-link" onclick="$(this).closest('form').submit();">
@@ -224,7 +224,7 @@
                                     <div class="col-md-6 col-sm-6 noPadding padding-anmeldelser">
                                         <p>Du har givet feedback til @UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == v.InfluenterId).Name</p>
                                         <p style="color: #989898">
-                                            @String.Format("{0:dd/MM/yyyy}", v.RateDateTime)  &ensp;
+                                            @String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)  &ensp;
                                             @if (!v.IsAnswerRead && !string.IsNullOrEmpty(v.Answer))
                                             {
                                                 <span class="badge" style="font-family: Arial; background: #FFA500">Nyt svar</span>
@@ -279,7 +279,7 @@
 
                 <div class="feedback-rating-all-box">
                     <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                        <h3 class="text-center">Influencers</h3>
+                        <h3 class="text-center">Influencere</h3>
                         <p>Kan du ikke finde den influencer du ønsker at give feedback til? Du har muligheden for at oprette en influencer, og derefter rate dem!</p>
                         <a asp-controller="Influencer" asp-action="Create" class="a-button" style="float: none; width: 100%; margin-top: 20px; background-color: #FFA500">OPRET INFLUENCER</a>
                     </div>

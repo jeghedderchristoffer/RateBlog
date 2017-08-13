@@ -18,9 +18,12 @@ namespace RateBlog.Models
 
         public string ProfileText { get; set; }
 
+        public string Gender { get; set; } 
+
         public Byte[] ProfilePicture { get; set; } 
 
         public virtual Influencer Influenter { get; set; }
+
         public int? InfluenterId { get; set; }
 
 
