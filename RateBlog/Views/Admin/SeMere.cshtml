@@ -10,101 +10,48 @@
 <div class="navbar-allaround">
 </div>
 
-<form asp-controller="Admin" asp-action="Index">
-    <a class="col-md-offset-3 col-md-6 col-xs-12">
-        <input type="submit" style="margin-bottom: 20px" value="Home" />
-    </a>
-</form>
-
-<div class="container">
+    @Html.HiddenFor(x => x.ApplicationUser.Id)
     <table class="table table-striped">
-        <thread>
-            <tbody>
-                <tr>
-                    <th>
-                        <p>navn</p>
-                    </th>
-                    <td>
-                        @Model.ApplicationUser.UserName
-                    </td>
-                </tr>
-
-                <tr>
-                    <th>
-                        <p>email</p>
-                    </th>
-                    <td>
-                        <p>@Model.ApplicationUser.Email</p>
-                    </td>
-                </tr>
-        
-
-                <tr>
-                    <th>
-                        <p>Influenter ID</p>
-                    </th>
-                    <td>
-                        <p>@Model.ApplicationUser.InfluenterId</p>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <p>ProfilText</p>
-                    </th>
-                    <td>
-                        <p>@Model.ApplicationUser.ProfileText</p>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <p>PhoneNumber</p>
-                    </th>
-                    <td>
-                        <p>@Model.ApplicationUser.PhoneNumber</p>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <p>Bruger ID</p>
-                    </th>
-                    <td>
-                        <p>@Model.ApplicationUser.Id</p>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <p>Password hashed </p>
-                    </th>
-                    <td>
-                        <p>@Model.ApplicationUser.PasswordHash</p>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <p>Blokerings længde hvis blokeret</p>
-                    </th>
-                    <td>
-                        <p>@Model.ApplicationUser.LockoutEnd</p>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <p>Blokerings længde hvis blokeret</p>
-                    </th>
-                    <td>
-                        <p>@Model.ApplicationUser.</p>
-                    </td>
-                </tr>
-
-
-
-
-
-
-                }
-            </tbody>
-        </thread>
-
+    
+     
+        <thead>
+            
+            <tr>
+                <th colspan="2">Profil</th>
+                <th colspan="2">Platform</th>
+                <th colspan="2">Rating</th>
+                <th colspan="2">Feedbak</th>
+                <th>Anbefaling</th>
+            </tr>
+            
+            <tr>
+                <th>Bruger</th>
+                <th>Influencer</th>
+                <th>Blank</th>
+                <th>Kvalitet</th>
+                <th>Opførsel</th>
+                <th>Troværdighed</th>
+                <th>Posetiv</th>
+                <th>Negativ</th>
+                <th>Anbefalings information</th>
+                <th>Knapper</th>
+            </tr>
+        </thead>
+     
+        <tbody>
+            <tr>
+                <th>Information</th>
+                <td> @Model.ApplicationUser.Name</td>
+                <td> influenter.id her</td>
+                <td> Kvalitet info her</td>
+                <td> Kvalitet info her</td>
+                <td>Troværdigheds info her</td>
+                <td> Posetiv feedback?</td>
+                <td> Negativ feedback?</td>
+                <td> Anbefalings info her</td>
+                <td> Knapper</td>
+              
+            </tr>
+        </tbody>
     </table>
-
-</div>
+   

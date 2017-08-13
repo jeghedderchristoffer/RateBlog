@@ -158,17 +158,41 @@ namespace RateBlog.Controllers
         [HttpGet]
     public IActionResult SeFeedback()
     {
+          
+            
+
         //var getAllRatings = _rating.GetRatingForInfluenter(Id);
         var getAllRatings = _feedBack.GetAll();
         var rating = new SeFeedbackViewModel()
         {
+            
             ListRating = getAllRatings.ToList()
         };
 
         return View(rating);
     }
 
-    [HttpGet]
+        //var model = _userManager.Users;
+
+        //    if (!String.IsNullOrEmpty(searchString))
+        //    {
+        //        model = _userManager.Users.Where(s => s.Name.ToLower().Contains(searchString.ToLower()));
+        //    }
+        //    else
+        //    {
+        //        model = _userManager.Users;
+        //    }
+
+        //    if (isInfluencer)
+        //    {
+        //        model = model.Where(x => x.InfluenterId.HasValue);
+        //    }
+
+        //    viewmodel.InfluentList = model.ToList();
+
+        //    return View(viewmodel);
+
+[HttpGet]
     public IActionResult RedigereFeedback(int Id)
     {
         var getRating = _feedBack.Get(Id);

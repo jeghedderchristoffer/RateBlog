@@ -2961,6 +2961,36 @@ footer {
     margin-top: 50px;
 }
 
-.green-checkbox {
-    background-color: green;
+.box {
+    float: left;
+    width: 200px;
+    height: 200px;
+    margin: 50px;
+    border: 10px solid rgba(0, 0, 0, .2);
 }
+
+.blue {
+    background: #008000;
+}
+
+.purple {
+    background: #ab3fdd;
+}
+
+.wine {
+    background: #ae163e;
+}
+
+#container {
+    display: flex; /* establish flex container */
+    flex-direction: row; /* default value; can be omitted */
+    flex-wrap: nowrap; /* default value; can be omitted */
+    justify-content: space-between; /* switched from default (flex-start, see below) */
+    background-color: lightyellow;
+}
+
+    #container > div {
+        width: 100px;
+        height: 100px;
+        border: 2px dashed red;
+    }
