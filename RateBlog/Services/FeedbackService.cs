@@ -10,22 +10,15 @@ namespace RateBlog.Services
     public class FeedbackService : IFeedbackService
     {
         private readonly IRepository<Feedback> _feedbackRepo;
-        private readonly IRepository<ExpertFeedback> _expertFeedbackRepo;
         private readonly UserManager<ApplicationUser> _userManager; 
 
-        public FeedbackService(IRepository<Feedback> feedbackRepo, IRepository<ExpertFeedback> expertFeedbackRepo, UserManager<ApplicationUser> userManager)
+        public FeedbackService(IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager)
         {
             _feedbackRepo = feedbackRepo;
-            _expertFeedbackRepo = expertFeedbackRepo;
             _userManager = userManager; 
         }
 
-        public IEnumerable<ExpertFeedback> GetAllExpertFeedbackByInfluencer(int id)
-        {
-            return _expertFeedbackRepo.GetAll().Where(x => x.InfluenterId == id);
-        }
-
-        public IEnumerable<Feedback> GetAllFeedbackByInfluencer(int id)
+        public IEnumerable<Feedback> GetAllFeedbackByInfluencer(string id)
         {
             return _feedbackRepo.GetAll().Where(x => x.InfluenterId == id);
         }
@@ -33,50 +26,9 @@ namespace RateBlog.Services
         public IEnumerable<Feedback> GetAllFeedbackByUser(string id)
         {
             return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id);
-        }
+        }       
 
-        public IEnumerable<ExpertFeedback> GetAllFeedbackForExpert(string id)
-        {
-            return _expertFeedbackRepo.GetAll().Where(x => x.ApplicationUserId == id);
-        }
-
-        public int GetAverageExpertFeedbackScore(int id)
-        {
-            if (_expertFeedbackRepo.GetAll().Any(x => x.InfluenterId == id))
-            {
-                var feedbacks = _expertFeedbackRepo.GetAll().Where(x => x.InfluenterId == id);
-                int numberOfFeedbacks = 0;
-                double allFeedbackSums = 0;
-
-                foreach (var f in feedbacks)
-                {
-                    double feedbackSum = 0;
-
-                    // Tager alle værdier, plusser dem sammen og dividere dem med antallet af ratings == gennemsnit
-                    var feedback = _feedbackRepo.Get(f.Id);
-
-                    feedbackSum += feedback.Interaktion;
-                    feedbackSum += feedback.Opførsel;
-                    feedbackSum += feedback.Troværdighed;
-                    feedbackSum += feedback.Kvalitet;
-                    feedbackSum = feedbackSum / 4;
-
-                    // Antal ratings
-                    numberOfFeedbacks++;
-
-                    // Tilføjer dem til samlingen
-                    allFeedbackSums += feedbackSum;
-                }
-
-                double average = (allFeedbackSums / numberOfFeedbacks);
-
-                return (int)Math.Round(average, 0, MidpointRounding.AwayFromZero);
-            }
-
-            return 0;
-        }
-
-        public int GetAverageFeedbackScore(int id)
+        public int GetAverageFeedbackScore(string id)
         {
             if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id))
             {
@@ -112,35 +64,14 @@ namespace RateBlog.Services
             return 0;
         }
 
-        public int GetExpertFeedbackCount(string id)
-        {
-            if (_expertFeedbackRepo.GetAll().Any(x => x.ApplicationUserId == id))
-            {
-                return _expertFeedbackRepo.GetAll().Where(x => x.ApplicationUserId == id).Count();
-            }
-            return 0;
-        }
-
-        public int GetExpertFeedbackCountForInfluencer(int id)
-        {
-            try
-            {
-                return _expertFeedbackRepo.GetAll().Where(x => x.InfluenterId == id).Count();
-            }
-            catch (ArgumentNullException)
-            {
-                return 0;
-            }
-        }
-
-        public double GetHoursLeftToRate(string userId, int influenterId)
+        public double GetHoursLeftToRate(string userId, string influenterId)
         {
             if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == influenterId && x.ApplicationUserId == userId))
             {
                 var user = _userManager.Users.SingleOrDefault(x => x.Id == userId);
-                var feedback = _feedbackRepo.GetAll().Where(x => x.InfluenterId == influenterId && x.ApplicationUserId == userId).OrderByDescending(x => x.RateDateTime).FirstOrDefault();
+                var feedback = _feedbackRepo.GetAll().Where(x => x.InfluenterId == influenterId && x.ApplicationUserId == userId).OrderByDescending(x => x.FeedbackDateTime).FirstOrDefault();
 
-                var timeSpan = DateTime.Now - feedback.RateDateTime;
+                var timeSpan = DateTime.Now - feedback.FeedbackDateTime;
                 var hours = timeSpan.TotalHours;
 
                 return hours;
@@ -149,7 +80,7 @@ namespace RateBlog.Services
             return 0;
         }
 
-        public double GetInfluencerAnswerPercentage(int id)
+        public double GetInfluencerAnswerPercentage(string id)
         {
             if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id && x.Answer != null))
             {
@@ -164,7 +95,7 @@ namespace RateBlog.Services
             return 0;
         }
 
-        public int GetInfluencerFeedbackAnswersCount(int id)
+        public int GetInfluencerFeedbackAnswersCount(string id)
         {
             if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id && x.Answer != null))
             {
@@ -173,7 +104,7 @@ namespace RateBlog.Services
             return 0;
         }
 
-        public int GetInfluencerFeedbackCount(int id)
+        public int GetInfluencerFeedbackCount(string id)
         {
             if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id))
             {
@@ -184,25 +115,12 @@ namespace RateBlog.Services
 
         public IEnumerable<Feedback> GetLast3Feedback(string id)
         {
-            return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id).OrderByDescending(x => x.RateDateTime).Take(3);
+            return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id).OrderByDescending(x => x.FeedbackDateTime).Take(3);
         }
 
-        public int GetSingleExpertFeedbackScoreAverage(int id)
-        {
-            var feedback = _expertFeedbackRepo.Get(id);
-            double feedbackSum = 0;
+       
 
-            // Tager alle værdier, plusser dem sammen og dividere dem med antallet af ratings == gennemsnit
-            feedbackSum += feedback.Interaktion;
-            feedbackSum += feedback.Opførsel;
-            feedbackSum += feedback.Troværdighed;
-            feedbackSum += feedback.Kvalitet;
-            feedbackSum = feedbackSum / 4;
-
-            return (int)Math.Round(feedbackSum, 0, MidpointRounding.AwayFromZero);
-        }
-
-        public int GetSingleFeedbackScoreAverage(int id)
+        public int GetSingleFeedbackScoreAverage(string id)
         {
             var feedback = _feedbackRepo.Get(id);
             double feedbackSum = 0;
@@ -217,7 +135,7 @@ namespace RateBlog.Services
             return (int)Math.Round(feedbackSum, 0, MidpointRounding.AwayFromZero);
         }
 
-        public double GetTotalScore(int id)
+        public double GetTotalScore(string id)
         {
             if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id))
             {
@@ -268,7 +186,7 @@ namespace RateBlog.Services
             return count;
         }
 
-        public int GetUnreadFeedbackCount(int id)
+        public int GetUnreadFeedbackCount(string id)
         {
             var feedbacks = _feedbackRepo.GetAll().Where(x => x.InfluenterId == id);
 
@@ -303,16 +221,7 @@ namespace RateBlog.Services
             return 0;
         }
 
-        public bool HasExpertFeedback(int id)
-        {
-            if (_expertFeedbackRepo.GetAll().Any(x => x.InfluenterId == id))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool HasFeedback(int id)
+        public bool HasFeedback(string id)
         {
             if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id))
             {

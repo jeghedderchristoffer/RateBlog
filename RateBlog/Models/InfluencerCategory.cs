@@ -7,9 +7,9 @@ namespace RateBlog.Models
 {
     public class InfluencerCategory
     {
-        public int InfluencerId { get; set; }
+        public string InfluencerId { get; set; }
         public Influencer Influencer { get; set; }
-        public int CategoryId { get; set; }
+        public string CategoryId { get; set; }
         public Category Category { get; set; } 
     }
 }

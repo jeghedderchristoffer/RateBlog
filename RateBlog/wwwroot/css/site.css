@@ -9,6 +9,10 @@
     }
 }
 
+textarea {
+    resize: none;
+}
+
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -134,7 +138,7 @@ body.modal-open {
 }
 
 .modal-title {
-    margin-top: 10px;
+    margin-top: 15px;
     font-weight: 900;
 }
 
@@ -1811,6 +1815,7 @@ ul li:hover .dropOut {
         border-radius: 5px;
         margin: 5px;
         width: 30%;
+        user-select: none;
     }
 
     .choose-category span {
@@ -2129,7 +2134,7 @@ footer {
 
 /*----footer-Rasmus----*/
 .footer-img {
-    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Footer/About.jpg") no-repeat center;
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Footer/guide-lines.jpeg") no-repeat center;
     height: 500px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -2139,6 +2144,8 @@ footer {
 
     .footer-img h1 {
         color: white;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 
 .footerjob-img {
@@ -2152,6 +2159,8 @@ footer {
 
     .footerjob-img h1 {
         color: white;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 
 .footerkontakt-img {
@@ -2165,6 +2174,8 @@ footer {
 
     .footerkontakt-img h1 {
         color: white;
+        margin-top: 20px;
+        margin-bottom: 20px;    
     }
 
 .footerFAQ-img {
@@ -2178,11 +2189,51 @@ footer {
 
     .footerFAQ-img h1 {
         color: white;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
+
+.footerPrivacy-img {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Footer/privacy.jpeg") no-repeat center;
+    height: 500px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+    .footerPrivacy-img h1 {
+        color: #fff;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+.footerTerms-img {
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../images/Footer/termsandconditions.jpeg") no-repeat center;
+    height: 500px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+    .footerTerms-img h1 {
+        color: #fff;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+.footerFAQ-img h1 {
+    color: white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 
 .omBestfluence h1 {
     padding-bottom: 20px;
     padding-top: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .circular-square {
@@ -2250,6 +2301,7 @@ footer {
 
 .checkbox-inline {
     padding-bottom: 5px;
+    user-select: none;
 }
 
 .dropdown-toggle {
@@ -2520,8 +2572,7 @@ footer {
 }
 
 .feedback-text {
-    padding-bottom: 20px !important;
-    line-height: 150%;
+    padding-bottom: 14px !important;
 }
 
 .mobile-star-feedback {
@@ -2677,7 +2728,7 @@ footer {
 .show-rating-box {
     display: block;
     float: right;
-    margin-top: 16px;
+    margin-top: 13px;
 }
 
 .show-rating {
@@ -2961,36 +3012,328 @@ footer {
     margin-top: 50px;
 }
 
-.box {
-    float: left;
-    width: 200px;
-    height: 200px;
-    margin: 50px;
-    border: 10px solid rgba(0, 0, 0, .2);
+
+/*New feedback css*/
+
+.give-feedback-title {
+    margin: 0;
+    padding: 25px 0 25px 0;
+    text-align: center;
 }
 
-.blue {
-    background: #008000;
+.give-feedback-box {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    vertical-align: middle
 }
 
-.purple {
-    background: #ab3fdd;
+.done-button {
+    padding: 5px 20px 5px 20px;
+    background-color: #53b80a;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    opacity: 0;
+    outline: none;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    width: 100px;
 }
 
-.wine {
-    background: #ae163e;
-}
-
-#container {
-    display: flex; /* establish flex container */
-    flex-direction: row; /* default value; can be omitted */
-    flex-wrap: nowrap; /* default value; can be omitted */
-    justify-content: space-between; /* switched from default (flex-start, see below) */
-    background-color: lightyellow;
-}
-
-    #container > div {
-        width: 100px;
-        height: 100px;
-        border: 2px dashed red;
+    .done-button:hover {
+        color: #fff;
+        text-decoration: none;
     }
+
+#basedOn {
+    display: inline-block;
+}
+
+.basedOn {
+    display: inline-block;
+    user-select: none;
+}
+
+    .basedOn input[type=checkbox] {
+        display: none;
+    }
+
+        .basedOn input[type=checkbox] + label:before {
+            font-family: FontAwesome;
+            font-size: 60px;
+            opacity: 0.5;
+            font-weight: normal;
+            letter-spacing: 15px
+        }
+
+    .basedOn.facebook input[type=checkbox] + label:before {
+        content: "\f230";
+        opacity: 0.5;
+        color: #3B5998;
+    }
+
+    .basedOn.facebook input[type=checkbox]:checked + label:before {
+        opacity: 1;
+    }
+
+    .basedOn.instagram input[type=checkbox] + label:before {
+        content: "\f16d";
+        color: #bc2a8d;
+    }
+
+    .basedOn.instagram input[type=checkbox]:checked + label:before {
+        opacity: 1;
+    }
+
+    .basedOn.youtube input[type=checkbox] + label:before {
+        content: "\f166";
+        color: #bb0000;
+    }
+
+    .basedOn.youtube input[type=checkbox]:checked + label:before {
+        opacity: 1;
+    }
+
+    .basedOn.twitter input[type=checkbox] + label:before {
+        content: "\f081";
+        color: #55ACEE;
+    }
+
+    .basedOn.twitter input[type=checkbox]:checked + label:before {
+        opacity: 1;
+    }
+
+    .basedOn.twitch input[type=checkbox] + label:before {
+        content: "\f1e8";
+        color: #6441A5;
+    }
+
+    .basedOn.twitch input[type=checkbox]:checked + label:before {
+        opacity: 1;
+    }
+
+    .basedOn.snapchat input[type=checkbox] + label:before {
+        content: "\f2ad";
+        color: #fffc00;
+        opacity: 0.7
+    }
+
+    .basedOn.snapchat input[type=checkbox]:checked + label:before {
+        opacity: 1;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
+    }
+
+    .basedOn.website input[type=checkbox] + label:before {
+        content: "\f0ac";
+        color: #5E9DC8;
+        opacity: 0.5
+    }
+
+    .basedOn.website input[type=checkbox]:checked + label:before {
+        opacity: 1;
+    }
+
+.textarea-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+    .textarea-container textarea {
+        width: 50%;
+        max-width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 15px 15px;
+        margin-bottom: 30px;
+        font-size: 16px;
+        border: 1px solid #dadada;
+        border-radius: 6px;
+        margin-top: 10px;
+        outline: none;
+    }
+
+    .textarea-container a {
+        position: absolute;
+        bottom: -10px;
+        right: 50%;
+        padding: 5px 20px 5px 20px;
+        background-color: #53b80a;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 0;
+        display: none;
+        cursor: pointer;
+    }
+
+        .textarea-container a:hover {
+            outline: none;
+            text-decoration: none;
+            color: #fff;
+        }
+
+
+.anbefaling {
+    display: inline-block;
+    width: 9.5%;
+}
+
+    .anbefaling label {
+        width: 100%;
+    }
+
+    .anbefaling input[type=radio] {
+        display: none;
+    }
+
+
+        .anbefaling input[type=radio] + label:before {
+            display: block;
+            font-size: 20px;
+            background: #fafafa;
+            border: 1px solid #ddd;
+            opacity: 0.7;
+            content: attr(number);
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .anbefaling input[type=radio]:checked + label:before {
+            opacity: 1;
+            background: #ddd;
+            border: 1px solid #888;
+        }
+
+@media(max-width: 767px) {
+
+    .done-button {
+        margin-bottom: 50px
+    }
+
+    .basedOn input[type=checkbox] + label:before {
+        letter-spacing: 2px
+    }
+
+    .textarea-container a {
+        right: 0;
+    }
+
+    .textarea-container textarea {
+        width: 100%;
+    }
+
+    .give-feedback-title {
+        font-size: 20px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .give-feedback-box h3 {
+        font-size: 18px;
+    }
+
+    .give-feedback-box h4 {
+        font-size: 14px;
+    }
+
+    .basedOn input[type=checkbox] + label:before {
+        font-size: 40px;
+    }
+
+    .anbefaling input[type=radio] + label:before {
+        font-size: 8px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .anbefaling {
+        width: 8.9%;
+    }
+
+    #fbContainer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    #noPaddingMobile {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    #sansynligt {
+        padding-right: 5px !important;
+    }
+
+    .nopaddingmobile {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+
+.adisabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+.errspan {
+    float: right;
+    margin-right: 6px;
+    margin-top: -20px;
+    position: relative;
+    z-index: 2;
+    color: red;
+}
+
+
+#redigerFanContainer p {
+    margin-top: 20px;
+}
+
+#redigerInfluenterContainer p {
+    margin-top: 20px
+}
+
+
+/*Create profile*/
+.create-profile-input {
+    width: 100%;
+    max-width: 100%;
+    height: 40px;
+    padding: 15px 15px;
+    font-size: 16px;
+    border: 1px solid #dadada;
+    border-radius: 6px;
+    outline: none;
+}
+
+.no-list-style ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-guidelines {
+    line-height: 200%;
+}
+
+    .footer-guidelines ol {
+        counter-reset: item;
+    }
+
+        .footer-guidelines ol li {
+            display: block;
+            position: relative;
+        }
+
+            .footer-guidelines ol li:before {
+                content: counters(item, ".")".";
+                counter-increment: item;
+                position: absolute;
+                margin-right: 100%;
+                right: 10px; /* space between number and text */
+            }

@@ -13,14 +13,14 @@ namespace RateBlog.Services.Interfaces
         /// </summary>
         /// <param name="name">Category Name</param>
         /// <returns></returns>
-        int GetCategoryIdByName(string name);
+        string GetCategoryIdByName(string name);
 
         /// <summary>
         /// Gets the category names with are asociated with a specific influencer. 
         /// </summary>
         /// <param name="id">Influencer ID</param>
         /// <returns></returns>
-        IEnumerable<string> GetInfluencerCategoryNames(int id);
+        IEnumerable<string> GetInfluencerCategoryNames(string id);
 
         /// <summary>
         /// Inserts a category for a influencer. 
@@ -28,7 +28,7 @@ namespace RateBlog.Services.Interfaces
         /// <param name="influencerId">Influencer ID</param>
         /// <param name="categoryId">Category ID</param>
         /// <param name="isSelected">Does the current category exist?</param>
-        void InsertCategory(int influencerId, int categoryId, bool isSelected);
+        void InsertCategory(string influencerId, string categoryId, bool isSelected);
 
         /// <summary>
         /// Does the influencer have this category?
@@ -36,7 +36,7 @@ namespace RateBlog.Services.Interfaces
         /// <param name="influencerId">Influencer ID</param>
         /// <param name="categoryId">Category ID</param>
         /// <returns></returns>
-        bool IsCategorySelected(int influencerId, int categoryId);
+        bool IsCategorySelected(string influencerId, string categoryId);
 
         /// <summary>
         /// Inserts a platform for a influencer
@@ -44,7 +44,7 @@ namespace RateBlog.Services.Interfaces
         /// <param name="influencerId">Influencer ID</param>
         /// <param name="platformId">Platform ID</param>
         /// <param name="link">Link to platform</param>
-        void InsertPlatform(int influencerId, int platformId, string link);
+        void InsertPlatform(string influencerId, string platformId, string link);
 
         /// <summary>
         /// Gets the link to the platform
@@ -52,35 +52,35 @@ namespace RateBlog.Services.Interfaces
         /// <param name="influencerId">Influencer ID</param>
         /// <param name="platformId">Platform ID</param>
         /// <returns></returns>
-        string GetPlatformLink(int influencerId, int platformId);
+        string GetPlatformLink(string influencerId, string platformId);
 
         /// <summary>
         /// Gets all the InfluencerPlatform object for a influencer
         /// </summary>
         /// <param name="id">Influencer ID</param>
         /// <returns></returns>
-        IEnumerable<InfluencerPlatform> GetAllInfluencerPlatformForInfluencer(int id);
+        IEnumerable<InfluencerPlatform> GetAllInfluencerPlatformForInfluencer(string id);
 
         /// <summary>
         /// Gets platform id by its name
         /// </summary>
         /// <param name="name">Platform Name</param>
         /// <returns></returns>
-        int GetPlatformIdByName(string name);
+        string GetPlatformIdByName(string name);
 
         /// <summary>
         /// Gets all influencers with this platform name
         /// </summary>
         /// <param name="name">Platform Name</param>
         /// <returns></returns>
-        IEnumerable<ApplicationUser> GetAllInfluencersWithPlatform(string name);
+        Task<IEnumerable<ApplicationUser>> GetAllInfluencersWithPlatform(string name);
 
         /// <summary>
         /// Gets all influencers with this category name
         /// </summary>
         /// <param name="name">Category Name</param>
         /// <returns></returns>
-        IEnumerable<ApplicationUser> GetAllInfluencersWithCategory(string name);
+        Task<IEnumerable<ApplicationUser>> GetAllInfluencersWithCategory(string name);
 
     }
 }

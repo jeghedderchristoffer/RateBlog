@@ -15,18 +15,20 @@ namespace RateBlog.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _dbContext;
         private readonly IRepository<Category> _categoryRepo;
-        private readonly IRepository<Platform> _platformRepo; 
-        
+        private readonly IRepository<Platform> _platformRepo;
+        private readonly IRepository<Influencer> _influencerRepo;
 
-        public PlatformCategoryService(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo)
+
+        public PlatformCategoryService(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IRepository<Influencer> influencerRepo)
         {
             _userManager = userManager;
             _dbContext = dbContext;
             _categoryRepo = categoryRepo;
-            _platformRepo = platformRepo; 
+            _platformRepo = platformRepo;
+            _influencerRepo = influencerRepo; 
         }
 
-        public IEnumerable<InfluencerPlatform> GetAllInfluencerPlatformForInfluencer(int id)
+        public IEnumerable<InfluencerPlatform> GetAllInfluencerPlatformForInfluencer(string id)
         {
             if (_dbContext.InfluencerPlatform.Any(x => x.InfluencerId == id))
             {
@@ -36,7 +38,7 @@ namespace RateBlog.Services
             return null;
         }
 
-        public IEnumerable<ApplicationUser> GetAllInfluencersWithCategory(string name)
+        public async Task<IEnumerable<ApplicationUser>> GetAllInfluencersWithCategory(string name)
         {
             var id = GetCategoryIdByName(name);
             var ik = _dbContext.InfluencerCategory.Where(x => x.CategoryId == id);
@@ -45,13 +47,19 @@ namespace RateBlog.Services
 
             foreach (var v in ik)
             {
-                userList.Add(_userManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluencerId));
+                var influencer = _influencerRepo.Get(v.InfluencerId);
+                var user = await _userManager.FindByIdAsync(influencer.Id); 
+
+                if (!user.Name.ToLower().Contains(name) && !influencer.Alias.ToLower().Contains(name))
+                {
+                    userList.Add(user);
+                }
             }
 
             return userList;
         }
        
-        public IEnumerable<ApplicationUser> GetAllInfluencersWithPlatform(string name)
+        public async Task<IEnumerable<ApplicationUser>> GetAllInfluencersWithPlatform(string name)
         {
             var id = GetPlatformIdByName(name);
             var ik = _dbContext.InfluencerPlatform.Where(x => x.PlatformId == id);
@@ -60,21 +68,27 @@ namespace RateBlog.Services
 
             foreach (var v in ik)
             {
-                userList.Add(_userManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluencerId));
+                var influencer = _influencerRepo.Get(v.InfluencerId);
+                var user = await _userManager.FindByIdAsync(influencer.Id);
+
+                if (!user.Name.ToLower().Contains(name) && !influencer.Alias.ToLower().Contains(name))
+                {
+                    userList.Add(user);
+                }
             }
             return userList;
         }
 
-        public int GetCategoryIdByName(string name)
+        public string GetCategoryIdByName(string name)
         {
-            if (_categoryRepo.GetAll().Any(x => x.Name == name))
+            if (_categoryRepo.GetAll().Any(x => x.Name.ToLower() == name.ToLower()))
             {
-                return _categoryRepo.GetAll().SingleOrDefault(x => x.Name == name).Id;
+                return _categoryRepo.GetAll().SingleOrDefault(x => x.Name.ToLower() == name.ToLower()).Id;
             }
-            return 0;
+            return null;
         }
 
-        public IEnumerable<string> GetInfluencerCategoryNames(int id)
+        public IEnumerable<string> GetInfluencerCategoryNames(string id)
         {
             if (_dbContext.InfluencerCategory.Any(x => x.InfluencerId == id))
             {
@@ -88,16 +102,16 @@ namespace RateBlog.Services
             return null;
         }
 
-        public int GetPlatformIdByName(string name)
+        public string GetPlatformIdByName(string name)
         {
-            if (_dbContext.Platform.Any(x => x.Name == name))
+            if (_dbContext.Platform.Any(x => x.Name.ToLower() == name))
             {
                 return _dbContext.Platform.SingleOrDefault(x => x.Name == name).Id;
             }
-            return 0;
+            return null;
         }
 
-        public string GetPlatformLink(int influencerId, int platformId)
+        public string GetPlatformLink(string influencerId, string platformId)
         {
             if (_dbContext.InfluencerPlatform.Any(x => x.InfluencerId == influencerId && x.PlatformId == platformId))
             {
@@ -106,7 +120,7 @@ namespace RateBlog.Services
             return null;
         }
 
-        public void InsertCategory(int influencerId, int categoryId, bool isSelected)
+        public void InsertCategory(string influencerId, string categoryId, bool isSelected)
         {
             InfluencerCategory ik = new InfluencerCategory()
             {
@@ -132,7 +146,7 @@ namespace RateBlog.Services
             }
         }
 
-        public void InsertPlatform(int influencerId, int platformId, string link)
+        public void InsertPlatform(string influencerId, string platformId, string link)
         {
             InfluencerPlatform ip = new InfluencerPlatform()
             {
@@ -165,7 +179,7 @@ namespace RateBlog.Services
             _dbContext.SaveChanges();
         }
 
-        public bool IsCategorySelected(int influencerId, int categoryId)
+        public bool IsCategorySelected(string influencerId, string categoryId)
         {
             if (_dbContext.InfluencerCategory.Any(x => x.InfluencerId == influencerId && x.CategoryId == categoryId))
             {

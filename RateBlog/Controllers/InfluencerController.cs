@@ -8,7 +8,6 @@ using RateBlog.Data;
 using RateBlog.Models;
 using RateBlog.Models.InfluenterViewModels;
 using RateBlog.Models.ManageViewModels;
-using RateBlog.Models.RatingViewModels;
 using RateBlog.Repository;
 using RateBlog.Services;
 using RateBlog.Services.Interfaces;
@@ -53,26 +52,6 @@ namespace RateBlog.Controllers
                 search = "";
             }
 
-            var influenter = _userManager.Users.
-                Where(x => (x.Name.ToLower().Contains(search.ToLower())) && x.InfluenterId.HasValue
-                || (x.Influenter.Alias.Contains(search) && x.InfluenterId.HasValue)).ToList();
-
-            foreach (var kategori in _categoryRepo.GetAll())
-            {
-                if (search.ToLower().Equals(kategori.Name.ToLower()))
-                {
-                    influenter.AddRange(_platformCategoryService.GetAllInfluencersWithCategory(search));
-                }
-            }
-
-            foreach (var platform in _platformRepo.GetAll())
-            {
-                if (search.ToLower().Equals(platform.Name.ToLower()))
-                {
-                    influenter.AddRange(_platformCategoryService.GetAllInfluencersWithPlatform(search));
-                }
-            }
-
             var model = new Models.InfluenterViewModels.IndexViewModel()
             {
                 SearchString = search
@@ -81,12 +60,12 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult Profile(int id)
+        public async Task<IActionResult> Profile(string id)
         {
             var influenter = _influencerRepo.Get(id);
 
             //Burde kun kunne få den pågældene user, da Index() metoden KUN returnere Users som er influenter...
-            var user = _userManager.Users.SingleOrDefault(x => x.InfluenterId == id);
+            var user = await _userManager.FindByIdAsync(id);
 
             var model = new ShowViewModel()
             {
@@ -99,15 +78,15 @@ namespace RateBlog.Controllers
 
         [HttpGet]
         [Route("/[controller]/Feedback/[action]/{id}")]
-        public IActionResult Read(int id)
+        public async Task<IActionResult> Read(string id)
         {
-            var influenter = _influencerRepo.Get(id);
-            var user = _userManager.Users.SingleOrDefault(x => x.InfluenterId == id);
+            var influencer = _influencerRepo.Get(id);
+            var user = await _userManager.FindByIdAsync(influencer.Id);
 
             var model = new ReadViewModel()
             {
                 ApplicationUser = user,
-                Influenter = influenter
+                Influenter = influencer
             };
 
             return View(model);
@@ -130,47 +109,12 @@ namespace RateBlog.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Opret en influencer
-                var newInfluenter = new Influencer();
-                newInfluenter.Alias = model.Influenter.Alias;
-                _influencerRepo.Add(newInfluenter);
-
-                _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id, model.YoutubeLink);
-                _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id, model.FacebookLink);
-                _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Instagram").Id, model.InstagramLink);
-                _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SnapChat").Id, model.SnapchatLink);
-                _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitter").Id, model.TwitterLink);
-                _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Website").Id, model.WebsiteLink);
-                _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitch").Id, model.TwitchLink);
-
-                foreach (var v in model.IKList)
-                {
-                    _platformCategoryService.InsertCategory(newInfluenter.Id, _categoryRepo.GetAll().SingleOrDefault(x => x.Name == v.KategoriNavn).Id, v.IsSelected);
-                }
-
-                // Lav en email baseret på deres alias... Hvis deres alias indeholde æøå vil den nok fejle...
-                var email = newInfluenter.Id + "@" + newInfluenter.Id + ".dk";
-
                 var user = new ApplicationUser();
+                var email = "userInfluencer" + _influencerRepo.GetAll().Count() + "@bestfluence.dk"; 
 
-                if (string.IsNullOrEmpty(model.Name))
-                {
-                    user.UserName = email;
-                    user.Email = email;
-                    user.Name = model.Influenter.Alias;
-
-                    // Match applicationUser med influencer
-                    user.InfluenterId = newInfluenter.Id;
-                }
-                else
-                {
-                    user.UserName = email;
-                    user.Email = email;
-                    user.Name = model.Name;
-
-                    // Match applicationUser med influencer
-                    user.InfluenterId = newInfluenter.Id;
-                }
+                user.UserName = email;
+                user.Email = email;
+                user.Name = model.Influenter.Alias;
 
                 // Billede af influencer...
                 if (model.ProfilePic != null)
@@ -180,20 +124,34 @@ namespace RateBlog.Controllers
                     user.ProfilePicture = ms.ToArray();
                 }
 
-                // Koden vil være: bestfluence + InfluenterId + 123
-                var result = await _userManager.CreateAsync(user, "bestfluence" + newInfluenter.Id + "123");
+                var result = await _userManager.CreateAsync(user, "bestfluencenewuser123321");
 
                 if (result.Succeeded)
                 {
-                    TempData["Success"] = "Du har oprette denne influencer!";
-                    return RedirectToAction("Profile", new { id = newInfluenter.Id });
+                    // Opret en influencer
+                    var newInfluenter = new Influencer();
+                    newInfluenter.Alias = model.Influenter.Alias;
+                    newInfluenter.Id = user.Id; 
+                    _influencerRepo.Add(newInfluenter);
+
+                    _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id, model.YoutubeLink);
+                    _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id, model.FacebookLink);
+                    _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Instagram").Id, model.InstagramLink);
+                    _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SnapChat").Id, model.SnapchatLink);
+                    _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitter").Id, model.TwitterLink);
+                    _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Website").Id, model.WebsiteLink);
+                    _platformCategoryService.InsertPlatform(newInfluenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitch").Id, model.TwitchLink);
+
+                    foreach (var v in model.IKList)
+                    {
+                        _platformCategoryService.InsertCategory(newInfluenter.Id, _categoryRepo.GetAll().SingleOrDefault(x => x.Name == v.KategoriNavn).Id, v.IsSelected);
+                    }
+
+                    TempData["Success"] = "Du har oprettet denne influencer. Der kan gå 24 timer før personen bliver offentlig!";
+                    return RedirectToAction("Profile", new { Id = newInfluenter.Id });
                 }
                 else
                 {
-                    // Der findes allrede en bruger med denne email, ergo findes denne influenter, da emailen er baseret på alias...
-                    // ELLER så består alias af æøå, og dette må emailen ikke være....
-                    // Jeg sletter derfor influenteren igen!! 
-                    _influencerRepo.Delete(newInfluenter);
                     TempData["Error"] = "Der skete en fejl!";
                     return View(model);
                 }
@@ -204,12 +162,13 @@ namespace RateBlog.Controllers
         [HttpGet]
         [Authorize]
         [Route("/[controller]/Feedback/[action]/{id}")]
-        public IActionResult Give(int id)
+        public async Task<IActionResult> Give(string id)
         {
             var influenter = _influencerRepo.Get(id);
-            var model = new RatingViewModel()
+            var model = new GiveViewModel()
             {
-                Influenter = influenter
+                Influencer = influenter,
+                Follower = await _userManager.GetUserAsync(User)
             };
 
             return View(model);
@@ -218,13 +177,14 @@ namespace RateBlog.Controllers
         [HttpPost]
         [Authorize]
         [Route("/[controller]/Feedback/[action]/{id}")]
-        public async Task<IActionResult> Give(int kvalitet, int troværdighed, int opførsel, int interaktion, bool? anbefaling, RatingViewModel model)
+        public async Task<IActionResult> Give(GiveViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
-
-            if (user.InfluenterId.HasValue)
+            var influencer = _influencerRepo.Get(user.Id); 
+            
+            if (influencer != null)
             {
-                if (model.Influenter.Id == user.InfluenterId.Value)
+                if (model.Influencer.Id == influencer.Id)
                 {
                     TempData["Error"] = "Du kan ikke anmelde dig selv!";
                     return RedirectToAction("Give");
@@ -236,72 +196,88 @@ namespace RateBlog.Controllers
                 }
             }
 
-            //var hoursSinceLastRating = _feedbackService.GetHoursLeftToRate(user.Id, model.Influenter.Id);
-
-            //// Så har denne bruger ikke ratet denne influencer endnu
-            //if (hoursSinceLastRating == 0)
-            //{
-            //    // Gør ingenting?? :-)
-            //}
-            //// Så har denne bruger ratet indenfor 24 timer...
-            //else if (hoursSinceLastRating < 24)
-            //{
-            //    var hours = TimeSpan.FromHours(24 - hoursSinceLastRating);
-            //    TempData["Error"] = "Du kan anmelde denne influencer igen om " + hours.ToString(@"hh\:mm") + " minutter";
-            //    return RedirectToAction("Give");
-            //}
-
-            if (opførsel == 0 || kvalitet == 0 || troværdighed == 0 || interaktion == 0 || model.Review == null || anbefaling == null)
+            if (ModelState.IsValid)
             {
-                TempData["Error"] = "Du skal udfylde alle felterne for at give dit feedback";
-
-                var errorModel = new RatingViewModel()
+                var hoursSinceLastRating = _feedbackService.GetHoursLeftToRate(user.Id, model.Influencer.Id);
+                if (hoursSinceLastRating == 0)
                 {
-                    Review = model.Review,
-                    Influenter = model.Influenter
+                    // Gør ingenting?? :-)
+                }
+                else if (hoursSinceLastRating < 24)
+                {
+                    var hours = TimeSpan.FromHours(24 - hoursSinceLastRating);
+                    TempData["Error"] = "Du kan anmelde denne influencer igen om " + hours.ToString(@"hh\:mm") + " minutter";
+                    return RedirectToAction("Give");
+                }
+
+                var boolList = new List<bool>()
+                {
+                    model.BasedOnFacebook,
+                    model.BasedOnInstagram,
+                    model.BasedOnSnapchat,
+                    model.BasedOnTwitch,
+                    model.BasedOnTwitter,
+                    model.BasedOnWebsite,
+                    model.BasedOnYoutube
                 };
 
-                return View("Give", errorModel);
+                if (!boolList.Any(x => x == true))
+                {
+                    TempData["Error"] = "Du skal fortælle hvilke platforme du baseret din feedback på";
+                    return RedirectToAction("Give");
+                }
+
+                if (string.IsNullOrEmpty(model.FeedbackBetter) && string.IsNullOrEmpty(model.FeedbackGood))
+                {
+                    TempData["Error"] = "Du skal fortælle hvad influenceren gør godt eller hvad der kan gøres bedre!";
+                    return RedirectToAction("Give");
+                }
+
+                var feedback = new Feedback()
+                {
+                    Kvalitet = model.Kvalitet,
+                    Troværdighed = model.Troværdighed,
+                    Opførsel = model.Opførsel,
+                    Interaktion = model.Interaktion,
+                    FeedbackGood = model.FeedbackGood,
+                    FeedbackBetter = model.FeedbackBetter,
+                    Anbefaling = model.Anbefaling,
+                    FeedbackDateTime = DateTime.Now,
+                    ApplicationUserId = model.Follower.Id,
+                    InfluenterId = model.Influencer.Id,
+                    BasedOnSnapchat = model.BasedOnSnapchat,
+                    BasedOnYoutube = model.BasedOnYoutube,
+                    BasedOnFacebook = model.BasedOnFacebook,
+                    BasedOnInstagram = model.BasedOnInstagram,
+                    BasedOnTwitch = model.BasedOnTwitch,
+                    BasedOnTwitter = model.BasedOnTwitter,
+                    BasedOnWebsite = model.BasedOnWebsite,
+                };
+                _feedbackRepo.Add(feedback);
+                TempData["Success"] = "Du har givet din feedback til " + model.Influencer.Alias;
+                return RedirectToAction("Profile", "Influencer", new { Id = model.Influencer.Id });
             }
 
-            var rating = new Feedback()
-            {
-                Kvalitet = kvalitet,
-                Troværdighed = troværdighed,
-                Opførsel = opførsel,
-                Interaktion = interaktion,
-                FeedbackText = model.Review,
-                Anbefaling = anbefaling,
-                ApplicationUserId = user.Id,
-                InfluenterId = model.Influenter.Id,
-                RateDateTime = DateTime.Now
-            };
 
-            // Tilføjer til Rating tabellen
-            _feedbackRepo.Add(rating);
-
-            // Der mangler at tjekke om denne user allerede har rated denne influenter....!!!!!!
-
-            // Lidt feedback til brugeren
-            TempData["Success"] = "Du har givet din feedback til " + model.Influenter.Alias;
-
-            // Skal ændres til Influenter Controller, ShowInfluenter Action
-            return RedirectToAction("Profile", "Influencer", new { Id = model.Influenter.Id });
+            TempData["Success"] = "Du skal udfylde alle felterne før du kan sende dit svar";
+            return RedirectToAction("Give");
         }
 
         [HttpGet]
-        public PartialViewResult Sorter(int[] platforme, int[] kategorier, int pageIndex, int pageSize, string search, int sortBy)
+        public async Task<PartialViewResult> Sorter(string[] platforme, string[] kategorier, int pageIndex, int pageSize, string search, int sortBy)
         {
-            var list = _sortService.SortInfluencer(platforme, kategorier, search, sortBy);
+            var list = await _sortService.SortInfluencer(platforme, kategorier, search, sortBy);
+            list = list.Where(x => _influencerRepo.Get(x.Id).IsApproved == true);
             var sortList = list.Take(pageSize * pageIndex);
 
             return PartialView("InfluencerListPartial", sortList.ToList());
         }
 
         [HttpGet]
-        public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search, int[] platforme, int[] kategorier, int sortBy)
+        public async Task<PartialViewResult> GetNextFromList(int pageIndex, int pageSize, string search, string[] platforme, string[] kategorier, int sortBy)
         {
-            var sortList = _sortService.SortInfluencer(platforme, kategorier, search, sortBy);
+            var sortList = await _sortService.SortInfluencer(platforme, kategorier, search, sortBy);
+            sortList = sortList.Where(x => _influencerRepo.Get(x.Id).IsApproved == true);
             sortList = sortList.Skip(pageIndex * pageSize).Take(pageSize);
 
             return PartialView("InfluencerListPartial", sortList.ToList());
@@ -311,15 +287,13 @@ namespace RateBlog.Controllers
         {
             return new List<InfluenterKategoriViewModel>()
             {
-                new InfluenterKategoriViewModel(){ KategoriNavn = "DIY", IsSelected = false},
-                new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = false},
-                new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = false},
-                new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = false},
-                new InfluenterKategoriViewModel(){ KategoriNavn = "Food", IsSelected = false},
-                new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = false},
                 new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = false },
-                new InfluenterKategoriViewModel(){ KategoriNavn = "Mommy", IsSelected = false },
-                new InfluenterKategoriViewModel(){ KategoriNavn = "VLOG", IsSelected = false },
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = false },
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = false },
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = false },
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Interests", IsSelected = false },
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = false},
+                new InfluenterKategoriViewModel(){ KategoriNavn = "Personal", IsSelected = false },
             };
         }
     }

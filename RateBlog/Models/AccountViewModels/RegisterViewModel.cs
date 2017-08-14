@@ -8,23 +8,12 @@ namespace RateBlog.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "Missing")]
+        [Required(ErrorMessage = "Du skal udfylde dit navn")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Missing")]
-        [EmailAddress(ErrorMessage = "Email")]
+        [Required(ErrorMessage = "Du skal udfylde din email")]
+        [EmailAddress(ErrorMessage = "Det skal være en gyldig email")]
         [Display(Name = "Email")]
         public string Email { get; set; }
-
-        [Required(ErrorMessage = "Missing")]
-        [StringLength(100, ErrorMessage = "Password", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "NoMatch")]
-        public string ConfirmPassword { get; set; }
     }
 }

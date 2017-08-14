@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using RateBlog.Repository;
 using System.Globalization;
 using RateBlog.Services.Interfaces;
+using RateBlog.Helper;
 
 namespace RateBlog
 {
@@ -61,6 +62,7 @@ namespace RateBlog
                 // Skift login path
                 options.Cookies.ApplicationCookie.LoginPath = new PathString();
             })
+                .AddErrorDescriber<CustomIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -77,10 +79,10 @@ namespace RateBlog
             //services.AddScoped(typeof(IRepository<>), typeof(IRepository<>)); VIRKER IKKE
             services.AddTransient<IRepository<Platform>, Repository<Platform>>();
             services.AddTransient<IRepository<Category>, Repository<Category>>();
-            services.AddTransient<IRepository<ExpertFeedback>, Repository<ExpertFeedback>>();
             services.AddTransient<IRepository<Feedback>, Repository<Feedback>>();
             services.AddTransient<IRepository<Influencer>, Repository<Influencer>>();
             services.AddTransient<ISortService, SortService>();
+            services.AddTransient<IInfluencerService, InfluencerService>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -111,6 +113,26 @@ namespace RateBlog
             app.UseIdentity();
 
             app.UseSession();
+
+            app.UseFacebookAuthentication(new FacebookOptions()
+            {
+                AppId = Configuration["Authentication:Facebook:AppId"],
+                AppSecret = Configuration["Authentication:Facebook:AppSecret"],
+                SaveTokens = true,
+                Scope =
+                {
+                    //"user_birthday",
+                    "public_profile"
+                },
+                Fields = 
+                {
+                    "birthday", //User's DOB  
+                    "picture", //User Profile Image  
+                    "name", //User Full Name  
+                    "email", //User Email  
+                    "gender", //user's Gender  
+                }
+            });
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 

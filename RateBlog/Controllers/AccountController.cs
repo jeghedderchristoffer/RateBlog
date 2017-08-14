@@ -13,6 +13,7 @@ using RateBlog.Models;
 using RateBlog.Models.AccountViewModels;
 using RateBlog.Services;
 using Microsoft.AspNetCore.Http;
+using RateBlog.Models.ManageViewModels;
 
 namespace RateBlog.Controllers
 {
@@ -150,36 +151,37 @@ namespace RateBlog.Controllers
             return View();
         }
 
+       
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegisterConfirmation(string registerName, string registerEmail)
+        {
+            return View(new RegisterConfirmationViewModel() { Name = registerName, Email = registerEmail });
+        }
+
         //
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> RegisterConfirmation(RegisterConfirmationViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Year = model.Year, Postnummer = model.Postnummer, Gender = model.Gender };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return Json(new { sucess = true, issue = "", error = "" });
+                    return RedirectToLocal(returnUrl);
                 }
-                AddErrors(result);
-                return Json(new { sucess = false, issue = model, error = ModelState.Values.Where(i => i.Errors.Count > 0) });
+                ModelState.AddModelError("", "Der findes allerede en bruger med denne email");
             }
 
             // If we got this far, something failed, redisplay form
-            return Json(new { sucess = false, issue = model, error = ModelState.Values.Where(i => i.Errors.Count > 0) });
+            return View(model);
         }
 
         //
@@ -244,7 +246,14 @@ namespace RateBlog.Controllers
                 ViewData["ReturnUrl"] = returnUrl;
                 ViewData["LoginProvider"] = info.LoginProvider;
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
+                var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+                var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);
+
+                //var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);               
+                //var acessToken = info.AuthenticationTokens.Single(x => x.Name == "access_token").Value;
+
+
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email, Name = name, Gender = gender });
             }
         }
 
@@ -263,7 +272,7 @@ namespace RateBlog.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Year = model.Year, Postnummer = model.Postnummer };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -271,6 +280,9 @@ namespace RateBlog.Controllers
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
+
+                        // Add Facebook / Google Claim for denne user
+
                         _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
                         return RedirectToLocal(returnUrl);
                     }
@@ -500,11 +512,8 @@ namespace RateBlog.Controllers
             return View();
         }
 
-        // Skal laves!!!
-        public JavaScriptResult LoginJS()
-        {
-            return new JavaScriptResult("$('#loginModal').modal('show');");
-        }
+
+
 
         #region Helpers
 
@@ -539,4 +548,8 @@ namespace RateBlog.Controllers
             this.ContentType = "application/javascript";
         }
     }
+
+    
+
+
 }

@@ -54,8 +54,6 @@ function loginFunction() {
             var JSONString = JSON.stringify(result);
             var resultObj = JSON.parse(JSONString);
 
-            console.log(data.Password);
-
             if (resultObj.result === "Missing") {
                 if (data.Password === '') {
                     $("#password").focus();
@@ -350,3 +348,11 @@ $(document).ready(function () {
 
 });
 
+$('input[name = "isInfluencerExternalLogin"]').change(function () {
+    if ($('input[name = "isInfluencerExternalLogin"]:checked').val() === "true") {
+        $("#isInfluencerExternalLoginBox").slideDown(300);
+    }
+    else {
+        $("#isInfluencerExternalLoginBox").slideUp(300);
+    }
+}); 

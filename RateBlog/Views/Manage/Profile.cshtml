@@ -2,18 +2,20 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Services.IFeedbackService FeedbackService
 @inject RateBlog.Services.Interfaces.IPlatformCategoryService PlatformCategoryService
+@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
 @inject RateBlog.Repository.IRepository<Platform> PlatformRepo
 @{
     ViewData["Title"] = "Vis profil";
     var user = await UserManager.GetUserAsync(User);
+    var isInfluencer = await InfluencerService.IsUserInfluencerAsync(user.Id);
 
     string last = "";
 
     try
     {
-        if (PlatformCategoryService.GetInfluencerCategoryNames(user.InfluenterId.Value) != null)
+        if (PlatformCategoryService.GetInfluencerCategoryNames(user.Id) != null)
         {
-            last = PlatformCategoryService.GetInfluencerCategoryNames(user.InfluenterId.Value).Last();
+            last = PlatformCategoryService.GetInfluencerCategoryNames(user.Id).Last();
         }
     }
     catch (InvalidOperationException)
@@ -26,16 +28,29 @@
 
     <div class="navbar-allaround"></div>
 
+    @if (TempData["Success"] != null)
+    {
+        <div id="passSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Success"]
+        </div>
+
+        <script>
+            window.setTimeout(function () {
+                $("#passSuc").fadeOut(1000);
+            }, 2000);
+        </script>
+    }
     <div class="container">
         <div class="col-md-12 margin-top">
             <img class="profil-img center-block" src="@Url.Action("ProfilePic", "Manage")" />
             <div class="text-center">
                 <h2 class="responsive-visProfil-h2">@user.Name</h2>
-                @if (user.InfluenterId != null && PlatformCategoryService.GetInfluencerCategoryNames(user.InfluenterId.Value) != null)
+                @if (isInfluencer && PlatformCategoryService.GetInfluencerCategoryNames(user.Id) != null)
                 {
                     <h3 class="responsive-visProfil-h3">
 
-                        @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(user.InfluenterId.Value))
+                        @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(user.Id))
                         {
                             if (v.Equals(last))
                             {
@@ -48,7 +63,7 @@
                         }
                     </h3>
                 }
-                else if (user.InfluenterId != null)
+                else if (isInfluencer)
                 {
                     <h3>Ukendte kategorier</h3>
                 }
@@ -61,16 +76,16 @@
         </div>
         <div class="col-md-12">
             <div class="col-md-4 col-sm-4">
-                @if (user.InfluenterId.HasValue)
+                @if (isInfluencer)
                 {
-                    @if (FeedbackService.HasFeedback(user.InfluenterId.Value))
+                    @if (FeedbackService.HasFeedback(user.Id))
                     {
                         <h3 class="text-center" style="margin-top: 0">Følger rating:</h3>
 
                         <div class="show-rating-box-show">
                             <div class="show-rating-show">
                                 <div class="show-rating-front-show">
-                                    @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(user.InfluenterId.Value); i++)
+                                    @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(user.Id); i++)
                                     {
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                     }
@@ -84,76 +99,12 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="text-center" style="margin-top: 20px; margin-bottom: 20px; font-size: 18px">@FeedbackService.GetTotalScore(user.InfluenterId.Value).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(user.InfluenterId.Value) ratings</p>
+                        <p class="text-center" style="margin-top: 20px; margin-bottom: 20px; font-size: 18px">@FeedbackService.GetTotalScore(user.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(user.Id) ratings</p>
                     }
                     else
                     {
                         <h4>Du har ingen ratings endnu</h4>
                     }
-                }
-                else
-                {
-                    @if (FeedbackService.GetLast3Feedback(user.Id).ToList().Count != 0)
-                    {
-                        <div class="last3rating">
-                            <h3>Sidste 3 ratings</h3>
-                        </div>
-
-                        @foreach (var v in FeedbackService.GetLast3Feedback(user.Id))
-                        {
-                            <div class="col-md-12 col-sm-12 col-xs-12 last3ratingFan">
-                                <div class="col-md-3 col-sm-12 col-xs-12">
-                                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == v.InfluenterId).Id })" />
-                                </div>
-                                <div class="col-md-9 col-sm-12 col-xs-12" style="padding-top:7px;">
-                                    <div class="col-md-12 col-sm-12 col-xs-12 noPadding">
-                                        <h5 style="display: inline">Feedback til: </h5>
-                                        <p style="display: inline;"><i>@UserManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluenterId).Name</i></p>
-                                    </div>
-
-                                    <div class="col-md-12 col-sm-12 col-xs-12 noPadding">
-                                        <h5 style="display: inline">Rating:</h5>
-
-                                        <div class="show-rating-box-3">
-                                            <div class="show-rating-3">
-                                                <div class="show-rating-front-3">
-                                                    @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
-                                                    {
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                    }
-                                                </div>
-                                                <div class="show-rating-back-3">
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        <div class="last3rating">
-                            <h4 style="text-align: center;">Du har ikke givet feedback endnu</h4>
-                            <div class="outer">
-                                <div class="middle">
-                                    <div class="inner">
-                                        <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index">
-                                            <span>
-                                                <input class="search-button-profil" type="submit" value="Søg" />
-                                            </span>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-
                 }
             </div>
 
@@ -165,18 +116,17 @@
                 @if (string.IsNullOrEmpty(user.ProfileText))
                 {
                     <h4>Du har ikke skrevet nogen profiltekst</h4>
-
                 }
-                <p> @user.ProfileText </p>
+                <p>@user.ProfileText </p>
             </div>
             <hr class="visible-xs" />
             <div class="col-md-4 col-sm-4">
-                @if (user.InfluenterId != null)
+                @if (isInfluencer)
                 {
-                    @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(user.InfluenterId.Value) != null)
+                    @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(user.Id) != null)
                     {
 
-                        @foreach (var v in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(user.InfluenterId.Value))
+                        @foreach (var v in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(user.Id))
                         {
                             <div class="social-box">
                                 @if (PlatformRepo.Get(v.PlatformId).Name == "Facebook")

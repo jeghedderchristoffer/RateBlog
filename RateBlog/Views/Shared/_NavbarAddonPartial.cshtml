@@ -1,37 +1,10 @@
 ﻿@inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Services.IFeedbackService FeedbackService
+@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
 @{
     var user = await UserManager.GetUserAsync(User);
+    var isInfluencer = await InfluencerService.IsUserInfluencerAsync(user.Id); 
 }
-
-@if (User.IsInRole("Ekspert"))
-{
-    <div class="navbar-addon">
-        <div class="container">
-            <div class="col-md-12 col-xs-12 noPadding">
-                <div class="col-md-2 col-xs-2 noPadding addon-box">
-                    <div class="addon-img-container">
-                        <img src="@Url.Action("ProfilePic", "Manage")" />
-                    </div>
-                </div>
-                <div class="col-md-9 col-xs-9 addon-box">
-                    <div class="addon-number" style="text-align: left">
-                        <h3>@user.Name</h3>
-                        <p style="margin-top: 10px;">Ekspert</p>
-                    </div>
-
-                    <div class="addon-number" style="width: 33.3%">
-                        <h1>@FeedbackService.GetExpertFeedbackCount(user.Id.ToString())</h1>
-                        <p>Ratings</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-}
-else
-{
 
 <div class="navbar-addon">
     <div class="container">
@@ -44,7 +17,7 @@ else
             <div class="col-md-5 col-xs-9 addon-box">
                 <div class="addon-number" style="text-align: left">
                     <h3>@user.Name</h3>
-                    @if (user.InfluenterId.HasValue)
+                    @if (isInfluencer)
                     {
                         <p style="margin-top: 10px;">Influencer</p>
                     }
@@ -57,7 +30,7 @@ else
             </div>
 
             <div class="col-md-5 col-xs-12 addon-box">
-                @if (!user.InfluenterId.HasValue)
+                @if (!isInfluencer)
                 {
                     <div class="addon-number" style="width: 50%; padding-right:50px;">
                         <h1>@FeedbackService.GetUserFeedbackCount(user.Id)</h1>
@@ -71,15 +44,15 @@ else
                 else
                 {
                     <div class="addon-number" style="width: 33.3%">
-                        <h1>@FeedbackService.GetInfluencerFeedbackCount(user.InfluenterId.Value)</h1>
+                        <h1>@FeedbackService.GetInfluencerFeedbackCount(user.Id)</h1>
                         <p>Ratings</p>
                     </div>
                     <div class="addon-number" style="width: 33.3%">
-                        <h1>@FeedbackService.GetInfluencerFeedbackAnswersCount(user.InfluenterId.Value)</h1>
+                        <h1>@FeedbackService.GetInfluencerFeedbackAnswersCount(user.Id)</h1>
                         <p>Svaret</p>
                     </div>
                     <div class="addon-number" style="width: 33.3%">
-                        <h1>@FeedbackService.GetTotalScore(user.InfluenterId.Value)</h1>
+                        <h1>@FeedbackService.GetTotalScore(user.Id)</h1>
                         <p>Total Score</p>
                     </div>
                 }
@@ -87,7 +60,7 @@ else
         </div>
     </div>
 </div>
-}
+
 
 
 

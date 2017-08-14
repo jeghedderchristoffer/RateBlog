@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\EkspertController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Properties\PublishProfiles\Bestfluence - Web Deploy.pubxml" />
   </ItemGroup>
 
@@ -20,22 +24,31 @@
     <Content Include="wwwroot\css\social-buttons.css" />
     <Content Include="wwwroot\images\airbnb.png" />
     <Content Include="wwwroot\images\BF.png" />
+    <Content Include="wwwroot\images\Category\Beauty.png" />
+    <Content Include="wwwroot\images\Category\Fashion.png" />
+    <Content Include="wwwroot\images\Category\Interests 2.png" />
+    <Content Include="wwwroot\images\Category\lipstick.png" />
+    <Content Include="wwwroot\images\Category\Personal.png" />
+    <Content Include="wwwroot\images\cat\Fashion.png" />
+    <Content Include="wwwroot\images\cat\Gaming.png" />
+    <Content Include="wwwroot\images\cat\Interests.png" />
+    <Content Include="wwwroot\images\cat\Lifestyle.png" />
     <Content Include="wwwroot\images\Footer\About.jpg" />
     <Content Include="wwwroot\images\Footer\FAQ.jpeg" />
+    <Content Include="wwwroot\images\Footer\guide-lines.jpeg" />
     <Content Include="wwwroot\images\Footer\Job.jpeg" />
     <Content Include="wwwroot\images\Footer\Kontakt.jpg" />
-    <Content Include="wwwroot\images\Footer\Rasmus.jpeg" />
+    <Content Include="wwwroot\images\Footer\privacy.jpeg" />
+    <Content Include="wwwroot\images\Footer\termsandconditions.jpeg" />
     <Content Include="wwwroot\images\Forside.jpeg" />
     <Content Include="wwwroot\images\Jyllandsposten.png" />
-    <Content Include="wwwroot\images\Kategori\beauty-kat.jpg" />
-    <Content Include="wwwroot\images\Kategori\DIY-kat.jpeg" />
-    <Content Include="wwwroot\images\Kategori\entertainment-kat.jpeg" />
-    <Content Include="wwwroot\images\Kategori\fashion-kat.jpeg" />
-    <Content Include="wwwroot\images\Kategori\food-kat.jpeg" />
-    <Content Include="wwwroot\images\Kategori\gaming-kat.jpeg" />
-    <Content Include="wwwroot\images\Kategori\lifestyle-kat.jpeg" />
-    <Content Include="wwwroot\images\Kategori\mommy-kat.jpeg" />
-    <Content Include="wwwroot\images\Kategori\vlog-pic.jpeg" />
+    <Content Include="wwwroot\images\Kategori\beauty.png" />
+    <Content Include="wwwroot\images\Kategori\entertainment.png" />
+    <Content Include="wwwroot\images\Kategori\fashion.png" />
+    <Content Include="wwwroot\images\Kategori\gaming.png" />
+    <Content Include="wwwroot\images\Kategori\interests.png" />
+    <Content Include="wwwroot\images\Kategori\lifestyle.png" />
+    <Content Include="wwwroot\images\Kategori\personal.png" />
     <Content Include="wwwroot\images\kommunikation.jpeg" />
     <Content Include="wwwroot\images\index-img.jpeg" />
     <Content Include="wwwroot\images\programing.jpeg" />
@@ -46,6 +59,7 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />

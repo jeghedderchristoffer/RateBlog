@@ -19,7 +19,7 @@
             <script>
                 window.setTimeout(function () {
                     $("#showSuc").fadeOut(1000);
-                }, 2000);
+                }, 5000);
             </script>
         }
 
@@ -28,11 +28,11 @@
             <div class="text-center">
                 <h2>@Model.ApplicationUser.Name</h2>
                 <h3>
-                    @if (PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.InfluenterId.Value) != null)
+                    @if (PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.Id) != null)
                     {
-                        @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.InfluenterId.Value))
+                        @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.Id))
                         {
-                            if (v.Equals(PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.InfluenterId.Value).Last()))
+                            if (v.Equals(PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.Id).Last()))
                             {
                                 @v
                             }
@@ -103,10 +103,10 @@
             <hr class="hidden-md hidden-lg" />
 
             <div class="col-md-4">
-                @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.ApplicationUser.InfluenterId.Value) != null)
+                @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.ApplicationUser.Id) != null)
                 {
 
-                    @foreach (var v in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.ApplicationUser.InfluenterId.Value))
+                    @foreach (var v in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.ApplicationUser.Id))
                     {
                         <div class="social-box">
                             @if (PlatformRepo.Get(v.PlatformId).Name == "Facebook")

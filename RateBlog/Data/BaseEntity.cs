@@ -7,6 +7,6 @@ namespace RateBlog.Data
 {
     public class BaseEntity
     {
-        public int Id { get; set; } 
+        public virtual string Id { get; set; } 
     }
 }

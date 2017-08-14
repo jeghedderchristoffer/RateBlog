@@ -12,21 +12,21 @@
 
         <div class="col-md-12 search-result noPaddingLeft">
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">
-                <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@influ.InfluenterId">
+                <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@influ.Id">
                     <img class="influ-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = influ.Id })" />
                 </a>
 
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 noPadding" style="">
 
-                <h4>@InfluencerRepo.Get(influ.InfluenterId.Value).Alias</h4>
+                <h4>@InfluencerRepo.Get(influ.Id).Alias</h4>
                 <p style="margin-top: 15px;">
-                    @if (PlatformCategoryService.GetInfluencerCategoryNames(influ.InfluenterId.Value) != null)
+                    @if (PlatformCategoryService.GetInfluencerCategoryNames(influ.Id) != null)
                     {
                     <p style="margin-top: 15px;">
-                        @foreach (var kategori in PlatformCategoryService.GetInfluencerCategoryNames(influ.InfluenterId.Value))
+                        @foreach (var kategori in PlatformCategoryService.GetInfluencerCategoryNames(influ.Id))
                         {
-                            @if (kategori.Equals(PlatformCategoryService.GetInfluencerCategoryNames(influ.InfluenterId.Value).Last()))
+                            @if (kategori.Equals(PlatformCategoryService.GetInfluencerCategoryNames(influ.Id).Last()))
                             {
                                 @kategori
                             }
@@ -44,9 +44,9 @@
 
 
                     <div class="a-center">
-                        @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(influ.InfluenterId.Value) != null)
+                        @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(influ.Id) != null)
                         {
-                            @foreach (var platform in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(influ.InfluenterId.Value))
+                            @foreach (var platform in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(influ.Id))
                             {
                                 @if (PlatformRepo.Get(platform.PlatformId).Name == "Facebook")
                                 {
@@ -89,7 +89,7 @@
                     <div class="show-rating-box">
                         <div class="show-rating">
                             <div class="show-rating-front">
-                                @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(influ.InfluenterId.Value); i++)
+                                @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(influ.Id); i++)
                                 {
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                 }
@@ -102,11 +102,11 @@
                                 <i class="fa fa-star" aria-hidden="true"></i>
                             </div>
                         </div>
-                        <p style="margin-bottom: 0; margin-top: 6px; text-align: center">@FeedbackService.GetTotalScore(influ.InfluenterId.Value).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(influ.InfluenterId.Value) ratings</p>
+                        <p style="margin-bottom: 0; margin-top: 6px; text-align: center">@FeedbackService.GetTotalScore(influ.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(influ.Id) ratings</p>
                     </div>
                     
-                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@influ.InfluenterId" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
-                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@influ.InfluenterId" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />
+                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@influ.Id" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@influ.Id" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />
 
                 </div>
             </div>

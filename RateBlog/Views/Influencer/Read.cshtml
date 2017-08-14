@@ -12,7 +12,7 @@
         <div class="col-md-12 col-xs-12 noPadding">
             <div class="col-md-2 col-xs-2 noPadding addon-box">
                 <div class="addon-img-container">
-                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == Model.Influenter.Id).Id })" />
+                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
                 </div>
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
@@ -36,7 +36,7 @@
     </div>
 </div>
 
-<div class=" container">
+<div class="container" style="padding-bottom: 100px;">
     <div class="col-md-12 col-xs-12 noPadding" style="margin-bottom: 20px;">
         <div class="col-md-7 col-sm-6 readrating hidden-xs noPadding">
             <h2 class="anmeldelser-h2">Følger feedback</h2>
@@ -74,11 +74,11 @@
 
         <div class="col-md-12 col-xs-12 noPadding">
             <div class="col-md-7 col-sm-6 noPadding">
-                @if (Model.ApplicationUser.InfluenterId.HasValue)
+                @if (Model.ApplicationUser.Id != null)
                 {
-                    @if (FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).ToList().Count != 0)
+                    @if (FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.Id).ToList().Count != 0)
                     {
-                        @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.RateDateTime))
+                        @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.Id).OrderByDescending(x => x.FeedbackDateTime   ))
                         {
                             <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
                                 <div class="col-md-2 col-xs-12 col-lg-2 noPadding read-img-container">
@@ -86,14 +86,23 @@
                                 </div>
 
                                 <div class="col-md-5 col-xs-12 col-lg-6 noPadding">
-                                    <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</b></p>
-                                    <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.RateDateTime) </p>
-                                    <h5><i>Feedback:</i></h5>
-                                    <p class="feedback-text">@v.FeedbackText</p>
+                                    <p>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
+                                    <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime) </p>
+                                    @if (!string.IsNullOrEmpty(v.FeedbackGood))
+                                    {
+                                        <h5><b>Hvad gør influenceren godt?</b></h5>
+                                        <p class="feedback-text">@v.FeedbackGood</p>
+                                    }
+                                    @if (!string.IsNullOrEmpty(v.FeedbackBetter))
+                                    {
+                                        <h5><b>Hvad kan influenceren gøre bedre?</b></h5>
+                                        <p class="feedback-text">@v.FeedbackBetter</p>
+                                    }
+
                                 </div>
 
                                 <div class="col-md-5 col-xs-12 col-lg-4" style="margin-bottom: 5px;">
-                                    <div class="show-rating-box">
+                                    <div class="show-rating-box" style="margin-top: 5px;">
                                         <div class="show-rating">
                                             <div class="show-rating-front">
                                                 @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
@@ -111,6 +120,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
 
                                 @if (v.Answer != null)
@@ -120,8 +130,8 @@
                                             <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
                                         </div>
                                         <div class="col-md-6 col-xs-12 noPadding">
-                                            <p><b>@Model.ApplicationUser.Name</b></p>
-                                            <h5><i>Svar:</i></h5>
+                                            <p>@Model.ApplicationUser.Name</p>
+                                            <h5><b>Svar:</b></h5>
                                             <p style="line-height: 150%">@v.Answer</p>
                                         </div>
                                     </div>
@@ -164,8 +174,8 @@
 
                 <div class="feedback-rating-all-box">
                     <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                        <h2 class="text-center" style="margin-top: 0; margin-bottom: 20px">Giv dit feedback</h2>
-                        <p style="font-size: 16px">Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
+                        <h2 class="text-center" style="margin-top: 0; margin-bottom: 20px; font-size: 26px">Giv din mening tilkende </h2>
+                        <p style="font-size: 14px">Er du fast følger af influenceren eller oplever du vedkommendes indhold jævnligt er du meget velkommen til at give din feedback</p>
                         <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3; margin-top: 20px"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>      
                     </div>
                 </div>

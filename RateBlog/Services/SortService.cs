@@ -18,8 +18,9 @@ namespace RateBlog.Services
         private readonly IRepository<Platform> _platformRepo;
         private readonly IRepository<Category> _categoryRepo;
         private readonly IPlatformCategoryService _platformCategoryService;
+        private readonly IRepository<Influencer> _influencerRepo;
 
-        public SortService(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, IFeedbackService feedbackService, IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IPlatformCategoryService platformCategoryService)
+        public SortService(IRepository<Influencer> influencerRepo, ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, IFeedbackService feedbackService, IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IPlatformCategoryService platformCategoryService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -27,89 +28,28 @@ namespace RateBlog.Services
             _platformRepo = platformRepo;
             _categoryRepo = categoryRepo;
             _platformCategoryService = platformCategoryService;
+            _influencerRepo = influencerRepo; 
         }
 
-        public IEnumerable<ApplicationUser> InfluencerSortByPlatAndCat(int[] platformIds, int[] categoryIds, List<ApplicationUser> users)
-        {
-            if (platformIds.Count() == 0 && categoryIds.Count() == 0)
-            {
-                return users;
-            }
-
-            var influencerIds = new List<int>();
-            var resultUserList = new List<ApplicationUser>();
-
-            var resultCat = new List<InfluencerCategory>();
-            var resultPlat = new List<InfluencerPlatform>();
-
-            foreach (var v in users)
-            {
-                influencerIds.Add(v.InfluenterId.Value);
-            }
-
-            if (platformIds.Count() != 0)
-            {
-                var influenterPlatform = _dbContext.InfluencerPlatform.Where(x => platformIds.Contains(x.PlatformId) && influencerIds.Contains(x.InfluencerId)).ToList();
-                resultPlat = influenterPlatform.GroupBy(x => x.InfluencerId).Where(p => p.Count() >= platformIds.Count()).SelectMany(x => x).ToList();
-
-                foreach (var v in resultPlat)
-                {
-                    var user = _userManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluencerId);
-                    if (!resultUserList.Contains(user))
-                    {
-                        resultUserList.Add(user);
-                    }
-                }
-            }
-            if (categoryIds.Count() != 0)
-            {
-                var influenterKategori = _dbContext.InfluencerCategory.Where(x => categoryIds.Contains(x.CategoryId) && influencerIds.Contains(x.InfluencerId)).ToList();
-                resultCat = influenterKategori.GroupBy(x => x.InfluencerId).Where(p => p.Count() >= categoryIds.Count()).SelectMany(x => x).ToList();
-
-                foreach (var v in resultCat)
-                {
-                    var user = _userManager.Users.SingleOrDefault(x => x.InfluenterId == v.InfluencerId);
-                    if (!resultUserList.Contains(user))
-                    {
-                        resultUserList.Add(user);
-                    }
-                }
-            }
-
-            var endList = new List<ApplicationUser>();
-
-            foreach (var user in resultUserList)
-            {
-                if (categoryIds.Count() == 0 || platformIds.Count() == 0)
-                {
-                    return resultUserList;
-                }
-
-                if (resultCat.Any(x => x.InfluencerId == user.InfluenterId) && resultPlat.Any(p => p.InfluencerId == user.InfluenterId))
-                {
-                    endList.Add(user);
-                }
-            }
-
-            return endList;
-        }
-
-        public IEnumerable<ApplicationUser> SortInfluencer(int[] platforme, int[] kategorier, string search, int sortBy)
+       
+        public async Task<IEnumerable<ApplicationUser>> SortInfluencer(string[] platforme, string[] kategorier, string search, int sortBy)
         {
             if (string.IsNullOrEmpty(search))
             {
                 search = "";
             }
 
-            var influencers = _userManager.Users.
-                Where(x => (x.Name.ToLower().Contains(search.ToLower())) && x.InfluenterId.HasValue
-                || (x.Influenter.Alias.Contains(search) && x.InfluenterId.HasValue)).ToList();
+            var influencer = from i in _influencerRepo.GetAll()
+                             join user in _userManager.Users.ToList() on i.Id equals user.Id
+                             select user;
+
+            var influencers = influencer.Where(x => x.Name.ToLower().Contains(search.ToLower()) || _influencerRepo.Get(x.Id).Alias.Contains(search.ToLower())).ToList(); 
 
             foreach (var kategori in _categoryRepo.GetAll())
             {
                 if (search.ToLower().Equals(kategori.Name.ToLower()))
                 {
-                    influencers.AddRange(_platformCategoryService.GetAllInfluencersWithCategory(search));
+                    influencers.AddRange(await _platformCategoryService.GetAllInfluencersWithCategory(search.ToLower()));
                 }
             }
 
@@ -117,7 +57,7 @@ namespace RateBlog.Services
             {
                 if (search.ToLower().Equals(platform.Name.ToLower()))
                 {
-                    influencers.AddRange(_platformCategoryService.GetAllInfluencersWithPlatform(search));
+                    influencers.AddRange(await _platformCategoryService.GetAllInfluencersWithPlatform(search.ToLower()));
                 }
             }
 
@@ -129,19 +69,19 @@ namespace RateBlog.Services
             {
                 if (sortBy == 1)
                 {
-                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetTotalScore(x.InfluenterId.Value) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetTotalScore(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
                 }
                 else if (sortBy == 2)
                 {
-                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetTotalScore(x.InfluenterId.Value) }).OrderBy(o => o.score).Select(x => x.user).ToList();
+                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetTotalScore(x.Id) }).OrderBy(o => o.score).Select(x => x.user).ToList();
                 }
                 else if (sortBy == 3)
                 {
-                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.InfluenterId.Value) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
                 }
                 else if (sortBy == 4)
                 {
-                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.InfluenterId.Value) }).OrderBy(o => o.score).Select(x => x.user).ToList();
+                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderBy(o => o.score).Select(x => x.user).ToList();
                 }
                 return influencers;
             }
@@ -152,7 +92,7 @@ namespace RateBlog.Services
             var cResult = influencerCat.GroupBy(x => x.InfluencerId).Where(p => p.Count() >= kategorier.Count()).SelectMany(x => x).ToList()/*.Select(x => x.InfluencerId).Distinct()*/.ToList();
             var pResult = influencerPlat.GroupBy(x => x.InfluencerId).Where(p => p.Count() >= platforme.Count()).SelectMany(x => x).ToList()/*.Select(x => x.InfluencerId).Distinct()*/.ToList();
 
-            var ids = new List<int>();
+            var ids = new List<string>();
 
             if (cResult.Count != 0 && pResult.Count != 0)
             {
@@ -172,23 +112,23 @@ namespace RateBlog.Services
             }
 
 
-            var list = influencers.Where(x => ids.Contains(x.InfluenterId.Value)).ToList();
+            var list = influencers.Where(x => ids.Contains(x.Id)).ToList();
 
             if (sortBy == 1)
             {
-                list = list.Select(x => new { user = x, score = _feedbackService.GetTotalScore(x.InfluenterId.Value) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+                list = list.Select(x => new { user = x, score = _feedbackService.GetTotalScore(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
             }
             else if (sortBy == 2)
             {
-                list = list.Select(x => new { user = x, score = _feedbackService.GetTotalScore(x.InfluenterId.Value) }).OrderBy(o => o.score).Select(x => x.user).ToList();
+                list = list.Select(x => new { user = x, score = _feedbackService.GetTotalScore(x.Id) }).OrderBy(o => o.score).Select(x => x.user).ToList();
             }
             else if (sortBy == 3)
             {
-                list = list.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.InfluenterId.Value) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+                list = list.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
             }
             else if (sortBy == 4)
             {
-                list = list.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.InfluenterId.Value) }).OrderBy(o => o.score).Select(x => x.user).ToList();
+                list = list.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderBy(o => o.score).Select(x => x.user).ToList();
             }
 
             return list;
