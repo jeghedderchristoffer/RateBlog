@@ -139,32 +139,51 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult SeMere()
+        public IActionResult SeMere(string id)
         {
+          
 
-        
-            //var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
 
-            //var model = new SeMereViewModel()
-            //{
+            var getRating2 = _feedBack.Get(id);
+            var getUserName = _userManager.Users.SingleOrDefault(x => x.Id == getRating2.ApplicationUserId).Name;
 
-            //    ApplicationUser = user,
-
-
-            //};
-
-            var GetAllRating2 = _feedBack.GetAll();
+           // var GetAllRating2 = _feedBack.GetAll();
 
             var rating = new SeFeedbackViewModel()
             {
-                ListRating = GetAllRating2.ToList()
+              //  ListRating = getRating2,
+                ApplicationUser = user,
+
+                AnmelderNavn = getUserName
             };
 
             return View(rating);
 
         }
 
-    [HttpGet]
+
+        [HttpGet]
+        public IActionResult RedigereFeedback(string Id)
+        {
+            var getRating = _feedBack.Get(Id);
+
+            var getUserName = _userManager.Users.SingleOrDefault(x => x.Id == getRating.ApplicationUserId).Name;
+
+
+
+            var rating = new SeFeedbackViewModel()
+            {
+                feedBack = getRating,
+                AnmelderNavn = getUserName
+
+            };
+
+            return View(rating);
+        }
+
+
+        [HttpGet]
     public IActionResult SeFeedback()
     {
           
@@ -172,6 +191,7 @@ namespace RateBlog.Controllers
 
         //var getAllRatings = _rating.GetRatingForInfluenter(Id);
         var getAllRatings = _feedBack.GetAll();
+        
         var rating = new SeFeedbackViewModel()
         {
             
@@ -181,6 +201,9 @@ namespace RateBlog.Controllers
         return View(rating);
 
     }
+
+
+    
 
         //var model = _userManager.Users;
 
@@ -202,28 +225,11 @@ namespace RateBlog.Controllers
 
         //    return View(viewmodel);
 
-[HttpGet]
-    public IActionResult RedigereFeedback(int Id)
-    {
-        var getRating = _feedBack.Get(Id);
-
-        var getUserName = _userManager.Users.SingleOrDefault(x => x.Id == getRating.ApplicationUserId).Name;
 
 
 
-        var rating = new SeFeedbackViewModel()
-        {
-            feedBack = getRating,
-            AnmelderNavn = getUserName
-
-        };
-
-        return View(rating);
-    }
-
-
-    //update rateing
-    [HttpPost]
+        //update rateing
+        [HttpPost]
     public IActionResult RedigereFeedback(SeFeedbackViewModel SeFeedBackModel)
     {
         var getRating = _feedBack.Get(SeFeedBackModel.feedBack.Id);

@@ -1,5 +1,4 @@
-﻿
-@inject UserManager<ApplicationUser> UserManager
+﻿@inject UserManager<ApplicationUser> UserManager
 @model RateBlog.Models.AdminViewModels.SeFeedbackViewModel
 
 
@@ -11,7 +10,7 @@
 <div class="navbar-allaround">
 </div>
 
-@*Html.HiddenFor(x => x.ApplicationUser.Id) *@
+@Html.HiddenFor(x => x.ApplicationUser.Id) 
 <table class="table table-bordered">
 
     <thead>
@@ -29,7 +28,7 @@
             <th>Bruger</th>
             <th>Influencer</th>
             <th>Masser af iconer
-            <th>
+            
             <th>Tro</th>
             <th>Opf</th>
             <th>Kva</th>
@@ -41,10 +40,24 @@
         </tr>
     </thead>
     <tbody>
+
         <tr style="max-width: 100px;">
             <th>Information</th>
-            <td href="#" data-toggle="tooltip" title="Det virker style="max-width: 100px;overflow: hidden;"></td>
-            <td href="#" data-toggle="tooltip" title="Information her weee" style="max-width: 100px;overflow: hidden;"></td>
+
+            @foreach (var m in Model.ListRating)
+            {
+            <td href="#" data-toggle="tooltip" title="@m.ApplicationUser.Email" style="max-width: 100px;overflow: hidden;">
+               @m.ApplicationUser <br />
+               @m.ApplicationUser.Email
+            </td>
+
+
+            <td href="#" data-toggle="tooltip" title="Information her weee" style="max-width: 100px;overflow: hidden;">
+                @m.ApplicationUser.Influenter
+                <br />
+                @m.ApplicationUser.Email
+
+            </td>
             <td style="text-align:left;max-width:50px">
                 <button id="buttonFacebook" onclick="changeColorFacebook()" style="background: none;">  <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i> </button>
 
@@ -58,32 +71,42 @@
                 <button id="buttonBlog" onclick="changeColorBlog() " class="fa fa-rss-square fa-2x" aria-hidden="true"></button>
 
             </td>
-            @foreach (var m in Model.ListRating)
-            {
+           
 
 
 
          
             <td><input type="text" style="width:20px" value="@m.Troværdighed"/></td>
             <td><input type="text" style="width:20px" value="@m.Opførsel"/></td>
-            <td><input type="text" style="width:20px" />@m.Kvalitet</td>
-            <td><input type="text" style="width:20px" />@m.Interaktion</td>
+            <td><input type="text" style="width:20px" value="@m.Kvalitet"/></td>
+            <td><input type="text" style="width:20px" value="@m.Interaktion"/></td>
 
-            }
-            <td style="max-width: 150px; "> Personligt er jeg ikke den største fan af hende mere, jeg føler hun modsiger sig selv meget og er begyndt og være mere ligeglad med hendes følgere. Udover det laver hun fin kvalitets videoer og hun holder sig for det meste indenfor postitivt indhold"</td>
+          
+            <td style="max-width: 150px; ">@m.FeedbackText </td>
 
-            <td style="max-width: 150px;"> Personligt er jeg ikke den største fan af hende mere, jeg føler hun modsiger sig selv meget og er begyndt og være mere ligeglad med hendes følgere. Udover det laver hun fin kvalitets videoer og hun holder sig for det meste indenfor postitivt indhold"</td>
-            <td><input type="text" style="width:20px" /></td>
+            <td style="max-width: 150px;"> @m.Answer </td>
+
+  
+            <td><input type="text" style="width:20px" value="@m.Anbefaling"/></td>
+           
+
             <td>
-                <button class="btn btn-default" type="submit" style="background-color:#5F9EA0;"><i class="fa fa-floppy-o" aria-hidden="true"></i></button> <br />
-                <button class="btn btn-default" type="submit" style="background-color:#990000"> <i class="fa fa-trash" aria-hidden="true"></i></button>
-            </td>
+                <form method="post" asp-controller="Admin" asp-action="EditUser">
+                    <button class="btn btn-default" type="submit" style="background-color:#5F9EA0;"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+             </form>
+                    <a asp-ction="RedigereFeedback" asp-route-id="m.Id">  </a>
+                   <br />
+                    <button class="btn btn-default" type="submit" style="background-color:#990000"> <i class="fa fa-trash" aria-hidden="true"></i></button>
+</td>
+            }
+          
 
-        </tr>
+</tr>
 
     </tbody>
 
 </table>
+
 <script>
 
     document.getElementById('change').onclick = changeColor;
