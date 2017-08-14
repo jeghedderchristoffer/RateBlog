@@ -58,23 +58,7 @@ namespace RateBlog.Controllers
             return View(viewmodel);
         }
 
-        [HttpGet]
-        public IActionResult SeMere(string id)
-        {
-
-
-            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-
-            var model = new SeMereViewModel()
-            {
-                ApplicationUser = user,
-
-
-            };
-
-            return View(model);
-
-        }
+     
 
         public IActionResult EditUser(string id)
         {
@@ -154,8 +138,33 @@ namespace RateBlog.Controllers
             return View();
         }
 
-
         [HttpGet]
+        public IActionResult SeMere()
+        {
+
+        
+            //var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+
+            //var model = new SeMereViewModel()
+            //{
+
+            //    ApplicationUser = user,
+
+
+            //};
+
+            var GetAllRating2 = _feedBack.GetAll();
+
+            var rating = new SeFeedbackViewModel()
+            {
+                ListRating = GetAllRating2.ToList()
+            };
+
+            return View(rating);
+
+        }
+
+    [HttpGet]
     public IActionResult SeFeedback()
     {
           
@@ -170,6 +179,7 @@ namespace RateBlog.Controllers
         };
 
         return View(rating);
+
     }
 
         //var model = _userManager.Users;
