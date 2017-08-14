@@ -629,7 +629,7 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> ProfilePic()
         {
             var user = await GetCurrentUserAsync();
-            byte[] buffer = user.ProfilePicture;
+            byte[] buffer = user.ProfilePicture;              
 
             if(buffer == null)
             {

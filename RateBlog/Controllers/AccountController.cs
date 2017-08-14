@@ -272,7 +272,7 @@ namespace RateBlog.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Year = model.Year, Postnummer = model.Postnummer };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Year = model.Year, Postnummer = model.Postnummer, Gender = model.Gender };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

@@ -145,12 +145,14 @@
                 </div>
                 <div class="modal-body">                 
 
-                    <a class="btn btn-block btn-social btn-facebook btn-lg">
-                        <span class="fa fa-facebook"></span> Tilmeld via Facebook
-                    </a>
-                    <a class="btn btn-block btn-social btn-google btn-lg" style="margin-top: 20px">
-                        <span class="fa fa-google"></span> Tilmeld via Google
-                    </a>
+                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                        <button name="provider" value="@loginProviders.SingleOrDefault(x => x.DisplayName == "Facebook").AuthenticationScheme" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
+                            <span class="fa fa-facebook"></span> Log ind via Facebook
+                        </button>
+                        <a class="btn btn-block btn-social btn-google btn-lg" style="margin-top: 20px;">
+                            <span class="fa fa-google"></span> Log ind via Google
+                        </a>
+                    </form>
 
                     <div class="divider">
                         <h4><span>ELLER</span></h4>

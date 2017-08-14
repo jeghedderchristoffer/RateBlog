@@ -1,9 +1,16 @@
 ﻿@model EditProfileViewModel
 @inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService 
+@inject RateBlog.Repository.IRepository<Influencer> InfluencerRepo
 @{
     var user = await UserManager.GetUserAsync(User);
-    var isInfluencer = await InfluencerService.IsUserInfluencerAsync(user.Id); 
+    var isInfluencer = await InfluencerService.IsUserInfluencerAsync(user.Id);
+    Influencer influencer = null; 
+    if (isInfluencer)
+    {
+        influencer = InfluencerRepo.Get(user.Id);
+
+    }
     ViewData["Title"] = "Rediger din profil";
 }
 
@@ -211,9 +218,18 @@
 
                 <input type="submit" class="edit-button-influ-create" value="Gem" />
             </form>
-            <h5>* Der kan gå op til 24 timer før din influencer profil bliver godkendt og bliver offentlig </h5>
+            @if (isInfluencer == false)
+            {
+                <h5>* Der kan gå op til 24 timer før din influencer profil bliver godkendt og bliver offentlig </h5>
+            }
+            else
+            {
+                if (influencer.IsApproved == false)
+                {
+                    <h5>* Der kan gå op til 24 timer før din influencer profil bliver godkendt og bliver offentlig </h5>
+                }
 
-
+            }
         </div>
 
     </div>
