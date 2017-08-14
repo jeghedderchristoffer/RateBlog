@@ -266,6 +266,7 @@ namespace RateBlog.Controllers
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User changed their password successfully.");
+                    TempData["Success"] = "Du har skiftet dit kodeord!"; 
                     return RedirectToAction(nameof(Profile), new { Message = ManageMessageId.ChangePasswordSuccess });
                 }
                 AddErrors(result);
@@ -379,13 +380,12 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> Edit() 
         {
             var user = await _userManager.GetUserAsync(User);
+            var influencer = _influencerRepo.Get(user.Id); 
 
             EditProfileViewModel model;
 
-            if (user.InfluenterId.HasValue)
+            if (influencer != null)
             {
-                var influenter = _influencerRepo.Get(user.InfluenterId.Value);
-
                 model = new EditProfileViewModel
                 {
                     Name = user.Name,
@@ -395,14 +395,14 @@ namespace RateBlog.Controllers
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
                     Gender = user.Gender,
-                    Influenter = _influencerRepo.Get(user.InfluenterId.Value),
-                    YoutubeLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id),
-                    FacebookLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id),
-                    InstagramLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Instagram").Id),
-                    SnapchatLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SnapChat").Id),
-                    TwitterLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitter").Id),
-                    WebsiteLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Website").Id),
-                    TwitchLink = _platformCategoryService.GetPlatformLink(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitch").Id),
+                    Influenter = _influencerRepo.Get(user.Id),
+                    YoutubeLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id),
+                    FacebookLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id),
+                    InstagramLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Instagram").Id),
+                    SnapchatLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SnapChat").Id),
+                    TwitterLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitter").Id),
+                    WebsiteLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Website").Id),
+                    TwitchLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitch").Id),
                     IKList = await GetInfluenterKategoriList()
                 };
             }
@@ -476,6 +476,7 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> EditInfluenterProfile(EditProfileViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
+            var influencer = _influencerRepo.Get(user.Id); 
 
             if (ModelState.IsValid)
             {
@@ -503,33 +504,35 @@ namespace RateBlog.Controllers
                 }
 
                 // Add if influenterId is null
-                if (user.InfluenterId == null)
+                if (influencer == null)
                 {
                     var newInfluenter = new Influencer();
+                    newInfluenter.Id = user.Id; 
                     newInfluenter.Alias = model.Influenter.Alias;
                     _influencerRepo.Add(newInfluenter);
-                    user.InfluenterId = newInfluenter.Id;
+                    influencer = newInfluenter; 
                 }
-
-                var influenter = _influencerRepo.Get(user.InfluenterId.Value);
-                influenter.Alias = model.Influenter.Alias;
-                _influencerRepo.Update(influenter);
+                else
+                {
+                    influencer.Alias = model.Influenter.Alias;
+                    _influencerRepo.Update(influencer);
+                }
 
                 // Indsætter links og platforme, hvis de ikke er null. Koden skal nok laves om...
 
-                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id, model.YoutubeLink);
-                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id, model.FacebookLink);
-                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Instagram").Id, model.InstagramLink);
-                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SnapChat").Id, model.SnapchatLink);
-                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitter").Id, model.TwitterLink);
-                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Website").Id, model.WebsiteLink);
-                _platformCategoryService.InsertPlatform(influenter.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitch").Id, model.TwitchLink);
+                _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id, model.YoutubeLink);
+                _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id, model.FacebookLink);
+                _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Instagram").Id, model.InstagramLink);
+                _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SnapChat").Id, model.SnapchatLink);
+                _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitter").Id, model.TwitterLink);
+                _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Website").Id, model.WebsiteLink);
+                _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitch").Id, model.TwitchLink);
 
 
                 // Insætter kategori
                 foreach (var v in model.IKList)
                 {
-                    _platformCategoryService.InsertCategory(influenter.Id, _categoryRepo.GetAll().SingleOrDefault(x => x.Name == v.KategoriNavn).Id, v.IsSelected);
+                    _platformCategoryService.InsertCategory(influencer.Id, _categoryRepo.GetAll().SingleOrDefault(x => x.Name == v.KategoriNavn).Id, v.IsSelected);
                 }
 
                 if (result.Succeeded)
@@ -568,7 +571,7 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [Route("/[controller]/Feedback/[action]/{id}")]
-        public IActionResult Answer(int id)
+        public IActionResult Answer(string id)
         {
             var rating = _feedbackRepo.Get(id); 
             rating.IsRead = true;
@@ -603,7 +606,7 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [Route("/[controller]/Feedback/[action]/{id}")]
-        public IActionResult Read(int id)
+        public IActionResult Read(string id)
         {
             var rating = _feedbackRepo.Get(id);
 
@@ -686,20 +689,19 @@ namespace RateBlog.Controllers
         private async Task<List<InfluenterKategoriViewModel>> GetInfluenterKategoriList()
         {
             var user = await _userManager.GetUserAsync(User);
+            var influencer = _influencerRepo.Get(user.Id);
 
-            if (user.InfluenterId.HasValue)
+            if (influencer != null)
             {
-                var influenter = _influencerRepo.Get(user.InfluenterId.Value);
-
                 return new List<InfluenterKategoriViewModel>()
                     {
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id , _platformCategoryService.GetCategoryIdByName("Lifestyle")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Beauty")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Entertainment"))  },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Fashion")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Interests", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Interests"))},
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Gaming"))},
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Personal", IsSelected = _platformCategoryService.IsCategorySelected(influenter.Id, _platformCategoryService.GetCategoryIdByName("Personal")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id , _platformCategoryService.GetCategoryIdByName("Lifestyle")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Beauty")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Entertainment"))  },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Fashion")) },
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Interests", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Interests"))},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Gaming"))},
+                        new InfluenterKategoriViewModel(){ KategoriNavn = "Personal", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Personal")) },
                     };
             }
             else

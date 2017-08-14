@@ -1,7 +1,9 @@
 ﻿@model EditProfileViewModel
 @inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService 
 @{
     var user = await UserManager.GetUserAsync(User);
+    var isInfluencer = await InfluencerService.IsUserInfluencerAsync(user.Id); 
     ViewData["Title"] = "Rediger din profil";
 }
 
@@ -41,7 +43,7 @@
     <div class="container">
         <div class="editprofile-head">
             <h2 sstyle="margin: 0">Rediger profil</h2>
-            @if (user.InfluenterId != null)
+            @if (isInfluencer)
             {
                 <button id="redigerInfluenterBtn" class="active">INFLUENCER</button>
             }

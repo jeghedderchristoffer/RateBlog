@@ -12,7 +12,7 @@
         <div class="col-md-12 col-xs-12 noPadding">
             <div class="col-md-2 col-xs-2 noPadding addon-box">
                 <div class="addon-img-container">
-                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == Model.Influenter.Id).Id })" />
+                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
                 </div>
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
@@ -36,7 +36,7 @@
     </div>
 </div>
 
-<div class=" container">
+<div class="container" style="padding-bottom: 100px;">
     <div class="col-md-12 col-xs-12 noPadding" style="margin-bottom: 20px;">
         <div class="col-md-7 col-sm-6 readrating hidden-xs noPadding">
             <h2 class="anmeldelser-h2">Følger feedback</h2>
@@ -74,11 +74,11 @@
 
         <div class="col-md-12 col-xs-12 noPadding">
             <div class="col-md-7 col-sm-6 noPadding">
-                @if (Model.ApplicationUser.InfluenterId.HasValue)
+                @if (Model.ApplicationUser.Id != null)
                 {
-                    @if (FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).ToList().Count != 0)
+                    @if (FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.Id).ToList().Count != 0)
                     {
-                        @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.InfluenterId.Value).OrderByDescending(x => x.FeedbackDateTime   ))
+                        @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.Id).OrderByDescending(x => x.FeedbackDateTime   ))
                         {
                             <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
                                 <div class="col-md-2 col-xs-12 col-lg-2 noPadding read-img-container">

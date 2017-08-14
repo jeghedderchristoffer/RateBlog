@@ -79,10 +79,10 @@ namespace RateBlog
             //services.AddScoped(typeof(IRepository<>), typeof(IRepository<>)); VIRKER IKKE
             services.AddTransient<IRepository<Platform>, Repository<Platform>>();
             services.AddTransient<IRepository<Category>, Repository<Category>>();
-            services.AddTransient<IRepository<ExpertFeedback>, Repository<ExpertFeedback>>();
             services.AddTransient<IRepository<Feedback>, Repository<Feedback>>();
             services.AddTransient<IRepository<Influencer>, Repository<Influencer>>();
             services.AddTransient<ISortService, SortService>();
+            services.AddTransient<IInfluencerService, InfluencerService>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

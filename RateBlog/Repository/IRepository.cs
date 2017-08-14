@@ -8,7 +8,7 @@ namespace RateBlog.Repository
 {
     public interface IRepository <T> where T : BaseEntity
     {
-        T Get(int id);
+        T Get(string id);
         IEnumerable<T> GetAll();
         void Add(T entity);
         void Update(T entity);

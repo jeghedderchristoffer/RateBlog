@@ -13,28 +13,28 @@ namespace RateBlog.Services
         /// </summary>
         /// <param name="id">Influencer ID</param>
         /// <returns></returns>
-        bool HasFeedback(int id);
+        bool HasFeedback(string id);
 
         /// <summary>
         /// Gets the overall average for a influencer. Rounded up or down depending on the decimals.
         /// </summary>
         /// <param name="id">Influencer ID</param>
         /// <returns></returns>
-        int GetAverageFeedbackScore(int id);
+        int GetAverageFeedbackScore(string id);
 
         /// <summary>
         /// Gets a single feedback score average. Takes an feedback id as paramenter.
         /// </summary>
         /// <param name="id">Feedback ID</param>
         /// <returns></returns>
-        int GetSingleFeedbackScoreAverage(int id);
+        int GetSingleFeedbackScoreAverage(string id);
 
         /// <summary>
         /// Gets the number of unread feedbacks (as an influencer). 
         /// </summary>
         /// <param name="id">Influencer ID</param>
         /// <returns></returns> 
-        int GetUnreadFeedbackCount(int id);
+        int GetUnreadFeedbackCount(string id);
 
         /// <summary>
         /// Gets the number of unread answers (as an normal user).
@@ -48,14 +48,14 @@ namespace RateBlog.Services
         /// </summary>
         /// <param name="id">Influencer ID</param>
         /// <returns></returns>
-        IEnumerable<Feedback> GetAllFeedbackByInfluencer(int id);
+        IEnumerable<Feedback> GetAllFeedbackByInfluencer(string id);
 
         /// <summary>
         /// Gets the amount of feedbacks a influencer have. If you have 4 feedbacks, 4 is returned. 
         /// </summary>
         /// <param name="id">Influencer ID</param>
         /// <returns></returns>
-        int GetInfluencerFeedbackCount(int id);
+        int GetInfluencerFeedbackCount(string id);
 
         /// <summary>
         /// Gets the amount of feedbacks you have given to influencers. 
@@ -78,14 +78,14 @@ namespace RateBlog.Services
         /// </summary>
         /// <param name="id">Influencer ID</param>
         /// <returns></returns>
-        int GetInfluencerFeedbackAnswersCount(int id); 
+        int GetInfluencerFeedbackAnswersCount(string id); 
 
         /// <summary>
         /// Gets the feedback answer percentage for a influencer
         /// </summary>
         /// <param name="id">Influencer ID</param>
         /// <returns></returns>
-        double GetInfluencerAnswerPercentage(int id);
+        double GetInfluencerAnswerPercentage(string id);
 
         /// <summary>
         /// Gets the hours before you can rate the same influencer again...
@@ -93,7 +93,7 @@ namespace RateBlog.Services
         /// <param name="userId">User ID</param>
         /// <param name="influenterId">Influencer ID</param>
         /// <returns></returns>
-        double GetHoursLeftToRate(string userId, int influenterId);
+        double GetHoursLeftToRate(string userId, string influenterId);
 
         /// <summary>
         /// Gets all the feedback for a User.
@@ -114,58 +114,8 @@ namespace RateBlog.Services
         /// </summary>
         /// <param name="id">Influencer ID</param>
         /// <returns></returns>
-        double GetTotalScore(int id); 
+        double GetTotalScore(string id); 
 
-        // -------------------------------------------------------- Feedback expert ---------------------------------------------------- // 
-
-        /// <summary>
-        /// Gets the overall expert average for a influencer. Rounded up or down depending on the decimals.
-        /// </summary>
-        /// <param name="id">Influencer ID</param>
-        /// <returns></returns>
-        int GetAverageExpertFeedbackScore(int id);
-
-        /// <summary>
-        /// Gets a single expert feedback score average. Takes an feedback id as paramenter.
-        /// </summary>
-        /// <param name="id">Influencer ID</param>
-        /// <returns></returns>
-        int GetSingleExpertFeedbackScoreAverage(int id);
-
-        /// <summary>
-        /// Gets all expert feedback for an influencer.
-        /// </summary>
-        /// <param name="id">Influencer ID</param>
-        /// <returns></returns>
-        IEnumerable<ExpertFeedback> GetAllExpertFeedbackByInfluencer(int id);
-
-        /// <summary>
-        /// Gets my expert feedback count. Only works if user is expert. 
-        /// </summary>
-        /// <param name="applicationUserId">User ID</param>
-        /// <returns></returns>
-        int GetExpertFeedbackCount(string id);
-
-        /// <summary>
-        /// Gets all the feedback for an expert.
-        /// </summary>
-        /// <param name="id">User ID</param>
-        /// <returns></returns>
-        IEnumerable<ExpertFeedback> GetAllFeedbackForExpert(string id);
-
-        /// <summary>
-        /// Gets the amount of expert feedback a influencer has recieved.
-        /// </summary>
-        /// <param name="id">Influencer ID</param>
-        /// <returns></returns>
-        int GetExpertFeedbackCountForInfluencer(int id);
-
-        /// <summary>
-        /// Does this influencer have expert feedback?
-        /// </summary>
-        /// <param name="id">Influencer ID</param>
-        /// <returns></returns>
-        bool HasExpertFeedback(int id);
 
     }
 }

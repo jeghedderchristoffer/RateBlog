@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RateBlog.Models;
-
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace RateBlog.Data
 {
@@ -23,7 +23,6 @@ namespace RateBlog.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<InfluencerPlatform> InfluencerPlatform { get; set; }
         public DbSet<InfluencerCategory> InfluencerCategory { get; set; } 
-        public DbSet<ExpertFeedback> ExpertFeedback { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -54,6 +53,12 @@ namespace RateBlog.Data
                 .HasOne(pt => pt.Category)
                 .WithMany(t => t.InfluenterKategori)
                 .HasForeignKey(pt => pt.CategoryId);
+
+            builder.Entity<Influencer>()
+                .HasMany(x => x.Ratings)
+                .WithOne(p => p.Influenter)
+                .OnDelete(DeleteBehavior.Cascade); 
+                
 
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.

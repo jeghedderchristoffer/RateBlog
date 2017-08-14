@@ -8,10 +8,10 @@ namespace RateBlog.Models
     public class InfluencerPlatform
     {
 
-        public int InfluencerId { get; set; }
+        public string InfluencerId { get; set; }
         public Influencer Influencer { get; set; }
 
-        public int PlatformId { get; set; }
+        public string PlatformId { get; set; }
         public Platform Platform { get; set; }
 
         public string Link { get; set; }

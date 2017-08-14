@@ -1,5 +1,6 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.IndexViewModel
 @inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Services.Interfaces.IPlatformCategoryService PlatformCategoryService
 @{
     ViewData["Title"] = "Find en influencer";
     var user = await UserManager.GetUserAsync(User);
@@ -37,13 +38,13 @@
                         <div class="col-md-12 noPadding">
                             <h4><b>Kategorier</b></h4>
 
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="10" style="background: #fff">Lifestyle</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="11" style="background: #fff">Beauty</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="12" style="background: #fff">Fashion</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="13" style="background: #fff">Gaming</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="14" style="background: #fff">Entertainment</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="15" style="background: #fff">Personal</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="16" style="background: #fff">Interests</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Lifestyle")" style="background: #fff">Lifestyle</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Beauty")" style="background: #fff">Beauty</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Fashion")" style="background: #fff">Fashion</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Gaming")" style="background: #fff">Gaming</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Entertainment")" style="background: #fff">Entertainment</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Personal")" style="background: #fff">Personal</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Interests")" style="background: #fff">Interests</label><br />
                         </div>
                         <div class="col-md-12 noPadding">
                             <hr />
@@ -51,14 +52,14 @@
                         <div class="col-md-12 noPadding">
                             <h4><b>Platforme</b></h4>
                             <div class="col-md-6 noPadding">
-                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="4" style="background: #fff">Facebook</label><br />
-                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="2" style="background: #fff">Instagram</label><br />
-                                <label class="checkbox-inline" style="padding-bottom: 0;"><input type="checkbox" name="platforme" value="1" style="background: #fff;">YouTube</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Facebook")" style="background: #fff">Facebook</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Instagram")" style="background: #fff">Instagram</label><br />
+                                <label class="checkbox-inline" style="padding-bottom: 0;"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("YouTube")" style="background: #fff;">YouTube</label><br />
                             </div>
                             <div class="col-md-6 noPadding">
-                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="3" style="background: #fff">Snapchat</label><br />
-                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="6" style="background: #fff">Twitter</label><br />
-                                <label class="checkbox-inline" style="padding-bottom: 0;"><input type="checkbox" name="platforme" value="5" style="background: #fff;">Twitch</label>
+                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Snapchat")" style="background: #fff">Snapchat</label><br />
+                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Twitter")" style="background: #fff">Twitter</label><br />
+                                <label class="checkbox-inline" style="padding-bottom: 0;"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Twitch")" style="background: #fff;">Twitch</label>
                             </div>
 
                         </div>
@@ -290,5 +291,4 @@
         });
 
     </script>
-
 }

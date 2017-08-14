@@ -38,7 +38,7 @@ namespace RateBlog.Repository
             _context.SaveChanges();
         }
 
-        public T Get(int id)
+        public T Get(string id)
         {
             return entities.SingleOrDefault(s => s.Id == id);
         }

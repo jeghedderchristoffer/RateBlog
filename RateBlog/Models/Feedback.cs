@@ -13,7 +13,7 @@ namespace RateBlog.Models
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
-        public int InfluenterId { get; set; }
+        public string InfluenterId { get; set; }
         public Influencer Influenter { get; set; }
 
         public DateTime FeedbackDateTime { get; set; } 

@@ -30,7 +30,7 @@
             <div class="col-md-12 col-xs-12 noPadding">
                 <div class="col-md-2 col-xs-2 noPadding addon-box">
                     <div class="addon-img-container">
-                        <img src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.InfluenterId.Value == Model.Influencer.Id).Id })" />
+                        <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.Influencer.Id })" />
                     </div>
                 </div>
                 <div class="col-md-5 col-xs-9 addon-box">

@@ -4,6 +4,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Services.IFeedbackService FeedbackService
+@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
 @{
     var user = await UserManager.GetUserAsync(User);
 }
@@ -14,51 +15,29 @@
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right" id="dropdownPc">
 
-
-            @if (User.IsInRole("Ekspert"))
+            @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
             {
-                <li class="drop">
-                    <a href="#">Ekspert</a>
-                    <div class="dropdownContain">
-                        <div class="dropOut">
-                            <div class="triangle"></div>
-                            <ul>
-                                <li><a asp-area="" asp-controller="Ekspert" asp-action="Index" class="dropOut-a">Søg</a></li>
-                                <li><a asp-area="" asp-controller="Ekspert" asp-action="Anmeldelser" class="dropOut-a">Se anmeldser</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
+                <li>
+                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
+                        Min feedback
+                        @if (FeedbackService.GetUnreadFeedbackCount(user.Id) != 0)
+                        {
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(user.Id)</span>
+                        }
+                    </a>
                 </li>
             }
             else
             {
-
-                @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
-                {
-                    <li>
-                        <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                            Min feedback
-                            @if (FeedbackService.GetUnreadFeedbackCount(user.InfluenterId.Value) != 0)
+                <li>
+                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
+                        Min feedback
+                        @if (FeedbackService.GetUnreadAnswerCount(user.Id) != 0)
                         {
-                                <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(user.InfluenterId.Value)</span>
-                            }
-                        </a>
-                    </li>
-                }
-                else
-                {
-                    <li>
-                        <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                            Min feedback
-                            @if (FeedbackService.GetUnreadAnswerCount(user.Id) != 0)
-                        {
-                                <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadAnswerCount(user.Id)</span>
-                            }
-                        </a>
-                    </li>
-                }
-
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadAnswerCount(user.Id)</span>
+                        }
+                    </a>
+                </li>
             }
 
             <li class="drop">
@@ -77,14 +56,14 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right" id="dropdownMobile" style="display: none">
-            @if (UserManager.GetUserAsync(User).Result.InfluenterId.HasValue)
+            @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
             {
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Feedback">
                         Min feedback
-                        @if (FeedbackService.GetUnreadFeedbackCount(UserManager.GetUserAsync(User).Result.InfluenterId.Value) != 0)
+                        @if (FeedbackService.GetUnreadFeedbackCount(user.Id) != 0)
                         {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(UserManager.GetUserAsync(User).Result.InfluenterId.Value)</span>
+                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(user.Id)</span>
                         }
                     </a>
                 </li>

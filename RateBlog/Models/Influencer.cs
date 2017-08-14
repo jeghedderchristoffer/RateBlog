@@ -11,6 +11,8 @@ namespace RateBlog.Models
 {
     public class Influencer : BaseEntity
     {
+        [Key, ForeignKey("ApplicationUser")]
+        public override string Id { get; set; } 
 
         [Required(ErrorMessage = "Du skal udfylde Alias/kaldenavn")]
         public string Alias { get; set; }
