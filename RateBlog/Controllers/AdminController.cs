@@ -73,34 +73,7 @@ namespace RateBlog.Controllers
             return View(model);
 
         }
-        [HttpPost]
-        public async Task<IActionResult> EditUser(SeMereViewModel vmodel)
-        {
-            var getUser = _userManager.Users.SingleOrDefault(x => x.Id == vmodel.ApplicationUser.Id);
-            getUser.Email = vmodel.ApplicationUser.Email;
-            getUser.Name = vmodel.ApplicationUser.Name;
-
-
-            getUser.InfluenterId = vmodel.ApplicationUser.InfluenterId;
-            getUser.ProfileText = vmodel.ApplicationUser.ProfileText;
-            getUser.PhoneNumber = vmodel.ApplicationUser.PhoneNumber;
-            getUser.PasswordHash = vmodel.ApplicationUser.PasswordHash;
-            getUser.LockoutEnd = vmodel.ApplicationUser.LockoutEnd;
-
-
-            // _userManager.EditUser(getUser);
-            var result = await _userManager.UpdateAsync(getUser);
-
-
-            var model = new SeMereViewModel()
-            {
-                ApplicationUser = getUser,
-
-            };
-
-            return View(model);
-
-        }
+        
 
         //[HttpPost]
         //public async Task<IActionResult> EditInfluencer(SeMereViewModel vmmodel)
@@ -183,6 +156,56 @@ namespace RateBlog.Controllers
         }
 
 
+         [HttpPost]
+    public IActionResult RedigereFeedback(SeFeedbackViewModel SeFeedBackModel)
+    {
+        var getRating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
+        getRating.Kvalitet = SeFeedBackModel.feedBack.Kvalitet;
+        getRating.Opførsel = SeFeedBackModel.feedBack.Opførsel;
+        getRating.Interaktion = SeFeedBackModel.feedBack.Interaktion;
+        getRating.Troværdighed = SeFeedBackModel.feedBack.Troværdighed;
+        // getRating.Feedback = SeFeedBackModel.Rating.Feedback;
+        getRating.Answer = SeFeedBackModel.feedBack.Answer;
+        _feedBack.Update(getRating);
+        var getrating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
+
+        var rating = new SeFeedbackViewModel()
+        {
+            feedBack = getrating
+        };
+
+        return View(rating);
+    }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(SeMereViewModel vmodel)
+        {
+            var getUser = _userManager.Users.SingleOrDefault(x => x.Id == vmodel.ApplicationUser.Id);
+            getUser.Email = vmodel.ApplicationUser.Email;
+            getUser.Name = vmodel.ApplicationUser.Name;
+
+
+            getUser.InfluenterId = vmodel.ApplicationUser.InfluenterId;
+            getUser.ProfileText = vmodel.ApplicationUser.ProfileText;
+            getUser.PhoneNumber = vmodel.ApplicationUser.PhoneNumber;
+            getUser.PasswordHash = vmodel.ApplicationUser.PasswordHash;
+            getUser.LockoutEnd = vmodel.ApplicationUser.LockoutEnd;
+
+
+            // _userManager.EditUser(getUser);
+            var result = await _userManager.UpdateAsync(getUser);
+
+
+            var model = new SeMereViewModel()
+            {
+                ApplicationUser = getUser,
+
+            };
+
+            return View(model);
+
+        }
+
         [HttpGet]
     public IActionResult SeFeedback()
     {
@@ -229,31 +252,12 @@ namespace RateBlog.Controllers
 
 
         //update rateing
-        [HttpPost]
-    public IActionResult RedigereFeedback(SeFeedbackViewModel SeFeedBackModel)
-    {
-        var getRating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
-        getRating.Kvalitet = SeFeedBackModel.feedBack.Kvalitet;
-        getRating.Opførsel = SeFeedBackModel.feedBack.Opførsel;
-        getRating.Interaktion = SeFeedBackModel.feedBack.Interaktion;
-        getRating.Troværdighed = SeFeedBackModel.feedBack.Troværdighed;
-        // getRating.Feedback = SeFeedBackModel.Rating.Feedback;
-        getRating.Answer = SeFeedBackModel.feedBack.Answer;
-        _feedBack.Update(getRating);
-        var getrating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
-
-        var rating = new SeFeedbackViewModel()
-        {
-            feedBack = getrating
-        };
-
-        return View(rating);
-    }
+       
 
 
 
     [HttpPost]
-    public IActionResult DeleteFeedback(int Id)
+    public IActionResult DeleteFeedback(string Id)
     {
         var getfeedback = _feedBack.Get(Id);
         _feedBack.Delete(getfeedback);
