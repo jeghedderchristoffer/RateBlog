@@ -35,7 +35,7 @@ namespace RateBlog.Controllers
 
         public IndexViewModel viewmodel = new IndexViewModel();
 
-        public IActionResult Index(string searchString, bool isInfluencer)
+        public IActionResult Index(string searchString)
         {
             var model = _userManager.Users;
 
@@ -47,16 +47,15 @@ namespace RateBlog.Controllers
             {
                 model = _userManager.Users;
             }
-
-            if (isInfluencer)
-            {
-                model = model.Where(x => x.InfluenterId.HasValue);
-            }
+   
 
             viewmodel.InfluentList = model.ToList();
 
             return View(viewmodel);
         }
+
+        //Virkede ikke så revertede. 
+        //var model = IndexViewModel()
 
      
 
@@ -114,27 +113,43 @@ namespace RateBlog.Controllers
         [HttpGet]
         public IActionResult SeMere(string id)
         {
-          
 
             var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-
-            var getRating2 = _feedBack.Get(id);
-            var getUserName = _userManager.Users.SingleOrDefault(x => x.Id == getRating2.ApplicationUserId).Name;
-
-           // var GetAllRating2 = _feedBack.GetAll();
+            var GetAllRating2 = _feedBack.GetAll();
 
             var rating = new SeFeedbackViewModel()
             {
-              //  ListRating = getRating2,
+
+                ListRating = GetAllRating2.ToList(),
                 ApplicationUser = user,
 
-                AnmelderNavn = getUserName
+            };
+
+            return View(rating);
+
+            }
+
+        [HttpGet]
+        public IActionResult SeFeedback(string id)
+        {
+
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+
+           
+            var getAllRatings = _feedBack.GetAll();
+
+            var rating = new SeFeedbackViewModel()
+            {
+
+               ListRating = getAllRatings.ToList(),
+
+
+                ApplicationUser = user,
             };
 
             return View(rating);
 
         }
-
 
         [HttpGet]
         public IActionResult RedigereFeedback(string Id)
@@ -185,7 +200,7 @@ namespace RateBlog.Controllers
             getUser.Name = vmodel.ApplicationUser.Name;
 
 
-            getUser.InfluenterId = vmodel.ApplicationUser.InfluenterId;
+            //getUser.InfluenterId = vmodel.ApplicationUser.InfluenterId;
             getUser.ProfileText = vmodel.ApplicationUser.ProfileText;
             getUser.PhoneNumber = vmodel.ApplicationUser.PhoneNumber;
             getUser.PasswordHash = vmodel.ApplicationUser.PasswordHash;
@@ -206,24 +221,7 @@ namespace RateBlog.Controllers
 
         }
 
-        [HttpGet]
-    public IActionResult SeFeedback()
-    {
-          
-            
-
-        //var getAllRatings = _rating.GetRatingForInfluenter(Id);
-        var getAllRatings = _feedBack.GetAll();
-        
-        var rating = new SeFeedbackViewModel()
-        {
-            
-            ListRating = getAllRatings.ToList()
-        };
-
-        return View(rating);
-
-    }
+ 
 
 
     

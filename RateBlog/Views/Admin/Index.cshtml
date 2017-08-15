@@ -1,5 +1,6 @@
 ﻿@model RateBlog.Models.AdminViewModels.IndexViewModel
 @inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
 
 @{
     ViewData["Title"] = "Forside";
@@ -59,7 +60,7 @@
 
             @foreach (var user in Model.InfluentList)
             {
-                var isInfluente = (user.InfluenterId.HasValue) ? "Influenter" : "Bruger" ?? "Bruger";
+                var isInfluencer = (await InfluencerService.IsUserInfluencerAsync(user.Id)) ? "Influenter" : "Bruger" ?? "Bruger";
                 var IsAktive = (user.LockoutEnd.HasValue) ? "Blokeret" : "Aktiv" ?? "Aktiv";
 
                 <tr>
@@ -70,7 +71,7 @@
                         <p>@user.Email</p>
                     </td>
                     <td>
-                        <p>@isInfluente </p>
+                        <p>@isInfluencer </p>
                     </td>
 
                     <td>
@@ -78,29 +79,22 @@
                     </td>
 
                     <td>
-                        @if (user.InfluenterId.HasValue)
+
+                        @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
                         {
                             <form asp-controller="Admin" asp-action="EditInfluencer" asp-route-id="@user.Id" method="get">
-
-
                                 <input type="submit" style="float:left;margin-right:5px;" value="Profil" />
-
                             </form>
-                        }
 
+                        }
                         else
                         {
-                            <form asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" method="get">
-
-
+                            <form asp - controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" method="get">
                                 <input type="submit" style="float:left;margin-right:5px;" value="Profil" />
-
                             </form>
                         }
-                        
 
-                        <form asp-action="SeFeedBack" asp-route-id="@user.InfluenterId" method="get">
-
+                        <form asp-action="SeFeedBack" asp-route-id="@user.Id" method="get">
                             <input rel="stylesheet" style="float:left;margin-right:5px;" type="submit" value="Feedback" />
                         </form>
 

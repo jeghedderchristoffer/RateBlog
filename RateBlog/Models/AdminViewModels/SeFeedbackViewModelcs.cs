@@ -10,6 +10,7 @@ namespace RateBlog.Models.AdminViewModels
         public List<Feedback> ListRating { get; set; }
         public Feedback feedBack { get; set; }
         public string AnmelderNavn { get; set; }
+
         public ApplicationUser ApplicationUser { get; set; }
         public List<ApplicationUser> InfluentList { get; set; }
 

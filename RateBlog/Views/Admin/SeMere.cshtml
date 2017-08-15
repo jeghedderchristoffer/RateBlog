@@ -10,7 +10,7 @@
 <div class="navbar-allaround">
 </div>
 
-@Html.HiddenFor(x => x.ApplicationUser.Id) 
+@Html.HiddenFor(x => x.ApplicationUser.Id)
 <table class="table table-bordered">
 
     <thead>
@@ -28,7 +28,7 @@
             <th>Bruger</th>
             <th>Influencer</th>
             <th>Masser af iconer
-            
+
             <th>Tro</th>
             <th>Opf</th>
             <th>Kva</th>
@@ -40,69 +40,84 @@
         </tr>
     </thead>
     <tbody>
-
-        <tr style="max-width: 100px;">
-            <th>Information</th>
-
-            @foreach (var m in Model.ListRating)
+        @foreach (var m in Model.ListRating)
             {
-            <td href="#" data-toggle="tooltip" title="@m.ApplicationUser.Email" style="max-width: 100px;overflow: hidden;">
-               @m.ApplicationUser <br />
-               @m.ApplicationUser.Email
-            </td>
+            <tr style="max-width: 100px;">
+                <th>Information</th>
 
 
-            <td href="#" data-toggle="tooltip" title="Information her weee" style="max-width: 100px;overflow: hidden;">
-                @m.ApplicationUser.Influenter
-                <br />
-                @m.ApplicationUser.Email
-
-            </td>
-            <td style="text-align:left;max-width:50px">
-                <button id="buttonFacebook" onclick="changeColorFacebook()" style="background: none;">  <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i> </button>
-
-                <button id="buttonTwitter" onclick="changeColorTwitter()" class="fa fa-twitter-square fa-2x" aria-hidden="true"></button>
-                <button id="buttonInstagram" onclick="changeColorInstagram()" class="fa fa-instagram fa-2x" aria-hidden="true"></button>
-
-                <br />
-                <button id="buttonSnapChat" onclick="changeColorSnapChat()" class="fa fa-snapchat-square fa-2x" aria-hidden="true"></button>
-                <button id="buttonYoutube" onclick="changeColorYoutube()" class="fa fa-youtube-square fa-2x" aria-hidden="true"></button>
-                <button id="buttonTwitch" onclick="changeColorTwitch()" class="fa fa-twitch fa-2x" aria-hidden="true"></button>
-                <button id="buttonBlog" onclick="changeColorBlog() " class="fa fa-rss-square fa-2x" aria-hidden="true"></button>
-
-            </td>
-           
+                <td href="#" data-toggle="tooltip" title=""style="max-width: 100px;overflow: hidden;">
+                  
+                    <br />
+                    @m.ApplicationUserId
+                </td>
 
 
+                <td href="#" data-toggle="tooltip" title="Information her weee" style="max-width: 100px;overflow: hidden;">
+                    @m.InfluenterId
+                    <br />
+                  
 
-         
-            <td><input type="text" style="width:20px" value="@m.Troværdighed"/></td>
-            <td><input type="text" style="width:20px" value="@m.Opførsel"/></td>
-            <td><input type="text" style="width:20px" value="@m.Kvalitet"/></td>
-            <td><input type="text" style="width:20px" value="@m.Interaktion"/></td>
+                </td>
+                <td style="text-align:left;max-width:50px">
+                    @*@if (@m.BasedOnFacebook == false)
+                {*@
+                    <td>
+                        <button id="buttonFacebook" onclick="changeColorFacebook()" style="background:none;">  <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i> </button>
+                    </td>
+                    @*}
+                    else
+                    {
+                        <button id="buttonFacebook" onclick="changeColorFacebook()" style="background: none;">  <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i> </button>
 
-          
-            <td style="max-width: 150px; ">@m.FeedbackText </td>
+                            <button id="buttonTwitter" onclick="changeColorTwitter()" class="fa fa-twitter-square fa-2x" aria-hidden="true"></button>
+                            <button id="buttonInstagram" onclick="changeColorInstagram()" class="fa fa-instagram fa-2x" aria-hidden="true"></button>
 
-            <td style="max-width: 150px;"> @m.Answer </td>
+                            <br />
+                            <button id="buttonSnapChat" onclick="changeColorSnapChat()" class="fa fa-snapchat-square fa-2x" aria-hidden="true"></button>
+                            <button id="buttonYoutube" onclick="changeColorYoutube()" class="fa fa-youtube-square fa-2x" aria-hidden="true"></button>
+                            <button id="buttonTwitch" onclick="changeColorTwitch()" class="fa fa-twitch fa-2x" aria-hidden="true"></button>
+                            <button id="buttonBlog" onclick="changeColorBlog() " class="fa fa-rss-square fa-2x" aria-hidden="true"></button>
 
-  
-            <td><input type="text" style="width:20px" value="@m.Anbefaling"/></td>
-           
+                    }*@
 
-            <td>
-             <form method="post" asp-controller="Admin" asp-action="EditUser">
-                    <button class="btn btn-default" type="submit" style="background-color:#5F9EA0;"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-             </form>
+               
+
+                </td>
+
+
+
+
+
+                <td><input type="text" style="width:20px" value="@m.Troværdighed" /></td>
+                <td><input type="text" style="width:20px" value="@m.Opførsel" /></td>
+                <td><input type="text" style="width:20px" value="@m.Kvalitet" /></td>
+                <td><input type="text" style="width:20px" value="@m.Interaktion" /></td>
+
+
+                <td style="max-width: 150px; ">@m.FeedbackGood </td>
+
+                <td style="max-width: 150px;"> @m.FeedbackBetter </td>
+
+
+                <td><input type="text" style="width:20px" value="@m.Anbefaling" /></td>
+
+
+                <td>
+                    <form method="post" asp-controller="Admin" asp-action="EditUser">
+                        <button class="btn btn-default" type="submit" style="background-color:#5F9EA0;"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                    </form>
                     <a asp-ction="RedigereFeedback" asp-route-id="m.Id">  </a>
-                   <br />
-                    <button class="btn btn-default" type="submit" style="background-color:#990000"> <i class="fa fa-trash" aria-hidden="true"></i></button>
-</td>
-            }
-          
+                    <br />
+                    <form method="post" asp-action="DeleteFeedback" asp-controller="Admin" asp-route-id="@m.Id">
+                        <button class="btn btn-default" type="submit" style="background-color:#990000"> <i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </form>
+                </td>
 
-</tr>
 
+
+            </tr>
+        }s
     </tbody>
 
 </table>
@@ -113,8 +128,15 @@
 
     function changeColorFacebook() {
 
-        document.getElementById("buttonFacebook").style.backgroundColor = '#0000FF';
-
+       
+        if (document.getElementById("button").style.backgroundColor = '#0000FF' == true)
+        {
+            document.getElementById("buttonFacebook").style.backgroundColor = '#808080';
+        }
+        else
+        {
+            document.getElementById("buttonFacebook").style.backgroundColor = '#0000FF';
+        }
         return false;
     }
 
@@ -139,7 +161,7 @@
     function changeColorTwitch() {
 
         document.getElementById("buttonTwitch").style.backgroundColor = '#800080';
-
+        
         return false;
     }
 

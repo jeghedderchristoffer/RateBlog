@@ -4,8 +4,8 @@
 <div class="navbar-allaround"></div>
 
 
-    <form method="post" asp-controller="Admin" asp-action="RedigereFeedback">
-        <table class="table"
+<form method="post" asp-controller="Admin" asp-action="RedigereFeedback">
+    <table class="table"
             <thread>
                <tr>
                    <th>
@@ -53,7 +53,7 @@
                             <textarea rows="1" asp-for="@Model.feedBack.Troværdighed"></textarea>
                         </td>
                         <td>
-                            <textarea rows="1" asp-for="@Model.feedBack.FeedbackText"></textarea>
+                            <textarea rows="1" asp-for=""></textarea>
                         </td>
                         <td>
                             <textarea rows="1" asp-for="@Model.feedBack.Answer"></textarea>
@@ -63,7 +63,7 @@
                         </td>
                         @Html.HiddenFor(x => x.feedBack.Id)
                         <td>
-                            <input onclick="Succes()" type="submit" value="Opdater Denne Feedback"  />                            
+                            <input onclick="Succes()" type="submit" value="Opdater Denne Feedback"  />
                         </td>
                         <td>
                             <form asp-controller="Admin" asp-action="Index">
@@ -72,21 +72,20 @@
                                 </a>
                             </form>
                         </td>
-                                   
+
                     </tr>
-                }            
-            </tbody>       
+                }
+            </tbody>
         </table>
-        <script> 
+    <script>
 
-                 function Succes() {
-                     var txt;
-                     if (confirm("Succes") == true)
-                     {
-                         txt = "Ok";
-                     }
-                 }
-        </script>
-    </form>
 
+        function Succes() {
+            var txt;
+            if (confirm("Succes") == true) {
+                txt = "Ok";
+            }
+        }
+    </script>
+</form>
 

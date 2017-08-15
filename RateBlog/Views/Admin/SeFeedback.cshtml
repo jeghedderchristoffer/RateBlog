@@ -1,109 +1,164 @@
-﻿@model RateBlog.Models.AdminViewModels.SeFeedbackViewModel
-
-<div class="navbar-allaround"></div>
-
-<form asp-controller="Admin" asp-action="Index">
-    <a class="col-md-offset-3 col-md-6 col-xs-12">
-        <input type="submit" style="margin-bottom: 20px" value="Home" />
-    </a>
-</form>
-<table>
-   
-
-     
-    
-</table>
+﻿@inject UserManager<ApplicationUser> UserManager
+@model RateBlog.Models.AdminViewModels.SeFeedbackViewModel
 
 
-<table class="table" >
-            <thread>
-               
-               <tr>                                                        
-                    <th>
-                        <p>Kvalitet</p>
+@{
+    ViewData["Title"] = "Se mere om brugeren";
 
-                    </th>
-                    <th>
-                        <p>Opførsel</p>
+}
 
-                    </th>
-                    <th>
-                        <p>Interaktion</p>
+<div class="navbar-allaround">
+</div>
 
-                    </th>
-                    <th>
-                        <p>Troværdighed</p>
+@Html.HiddenFor(x => x.ApplicationUser.Id)
+<table class="table table-bordered">
 
-                    </th>
-                    <th>
-                        <p>Feedback</p>
-                    </th>
-                    <th>
-                        <p>Svar</p>
-                    </th>
+    <thead>
+        <tr>
+            <th colspan="1"></th>
+            <th style="text-align:center" colspan="2">Profil</th>
+            <th style="text-align:center" colspan="1">Platform</th>
+            <th style="text-align:center" colspan="4">Rating</th>
+            <th style="text-align:center" colspan="2">Feedbak</th>
+            <th style="text-align:center">Anb</th>
+        </tr>
 
-                </tr>
+        <tr style="text-align:center;">
+            <th>Feedback ID</th>
+            <th>Bruger</th>
+            <th>Influencer</th>
+            <th>Masser af iconer
+            <th>Tro</th>
+            <th>Opf</th>
+            <th>Kva</th>
+            <th>Int</th>
+            <th>Posetiv</th>
+            <th>Negativ</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr style="max-width: 100px;">
+            <th>Information</th>
+
+            @foreach (var m in Model.ListRating)
+            {
+                <td data-toggle="tooltip" title="@m.ApplicationUserId" style="max-width: 100px;overflow: hidden;">
+                    @m.ApplicationUser <br />
+                    @m.ApplicationUser.Email
+                </td>
 
 
+                <td href="#" data-toggle="tooltip" title="Information her weee" style="max-width: 100px;overflow: hidden;">
+                    @m.ApplicationUser.Name
+                    <br />
+                    @m.ApplicationUser.Email
 
-            </thread>
+                </td>
+                <td style="text-align:left;max-width:50px">
 
-            <tbody>
-
-                @foreach (var m in Model.ListRating)
+                    
+                </td>
+                @if (true)
                 {
-                    <tr>
-                        <td>
-                            <p>@m.Kvalitet</p>
-                        </td>
-                        <td>
-                            <p>@m.Opførsel</p>
-                        </td>
-
-                        <td>
-                            <p>@m.Interaktion</p>
-                        </td>
-
-                        <td>
-                            <p>@m.Troværdighed</p>
-                        </td>
-                        <td>
-                            <p>@m.FeedbackText</p>
-                        </td>
-                        <td>
-                            <p>@m.Answer</p>
-                        </td>
-                        <td>
-                            <p>@m.Answer</p>
-                        </td>
-
-                        <td>
-                            <a asp-action="RedigereFeedback" asp-route-id="@m.Id">Edit</a> 
-                          <form method="post" asp-action="DeleteFeedback" asp-controller="Admin" asp-route-id="@m.Id">
-                            <input onclick="SuccesFunction()" type="submit" value="Delete" />
-
-                          </form>
-                      
-                           
-                        </td>
-                        <td>
-                         
-                        </td>
-                    </tr>
+                    <td>
+                        <input>
+                        <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i>
+                        <input />
+                    </td>
                 }
 
 
 
 
-            </tbody>
 
-   
-        </table>
+                <td><input type="text" style="width:20px" value="@m.Troværdighed" /></td>
+                <td><input type="text" style="width:20px" value="@m.Opførsel" /></td>
+                <td><input type="text" style="width:20px" value="@m.Kvalitet" /></td>
+                <td><input type="text" style="width:20px" value="@m.Interaktion" /></td>
+
+
+                <td style="max-width: 150px; ">@m.FeedbackGood </td>
+
+                <td style="max-width: 150px;"> @m.FeedbackBetter </td>
+
+
+                <td><input type="text" style="width:20px" value="@m.Anbefaling" /></td>
+
+
+                <td>
+                    <form method="post" asp-controller="Admin" asp-action="EditUser">
+                        <button class="btn btn-default" type="submit" style="background-color:#5F9EA0;"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                    </form>
+                    <a asp-ction="RedigereFeedback" asp-route-id="m.Id">  </a>
+                    <br />
+                    <button class="btn btn-default" type="submit" style="background-color:#990000"> <i class="fa fa-trash" aria-hidden="true"></i></button>
+                </td>
+            }
+
+
+        </tr>
+
+    </tbody>
+
+</table>
+
 <script>
-     function SuccesFunction() {
-         var txt;
-         if (confirm("SUCCES") == true) {
-             txt = "Ok";
-         }
-     }
+
+    document.getElementById('change').onclick = changeColor;
+
+    function changeColorFacebook() {
+
+        document.getElementById("buttonFacebook").style.backgroundColor = '#0000FF';
+
+        return false;
+    }
+
+
+    function changeColorTwitter() {
+
+        document.getElementById("buttonTwitter").style.backgroundColor = '#87CEFA';
+
+        return false;
+    }
+
+
+    function changeColorYoutube() {
+
+        document.getElementById("buttonYoutube").style.backgroundColor = '#FF0000';
+
+        return false;
+    }
+
+
+
+    function changeColorTwitch() {
+
+        document.getElementById("buttonTwitch").style.backgroundColor = '#800080';
+
+        return false;
+    }
+
+
+    function changeColorSnapChat() {
+
+        document.getElementById("buttonSnapChat").style.backgroundColor = '	#FFFF00';
+
+        return false;
+    }
+    function changeColorInstagram() {
+
+        document.getElementById("buttonInstagram").style.backgroundColor = '#FF8C00';
+
+        return false;
+    }
+    function changeColorBlog() {
+
+        document.getElementById("buttonBlog").style.backgroundColor = '#000000';
+
+        return false;
+    }
+
 </script>
