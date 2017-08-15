@@ -11,8 +11,9 @@ namespace RateBlog.Models.AdminViewModels
         public Feedback feedBack { get; set; }
         public string AnmelderNavn { get; set; }
 
+        public ApplicationUser Influenter { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public List<ApplicationUser> InfluentList { get; set; }
-
+        public Influencer influencer { get; set; }
     }
 }

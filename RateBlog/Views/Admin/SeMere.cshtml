@@ -11,6 +11,7 @@
 </div>
 
 @Html.HiddenFor(x => x.ApplicationUser.Id)
+
 <table class="table table-bordered">
 
     <thead>
@@ -40,50 +41,111 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var m in Model.ListRating)
+       @foreach (var m in Model.ListRating)
             {
             <tr style="max-width: 100px;">
                 <th>Information</th>
 
 
-                <td href="#" data-toggle="tooltip" title=""style="max-width: 100px;overflow: hidden;">
-                  
+                <td href="#" data-toggle="tooltip" title="" style="max-width: 100px;overflow: hidden;">
+                   @Model.ApplicationUser.Name
                     <br />
-                    @m.ApplicationUserId
+                    @Model.ApplicationUser.Email
                 </td>
 
 
                 <td href="#" data-toggle="tooltip" title="Information her weee" style="max-width: 100px;overflow: hidden;">
-                    @m.InfluenterId
+                   
                     <br />
-                  
-
+                 
+                    <input asp-for="@Model.Influenter.Email"></input>
                 </td>
                 <td style="text-align:left;max-width:50px">
-                    @*@if (@m.BasedOnFacebook == false)
-                {*@
-                    <td>
-                        <button id="buttonFacebook" onclick="changeColorFacebook()" style="background:none;">  <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i> </button>
-                    </td>
-                    @*}
+               
+                    @if (@m.BasedOnFacebook == true)
+                    {
+
+                        <button id="buttonFacebook" onclick="changeColorFacebook()" style="background: #0000FF;"> <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i> </button>
+
+                    }
                     else
                     {
-                        <button id="buttonFacebook" onclick="changeColorFacebook()" style="background: none;">  <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i> </button>
+                        <button id="buttonFacebook" onclick="changeColorFacebook()" style="background:none;">  <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i> </button>
 
-                            <button id="buttonTwitter" onclick="changeColorTwitter()" class="fa fa-twitter-square fa-2x" aria-hidden="true"></button>
-                            <button id="buttonInstagram" onclick="changeColorInstagram()" class="fa fa-instagram fa-2x" aria-hidden="true"></button>
 
-                            <br />
-                            <button id="buttonSnapChat" onclick="changeColorSnapChat()" class="fa fa-snapchat-square fa-2x" aria-hidden="true"></button>
-                            <button id="buttonYoutube" onclick="changeColorYoutube()" class="fa fa-youtube-square fa-2x" aria-hidden="true"></button>
-                            <button id="buttonTwitch" onclick="changeColorTwitch()" class="fa fa-twitch fa-2x" aria-hidden="true"></button>
-                            <button id="buttonBlog" onclick="changeColorBlog() " class="fa fa-rss-square fa-2x" aria-hidden="true"></button>
+                    }
 
-                    }*@
+                    @if (@m.BasedOnInstagram == true)
+                    {
 
-               
+                        <button id="buttonInstagram" onclick="changeColorInstagram()" style="background:##FF8C00;"> <i class="fa fa-instagram fa-2x" aria-hidden="true"> </i></button>
 
-                </td>
+                    }
+                    else
+                    {
+                        <button id="buttonInstagram" onclick="changeColorInstagram()" style="background:none;"> <i class="fa fa-instagram fa-2x" aria-hidden="true"></i></button>
+
+
+                    }
+
+
+                    @if (@m.BasedOnSnapchat == true)
+                    {
+
+                        <button id="buttonSnapChat" onclick="changeColorSnapChat()" style="background:#FFFF00"> <i class="fa fa-snapchat-square fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    else
+                    {
+
+                        <button id="buttonSnapChat" onclick="changeColorSnapChat()" style="background:none;"> <i class="fa fa-snapchat-square fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    @if (@m.BasedOnYoutube == true)
+                    {
+
+                        <button id="buttonYoutube" onclick="changeColorYoutube()" style="background:#FF0000;"> <i class="fa fa-youtube-square fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    else
+                    {
+
+                        <button id="buttonYoutube" onclick="changeColorYoutube()" style="background:none;"> <i class="fa fa-youtube-square fa-2x" aria-hidden="true"></i></button>
+
+                    }
+
+                    <br />
+                    @if (@m.BasedOnTwitch == true)
+                    {
+                        <button id="buttonTwitch" onclick="changeColorTwitch()" style="background:#800080;"> <i class="fa fa-twitch fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    else
+                    {
+                        <button id="buttonTwitch" onclick="changeColorTwitch()" style="background:none;"> <i class="fa fa-twitch fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    @if (@m.BasedOnWebsite == true)
+                    {
+                        <button id="buttonBlog" onclick="changeColorBlog()" style="background:#800080;"> <i class="fa fa-twitch fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    else
+                    {
+                        <button id="buttonBlog" onclick="changeColorBlog()" style="background:none;"> <i class="fa fa-rss-square fa-2x" aria-hidden="true"></i></button>
+                    }
+                    @if (@m.BasedOnTwitter == true)
+                    {
+                        <button id="buttonTwitter" onclick="changeColorTwitter()" style="background:#87CEFA;"> <i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    else
+                    {
+                        <button id="buttonTwitter" onclick="changeColorTwitter()" style="background:none;"> <i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i></button>
+                    }
+
+
+              
 
 
 
@@ -117,7 +179,7 @@
 
 
             </tr>
-        }s
+        }
     </tbody>
 
 </table>
@@ -128,13 +190,12 @@
 
     function changeColorFacebook() {
 
-       
-        if (document.getElementById("button").style.backgroundColor = '#0000FF' == true)
-        {
+
+        if (document.getElementById("button").style.backgroundColor = '#0000FF' == true) {
             document.getElementById("buttonFacebook").style.backgroundColor = '#808080';
         }
-        else
-        {
+
+        else {
             document.getElementById("buttonFacebook").style.backgroundColor = '#0000FF';
         }
         return false;
@@ -161,7 +222,7 @@
     function changeColorTwitch() {
 
         document.getElementById("buttonTwitch").style.backgroundColor = '#800080';
-        
+
         return false;
     }
 

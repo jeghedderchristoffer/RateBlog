@@ -47,7 +47,7 @@ namespace RateBlog.Controllers
             {
                 model = _userManager.Users;
             }
-   
+            viewmodel.Influencer = model.ToList();
 
             viewmodel.InfluentList = model.ToList();
 
@@ -57,7 +57,7 @@ namespace RateBlog.Controllers
         //Virkede ikke så revertede. 
         //var model = IndexViewModel()
 
-     
+
 
         public IActionResult EditUser(string id)
         {
@@ -72,7 +72,7 @@ namespace RateBlog.Controllers
             return View(model);
 
         }
-        
+
 
         //[HttpPost]
         //public async Task<IActionResult> EditInfluencer(SeMereViewModel vmmodel)
@@ -103,10 +103,10 @@ namespace RateBlog.Controllers
         //    //return View();
         //}
 
- 
+
         public IActionResult EditInfluencer()
         {
-            
+
             return View();
         }
 
@@ -115,6 +115,10 @@ namespace RateBlog.Controllers
         {
 
             var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+           // var user = _userManager.Users.SingleOrDefault(x => x.Id == vmodel.ApplicationUser.Id);
+
+         
+
             var GetAllRating2 = _feedBack.GetAll();
 
             var rating = new SeFeedbackViewModel()
@@ -127,23 +131,20 @@ namespace RateBlog.Controllers
 
             return View(rating);
 
-            }
+        }
 
         [HttpGet]
         public IActionResult SeFeedback(string id)
         {
-
             var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
 
-           
+
             var getAllRatings = _feedBack.GetAll();
 
             var rating = new SeFeedbackViewModel()
             {
 
-               ListRating = getAllRatings.ToList(),
-
-
+                ListRating = getAllRatings.ToList(),
                 ApplicationUser = user,
             };
 
@@ -169,33 +170,34 @@ namespace RateBlog.Controllers
 
             return View(rating);
         }
+       
 
-
-         [HttpPost]
-    public IActionResult RedigereFeedback(SeFeedbackViewModel SeFeedBackModel)
-    {
-        var getRating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
-        getRating.Kvalitet = SeFeedBackModel.feedBack.Kvalitet;
-        getRating.Opførsel = SeFeedBackModel.feedBack.Opførsel;
-        getRating.Interaktion = SeFeedBackModel.feedBack.Interaktion;
-        getRating.Troværdighed = SeFeedBackModel.feedBack.Troværdighed;
-        // getRating.Feedback = SeFeedBackModel.Rating.Feedback;
-        getRating.Answer = SeFeedBackModel.feedBack.Answer;
-        _feedBack.Update(getRating);
-        var getrating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
-
-        var rating = new SeFeedbackViewModel()
+        [HttpPost]
+        public IActionResult RedigereFeedback(SeFeedbackViewModel SeFeedBackModel)
         {
-            feedBack = getrating
-        };
+            var getRating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
+            getRating.Kvalitet = SeFeedBackModel.feedBack.Kvalitet;
+            getRating.Opførsel = SeFeedBackModel.feedBack.Opførsel;
+            getRating.Interaktion = SeFeedBackModel.feedBack.Interaktion;
+            getRating.Troværdighed = SeFeedBackModel.feedBack.Troværdighed;
+            // getRating.Feedback = SeFeedBackModel.Rating.Feedback;
+            getRating.Answer = SeFeedBackModel.feedBack.Answer;
+            _feedBack.Update(getRating);
+            var getrating = _feedBack.Get(SeFeedBackModel.feedBack.Id);
 
-        return View(rating);
-    }
+            var rating = new SeFeedbackViewModel()
+            {
+                feedBack = getrating
+            };
+
+            return View(rating);
+        }
 
         [HttpPost]
         public async Task<IActionResult> EditUser(SeMereViewModel vmodel)
         {
             var getUser = _userManager.Users.SingleOrDefault(x => x.Id == vmodel.ApplicationUser.Id);
+            
             getUser.Email = vmodel.ApplicationUser.Email;
             getUser.Name = vmodel.ApplicationUser.Name;
 
@@ -205,7 +207,8 @@ namespace RateBlog.Controllers
             getUser.PhoneNumber = vmodel.ApplicationUser.PhoneNumber;
             getUser.PasswordHash = vmodel.ApplicationUser.PasswordHash;
             getUser.LockoutEnd = vmodel.ApplicationUser.LockoutEnd;
-
+            getUser.Gender = vmodel.ApplicationUser.Gender;
+            
 
             // _userManager.EditUser(getUser);
             var result = await _userManager.UpdateAsync(getUser);
@@ -221,10 +224,10 @@ namespace RateBlog.Controllers
 
         }
 
- 
 
 
-    
+
+
 
         //var model = _userManager.Users;
 
@@ -250,75 +253,75 @@ namespace RateBlog.Controllers
 
 
         //update rateing
-       
 
 
 
-    [HttpPost]
-    public IActionResult DeleteFeedback(string Id)
-    {
-        var getfeedback = _feedBack.Get(Id);
-        _feedBack.Delete(getfeedback);
-        return RedirectToAction("Index");
-    }
 
-    [HttpPost]
-    public IActionResult DeleteUser(string id)
-    {
-        var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-        _userManager.DeleteAsync(user);
-        return RedirectToAction("Index");
-    }
-
-    //public IActionResult BanUser10(int id)
-    //{
-    //    var user = _userManager.Users.First();
-    //    user.LockoutEnd = DateTime.Now.AddDays(10);
-
-    //    _context.SaveChanges();
-    //    return RedirectToAction("Index");
-    //}
-
-    public async Task<IActionResult> BanUser(string id, int dage)
-    {
-        var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-        user.LockoutEnd = DateTime.Now.AddDays(dage);
-        var result = await _userManager.UpdateAsync(user);
-
-        if (result.Succeeded)
+        [HttpPost]
+        public IActionResult DeleteFeedback(string Id)
         {
+            var getfeedback = _feedBack.Get(Id);
+            _feedBack.Delete(getfeedback);
             return RedirectToAction("Index");
         }
-        else
+
+        [HttpPost]
+        public IActionResult DeleteUser(string id)
         {
-            ViewData["ErrorMessage"] = "Der skete en fejl";
-            return View();
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            _userManager.DeleteAsync(user);
+            return RedirectToAction("Index");
         }
+
+        //public IActionResult BanUser10(int id)
+        //{
+        //    var user = _userManager.Users.First();
+        //    user.LockoutEnd = DateTime.Now.AddDays(10);
+
+        //    _context.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
+        public async Task<IActionResult> BanUser(string id, int dage)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            user.LockoutEnd = DateTime.Now.AddDays(dage);
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewData["ErrorMessage"] = "Der skete en fejl";
+                return View();
+            }
+
+
+
+        }
+
+        //public IActionResult BanUser25(string id)
+        //{
+        //    var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+        //    user.LockoutEnd = DateTime.Now.AddDays(25);
+        //    _context.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
+        //public IActionResult BanUser100(int id)
+        //{
+        //    var user = _userManager.Users.First();
+        //    user.LockoutEnd = DateTime.Now.AddDays(25);
+        //    _context.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
+
 
 
 
     }
-
-    //public IActionResult BanUser25(string id)
-    //{
-    //    var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-    //    user.LockoutEnd = DateTime.Now.AddDays(25);
-    //    _context.SaveChanges();
-    //    return RedirectToAction("Index");
-    //}
-
-    //public IActionResult BanUser100(int id)
-    //{
-    //    var user = _userManager.Users.First();
-    //    user.LockoutEnd = DateTime.Now.AddDays(25);
-    //    _context.SaveChanges();
-    //    return RedirectToAction("Index");
-    //}
-
-
-
-
-
-}
 }
 

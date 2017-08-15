@@ -11,6 +11,7 @@
 </div>
 
 @Html.HiddenFor(x => x.ApplicationUser.Id)
+
 <table class="table table-bordered">
 
     <thead>
@@ -28,6 +29,7 @@
             <th>Bruger</th>
             <th>Influencer</th>
             <th>Masser af iconer
+
             <th>Tro</th>
             <th>Opf</th>
             <th>Kva</th>
@@ -39,36 +41,121 @@
         </tr>
     </thead>
     <tbody>
-
-        <tr style="max-width: 100px;">
-            <th>Information</th>
-
-            @foreach (var m in Model.ListRating)
+        @foreach (var m in Model.ListRating)
             {
-                <td data-toggle="tooltip" title="@m.ApplicationUserId" style="max-width: 100px;overflow: hidden;">
-                    @m.ApplicationUser <br />
-                    @m.ApplicationUser.Email
+            <tr style="max-width: 100px;">
+                <th>Information</th>
+
+
+                <td href="#" data-toggle="tooltip" title="@Model.ApplicationUser.Email" style="max-width: 100px;overflow: hidden;">
+                    @Model.ApplicationUser.Name
+                    <br />
+                    @Model.ApplicationUser.Email
                 </td>
+                
 
 
                 <td href="#" data-toggle="tooltip" title="Information her weee" style="max-width: 100px;overflow: hidden;">
-                    @m.ApplicationUser.Name
-                    <br />
-                    @m.ApplicationUser.Email
 
+                    <br />
+
+                    <input asp-for="@Model.Influenter.Email"></input>
                 </td>
                 <td style="text-align:left;max-width:50px">
 
-                    
-                </td>
-                @if (true)
-                {
-                    <td>
-                        <input>
-                        <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i>
-                        <input />
-                    </td>
-                }
+                    @if (@m.BasedOnFacebook == true)
+                    {
+                        <form asp-action="SeFeedBack" asp-route-id="@m.BasedOnFacebook" method="get">
+                            <button id="buttonFacebook" onclick="changeColorFacebook()" style="background: #0000FF;"> <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i> </button>
+                        </form>
+                       
+
+                    }
+                    else
+                    {
+                        <button id="buttonFacebook" onclick="changeColorFacebook()" style="background:none;">  <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i> </button>
+
+
+                    }
+                                        @*
+
+        <form asp-action="SeFeedBack" asp-route-id="@user.Id" method="get">
+                <input rel="stylesheet" style="float:left;margin-right:5px;" type="submit" value="Feedback" />
+            </form>
+
+                                        *@
+
+                    @if (@m.BasedOnInstagram == true)
+                    {
+
+                        <button id="buttonInstagram" onclick="changeColorInstagram()" style="background:##FF8C00;"> <i class="fa fa-instagram fa-2x" aria-hidden="true"> </i></button>
+
+                    }
+                    else
+                    {
+                        <button id="buttonInstagram" onclick="changeColorInstagram()" style="background:none;"> <i class="fa fa-instagram fa-2x" aria-hidden="true"></i></button>
+
+
+                    }
+
+
+                    @if (@m.BasedOnSnapchat == true)
+                    {
+
+                        <button id="buttonSnapChat" onclick="changeColorSnapChat()" style="background:#FFFF00"> <i class="fa fa-snapchat-square fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    else
+                    {
+
+                        <button id="buttonSnapChat" onclick="changeColorSnapChat()" style="background:none;"> <i class="fa fa-snapchat-square fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    @if (@m.BasedOnYoutube == true)
+                    {
+
+                        <button id="buttonYoutube" onclick="changeColorYoutube()" style="background:#FF0000;"> <i class="fa fa-youtube-square fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    else
+                    {
+
+                        <button id="buttonYoutube" onclick="changeColorYoutube()" style="background:none;"> <i class="fa fa-youtube-square fa-2x" aria-hidden="true"></i></button>
+
+                    }
+
+                    <br />
+                    @if (@m.BasedOnTwitch == true)
+                    {
+                        <button id="buttonTwitch" onclick="changeColorTwitch()" style="background:#800080;"> <i class="fa fa-twitch fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    else
+                    {
+                        <button id="buttonTwitch" onclick="changeColorTwitch()" style="background:none;"> <i class="fa fa-twitch fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    @if (@m.BasedOnWebsite == true)
+                    {
+                        <button id="buttonBlog" onclick="changeColorBlog()" style="background:#800080;"> <i class="fa fa-twitch fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    else
+                    {
+                        <button id="buttonBlog" onclick="changeColorBlog()" style="background:none;"> <i class="fa fa-rss-square fa-2x" aria-hidden="true"></i></button>
+                    }
+                    @if (@m.BasedOnTwitter == true)
+                    {
+                        <button id="buttonTwitter" onclick="changeColorTwitter()" style="background:#87CEFA;"> <i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i></button>
+
+                    }
+                    else
+                    {
+                        <button id="buttonTwitter" onclick="changeColorTwitter()" style="background:none;"> <i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i></button>
+                    }
+
+
+
 
 
 
@@ -94,13 +181,15 @@
                     </form>
                     <a asp-ction="RedigereFeedback" asp-route-id="m.Id">  </a>
                     <br />
-                    <button class="btn btn-default" type="submit" style="background-color:#990000"> <i class="fa fa-trash" aria-hidden="true"></i></button>
+                    <form method="post" asp-action="DeleteFeedback" asp-controller="Admin" asp-route-id="@m.Id">
+                        <button class="btn btn-default" type="submit" style="background-color:#990000"> <i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </form>
                 </td>
-            }
 
 
-        </tr>
 
+            </tr>
+        }
     </tbody>
 
 </table>
@@ -111,8 +200,14 @@
 
     function changeColorFacebook() {
 
-        document.getElementById("buttonFacebook").style.backgroundColor = '#0000FF';
 
+        if (document.getElementById("button").style.backgroundColor = '#0000FF' == '#0000FF' ) {
+            document.getElementById("buttonFacebook").style.backgroundColor = '#808080';
+        }
+
+        else {
+            document.getElementById("buttonFacebook").style.backgroundColor = '#0000FF';
+        }
         return false;
     }
 

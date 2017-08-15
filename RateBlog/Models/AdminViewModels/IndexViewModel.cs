@@ -12,6 +12,10 @@ namespace RateBlog.Models.AdminViewModels
         public string SearchString { get; set; }
         public List<ApplicationUser> InfluentList { get; set; }
         public bool isInfluencer { get; set; }
-  
+        public ApplicationUser Influenter { get; set; }
+        public Influencer influencer { get; set; }
+        public List<ApplicationUser> Influencer { get; internal set; }
+        //public bool IsApproved { get; set; }
+
     }
 }
