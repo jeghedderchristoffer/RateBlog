@@ -11,7 +11,7 @@ using RateBlog.Data;
 using RateBlog.Models;
 using RateBlog.Models.AdminViewModels;
 using RateBlog.Repository;
-//using RateBlog.Models.InfluenterViewModels;
+
 
 namespace RateBlog.Controllers
 {
@@ -32,6 +32,8 @@ namespace RateBlog.Controllers
 
         }
 
+        //Virkede ikke så revertede. 
+        //var model = IndexViewModel()
 
         public IndexViewModel viewmodel = new IndexViewModel();
 
@@ -54,11 +56,7 @@ namespace RateBlog.Controllers
             return View(viewmodel);
         }
 
-        //Virkede ikke så revertede. 
-        //var model = IndexViewModel()
-
-
-
+        //redigere brugeren side
         public IActionResult EditUser(string id)
         {
 
@@ -72,53 +70,26 @@ namespace RateBlog.Controllers
             return View(model);
 
         }
-
-
-        //[HttpPost]
-        //public async Task<IActionResult> EditInfluencer(SeMereViewModel vmmodel)
-        //{
-        //    var getUser2 = _userManager.Users.SingleOrDefault(x => x.Id == vmmodel.ApplicationUser.Id);
-        //    getUser2.Email = vmmodel.ApplicationUser.Email;
-        //    getUser2.Name = vmmodel.ApplicationUser.Name;
-
-
-        //    getUser2.InfluenterId = vmmodel.ApplicationUser.InfluenterId;
-        //    getUser2.ProfileText = vmmodel.ApplicationUser.ProfileText;
-        //    getUser2.PhoneNumber = vmmodel.ApplicationUser.PhoneNumber;
-        //    getUser2.PasswordHash = vmmodel.ApplicationUser.PasswordHash;
-        //    getUser2.LockoutEnd = vmmodel.ApplicationUser.LockoutEnd;
-
-
-        //    //_userManager.EditUser(getUser);
-        //    var result = await _userManager.UpdateAsync(getUser2);
-
-
-        //    var model2 = new SeMereViewModel()
-        //    {
-        //        ApplicationUser = getUser2,
-
-        //    };
-
-        //    return View(model2);
-        //    //return View();
-        //}
-
-
+        //Skal bruges senere.
         public IActionResult EditInfluencer()
         {
 
             return View();
         }
+        //Skal bruges senere.
+        public IActionResult ProfilePage()
+        {
+            return View();
+        }
 
+
+        //Dette er et testview, kan slettes når det lystets, husk at slette tilhørende view.
         [HttpGet]
         public IActionResult SeMere(string id)
         {
 
             var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-           // var user = _userManager.Users.SingleOrDefault(x => x.Id == vmodel.ApplicationUser.Id);
-
-         
-
+           // var user = _userManager.Users.SingleOrDefault(x => x.Id == vmodel.ApplicationUser.Id);        
             var GetAllRating2 = _feedBack.GetAll();
 
             var rating = new SeFeedbackViewModel()
@@ -224,39 +195,6 @@ namespace RateBlog.Controllers
 
         }
 
-
-
-
-
-
-        //var model = _userManager.Users;
-
-        //    if (!String.IsNullOrEmpty(searchString))
-        //    {
-        //        model = _userManager.Users.Where(s => s.Name.ToLower().Contains(searchString.ToLower()));
-        //    }
-        //    else
-        //    {
-        //        model = _userManager.Users;
-        //    }
-
-        //    if (isInfluencer)
-        //    {
-        //        model = model.Where(x => x.InfluenterId.HasValue);
-        //    }
-
-        //    viewmodel.InfluentList = model.ToList();
-
-        //    return View(viewmodel);
-
-
-
-
-        //update rateing
-
-
-
-
         [HttpPost]
         public IActionResult DeleteFeedback(string Id)
         {
@@ -272,15 +210,6 @@ namespace RateBlog.Controllers
             _userManager.DeleteAsync(user);
             return RedirectToAction("Index");
         }
-
-        //public IActionResult BanUser10(int id)
-        //{
-        //    var user = _userManager.Users.First();
-        //    user.LockoutEnd = DateTime.Now.AddDays(10);
-
-        //    _context.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
 
         public async Task<IActionResult> BanUser(string id, int dage)
         {
@@ -301,27 +230,6 @@ namespace RateBlog.Controllers
 
 
         }
-
-        //public IActionResult BanUser25(string id)
-        //{
-        //    var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-        //    user.LockoutEnd = DateTime.Now.AddDays(25);
-        //    _context.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
-        //public IActionResult BanUser100(int id)
-        //{
-        //    var user = _userManager.Users.First();
-        //    user.LockoutEnd = DateTime.Now.AddDays(25);
-        //    _context.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
-
-
-
-
     }
 }
 

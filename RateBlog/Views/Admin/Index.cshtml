@@ -3,14 +3,14 @@
 @inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
 
 @{
-    ViewData["Title"] = "Forside";
+    ViewData["Title"] = "Index";
 }
 
 
 <div class="navbar-allaround">
 
 </div>
-<input class="search-button" type="submit" value="Søg" />
+
 <div class="container">
     <div class="">
         <div class="outer">
@@ -20,6 +20,7 @@
 
                     <form method="get" asp-area="" asp-controller="Admin" asp-action="Index">
                         <input type="text" name="searchString" id="searchString" class="search-input" style="border: solid 1px" placeholder="F.eks. ud fra navn eller platform" />
+                        <input class="search-button" type="submit" value="Søg" />
                         <span>
                         </span>
                     </form>
@@ -106,20 +107,7 @@
 
                     </td>
 
-                    <td>
-
-                        @*<td>
-
-                                <form asp-action="BanUser10" asp-route-id="@user.InfluenterId" method="get" asp-controller="Admin">
-                                    <a>
-                                        <input onclick="BanUserFunction()" type="submit" style="margin-bottom: 20px" value="Ban brugeren" />
-
-                                        <p id="Ban"></p>
-
-                                        </form>
-                            </td>*@
-
-                    </td>
+                 
 
                 </tr>
             }

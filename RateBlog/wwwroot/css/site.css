@@ -2175,7 +2175,7 @@ footer {
     .footerkontakt-img h1 {
         color: white;
         margin-top: 20px;
-        margin-bottom: 20px;    
+        margin-bottom: 20px;
     }
 
 .footerFAQ-img {
@@ -3337,3 +3337,61 @@ footer {
                 margin-right: 100%;
                 right: 10px; /* space between number and text */
             }
+
+
+
+
+
+/* Admin css*/
+.admin-img {
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+    text-align: left;
+    
+}
+
+.admin-btn {
+    width: 100%;
+    display: block;
+    color: #FFF;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.admin-middle {
+    background: #FAFAFA;
+    border-top: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
+    padding-top: 40px;
+    padding-bottom: 50px;
+    margin-top: 30px;
+}
+
+.admin-profile-middle {
+    border-bottom: 1px solid #DDD;
+    padding-top: 10px;
+    padding-bottom: 50px;
+    margin-top: 20px;
+}
+
+    .admin-middle h2 {
+        margin-top: 0;
+        margin-bottom: 30px;
+    }
+
+    .admin-middle h4 {
+        font-size: 24px;
+    }
+
+    .admin-middle h5 {
+        font-size: 18px;
+    }
+
+    .admin-middle h6 {
+        font-size: 14px;
+        padding-top: 30px;
+    }
