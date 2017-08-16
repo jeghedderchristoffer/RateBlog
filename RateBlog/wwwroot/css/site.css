@@ -3348,7 +3348,6 @@ footer {
     height: 200px;
     width: 200px;
     text-align: left;
-    
 }
 
 .admin-btn {
@@ -3360,19 +3359,29 @@ footer {
     cursor: pointer;
     border-radius: 5px;
     margin-bottom: 15px;
-   
 }
+
+    .admin-btn:hover {
+        opacity:0.5;
+        color: #FFF;
+        text-decoration: none;
+    }
+
+    .admin-btn:focus {
+        color: #FFF;
+        text-decoration: none;
+    }
 
 .admin-botton {
     width: 100%;
-    width:500px;
+    width: 500px;
     display: block;
     color: #FFF;
     padding: 10px;
     cursor: pointer;
     border-radius: 5px;
     margin-bottom: 15px;
-    float:unset;
+    float: unset;
 }
 
 .admin-middle {
@@ -3404,11 +3413,9 @@ footer {
     }
 
 .admin-profile-middle {
-  
     border-bottom: 1px solid #DDD;
     padding-top: 40px;
     padding-bottom: 50px;
-   
 }
 
     .admin-profile-middle h2 {
@@ -3422,12 +3429,13 @@ footer {
     border-bottom: 1px solid #DDD;
     padding-top: 30px;
     padding-bottom: 50px;
-    
 }
+
 .admin-category {
     display: inline-block;
     font-size: 22px;
     padding-left: 10px;
+   
 }
 
 
@@ -3437,9 +3445,9 @@ footer {
 
     .admin-edit-social-box a {
         vertical-align: middle;
-        font-size:20px
+        font-size: 20px
     }
-    
+
 
     .admin-edit-social-box input[type="checkbox"] {
         display: none;
@@ -3456,12 +3464,13 @@ footer {
         border-radius: 6px;
         outline: none;
     }
+
 .fa-admin-edit {
     display: block;
     padding: 15px;
     font-size: 24px !important;
     width: 50px;
-    height:50px;
+    height: 50px;
     text-align: center;
     text-decoration: none;
     margin: 5px 2px;
@@ -3525,5 +3534,6 @@ footer {
     font-size: 20px;
     display: inline-block;
     max-width: 50px;
-    padding-bottom: 34px
+    padding-bottom: 34px;
+    padding-left:10px;
 }

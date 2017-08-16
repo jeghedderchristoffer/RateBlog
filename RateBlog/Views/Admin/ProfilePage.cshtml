@@ -86,26 +86,11 @@
                 </table>
             </div>
         </form>
-
-                
         <div class="col-md-2">
-
-            <form asp-controller="Admin" asp-action="EditUser" asp-route-id="@Model.ApplicationUser.Id" method="get">
-            <button class="admin-btn" style="background:green;"><i style="padding-right:5px;" class="fa fa-pencil" aria-hidden="true"></i> Redigere</button>
-            </form>
-
-            <form method="get" asp-controller="Admin" asp-action="SeFeedback" asp-route-id="@Model.ApplicationUser.Id">
-                <button class="admin-btn" style="background:blue;" type="submit"><i style="padding-right:5px;" class="fa fa-commenting-o" aria-hidden="true"></i>Feedback </button>
-            </form>
-
-            <form method="post" asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@Model.ApplicationUser.Id">
-                <button class="admin-btn" type="submit" style="background-color:#990000"> <i style="padding-right:5px;" class="fa fa-trash" aria-hidden="true"> </i>Slet</button>
-            </form>
-
-            <form method="post" asp-action="BanUser" asp-controller="Admin" asp-route-id="@Model.ApplicationUser.Id">
-                <button class="admin-btn" type="submit" style="background-color:#FF0000;"><i style="padding-right:5px;" class="fa fa-ban" aria-hidden="true"></i>Ban</button>
-            </form>
-
+            <a asp-controller="Admin" asp-action="SeFeedback" asp-route-id="@Model.ApplicationUser.Id" style="background:green;" class="admin-btn">Rediger</a>
+            <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@Model.ApplicationUser.Id" style="background:blue;" class="admin-btn">Feedback</a>
+            <a asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@Model.ApplicationUser.Id" style="background:red;" class="admin-btn">Slet</a>
+            <a asp-controller="Admin" asp-action="BanUser" asp-route-id="@Model.ApplicationUser.Id" style="background:orange;" class="admin-btn">Ban </a>
         </div>
     </div>
 </div>
@@ -195,7 +180,7 @@
                                 {
                                     <div>
                                         <a href="http://www.facebook.com/@v.Link" target="_blank" class="fa fa-admin-edit fa-facebook fa-facebook-admin-edit-"></a>
-                                        <a class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</a>
+                                        <p class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</p>
                                     </div>
 
                                 }
@@ -203,7 +188,7 @@
                                 {
                                     <div>
                                         <a href="http://www.youtube.com/user/@v.Link" target="_blank" class="fa fa-edit fa-youtube fa-youtube-edit"></a>
-                                        <a class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</a>
+                                        <p class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</p>
                                     </div>
 
                                 }
@@ -211,7 +196,7 @@
                                 {
                                     <div>
                                         <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-edit fa-instagram fa-instagram-edit"></a>
-                                        <a class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</a>
+                                        <p class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</p>
                                     </div>
                                 }
 
@@ -220,7 +205,7 @@
 
                                     <div>
                                         <a class="fa fa-edit fa-globe fa-globe-edit"></a>
-                                        <a class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</a>
+                                        <p class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</p>
                                     </div>
 
                                 }
@@ -229,7 +214,7 @@
                                 {
                                     <div>
                                         <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-edit fa-twitter fa-twitter-edit"></a>
-                                        <a class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</a>
+                                        <p class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</p>
                                     </div>
 
                                 }
@@ -238,7 +223,7 @@
 
                                     <div>
                                         <a href="http://www.twitch.tv/@v.Link" target="_blank" class="fa fa-edit fa-twitch fa-twitch-edit"></a>
-                                        <a class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</a>
+                                        <p class="admin-platforms">@PlatformRepo.Get(v.PlatformId).Name</p>
                                     </div>
                                 }
                                 else if (PlatformRepo.Get(v.PlatformId).Name == "SnapChat")
@@ -246,7 +231,7 @@
 
                                     <div>
                                         <a href="http://www.snapchat.com/add/@v.Link" class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
-                                        <a class="admin-platforms" placeholder="Snapchat link på influencer">@PlatformRepo.Get(v.PlatformId).Name</a>
+                                        <p class="admin-platforms" placeholder="Snapchat link på influencer">@PlatformRepo.Get(v.PlatformId).Name</p>
                                     </div>
                                 }
                             }
@@ -258,7 +243,7 @@
                         }
 
                     </div>
-                </div>
+                    </div>
 
                 <div class="col-md-6">
                     <div class="col-md-6">
@@ -268,15 +253,15 @@
 
 
                         @if (PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.Id) != null)
-                        {
+                           {
 
 
                             @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.Id))
-                            {
-
-
-                                if (v == "Gaming")
                                 {
+
+
+                                     if (v == "Gaming")
+                                    {
                                     <div style="font-size:18px;margin-bottom:30px">
                                         <img style="height:50px" src="~/images/Kategori/gaming.png" alt="img">
                                         <p class="admin-category">@v</p>
