@@ -12,15 +12,21 @@ namespace RateBlog.Models
     {
         public string Name { get; set; }
        
-        public int? Year { get; set; }
+        public int Year { get; set; }
        
-        public int? Postnummer { get; set; } 
+        public int Postnummer { get; set; } 
 
         public string ProfileText { get; set; }
 
         public string Gender { get; set; } 
 
-        public Byte[] ProfilePicture { get; set; } 
+        public Byte[] ProfilePicture { get; set; }
+
+        public virtual ICollection<Feedback> Ratings { get; set; }
+
+        public DateTime Created { get; set; }
+
+        public DateTime LastLogin { get; set; } 
 
     }
 }

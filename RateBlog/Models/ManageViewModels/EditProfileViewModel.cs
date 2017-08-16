@@ -17,11 +17,11 @@ namespace RateBlog.Models.ManageViewModels
 
         [Required(ErrorMessage = "Du skal udfylde din årgang")]
         [Range(1900, 2017, ErrorMessage = "Du skal vælge det år, som du er født i")]
-        public int? Year { get; set; }
+        public int Year { get; set; }
 
         [Required(ErrorMessage = "Du skal udfylde dit postnummer")]
         [Range(1000, 9999, ErrorMessage = "Du skal vælge et gyldigt postnummer")]
-        public int? Postnummer { get; set; }
+        public int Postnummer { get; set; }
 
         [Required(ErrorMessage = "Du skal vælge dit køn")]
         [Display(Name = "Køn")]

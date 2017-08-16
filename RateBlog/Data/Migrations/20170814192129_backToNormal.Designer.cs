@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170814192129_backToNormal")]
+    partial class backToNormal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -133,16 +134,12 @@ namespace RateBlog.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<DateTime>("Created");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("Gender");
-
-                    b.Property<DateTime>("LastLogin");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -162,7 +159,7 @@ namespace RateBlog.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<int>("Postnummer");
+                    b.Property<int?>("Postnummer");
 
                     b.Property<byte[]>("ProfilePicture");
 
@@ -175,7 +172,7 @@ namespace RateBlog.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
-                    b.Property<int>("Year");
+                    b.Property<int?>("Year");
 
                     b.HasKey("Id");
 

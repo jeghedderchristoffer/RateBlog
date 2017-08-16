@@ -7,6 +7,10 @@ namespace RateBlog.Services
 {
     public interface IEmailSender
     {
-        Task SendEmailAsync(string email, string subject, string message);
+        Task SendEmailAsync(string name, string email, string subject, string message);
+
+        Task SendWelcomeMailAsync(string name, string email);
+
+        Task SendInfluencerApprovedEmailAsync(string name, string email, string alias); 
     }
 }

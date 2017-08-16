@@ -9,15 +9,28 @@
 
     <script>
         (function (i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-            (i[r].q = i[r].q || []).push(arguments)
-        }, i[r].l = 1 * new Date(); a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
         })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
         ga('create', 'UA-103687513-1', 'auto');
         ga('send', 'pageview');
     </script>
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MKL7H8F');
+    </script>
+    <!-- End Google Tag Manager -->
 
     <script>
         window.fbAsyncInit = function () {
@@ -37,6 +50,32 @@
             js.src = "//connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                        "background": "#089de3",
+                        "text": "#ffffff"
+                    },
+                    "button": {
+                        "background": "#ffa500",
+                        "text": "#ffffff"
+                    }
+                },
+                "theme": "classic",
+                "position": "bottom-left",
+                "content": {
+                    "message": "Vi bruger cookies for at forbedre din brugeroplevelse. Ved fortsat brug af websitet, acceptere du vores brug af cookies",
+                    "link": "Læs mere her",
+                    "href": "http://localhost:54069/footer/privacy"
+                }
+            })
+        });
     </script>
 
     <environment names="Development">
@@ -60,6 +99,13 @@
 
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MKL7H8F"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
@@ -81,7 +127,7 @@
     </nav>
 
 
-    @{ 
+    @{
         var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
     }
     <!-- Login Modal -->
@@ -99,12 +145,10 @@
                         <button name="provider" value="@loginProviders.SingleOrDefault(x => x.DisplayName == "Facebook").AuthenticationScheme" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
                             <span class="fa fa-facebook"></span> Log ind via Facebook
                         </button>
-                        <a class="btn btn-block btn-social btn-google btn-lg" style="margin-top: 20px;">
+                        <button name="provider" type="submit" class="btn btn-block btn-social btn-google btn-lg" value="@loginProviders.SingleOrDefault(x => x.DisplayName == "Google").AuthenticationScheme" style="margin-top: 20px;">
                             <span class="fa fa-google"></span> Log ind via Google
-                        </a>
+                        </button>
                     </form>
-                          
-                    
 
                     <div class="divider">
                         <h4><span>ELLER</span></h4>
@@ -113,7 +157,7 @@
                     <a id="emailLoginButton" class="btn btn-block btn-social btn-google btn-lg" style="background: #FFA500">
                         <span class="fa fa-envelope fa"></span> Log ind via Email
                     </a>
-                    
+
                     <div id="emailLogin" style="display: none">
                         <div style="margin-top: 20px;"></div>
                         <span id="errorMsgTop" style="color: red;"></span>
@@ -121,14 +165,13 @@
                         <input id="email" type="email" class="text-input" placeholder="Email" />
                         <span id="errorMsgBot" style="color: red"></span>
                         <input id="password" class="text-input" placeholder="Kodeord" type="password" />
-                        <input type="button" class="login-button" id="loginBtn" value="Log på" />                       
+                        <input type="button" class="login-button" id="loginBtn" value="Log på" />
                     </div>
 
-                    <a id="forgotPasswordBtn" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Har du glemt kodeord?</p></a>
-                    <div id="forgotPassword" class="display-none">
-                        <input id="email" type="email" class="text-input" placeholder="Hvad er din email?" />
-                        <input style="margin-bottom: 10px" type="button" class="login-button" value="Nulstil kodeord" />
+                    <div style="width: 100%; margin-top: 15px" class="text-center">
+                        <a asp-controller="Account" asp-action="ForgotPassword" style="margin-top: 20px; color: #000; text-decoration: none;">Har du glemt kodeord?</a>
                     </div>
+                   
 
                 </div>
             </div>
@@ -143,20 +186,20 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h3 class="modal-title text-center">Opret en profil idag</h3>
                 </div>
-                <div class="modal-body">                 
+                <div class="modal-body">
 
                     <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                         <button name="provider" value="@loginProviders.SingleOrDefault(x => x.DisplayName == "Facebook").AuthenticationScheme" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
-                            <span class="fa fa-facebook"></span> Log ind via Facebook
+                            <span class="fa fa-facebook"></span> Tilmeld via Facebook
                         </button>
-                        <a class="btn btn-block btn-social btn-google btn-lg" style="margin-top: 20px;">
-                            <span class="fa fa-google"></span> Log ind via Google
-                        </a>
+                        <button name="provider" type="submit" value="@loginProviders.SingleOrDefault(x => x.DisplayName == "Google").AuthenticationScheme" class="btn btn-block btn-social btn-google btn-lg" style="margin-top: 20px;">
+                            <span class="fa fa-google"></span> Tilmeld via Google
+                        </button>
                     </form>
 
                     <div class="divider">
                         <h4><span>ELLER</span></h4>
-                    </div>                   
+                    </div>
 
                     <a id="emailCreateButton" class="btn btn-block btn-social btn-google btn-lg" style="background: #FFA500">
                         <span class="fa fa-envelope fa"></span> Tilmeld via Email
@@ -179,8 +222,11 @@
     </div>
 
 
+
     <div class="container-fluid" style="padding: 0;">
-        @RenderBody()       
+
+        @RenderBody()
+
     </div>
 
     <environment names="Development">
@@ -205,73 +251,8 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    @*<script>
-        $(document).ready(function () {
-    var opretErrorMsg = $("#opretErrorMsgTop");
-
-    $("#opretBtn").click(function () {
-
-        //collect the user data
-        var data = {};
-        data.Name = $("#opretNavn").val();
-        data.Email = $("#opretEmail").val();
-        data.Password = $("#opretPassword").val();
-        data.ConfirmPassword = $("#opretPassword2").val();
-        var token = $('input[name="__RequestVerificationToken"]').val();
-
-        $.ajax({
-            url: "/Account/Register",
-            method: "POST",
-            data: {
-                model: data,
-                __RequestVerificationToken: token,
-                returnUrl: "Home/Index"   // you can modify the returnUrl value here
-            },
-            success: function (result) {
-                console.log(result);
-
-                if (result.sucess === true) {
-                    window.location = "@ViewData["ReturnUrl"]";
-                    return;
-                }
-
-                for (var i = 0; i < result.error.length; i++) {
-                    console.log(result.error[i].errors[0].errorMessage);
-                    var error = result.error[i].errors[0].errorMessage;
-                    if (error === 'Missing') {
-                        opretErrorMsg.text("Du skal udfylde alle felterne.");
-                        return;
-                    }
-                    else if (error === 'Email') {
-                        opretErrorMsg.text("Dette er ikke en gyldig email.");
-                        $("#opretEmail").focus();
-                        return;
-                    }
-                    else if (error === 'Password') {
-                        opretErrorMsg.text("Kodeordet skal være minimum 6 karaktere langt.");
-                        return;
-                    }
-                    else if (error === 'NoMatch') {
-                        opretErrorMsg.text("De 2 kodeord er forskellige.");
-                        return;
-                    }
-                    else if (error.indexOf("User name") !== -1) {
-                        opretErrorMsg.text("Der findes allerede en bruger med denne email.");
-                        return;
-                    }
-
-                }
-
-            },
-            error: function () {
-                console.log("fail");
-            }
-        });
-    });
-});
-    </script>*@
-
     @RenderSection("Scripts", required: false)
     @RenderSection("SearchStar", required: false)
+
 </body>
 </html>

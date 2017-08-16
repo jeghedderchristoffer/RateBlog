@@ -17,5 +17,9 @@ namespace RateBlog.Models.ManageViewModels
         public bool TwoFactor { get; set; }
 
         public bool BrowserRemembered { get; set; }
+
+        public string AgeGroup { get; set; } 
+
+        public string Gender { get; set; }
     }
 }

@@ -14,6 +14,7 @@ using RateBlog.Models.AccountViewModels;
 using RateBlog.Services;
 using Microsoft.AspNetCore.Http;
 using RateBlog.Models.ManageViewModels;
+using System.Net.Http;
 
 namespace RateBlog.Controllers
 {
@@ -78,6 +79,9 @@ namespace RateBlog.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
+                    var user = _userManager.Users.SingleOrDefault(x => x.Email.ToLower() == model.Email.ToLower());
+                    user.LastLogin = DateTime.Now;
+                    await _userManager.UpdateAsync(user); 
                     return Json(new { result = "Accepted" });
                 }
                 //if (result.RequiresTwoFactor)
@@ -169,11 +173,13 @@ namespace RateBlog.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Year = model.Year, Postnummer = model.Postnummer, Gender = model.Gender };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Year = model.Year.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, LastLogin = DateTime.Now };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    // Send velkomst mail
+                    await _emailSender.SendWelcomeMailAsync(user.Name, user.Email); 
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
                 }
@@ -230,6 +236,9 @@ namespace RateBlog.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation(5, "User logged in with {Name} provider.", info.LoginProvider);
+                var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+                user.LastLogin = DateTime.Now;
+                await _userManager.UpdateAsync(user);
                 return RedirectToLocal(returnUrl);
             }
             if (result.RequiresTwoFactor)
@@ -272,7 +281,20 @@ namespace RateBlog.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Year = model.Year, Postnummer = model.Postnummer, Gender = model.Gender };
+               
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Year = model.Year.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, LastLogin = DateTime.Now };
+
+                if (info.LoginProvider == "Facebook")
+                {
+                    var url = "https://graph.facebook.com/" + info.ProviderKey + "/picture?width=300&height=300";
+
+                    using (var client = new HttpClient())
+                    {
+                        var ba = await client.GetByteArrayAsync(url);
+                        user.ProfilePicture = ba; 
+                    }
+                }
+
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -281,7 +303,12 @@ namespace RateBlog.Controllers
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
 
-                        // Add Facebook / Google Claim for denne user
+                        await _emailSender.SendWelcomeMailAsync(user.Name, user.Email);
+
+                        //await _userManager.AddClaimAsync(user, new Claim("FacebookAccessToken", info.AuthenticationTokens.SingleOrDefault(x => x.Name == "access_token").Value)); 
+
+                        user.LastLogin = DateTime.Now;
+                        await _userManager.UpdateAsync(user);
 
                         _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
                         return RedirectToLocal(returnUrl);
@@ -331,7 +358,7 @@ namespace RateBlog.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
@@ -339,11 +366,13 @@ namespace RateBlog.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
                 // Send an email with this link
-                //var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                //   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                //return View("ForgotPasswordConfirmation");
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                await _emailSender.SendEmailAsync("", model.Email, "Bestfluence - Nulstil kodeord",
+                   "Hej " + user.Name + "<br><br>" +
+                   "Du kan nulstille dit kodeord ved at trykke på dette link: " + callbackUrl + "<br><br>" +
+                   "Mvh. Bestfluence");
+                return View("ForgotPasswordConfirmation");
             }
 
             // If we got this far, something failed, redisplay form
@@ -393,7 +422,7 @@ namespace RateBlog.Controllers
             AddErrors(result);
             return View();
         }
-
+         
         //
         // GET: /Account/ResetPasswordConfirmation
         [HttpGet]
@@ -447,7 +476,7 @@ namespace RateBlog.Controllers
             var message = "Your security code is: " + code;
             if (model.SelectedProvider == "Email")
             {
-                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
+                await _emailSender.SendEmailAsync("", await _userManager.GetEmailAsync(user), "Security Code", message);
             }
             else if (model.SelectedProvider == "Phone")
             {
@@ -512,6 +541,51 @@ namespace RateBlog.Controllers
             return View();
         }
 
+        
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("/[controller]/Show/[action]/{id}")]
+        public IActionResult Profile(string id)
+        {
+            var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
+
+            var gender = (user.Gender == "male") ? "Mand" : "Dame";
+            var ageGroup = "";
+
+            if (user.Year > 2004)
+            {
+                ageGroup = "Under 13 år";
+            }
+            else if (user.Year > 1997)
+            {
+                ageGroup = "13-19 år";
+            }
+            else if (user.Year > 1990)
+            {
+                ageGroup = "20-26 år";
+            }
+            else if (user.Year > 1983)
+            {
+                ageGroup = "27-33 år";
+            }
+            else if (user.Year > 1977)
+            {
+                ageGroup = "34-39 år";
+            }
+            else
+            {
+                ageGroup = "Over 40 år";
+            }
+
+            var model = new ProfileViewModel()
+            {
+                ApplicationUser = user,
+                AgeGroup = ageGroup,
+                Gender = gender
+            };
+
+            return View(model); 
+        }
 
 
 

@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Hosting;
 using RateBlog.Services.Interfaces;
+using System.Net;
+using System.Net.Http;
 
 namespace RateBlog.Controllers
 {
@@ -87,13 +89,44 @@ namespace RateBlog.Controllers
             {
                 return View("Error");
             }
+
+            var gender = (user.Gender == "male") ? "Mand" : "Dame";
+            var ageGroup = ""; 
+
+            if (user.Year > 2004)
+            {
+                ageGroup = "Under 13 år"; 
+            }
+            else if(user.Year > 1997)
+            {
+                ageGroup = "13-19 år"; 
+            }
+            else if(user.Year > 1990)
+            {
+                ageGroup = "20-26 år"; 
+            }
+            else if(user.Year > 1983)
+            {
+                ageGroup = "27-33 år";
+            }
+            else if(user.Year > 1977)
+            {
+                ageGroup = "34-39 år"; 
+            }
+            else
+            {
+                ageGroup = "Over 40 år"; 
+            }
+
             var model = new IndexViewModel
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
                 TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
                 Logins = await _userManager.GetLoginsAsync(user),
-                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
+                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
+                Gender = gender,
+                AgeGroup = ageGroup
             };
             return View(model);
         }
@@ -629,9 +662,9 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> ProfilePic()
         {
             var user = await GetCurrentUserAsync();
-            byte[] buffer = user.ProfilePicture;              
+            byte[] buffer = user.ProfilePicture;
 
-            if(buffer == null)
+            if (buffer == null)
             {
                 var dir = _env.WebRootPath;
                 var path = Path.Combine(dir, "/images", "BF" + ".png");

@@ -26,70 +26,87 @@
     <br />
 
     <form asp-controller="Influencer" asp-action="Create" method="post" enctype="multipart/form-data">
-        <input class="edit-input-influ" asp-for="@Model.Name" style="font-size: 14px" placeholder="Navn på influencer (Valgfri)" />
-        <br />
-        <br />
-        <input class="edit-input-influ" asp-for="@Model.Influenter.Alias" style="font-size: 14px" placeholder="Alias på influencer" />
-        <span asp-validation-for="@Model.Influenter.Alias" class="text-danger" style="margin-left: 5px;"></span>
-        <br />
-        <br />
-        <p>Billede af influencer (Valgfri):</p>
-        <input type="file" name="ProfilePic" asp-for="@Model.ProfilePic" />
-        <br />
-        <br />
-        <p> Influencerens kategorier (Valgfri):</p>
-        <div class="choose-category">
+        <div class="col-md-6 noPadding">
+            <input class="edit-input" asp-for="@Model.Name" style="font-size: 14px" placeholder="Navn på influencer (Valgfri)" />
+            <br />
+            <br />
+            <input class="edit-input" asp-for="@Model.Influenter.Alias" style="font-size: 14px" placeholder="Alias på influencer" />
+            <span asp-validation-for="@Model.Influenter.Alias" class="text-danger" style="margin-left: 5px;"></span>
+            <br />
+            <br />
+            <p>Billede af influencer (Valgfri):</p>
+            <input type="file" name="ProfilePic" asp-for="@Model.ProfilePic" />
+            <br />
+            <br />
 
-            @for (int i = 0; i < Model.IKList.Count; i++)
-            {
-                <label>
-                    @Html.CheckBoxFor(x => x.IKList[i].IsSelected)
-                    <span>@Model.IKList[i].KategoriNavn</span>
-                    @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
-                </label>
-            }
-        </div>
-        <br />
-        <p> Influencerens sociale medier (Valgfri):</p>
+            <p> Influencerens kategorier (Valgfri):</p>
+            <div class="choose-category" style="width: 100%">
 
-        <div class="edit-social-box">
-            <a class="fa fa-edit fa-facebook fa-facebook-edit"></a>
-            <span><input id="editFacebook" asp-for="@Model.FacebookLink" style="font-size: 14px" type="text" placeholder="Facebook link på influencer" /><span class="margin-left inside-span" id="editFacebookText"></span></span>
+                @for (int i = 0; i < Model.IKList.Count; i++)
+                {
+                    <label>
+                        @Html.CheckBoxFor(x => x.IKList[i].IsSelected)
+                        <span>@Model.IKList[i].KategoriNavn</span>
+                        @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
+                    </label>
+                }
+            </div>
+
         </div>
 
-        <div class="edit-social-box">
-            <a class="fa fa-edit fa-instagram fa-instagram-edit"></a>
-            <span><input id="editInstagram" asp-for="@Model.InstagramLink" style="font-size: 14px" type="text" placeholder="Instagram navn på influencer" /><span class="margin-left" id="editInstagramText"></span></span>
+        <div class="col-md-offset-1 col-md-5 hidden-sm hidden-xs">
+            <div class="feedback-rating-all-box">
+                <div class="feedback-rating-all-box-item" style="padding: 20px;">
+                    <h3 class="text-center">Kvalitetsindhold</h3>
+                    <p>Vi godkender din influencer, hvis personen har mindst én profil på sociale medier og/eller en blog, hvor han/hun regelmæssigt ligger indhold op med henblik på at inspirere, underholde, berige eller informere andre. Når influenceren er oprettet, kigger vi profilen igennem inden den bliver offentlig, for at sikre en høj troværdighed. Du kan i mellemtiden give influenceren feedback.</p>
+                </div>
+            </div>
         </div>
+        <div class="col-md-12 noPadding">
 
-        <div class="edit-social-box">
-            <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
-            <span><input id="editYoutube" asp-for="@Model.YoutubeLink" style="font-size: 14px" type="text" placeholder="Youtube link på influencer" /><span class="margin-left" id="editYoutubeText"></span></span>
+
+
+            <br />
+            <p> Influencerens sociale medier (Valgfri):</p>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-facebook fa-facebook-edit"></a>
+                <span><input id="editFacebook" asp-for="@Model.FacebookLink" style="font-size: 14px" type="text" placeholder="Facebook link på influencer" /><span class="margin-left inside-span" id="editFacebookText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-instagram fa-instagram-edit"></a>
+                <span><input id="editInstagram" asp-for="@Model.InstagramLink" style="font-size: 14px" type="text" placeholder="Instagram navn på influencer" /><span class="margin-left" id="editInstagramText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
+                <span><input id="editYoutube" asp-for="@Model.YoutubeLink" style="font-size: 14px" type="text" placeholder="Youtube link på influencer" /><span class="margin-left" id="editYoutubeText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
+                <span><input id="editSnapchat" asp-for="@Model.SnapchatLink" style="font-size: 14px" type="text" placeholder="Snapchat navn på influencer" /><span class="margin-left" id="editSnapchatText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-twitter fa-twitter-edit"></a>
+                <span><input id="editTwitter" asp-for="@Model.TwitterLink" style="font-size: 14px" type="text" placeholder="Twitter navn på influencer" /><span class="margin-left" id="editTwitterText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-twitch fa-twitch-edit"></a>
+                <span><input id="editTwitch" asp-for="@Model.TwitchLink" style="font-size: 14px" type="text" placeholder="Twitch navn på influencer" /><span class="margin-left" id="editTwitchText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-globe fa-globe-edit"></a>
+                <span><input id="editWebsite" asp-for="@Model.WebsiteLink" style="font-size: 14px" type="text" placeholder="Hjemmeside link på influencer" /><span class="margin-left" id="editWebsiteText"></span></span>
+            </div>
+            <br />
+            <br />
+            <input type="submit" class="edit-button-influ-create" value="Opret influencer" />
         </div>
-
-        <div class="edit-social-box">
-            <a class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
-            <span><input id="editSnapchat" asp-for="@Model.SnapchatLink" style="font-size: 14px" type="text" placeholder="Snapchat navn på influencer" /><span class="margin-left" id="editSnapchatText"></span></span>
-        </div>
-
-        <div class="edit-social-box">
-            <a class="fa fa-edit fa-twitter fa-twitter-edit"></a>
-            <span><input id="editTwitter" asp-for="@Model.TwitterLink" style="font-size: 14px" type="text" placeholder="Twitter navn på influencer" /><span class="margin-left" id="editTwitterText"></span></span>
-        </div>
-
-        <div class="edit-social-box">
-            <a class="fa fa-edit fa-twitch fa-twitch-edit"></a>
-            <span><input id="editTwitch" asp-for="@Model.TwitchLink" style="font-size: 14px" type="text" placeholder="Twitch navn på influencer" /><span class="margin-left" id="editTwitchText"></span></span>
-        </div>
-
-        <div class="edit-social-box">
-            <a class="fa fa-edit fa-globe fa-globe-edit"></a>
-            <span><input id="editWebsite" asp-for="@Model.WebsiteLink" style="font-size: 14px" type="text" placeholder="Hjemmeside link på influencer" /><span class="margin-left" id="editWebsiteText"></span></span>
-        </div>
-        <br />
-        <br />
-        <input type="submit" class="edit-button-influ-create" value="Opret influencer" />
-
     </form>
 
 </div>

@@ -20,6 +20,34 @@ namespace RateBlog.Services
             _userManager = userManger; 
         }
 
+        public List<ApplicationUser> GetInfluencers(IEnumerable<ApplicationUser> users)
+        {
+            var list = new List<ApplicationUser>(); 
+
+            foreach(var v in users)
+            {
+                if(_influencerRepo.Get(v.Id) != null)
+                {
+                    list.Add(v); 
+                }
+            }
+            return list; 
+        }
+
+        public bool IsInfluencerApproved(string id)
+        {
+            var influencer = _influencerRepo.Get(id); 
+
+            if(influencer != null)
+            {
+                if (influencer.IsApproved)
+                {
+                    return true; 
+                }
+            }
+            return false; 
+        }
+
         public async Task<bool> IsUserInfluencerAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);

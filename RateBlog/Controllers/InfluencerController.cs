@@ -67,10 +67,40 @@ namespace RateBlog.Controllers
             //Burde kun kunne få den pågældene user, da Index() metoden KUN returnere Users som er influenter...
             var user = await _userManager.FindByIdAsync(id);
 
+            var gender = (user.Gender == "male") ? "Mand" : "Dame";
+            var ageGroup = "";
+
+            if (user.Year > 2004)
+            {
+                ageGroup = "Under 13 år";
+            }
+            else if (user.Year > 1997)
+            {
+                ageGroup = "13-19 år";
+            }
+            else if (user.Year > 1990)
+            {
+                ageGroup = "20-26 år";
+            }
+            else if (user.Year > 1983)
+            {
+                ageGroup = "27-33 år";
+            }
+            else if (user.Year > 1977)
+            {
+                ageGroup = "34-39 år";
+            }
+            else
+            {
+                ageGroup = "Over 40 år";
+            }
+
             var model = new ShowViewModel()
             {
                 ApplicationUser = user,
-                Influenter = influenter
+                Influenter = influenter,
+                Gender = gender, 
+                AgeGroup = ageGroup
             };
 
             return View(model);
@@ -198,17 +228,17 @@ namespace RateBlog.Controllers
 
             if (ModelState.IsValid)
             {
-                var hoursSinceLastRating = _feedbackService.GetHoursLeftToRate(user.Id, model.Influencer.Id);
-                if (hoursSinceLastRating == 0)
-                {
-                    // Gør ingenting?? :-)
-                }
-                else if (hoursSinceLastRating < 24)
-                {
-                    var hours = TimeSpan.FromHours(24 - hoursSinceLastRating);
-                    TempData["Error"] = "Du kan anmelde denne influencer igen om " + hours.ToString(@"hh\:mm") + " minutter";
-                    return RedirectToAction("Give");
-                }
+                //var hoursSinceLastRating = _feedbackService.GetHoursLeftToRate(user.Id, model.Influencer.Id);
+                //if (hoursSinceLastRating == 0)
+                //{
+                //    // Gør ingenting?? :-)
+                //}
+                //else if (hoursSinceLastRating < 24)
+                //{
+                //    var hours = TimeSpan.FromHours(24 - hoursSinceLastRating);
+                //    TempData["Error"] = "Du kan anmelde denne influencer igen om " + hours.ToString(@"hh\:mm") + " minutter";
+                //    return RedirectToAction("Give");
+                //}
 
                 var boolList = new List<bool>()
                 {

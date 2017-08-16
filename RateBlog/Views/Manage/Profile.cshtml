@@ -4,6 +4,7 @@
 @inject RateBlog.Services.Interfaces.IPlatformCategoryService PlatformCategoryService
 @inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
 @inject RateBlog.Repository.IRepository<Platform> PlatformRepo
+@inject RateBlog.Repository.IRepository<Influencer> InfluencerRepo
 @{
     ViewData["Title"] = "Vis profil";
     var user = await UserManager.GetUserAsync(User);
@@ -80,7 +81,7 @@
                 {
                     @if (FeedbackService.HasFeedback(user.Id))
                     {
-                        <h3 class="text-center" style="margin-top: 0">Følger rating:</h3>
+                        <h3 class="text-center" style="margin-top: 0">Rating:</h3>
 
                         <div class="show-rating-box-show">
                             <div class="show-rating-show">
@@ -101,28 +102,79 @@
                         </div>
                         <p class="text-center" style="margin-top: 20px; margin-bottom: 20px; font-size: 18px">@FeedbackService.GetTotalScore(user.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(user.Id) ratings</p>
                     }
-                    else
-                    {
-                        <h4>Du har ingen ratings endnu</h4>
-                    }
                 }
-            </div>
+                else
+                {
+                    @foreach (var v in FeedbackService.GetLast3Feedback(user.Id))
+                    {
 
-            <div class="col-xs-12 visible-xs">
-                <hr />
+                        <div class="feedback-container">
+                            <div class="col-md-3">
+                                <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@v.InfluenterId">
+                                    <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.InfluenterId })" />
+                                </a>
+                            </div>
+                            <div class="col-md-9 noPadding">
+                                <p class="text-center" style="padding-top: 2px">@InfluencerRepo.Get(v.InfluenterId).Alias</p>
+
+                                <div class="show-rating-box" style="margin: 0; text-align: center; width: 100%">
+                                    <div class="show-rating">
+                                        <div class="show-rating-front">
+                                            @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
+                                            {
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            }
+                                        </div>
+                                        <div class="show-rating-back">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+
+                        </div>
+
+
+                    }
+
+                }
             </div>
 
             <div class="col-md-4 col-sm-4 profile-text">
-                @if (string.IsNullOrEmpty(user.ProfileText))
-                {
-                    <h4>Du har ikke skrevet nogen profiltekst</h4>
+                <hr class="visible-xs" />
+                @if (!string.IsNullOrEmpty(user.ProfileText))
+                { 
+                    <p style="white-space: pre-line">@user.ProfileText </p>
+                    <hr />
                 }
-                <p>@user.ProfileText </p>
+                
+                <p>
+                    Køn:
+                    <span style="float:right">
+                        @Model.Gender
+                    </span>
+                </p>
+                <p>
+                    Aldersgruppe: 
+                    <span style="float:right;">
+                        @Model.AgeGroup
+                    </span>
+                </p>
+
             </div>
-            <hr class="visible-xs" />
+
             <div class="col-md-4 col-sm-4">
+                <hr class="visible-xs" />
+
                 @if (isInfluencer)
                 {
+
                     @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(user.Id) != null)
                     {
 
@@ -169,8 +221,22 @@
                     }
                     else
                     {
-                        <h4>Du har ikke tilknyttet nogle sociale medier endnu.</h4>
+                        <h4 style="margin-top: 0">Du har ikke tilknyttet nogle sociale medier endnu.</h4>
                     }
+                }
+                else
+                {
+
+                    <div class="center-block">
+                        <div class="icon-box">
+                            <span class="fa fa-video fa-star fa-star-video" style="width: 40px; font-size: 15px !important;"></span>
+                            <span class="margin-left" style="font-size: 18px">@FeedbackService.GetUserFeedbackCount(user.Id) Ratings</span>
+                        </div>
+                    </div>
+                    
+
+
+
                 }
             </div>
         </div>

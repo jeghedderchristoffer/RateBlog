@@ -21,8 +21,7 @@
         {
             <h2 class="text-center">Log in</h2>
         }
-
-        <br />
+        <hr />
         <span id="errorMsgTop1" style="color: red"></span>
         @Html.AntiForgeryToken()
         <input id="email1" type="email" class="text-input" placeholder="Email" />
@@ -32,12 +31,17 @@
         <div class="divider">
             <h4><span>ELLER LOG IND MED</span></h4>
         </div>
-        <a class="btn btn-block btn-social btn-facebook btn-lg">
-            <span class="fa fa-facebook"></span> Facebook
-        </a>
-        <a class="btn btn-block btn-social btn-google btn-lg">
-            <span class="fa fa-google"></span> Google
-        </a>
+        @{
+            var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
+        }
+        <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <button name="provider" value="@loginProviders.SingleOrDefault(x => x.DisplayName == "Facebook").AuthenticationScheme" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
+                <span class="fa fa-facebook"></span> Log ind via Facebook
+            </button>
+            <button name="provider" type="submit" class="btn btn-block btn-social btn-google btn-lg" value="@loginProviders.SingleOrDefault(x => x.DisplayName == "Google").AuthenticationScheme" style="margin-top: 20px;">
+                <span class="fa fa-google"></span> Log ind via Google
+            </button>
+        </form>
         <a data-toggle="modal" href="#opretModal" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Ny på Bestfluence? Opret en profil</p></a>
         <a href="/Account/ForgotPassword" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Har du glemt kodeord?</p></a>
     </div>

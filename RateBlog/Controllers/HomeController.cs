@@ -9,6 +9,7 @@ using RateBlog.Repository;
 using Microsoft.AspNetCore.Identity;
 using RateBlog.Models;
 using RateBlog.Helper;
+using RateBlog.Services;
 
 namespace RateBlog.Controllers
 {
@@ -18,17 +19,20 @@ namespace RateBlog.Controllers
         private readonly IRepository<Platform> _platformRepo;
         private readonly IRepository<Influencer> _influencerRepo; 
         private readonly UserManager<ApplicationUser> _userManger;
+        private readonly IEmailSender _mail; 
 
-        public HomeController(IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IRepository<Influencer> influencerRepo, UserManager<ApplicationUser> userManger)
+        public HomeController(IEmailSender mail, IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IRepository<Influencer> influencerRepo, UserManager<ApplicationUser> userManger)
         {
             _platformRepo = platformRepo;
             _categoryRepo = categoryRepo;
             _influencerRepo = influencerRepo;
             _userManger = userManger;
+            _mail = mail; 
         }
 
         public IActionResult Index()
         {
+         
             return View();
         }
 

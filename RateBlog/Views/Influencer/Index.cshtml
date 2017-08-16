@@ -51,16 +51,13 @@
                         </div>
                         <div class="col-md-12 noPadding">
                             <h4><b>Platforme</b></h4>
-                            <div class="col-md-6 noPadding">
-                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Facebook")" style="background: #fff">Facebook</label><br />
-                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Instagram")" style="background: #fff">Instagram</label><br />
-                                <label class="checkbox-inline" style="padding-bottom: 0;"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("YouTube")" style="background: #fff;">YouTube</label><br />
-                            </div>
-                            <div class="col-md-6 noPadding">
-                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Snapchat")" style="background: #fff">Snapchat</label><br />
-                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Twitter")" style="background: #fff">Twitter</label><br />
-                                <label class="checkbox-inline" style="padding-bottom: 0;"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Twitch")" style="background: #fff;">Twitch</label>
-                            </div>
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Facebook")" style="background: #fff">Facebook</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Instagram")" style="background: #fff">Instagram</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("YouTube")" style="background: #fff;">YouTube</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Snapchat")" style="background: #fff">Snapchat</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Twitter")" style="background: #fff">Twitter</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Twitch")" style="background: #fff;">Twitch</label><br />
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Website")" style="background: #fff">Website</label><br />
 
                         </div>
                     </div>
@@ -104,7 +101,7 @@
                                 <span class="sr-only">Loading...</span>
                             </div>
                         </div>
-                        
+
 
                     </div>
                 </div>
@@ -123,7 +120,7 @@
         var searchString = "@Model.SearchString";
         var currentUsersArray;
         var ajaxDone = 0;
-        var loadingComplete = false; 
+        var loadingComplete = false;
 
         $(document).ready(function () {
             // Gets the data first
@@ -185,7 +182,7 @@
                     ajaxDone++;
                     if (!loadingComplete) {
                         $("#loadingBox").css("display", "block");
-                    }                    
+                    }
                 },
                 data: {
                     pageIndex: pageIndex,
@@ -197,10 +194,10 @@
                     sortBy: sortBy
                 },
                 error: function (request, error) {
-                    ajaxDone--; 
+                    ajaxDone--;
                 },
                 success: function (response) {
-                    ajaxDone--; 
+                    ajaxDone--;
                     if (response.trim()) {
                         $("#listOfInfluencers").append(response);
                         pageIndex++;
@@ -281,7 +278,7 @@
             currentUsersArray = UpdateCurrentUserList();
 
             $("input[type='checkbox'][name='platforme'], input[type='checkbox'][name='kategorier']").click(function () {
-                Sort(); 
+                Sort();
             });
 
             $('#sortBy').on('change', function () {

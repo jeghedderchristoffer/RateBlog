@@ -55,7 +55,7 @@
             <div class="col-md-4">
                 @if (FeedbackService.HasFeedback(Model.Influenter.Id))
                 {
-                    <h3 class="text-center" style="margin-top: 0">Følger rating:</h3>
+                    <h3 class="text-center" style="margin-top: 0">Rating:</h3>
 
                     <div class="show-rating-box-show">
                         <div class="show-rating-show">
@@ -82,7 +82,6 @@
                 }                
                 else
                 {
-                    <h4 class="text-center">Bliv den første til at give denne influencer feedback</h4>
                     <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
                 }
             </div>
@@ -90,15 +89,27 @@
             <hr class="hidden-md hidden-lg" />
 
             <div class="col-md-4 profile-text">
-                @if (string.IsNullOrEmpty(Model.ApplicationUser.ProfileText))
+                @if (!string.IsNullOrEmpty(Model.ApplicationUser.ProfileText))
                 {
-                    <h4>Denne influencer har ikke skrevet nogen profiltekst</h4>
+                    <p style="white-space: pre-line">@Model.ApplicationUser.ProfileText</p>
+                    <hr />
                 }
-                else
-                {
-                    <p>@Model.ApplicationUser.ProfileText</p>
-                }
+
+                <p>
+                    Køn:
+                    <span style="float:right">
+                        @Model.Gender
+                    </span>
+                </p>
+                <p>
+                    Aldersgruppe:
+                    <span style="float:right;">
+                        @Model.AgeGroup
+                    </span>
+                </p>
             </div>
+
+
 
             <hr class="hidden-md hidden-lg" />
 

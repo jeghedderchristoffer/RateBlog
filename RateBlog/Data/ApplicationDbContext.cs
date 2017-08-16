@@ -22,7 +22,7 @@ namespace RateBlog.Data
         public DbSet<Feedback> Feedback { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<InfluencerPlatform> InfluencerPlatform { get; set; }
-        public DbSet<InfluencerCategory> InfluencerCategory { get; set; } 
+        public DbSet<InfluencerCategory> InfluencerCategory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
