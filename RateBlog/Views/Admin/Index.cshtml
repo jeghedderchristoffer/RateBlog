@@ -87,19 +87,11 @@
 
                     <td>
 
-                        @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
-                        {
-                            <form asp-controller="Admin" asp-action="EditInfluencer" asp-route-id="@user.Id" method="get">
+                       
+                            <form asp - controller="Admin" asp-action="ProfilePage" asp-route-id="@user.Id" method="get">
                                 <input type="submit" style="float:left;margin-right:5px;" value="Profil" />
                             </form>
-
-                        }
-                        else
-                        {
-                            <form asp - controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" method="get">
-                                <input type="submit" style="float:left;margin-right:5px;" value="Profil" />
-                            </form>
-                        }
+  
 
                         <form asp-action="SeFeedBack" asp-route-id="@user.Id" method="get">
                             <input rel="stylesheet" style="float:left;margin-right:5px;" type="submit" value="Feedback" />

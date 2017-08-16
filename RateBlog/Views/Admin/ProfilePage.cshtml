@@ -86,11 +86,26 @@
                 </table>
             </div>
         </form>
+
+                
         <div class="col-md-2">
-            <a style="background:green;" class="admin-btn">Rediger</a>
-            <a style="background:blue;" class="admin-btn">Feedback</a>
-            <a style="background:red;" class="admin-btn">Slet</a>
-            <a style="background:orange;" class="admin-btn">Ban </a>
+
+            <form asp-controller="Admin" asp-action="EditUser" asp-route-id="@Model.ApplicationUser.Id" method="get">
+            <button class="admin-btn" style="background:green;"><i style="padding-right:5px;" class="fa fa-pencil" aria-hidden="true"></i> Redigere</button>
+            </form>
+
+            <form method="get" asp-controller="Admin" asp-action="SeFeedback" asp-route-id="@Model.ApplicationUser.Id">
+                <button class="admin-btn" style="background:blue;" type="submit"><i style="padding-right:5px;" class="fa fa-commenting-o" aria-hidden="true"></i>Feedback </button>
+            </form>
+
+            <form method="post" asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@Model.ApplicationUser.Id">
+                <button class="admin-btn" type="submit" style="background-color:#990000"> <i style="padding-right:5px;" class="fa fa-trash" aria-hidden="true"> </i>Slet</button>
+            </form>
+
+            <form method="post" asp-action="BanUser" asp-controller="Admin" asp-route-id="@Model.ApplicationUser.Id">
+                <button class="admin-btn" type="submit" style="background-color:#FF0000;"><i style="padding-right:5px;" class="fa fa-ban" aria-hidden="true"></i>Ban</button>
+            </form>
+
         </div>
     </div>
 </div>
@@ -243,7 +258,7 @@
                         }
 
                     </div>
-                    </div>
+                </div>
 
                 <div class="col-md-6">
                     <div class="col-md-6">
@@ -253,15 +268,15 @@
 
 
                         @if (PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.Id) != null)
-                           {
+                        {
 
 
                             @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.Id))
+                            {
+
+
+                                if (v == "Gaming")
                                 {
-
-
-                                     if (v == "Gaming")
-                                    {
                                     <div style="font-size:18px;margin-bottom:30px">
                                         <img style="height:50px" src="~/images/Kategori/gaming.png" alt="img">
                                         <p class="admin-category">@v</p>
