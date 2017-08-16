@@ -76,10 +76,18 @@ namespace RateBlog.Controllers
 
             return View();
         }
-        //Skal bruges senere.
-        public IActionResult ProfilePage()
+
+        [HttpGet]
+        public IActionResult ProfilePage(string id)
         {
-            return View();
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+
+            var model = new SeMereViewModel()
+            {
+                ApplicationUser = user,
+            };
+
+            return View(model);
         }
 
 
