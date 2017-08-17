@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewData["Title"] = "Blog Index";
+
+}
+<div class="navbar-allaround">
+
+</div>
+<div style="background:#f2f1ed">
+
+    
+
+    <div class="container">
+        <h1 class="blog-title">Nyeste nyheder </h1>
+        <hr style="color="black" />
+        
+        
+        <div style="align-content:center;padding-left:300px;padding-bottom:30px;">
+
+
+            <form method="get" asp-area="" asp-controller="Admin" asp-action="Index">
+                <input type="text" name="searchString" id="searchString" class="blog-search-input" style="border: solid 1px;" placeholder="Søg" />
+                <input class="blog-search-button" type="submit" value="Søg" />
+                <span>
+                </span>
+            </form>
+        </div>
+
+        <div>
+            <div id="top">
+
+                <div class="col-md-12 blog-box">
+                    <div class="col-md-3" style="margin-right: -70px;">
+
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/131611/avatar.jpg" class="blog-img" center-block" />
+
+                    </div>
+
+                    <div class="col-md-9"  i>
+
+                        <h1 style="font-size:30px;opacity:0.8;margin-top:-3px;">Barn drikker kogene vand via sugerør</h1>
+                        <h5 style="opacity:0.5;padding-left;padding-bottom:3px;padding-top:3px;">August 17/8 - 2017</h5>
+                        <h4 style="padding-bottom:20px;padding-top:10px;">Et barn drak kogene vand den 21/+120 dansk tid og blev derefter indlagt, resten her er pludder plader for at se hvordan det kommer til at se ud</h4>
+                        <a style="font-size:20px;padding-top:30px;">Læs mere --></a>
+                        <hr style="padding:10px;" />
+                    </div>
+                </div>
+
+                <div class="col-md-12 blog-box">
+                    <div class="col-md-3" style="margin-right: -70px;">
+
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/131611/avatar.jpg" class="blog-img" center-block" />
+
+                    </div>
+
+                    <div class="col-md-9">
+
+                        <h1 style="font-size:30px;opacity:0.8;margin-top:-3px;">Barn drikker kogene vand via sugerør</h1>
+                        <h5 style="opacity:0.5;">August 17/8 - 2017</h5>
+                        <h4>Et barn drak kogene vand den 21/+120 dansk tid og blev derefter indlagt, resten her er pludder plader for at se hvordan det kommer til at se ud</h4>
+                        <a style="font-size:20px;">Læs mere</a>
+
+                    </div>
+                </div>
+
+                <div class="col-md-12 blog-box">
+                    <div class="col-md-3" style="margin-right: -70px;">
+
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/131611/avatar.jpg" class="blog-img" center-block" />
+
+                    </div>
+
+                    <div class="col-md-9">
+
+                        <h1 style="font-size:30px;opacity:0.8;margin-top:-3px;">Barn drikker kogene vand via sugerør</h1>
+                        <h5 style="opacity:0.5;padding-left:10px;">August 17/8 - 2017</h5>
+                        <h4>Et barn drak kogene vand den 21/+120 dansk tid og blev derefter indlagt, resten her er pludder plader for at se hvordan det kommer til at se ud</h4>
+                        <a style="font-size:20px;">Læs mere</a>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
