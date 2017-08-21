@@ -180,7 +180,7 @@ $(document).ready(function () {
         WebsiteText = $("#editWebsiteText");
 
     if (FacebookInput.val() !== "") {
-        FacebookText.text("www.facebook.com/" + $("#editFacebook").val());
+        FacebookText.text($("#editFacebook").val());
     }
 
     if (InstagramInput.val() !== "") {
@@ -188,7 +188,7 @@ $(document).ready(function () {
     }
 
     if (YoutubeInput.val() !== "") {
-        YoutubeText.text("www.youtube.com/user/" + YoutubeInput.val());
+        YoutubeText.text(YoutubeInput.val());
     }
 
     if (SnapchatInput.val() !== "") {
@@ -200,19 +200,19 @@ $(document).ready(function () {
     }
 
     if (TwitchInput.val() !== "") {
-        TwitchText.text("www.twitch.tv/" + TwitchInput.val());
+        TwitchText.text(TwitchInput.val());
     }
 
     if (WebsiteInput.val() !== "") {
-        WebsiteText.text(WebsiteInput.val());
+        WebsiteText.text("http://" + WebsiteInput.val());
     }
 
     WebsiteInput.keyup(function () {
-        WebsiteText.text(WebsiteInput.val());
+        WebsiteText.text( "http://"  + WebsiteInput.val());
     });
 
     TwitchInput.keyup(function () {
-        TwitchText.text("www.twitch.tv/" + TwitchInput.val());
+        TwitchText.text(TwitchInput.val());
     });
 
     TwitterInput.keyup(function () {
@@ -224,7 +224,7 @@ $(document).ready(function () {
     });
 
     FacebookInput.keyup(function () {
-        FacebookText.text("www.facebook.com/" + FacebookInput.val());
+        FacebookText.text(FacebookInput.val());
     });
 
     InstagramInput.keyup(function () {
@@ -232,7 +232,7 @@ $(document).ready(function () {
     });
 
     YoutubeInput.keyup(function () {
-        YoutubeText.text("www.youtube.com/user/" + YoutubeInput.val());
+        YoutubeText.text(YoutubeInput.val());
     });
 
 });
@@ -249,7 +249,7 @@ $(document).ready(function () {
     $(".rating label").click(function () {
         $(this).parent().find("label").css({ "color": "#FD4" });
         $(this).css({ "color": "#FD4" });
-        $(this).prevAll().css({ "color": "#DCDCDC" });
+        $(this).nextAll().css({ "color": "#DCDCDC" });
 
         if ($(this).parent().attr("id") === "opførselCheckBox") {
             $("#opførselCheck").fadeIn(400);

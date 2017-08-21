@@ -3,50 +3,39 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s ratings";
+    var isUserCreated = (Model.ApplicationUser.NormalizedEmail.StartsWith("USERINFLUENCER")) ? true : false;
 }
 
 <div class="navbar-allaround"></div>
 
-<div class="navbar-addon">
-    <div class="container">
-        <div class="col-md-12 col-xs-12 noPadding">
-            <div class="col-md-2 col-xs-2 noPadding addon-box">
-                <div class="addon-img-container">
-                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
-                </div>
-            </div>
-            <div class="col-md-5 col-xs-9 addon-box">
-                <div class="addon-number" style="text-align: left">
-                    <p>Feedback for</p>
+<div style="min-height: 101vh; background: #fafafa; padding-bottom: 60px;">
+
+
+    <div class="container" style="padding-top: 40px;">
+        <div class="col-md-12 noPadding">
+            <div class="col-md-4 noPaddingLeft nopaddingmobile">
+                <div class="profile-box">
+                    <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@Model.Influenter.Id">
+                        <img class="profil-img center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
+                    </a>
+                    <hr />
                     <h3>@Model.Influenter.Alias</h3>
+                    @if (!isUserCreated)
+                    {
+                        <h5>@Model.Age år</h5>
+                        <h5>@Model.Gender</h5>
+                    }
+                    <br />
+                    <h3 style="font-family: 'Anton', sans-serif;">BIO</h3>
+                    <p style="word-break: break-word">@Model.ApplicationUser.ProfileText</p>
+                    <br />
+                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
                 </div>
-
             </div>
-            <div class="col-md-5 col-xs-12 addon-box">
-                <div class="addon-number">
-                    <h1>@FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id)</h1>
-                    <p>Ratings</p>
-                </div>
-                <div class="addon-number">
-                    <h1>@Math.Round(FeedbackService.GetInfluencerAnswerPercentage(Model.Influenter.Id), 1)%</h1>
-                    <p>Svarprocent</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+            <div class="col-md-8 noPaddingRight nopaddingmobile">
 
-<div class="container" style="padding-bottom: 100px;">
-    <div class="col-md-12 col-xs-12 noPadding" style="margin-bottom: 20px;">
-        <div class="col-md-7 col-sm-6 readrating hidden-xs noPadding">
-            <h2 class="anmeldelser-h2">Følger feedback</h2>
-        </div>
-
-        <div class="col-xs-12 readrating visible-xs noPadding">
-            <h2 class="anmeldelser-h2">Følger feedback</h2>
-            <div class="feedback-rating-all-box" style="margin-bottom: 0">
-                <div class="feedback-rating-all-box-item">
-                    <h2 class="text-center" style="margin-top: 0; margin-bottom: 20px">Følger rating</h2>
+                <div class="profile-box">
+                    <h3 class="text-center" style="margin-bottom: 20px"><b>SAMLET SCORE</b></h3>
                     <div class="show-rating-box-show">
                         <div class="show-rating-show">
                             <div class="show-rating-front-show">
@@ -64,93 +53,140 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 20px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
+                    <p class="text-center" style="margin-top: 20px; margin-bottom: 20px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
                 </div>
-            </div>
 
-            <hr />
-
-        </div>
-
-        <div class="col-md-12 col-xs-12 noPadding">
-            <div class="col-md-7 col-sm-6 noPadding">
-                @if (Model.ApplicationUser.Id != null)
+                @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.Influenter.Id).OrderByDescending(x => x.FeedbackDateTime))
                 {
-                    @if (FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.Id).ToList().Count != 0)
-                    {
-                        @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.Id).OrderByDescending(x => x.FeedbackDateTime))
-                        {
-                            <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
-                                <div class="col-md-2 col-xs-12 col-lg-2 noPadding read-img-container">
-                                    <a asp-controller="Account" asp-action="Profile" asp-route-id="@v.ApplicationUserId">
-                                        <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
-                                    </a>
-                                </div>
-
-                                <div class="col-md-5 col-xs-12 col-lg-6 noPadding">
-                                    <p>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
-                                    <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime) </p>
-                                    @if (!string.IsNullOrEmpty(v.FeedbackGood))
-                                    {
-                                        <h5><b>Hvad gør influenceren godt?</b></h5>
-                                        <p class="feedback-text" style="white-space: pre-line">@v.FeedbackGood</p>
-                                    }
-                                    @if (!string.IsNullOrEmpty(v.FeedbackBetter))
-                                    {
-                                        <h5><b>Hvad kan influenceren gøre bedre?</b></h5>
-                                        <p class="feedback-text" style="white-space: pre-line">@v.FeedbackBetter</p>
-                                    }
-
-                                </div>
-
-                                <div class="col-md-5 col-xs-12 col-lg-4" style="margin-bottom: 5px;">
-                                    <div class="show-rating-box" style="margin-top: 5px;">
-                                        <div class="show-rating">
-                                            <div class="show-rating-front">
-                                                @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
-                                                {
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                }
-                                            </div>
-                                            <div class="show-rating-back">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                @if (v.Answer != null)
-                                {
-                                    <div class="col-md-12 col-xs-12" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 5px; padding-left: 0; padding-bottom:10px;">
-                                        <div class="col-md-2 noPadding read-img-container">
-                                            <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
-                                        </div>
-                                        <div class="col-md-6 col-xs-12 noPadding">
-                                            <p>@Model.ApplicationUser.Name</p>
-                                            <h5><b>Svar:</b></h5>
-                                            <p style="line-height: 150%; white-space: pre-line">@v.Answer</p>
-                                        </div>
-                                    </div>
-                                }
+                    <div class="col-md-12 noPadding profile-box">
+                        <div class="profile-follower-ratings">
+                            <div class="col-md-2 noPadding">
+                                <a asp-controller="Account" asp-action="Profile" asp-route-id="@v.ApplicationUserId">
+                                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
+                                </a>
                             </div>
-                        }
-                    }
-                    else
-                    {
-                        <h4>Denne influencer har ikke modtaget noget feedback</h4>
-                    }
+                            <div class="col-md-10">
+                                <div class="visible-xs text-center">
+                                    <h4>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</h4>
+                                    <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
+                                    <br />
+                                </div>
+                                <div class="influencer-read-stars">
+                                    <div class="show-rating">
+                                        <div class="show-rating-front">
+                                            @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
+                                            {
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            }
+                                        </div>
+                                        <div class="show-rating-back">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hidden-xs">
+                                    <h4>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</h4>
+                                    <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
+                                </div>
 
+                                <br />
+                            </div>
+
+                            <div class="col-md-offset-2 col-md-10">
+                                <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes godt om følgende:</b></p>
+                                <p style="white-space: pre-line">@v.FeedbackGood</p>
+                                <br />
+                                <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes følgende kan forbedres:</b></p>
+                                <p style="white-space: pre-line">@v.FeedbackBetter</p>
+                            </div>
+
+
+                            @if (v.Answer != null)
+                            {
+                                <div class="col-md-12 noPadding">
+                                    <hr />
+
+                                    <div class="col-md-2 noPadding">
+                                        <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@v.InfluenterId">
+                                            <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.InfluenterId })" />
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                        <div class="hidden-xs">
+                                            <h4>@Model.Influenter.Alias</h4>
+                                            <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.AnswerDateTime)</p>
+                                        </div>
+                                        <div class="visible-xs text-center">
+                                            <h4>@Model.Influenter.Alias</h4>
+                                            <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.AnswerDateTime)</p>
+                                        </div>
+                                        <br />
+                                        <p><b>@Model.Influenter.Alias har svaret på feedbacken:</b></p>
+                                        <p style="white-space: pre-line">@v.Answer</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 }
 
+
             </div>
-            <div class="col-md-5 col-sm-6 hidden-xs">
-                <div class="feedback-rating-all-box">
+
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+
+
+@*<div class="navbar-addon">
+        <div class="container">
+            <div class="col-md-12 col-xs-12 noPadding">
+                <div class="col-md-2 col-xs-2 noPadding addon-box">
+                    <div class="addon-img-container">
+                        <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
+                    </div>
+                </div>
+                <div class="col-md-5 col-xs-9 addon-box">
+                    <div class="addon-number" style="text-align: left">
+                        <p>Feedback for</p>
+                        <h3>@Model.Influenter.Alias</h3>
+                    </div>
+
+                </div>
+                <div class="col-md-5 col-xs-12 addon-box">
+                    <div class="addon-number">
+                        <h1>@FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id)</h1>
+                        <p>Ratings</p>
+                    </div>
+                    <div class="addon-number">
+                        <h1>@Math.Round(FeedbackService.GetInfluencerAnswerPercentage(Model.Influenter.Id), 1)%</h1>
+                        <p>Svarprocent</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding-bottom: 100px;">
+        <div class="col-md-12 col-xs-12 noPadding" style="margin-bottom: 20px;">
+            <div class="col-md-7 col-sm-6 readrating hidden-xs noPadding">
+                <h2 class="anmeldelser-h2">Følger feedback</h2>
+            </div>
+
+            <div class="col-xs-12 readrating visible-xs noPadding">
+                <h2 class="anmeldelser-h2">Følger feedback</h2>
+                <div class="feedback-rating-all-box" style="margin-bottom: 0">
                     <div class="feedback-rating-all-box-item">
                         <h2 class="text-center" style="margin-top: 0; margin-bottom: 20px">Følger rating</h2>
                         <div class="show-rating-box-show">
@@ -174,15 +210,121 @@
                     </div>
                 </div>
 
-                <div class="feedback-rating-all-box">
-                    <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                        <h2 class="text-center" style="margin-top: 0; margin-bottom: 20px; font-size: 26px">Giv din mening tilkende </h2>
-                        <p style="font-size: 14px">Er du fast følger af influenceren eller oplever du vedkommendes indhold jævnligt er du meget velkommen til at give din feedback</p>
-                        <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3; margin-top: 20px"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
-                    </div>
-                </div>
+                <hr />
 
             </div>
+
+            <div class="col-md-12 col-xs-12 noPadding">
+                <div class="col-md-7 col-sm-6 noPadding">
+                    @if (Model.ApplicationUser.Id != null)
+                    {
+                        @if (FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.Id).ToList().Count != 0)
+                        {
+                            @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.ApplicationUser.Id).OrderByDescending(x => x.FeedbackDateTime))
+                            {
+                                <div class="col-md-12 noPadding feedback-containerRead" style="padding-top: 10px;">
+                                    <div class="col-md-2 col-xs-12 col-lg-2 noPadding read-img-container">
+                                        <a asp-controller="Account" asp-action="Profile" asp-route-id="@v.ApplicationUserId">
+                                            <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-5 col-xs-12 col-lg-6 noPadding">
+                                        <p>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
+                                        <p style="color: #989898">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime) </p>
+                                        @if (!string.IsNullOrEmpty(v.FeedbackGood))
+                                        {
+                                            <h5><b>Hvad gør influenceren godt?</b></h5>
+                                            <p class="feedback-text" style="white-space: pre-line">@v.FeedbackGood</p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(v.FeedbackBetter))
+                                        {
+                                            <h5><b>Hvad kan influenceren gøre bedre?</b></h5>
+                                            <p class="feedback-text" style="white-space: pre-line">@v.FeedbackBetter</p>
+                                        }
+
+                                    </div>
+
+                                    <div class="col-md-5 col-xs-12 col-lg-4" style="margin-bottom: 5px;">
+                                        <div class="show-rating-box" style="margin-top: 5px;">
+                                            <div class="show-rating">
+                                                <div class="show-rating-front">
+                                                    @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
+                                                    {
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                    }
+                                                </div>
+                                                <div class="show-rating-back">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    @if (v.Answer != null)
+                                    {
+                                        <div class="col-md-12 col-xs-12" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 5px; padding-left: 0; padding-bottom:10px;">
+                                            <div class="col-md-2 noPadding read-img-container">
+                                                <img class="influ-read-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
+                                            </div>
+                                            <div class="col-md-6 col-xs-12 noPadding">
+                                                <p>@Model.ApplicationUser.Name</p>
+                                                <h5><b>Svar:</b></h5>
+                                                <p style="line-height: 150%; white-space: pre-line">@v.Answer</p>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <h4>Denne influencer har ikke modtaget noget feedback</h4>
+                        }
+
+                    }
+
+                </div>
+                <div class="col-md-5 col-sm-6 hidden-xs">
+                    <div class="feedback-rating-all-box">
+                        <div class="feedback-rating-all-box-item">
+                            <h2 class="text-center" style="margin-top: 0; margin-bottom: 20px">Følger rating</h2>
+                            <div class="show-rating-box-show">
+                                <div class="show-rating-show">
+                                    <div class="show-rating-front-show">
+                                        @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.Influenter.Id); i++)
+                                        {
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        }
+                                    </div>
+                                    <div class="show-rating-back-show">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 20px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
+                        </div>
+                    </div>
+
+                    <div class="feedback-rating-all-box">
+                        <div class="feedback-rating-all-box-item" style="padding: 20px;">
+                            <h2 class="text-center" style="margin-top: 0; margin-bottom: 20px; font-size: 26px">Giv din mening tilkende </h2>
+                            <p style="font-size: 14px">Er du fast følger af influenceren eller oplever du vedkommendes indhold jævnligt er du meget velkommen til at give din feedback</p>
+                            <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3; margin-top: 20px"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </div>*@

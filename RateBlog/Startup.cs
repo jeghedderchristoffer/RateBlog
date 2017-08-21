@@ -116,6 +116,8 @@ namespace RateBlog
 
             app.UseFacebookAuthentication(new FacebookOptions()
             {
+                //AppId = System.Environment.GetEnvironmentVariable("Authentication:Facebook:AppId"),
+                //AppSecret = System.Environment.GetEnvironmentVariable("Authentication:Facebook:AppSecret"),
                 AppId = Configuration["Authentication:Facebook:AppId"],
                 AppSecret = Configuration["Authentication:Facebook:AppSecret"],
                 SaveTokens = true,
@@ -138,8 +140,10 @@ namespace RateBlog
 
             app.UseGoogleAuthentication(new GoogleOptions()
             {
+                //ClientId = System.Environment.GetEnvironmentVariable("Authentication:Google:ClientId"),
+                //ClientSecret = System.Environment.GetEnvironmentVariable("Authentication:Google:ClientSecret"),
                 ClientId = Configuration["Authentication:Google:ClientId"],
-                ClientSecret = Configuration["Authentication:Google:ClientSecret"], 
+                ClientSecret = Configuration["Authentication:Google:ClientSecret"],
                 Scope =
                 {
                     "https://www.googleapis.com/auth/plus.login"

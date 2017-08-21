@@ -107,7 +107,9 @@ namespace RateBlog.Services
         /// </summary>
         /// <param name="id">User Id</param>
         /// <returns></returns>
-        IEnumerable<Feedback> GetLast3Feedback(string id);
+        IEnumerable<Feedback> GetUserLast3Feedback(string id);
+
+        IEnumerable<Feedback> GetInfluencerLast3Feedback(string id);
 
         /// <summary>
         /// Gets the total score for a influencer. 

@@ -4,59 +4,53 @@
 @inject RateBlog.Repository.IRepository<Platform> PlatformRepo
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s profil";
+    var isUserCreated = (Model.ApplicationUser.NormalizedEmail.StartsWith("USERINFLUENCER")) ? true : false; 
 }
 
-<div style="padding-bottom: 100px;">
+<div style="padding-bottom: 100px; min-height: 100vh; background-color: #fafafa">
     <div class="navbar-allaround"></div>
-    <div class="container">
-        @if (TempData["Success"] != null)
-        {
-            <div id="showSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                @TempData["Success"]
-            </div>
 
-            <script>
-                window.setTimeout(function () {
-                    $("#showSuc").fadeOut(1000);
-                }, 5000);
-            </script>
-        }
-
-        <div class="col-md-12">
-            <img class="profil-img margin-top center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
-            <div class="text-center">
-                <h2>@Model.ApplicationUser.Name</h2>
-                <h3>
-                    @if (PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.Id) != null)
-                    {
-                        @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.Id))
-                        {
-                            if (v.Equals(PlatformCategoryService.GetInfluencerCategoryNames(Model.ApplicationUser.Id).Last()))
-                            {
-                                @v
-                            }
-                            else
-                            {
-                                @v <span> | </span>
-                            }
-                        }
-                    }
-                    else
-                    {
-                        <span>Ukendte kategorier</span>
-                    }
-                </h3>
-
-                <hr />
-            </div>
+    @if (TempData["Success"] != null)
+    {
+        <div id="showSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Success"]
         </div>
-        <div class="col-md-12">
-            <div class="col-md-4">
-                @if (FeedbackService.HasFeedback(Model.Influenter.Id))
-                {
-                    <h3 class="text-center" style="margin-top: 0">Rating:</h3>
 
+        <script>
+            window.setTimeout(function () {
+                $("#showSuc").fadeOut(1000);
+            }, 5000);
+        </script>
+    }
+
+    <div class="container" style="padding-top: 40px;">
+        <div class="col-md-12 noPadding">
+            <div class="col-md-4 noPaddingLeft nopaddingmobile">
+                <div class="profile-box">
+                    <img class="profil-img center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
+                    <hr />
+                    <h3>@Model.Influenter.Alias</h3>
+                    @if (!isUserCreated)
+                    {
+                        <h5>@Model.Age år</h5>
+                        <h5>@Model.Gender</h5>
+                        
+
+                    }
+                    <br />
+                    <h3 style="font-family: 'Anton', sans-serif;">BIO</h3>
+                    <p style="word-break: break-word">@Model.ApplicationUser.ProfileText</p>
+
+                    <br />
+                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
+                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #53b80a;"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a>
+
+                </div>
+            </div>
+            <div class="col-md-8 noPaddingRight nopaddingmobile">
+                <div class="profile-box">
+                    <h3 class="text-center" style="margin-bottom: 20px;"><b>SAMLET SCORE</b></h3>
                     <div class="show-rating-box-show">
                         <div class="show-rating-show">
                             <div class="show-rating-front-show">
@@ -74,96 +68,116 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center" style="margin-top: 20px; margin-bottom: 20px; font-size: 18px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
+                    <p class="text-center" style="margin-top: 20px; margin-bottom: 20px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
+                </div>
 
-                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
-                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #53b80a;"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a>
-
-                }                
-                else
+                @if (PlatformCategoryService.GetInfluencerCategoryNames(Model.Influenter.Id) != null)
                 {
-                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
-                }
-            </div>
-
-            <hr class="hidden-md hidden-lg" />
-
-            <div class="col-md-4 profile-text">
-                @if (!string.IsNullOrEmpty(Model.ApplicationUser.ProfileText))
-                {
-                    <p style="white-space: pre-line">@Model.ApplicationUser.ProfileText</p>
-                    <hr />
-                }
-
-                <p>
-                    Køn:
-                    <span style="float:right">
-                        @Model.Gender
-                    </span>
-                </p>
-                <p>
-                    Aldersgruppe:
-                    <span style="float:right;">
-                        @Model.AgeGroup
-                    </span>
-                </p>
-            </div>
-
-
-
-            <hr class="hidden-md hidden-lg" />
-
-            <div class="col-md-4">
-                @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.ApplicationUser.Id) != null)
-                {
-
-                    @foreach (var v in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.ApplicationUser.Id))
-                    {
-                        <div class="social-box">
-                            @if (PlatformRepo.Get(v.PlatformId).Name == "Facebook")
+                    <div class="profile-box">
+                        <h3 class="text-center" style="margin-bottom: 20px;"><b>KATEGORIER</b></h3>
+                        <div class="profile-center-img">
+                            @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(Model.Influenter.Id))
                             {
-                                <a href="http://www.facebook.com/@v.Link" target="_blank" class="fa fa-profile fa-facebook fa-facebook-profile"></a>
-                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
-                            }
-                            else if (PlatformRepo.Get(v.PlatformId).Name == "YouTube")
-                            {
-                                <a href="http://www.youtube.com/user/@v.Link" target="_blank" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
-                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
-                            }
-                            else if (PlatformRepo.Get(v.PlatformId).Name == "SnapChat")
-                            {
-                                <a href="http://www.snapchat.com/add/@v.Link" target="_blank" class="fa fa-profile fa-snapchat-ghost fa-snapchat-ghost-profile"></a>
-                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
-                            }
-                            else if (PlatformRepo.Get(v.PlatformId).Name == "Instagram")
-                            {
-                                <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-profile fa-instagram fa-instagram-profile"></a>
-                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
-                            }
-                            else if (PlatformRepo.Get(v.PlatformId).Name == "Twitter")
-                            {
-                                <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-profile fa-twitter fa-twitter-profile"></a>
-                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
-                            }
-                            else if (PlatformRepo.Get(v.PlatformId).Name == "Twitch")
-                            {
-                                <a href="http://www.twitch.tv/@v.Link" target="_blank" class="fa fa-profile fa-twitch fa-twitch-profile"></a>
-                                <span>@PlatformRepo.Get(v.PlatformId).Name</span>
-                            }
-                            else if (PlatformRepo.Get(v.PlatformId).Name == "Website")
-                            {
-                                <a href="http://@v.Link" target="_blank" class="fa fa-profile fa-globe fa-globe-profile"></a>
-                                <span>Hjemmeside</span>
+                                if (v == "Gaming")
+                                {
+                                    <div class="tooltips">
+                                        <img src="~/images/Kategori/gaming.png" />
+                                        <span class="tooltiptext">Gaming</span>
+                                    </div>
+                                }
+                                else if (v == "Beauty")
+                                {
+                                    <div class="tooltips">
+                                        <img src="~/images/Kategori/beauty.png" />
+                                        <span class="tooltiptext">Beauty</span>
+                                    </div>
+                                }
+                                else if (v == "Interests")
+                                {
+                                    <div class="tooltips">
+                                        <img src="~/images/Kategori/interests.png" />
+                                        <span class="tooltiptext">Interests</span>
+                                    </div>
+                                }
+                                else if (v == "Entertainment")
+                                {
+                                    <div class="tooltips">
+                                        <img src="~/images/Kategori/entertainment.png" />
+                                        <span class="tooltiptext">Entertainment</span>
+                                    </div>
+                                }
+                                else if (v == "Fashion")
+                                {
+                                    <div class="tooltips">
+                                        <img src="~/images/Kategori/fashion.png" />
+                                        <span class="tooltiptext">Fashion</span>
+                                    </div>
+                                }
+                                else if (v == "Personal")
+                                {
+                                    <div class="tooltips">
+                                        <img src="~/images/Kategori/personal.png" />
+                                        <span class="tooltiptext">Personal</span>
+                                    </div>
+                                }
+                                else if (v == "Lifestyle")
+                                {
+                                    <div class="tooltips">
+                                        <img src="~/images/Kategori/lifestyle.png" />
+                                        <span class="tooltiptext">Lifestyle</span>
+                                    </div>
+                                }
                             }
                         </div>
-                    }
-                }
-                else
-                {
-                    <h4>Denne influencer har ikke tilknyttet nogle sociale medier</h4>
+                    </div>
                 }
 
+                @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.Influenter.Id) != null)
+                {
+                    <div class="profile-box" style="padding-top: 20px; padding-bottom: 20px">
+                        <h3 class="text-center" style="margin-bottom: 20px;"><b>SOCIALE MEDIER</b></h3>
+                        <div class="social-box" style="text-align: center">
+
+                            @foreach (var v in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.Influenter.Id))
+                            {
+                                @if (PlatformRepo.Get(v.PlatformId).Name == "Facebook")
+                                {
+                                    <a href="@v.Link" target="_blank" class="fa fa-profile fa-facebook fa-facebook-profile"></a>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "YouTube")
+                                {
+                                    <a href="@v.Link" target="_blank" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "SnapChat")
+                                {
+                                    <a href="http://www.snapchat.com/add/@v.Link" target="_blank" class="fa fa-profile fa-snapchat-ghost fa-snapchat-ghost-profile"></a>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Instagram")
+                                {
+                                    <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-profile fa-instagram fa-instagram-profile"></a>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Twitter")
+                                {
+                                    <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-profile fa-twitter fa-twitter-profile"></a>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Twitch")
+                                {
+                                    <a href="@v.Link" target="_blank" class="fa fa-profile fa-twitch fa-twitch-profile"></a>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Website")
+                                {
+                                    <a href="http://@v.Link" target="_blank" class="fa fa-profile fa-globe fa-globe-profile"></a>
+                                }
+
+                            }
+                        </div>
+                    </div>
+                }
             </div>
+            
         </div>
     </div>
+
+
+
 </div>

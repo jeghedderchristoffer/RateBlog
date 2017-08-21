@@ -173,7 +173,7 @@ namespace RateBlog.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Year = model.Year.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, LastLogin = DateTime.Now };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, BirthDay = model.Birthday.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, LastLogin = DateTime.Now, TermsAndConditions = DateTime.Now, NewsLetter = model.NewLetter };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -181,7 +181,7 @@ namespace RateBlog.Controllers
                     // Send velkomst mail
                     await _emailSender.SendWelcomeMailAsync(user.Name, user.Email); 
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Edit", "Manage");
                 }
                 ModelState.AddModelError("", "Der findes allerede en bruger med denne email");
             }
@@ -282,7 +282,7 @@ namespace RateBlog.Controllers
                     return View("ExternalLoginFailure");
                 }
                
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, Year = model.Year.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, LastLogin = DateTime.Now };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, BirthDay = model.Birthday.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, LastLogin = DateTime.Now, NewsLetter = model.NewLetter, TermsAndConditions = DateTime.Now };
 
                 if (info.LoginProvider == "Facebook")
                 {
@@ -311,7 +311,7 @@ namespace RateBlog.Controllers
                         await _userManager.UpdateAsync(user);
 
                         _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
-                        return RedirectToLocal(returnUrl);
+                        return RedirectToAction("Edit", "Manage");
                     }
                 }
                 AddErrors(result);
@@ -549,39 +549,19 @@ namespace RateBlog.Controllers
         {
             var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
 
-            var gender = (user.Gender == "male") ? "Mand" : "Dame";
-            var ageGroup = "";
+            var gender = (user.Gender == "male") ? "Mand" : "Kvinde";
 
-            if (user.Year > 2004)
-            {
-                ageGroup = "Under 13 år";
-            }
-            else if (user.Year > 1997)
-            {
-                ageGroup = "13-19 år";
-            }
-            else if (user.Year > 1990)
-            {
-                ageGroup = "20-26 år";
-            }
-            else if (user.Year > 1983)
-            {
-                ageGroup = "27-33 år";
-            }
-            else if (user.Year > 1977)
-            {
-                ageGroup = "34-39 år";
-            }
-            else
-            {
-                ageGroup = "Over 40 år";
-            }
+            var today = DateTime.Today;
+            // Calculate the age.
+            var age = today.Year - user.BirthDay.Year;
+            // Go back to the year the person was born in case of a leap year
+            if (user.BirthDay > today.AddYears(-age)) age--;
 
             var model = new ProfileViewModel()
             {
                 ApplicationUser = user,
-                AgeGroup = ageGroup,
-                Gender = gender
+                Gender = gender,
+                Age = age
             };
 
             return View(model); 

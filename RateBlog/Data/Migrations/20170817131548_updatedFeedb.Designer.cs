@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170817131548_updatedFeedb")]
+    partial class updatedFeedb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -130,8 +131,6 @@ namespace RateBlog.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<DateTime>("BirthDay");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -151,8 +150,6 @@ namespace RateBlog.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
                     b.Property<string>("Name");
-
-                    b.Property<bool>("NewsLetter");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -174,12 +171,12 @@ namespace RateBlog.Migrations
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<DateTime>("TermsAndConditions");
-
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
+
+                    b.Property<int>("Year");
 
                     b.HasKey("Id");
 

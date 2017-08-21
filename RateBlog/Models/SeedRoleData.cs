@@ -25,14 +25,8 @@ namespace RateBlog.Models
                 context.Roles.AddRange(
                     new IdentityRole
                     {
-                        Name ="Ekspert"
-                    },
-                    new IdentityRole
-                    {
                         Name="Admin"
                     }
-                     
-
                 );
                 context.SaveChanges();
 

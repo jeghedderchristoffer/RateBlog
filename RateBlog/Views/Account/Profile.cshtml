@@ -5,88 +5,28 @@
     ViewData["Title"] = Model.ApplicationUser.Name + "'s profil";
 }
 
-<div style="padding-bottom: 100px;">
+<div style="padding-bottom: 100px; min-height: 100vh; background: #fafafa">
 
     <div class="navbar-allaround"></div>
 
-    <div class="container">
-        <div class="col-md-12 margin-top">
-            <img class="profil-img center-block" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id })" />
-            <div class="text-center">
-                <h2 class="responsive-visProfil-h2">@Model.ApplicationUser.Name</h2>
-                <h3>Følger</h3>
+    <div class="container" style="padding-top: 40px;">
+
+        <div class="col-md-offset-4 col-md-4 nopaddingmobile">
+            <div class="profile-box">
+                <img class="profil-img center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
                 <hr />
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="col-md-4 col-sm-4">
-
-                @foreach (var v in FeedbackService.GetLast3Feedback(Model.ApplicationUser.Id))
-                {
-                    <div class="feedback-container">
-                        <div class="col-md-3">
-                            <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@v.InfluenterId">
-                                <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.InfluenterId })" />
-                            </a>
-                        </div>
-                        <div class="col-md-9 noPadding">
-                            <p class="text-center" style="padding-top: 2px">@InfluencerRepo.Get(v.InfluenterId).Alias</p>
-
-                            <div class="show-rating-box" style="margin: 0; text-align: center; width: 100%">
-                                <div class="show-rating">
-                                    <div class="show-rating-front">
-                                        @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
-                                        {
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        }
-                                    </div>
-                                    <div class="show-rating-back">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                }
-            </div>
-
-            <div class="col-md-4 col-sm-4 profile-text">
-                <hr class="visible-xs" />
+                <h3>@Model.ApplicationUser.Name</h3>
+                <h5>@Model.Age år</h5>
+                <h5>@Model.Gender</h5>
                 @if (!string.IsNullOrEmpty(Model.ApplicationUser.ProfileText))
                 {
-                    <p style="white-space: pre-line">@Model.ApplicationUser.ProfileText </p>
-                    <hr />
-                }
-
-                <p>
-                    Køn:
-                    <span style="float:right">
-                        @Model.Gender
-                    </span>
-                </p>
-                <p>
-                    Aldersgruppe:
-                    <span style="float:right;">
-                        @Model.AgeGroup
-                    </span>
-                </p>
-
+                    <br />
+                    <h3 style="font-family: 'Anton', sans-serif;">BIO</h3>
+                    <p style="word-break: break-word">@Model.ApplicationUser.ProfileText</p>
+                }               
             </div>
 
-            <div class="col-md-4 col-sm-4">
-                <hr class="visible-xs" />
-                <div class="center-block">
-                    <div class="icon-box">
-                        <span class="fa fa-video fa-star fa-star-video" style="width: 40px; font-size: 15px !important;"></span>
-                        <span class="margin-left" style="font-size: 18px">@FeedbackService.GetUserFeedbackCount(Model.ApplicationUser.Id) Ratings</span>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+    
 </div>

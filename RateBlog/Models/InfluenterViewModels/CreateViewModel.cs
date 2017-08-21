@@ -9,8 +9,6 @@ namespace RateBlog.Models.InfluenterViewModels
 {
     public class CreateViewModel
     {
-        public string Name { get; set; }
-
         public string FacebookLink { get; set; }
         public string InstagramLink { get; set; }
         public string SnapchatLink { get; set; }
@@ -24,5 +22,7 @@ namespace RateBlog.Models.InfluenterViewModels
         public List<InfluenterKategoriViewModel> IKList { get; set; }
 
         public Influencer Influenter { get; set; }
+
+        public string ProfileText { get; set; } 
     }
 }

@@ -5,9 +5,8 @@
 @{
     ViewData["Title"] = "Feedback til " + Model.Influencer.Alias;
 }
- 
-<div style="min-height: 100.1vh">
 
+<div style="min-height: 100.1vh; padding-bottom: 40vh; background: #fafafa;">
 
     <div class="navbar-allaround"></div>
 
@@ -25,7 +24,7 @@
         </script>
     }
 
-    <div class="navbar-addon">
+    <div class="navbar-addon" style="background: #fff">
         <div class="container">
             <div class="col-md-12 col-xs-12 noPadding">
                 <div class="col-md-2 col-xs-2 noPadding addon-box">
@@ -54,211 +53,206 @@
         </div>
     </div>
 
+    <div class="container" style="padding-top: 40px;" id="fbContainer">
+        <div class="col-md-12 influencer-give noPadding">
+            <form asp-controller="Influencer" asp-action="Give" method="post">
 
-    <div class="container" id="fbContainer">
+                @Html.HiddenFor(x => x.Influencer.Id)
+                @Html.HiddenFor(x => x.Follower.Id)
+                @Html.HiddenFor(x => x.Influencer.Alias)
+                <div class="col-md-offset-2 col-md-8">
+                    <div class="profile-box influencer-give-social give-feedback-box" style="margin-bottom: 0 !important;">
+                        <h3>Hvilke sociale medier baserer du din feedback på?</h3>
 
-        <form asp-controller="Influencer" asp-action="Give" method="post">
-            @Html.HiddenFor(x => x.Influencer.Id) 
-            @Html.HiddenFor(x => x.Follower.Id)
-            @Html.HiddenFor(x => x.Influencer.Alias)
-            <h2 class="give-feedback-title">Giv din mening tilkende og gør en forskel! </h2>
-            <div class="col-md-12 col-xs-12 give-feedback-container" id="noPaddingMobile">
+                        <div style="text-align: center; width: 100%;" id="basedOnIcons">
+                            <div class="influencer-give-social Facebook">
+                                <input id="facebook" type="checkbox" asp-for="@Model.BasedOnFacebook" />
+                                <label for="facebook"></label>
+                            </div>
+                            <div class="influencer-give-social Youtube">
+                                <input id="youtube" type="checkbox" asp-for="@Model.BasedOnYoutube" />
+                                <label for="youtube"></label>
+                            </div>
+                            <div class="influencer-give-social Instagram">
+                                <input id="instagram" type="checkbox" asp-for="@Model.BasedOnInstagram" />
+                                <label for="instagram"></label>
+                            </div>
+                            <div class="influencer-give-social Snapchat">
+                                <input id="snapchat" type="checkbox" asp-for="@Model.BasedOnSnapchat" />
+                                <label for="snapchat"></label>
+                            </div>
+                            <div class="influencer-give-social Twitter">
+                                <input id="twitter" type="checkbox" asp-for="@Model.BasedOnTwitter" />
+                                <label for="twitter"></label>
+                            </div>
+                            <div class="influencer-give-social Twitch">
+                                <input id="twitch" type="checkbox" asp-for="@Model.BasedOnTwitch" />
+                                <label for="twitch"></label>
+                            </div>
 
-                <div class="col-md-12 col-xs-12 give-feedback-box" style="margin-top: 50px" id="basedOn">
-                    <h3>1. Hvilke platforme baserer du din feedback på?</h3>
+                            <div class="influencer-give-social Website">
+                                <input id="website" type="checkbox" asp-for="@Model.BasedOnWebsite" />
+                                <label for="website"></label>
+                            </div>
+                        </div>
 
-                    <div id="basedOnIcons" style="display: inline-block">
-                        <div class="basedOn facebook">
-                            <input class="feedbackCheck" id="facebook" type="checkbox" asp-for="@Model.BasedOnFacebook" />
-                            <label for="facebook"></label>
+
+                        <a id="basedOnBtn" class="done-button adisabled center-block">Videre</a>
+                    </div>
+
+
+                    <div class="profile-box give-feedback-box" id="troværdighed" style="display: none">
+                        <h3>Troværdighed</h3>
+                        <h4>Er influenceren pålidelig og stoler du på det vedkommende siger?</h4>
+                        <div class="center-block">
+                            <fieldset class="rating" id="troværdighedBtn">
+                                <input type="radio" id="field1_star1" name="troværdighed" value="1" asp-for="@Model.Troværdighed" /><label class="full" for="field1_star1"></label>
+                                <input type="radio" id="field1_star2" name="troværdighed" value="2" asp-for="@Model.Troværdighed" /><label class="full" for="field1_star2"></label>
+                                <input type="radio" id="field1_star3" name="troværdighed" value="3" asp-for="@Model.Troværdighed" /><label class="full" for="field1_star3"></label>
+                                <input type="radio" id="field1_star4" name="troværdighed" value="4" asp-for="@Model.Troværdighed" /><label class="full" for="field1_star4"></label>
+                                <input type="radio" id="field1_star5" name="troværdighed" value="5" asp-for="@Model.Troværdighed" /><label class="full" for="field1_star5"></label>
+                            </fieldset>
                         </div>
-                        <div class="basedOn instagram">
-                            <input class="feedbackCheck" id="instagram" type="checkbox" asp-for="@Model.BasedOnInstagram" />
-                            <label for="instagram"></label>
-                        </div>
-                        <div class="basedOn youtube">
-                            <input class="feedbackCheck" id="youtube" type="checkbox" asp-for="@Model.BasedOnYoutube" />
-                            <label for="youtube"></label>
-                        </div>
-                        <div class="basedOn twitter">
-                            <input class="feedbackCheck" id="twitter" type="checkbox" asp-for="@Model.BasedOnTwitter" />
-                            <label for="twitter"></label>
-                        </div>
-                        <div class="basedOn twitch">
-                            <input class="feedbackCheck" id="twitch" type="checkbox" asp-for="@Model.BasedOnTwitch" />
-                            <label for="twitch"></label>
-                        </div>
-                        <div class="basedOn snapchat">
-                            <input class="feedbackCheck" id="snapchat" type="checkbox" asp-for="@Model.BasedOnSnapchat" />
-                            <label for="snapchat"></label>
-                        </div>
-                        <div class="basedOn website">
-                            <input class="feedbackCheck" id="website" type="checkbox" asp-for="@Model.BasedOnWebsite" />
-                            <label for="website"></label>
+
+                    </div>
+
+                    <div class="profile-box give-feedback-box" id="opførsel" style="display: none;">
+                        <h3>Opførsel</h3>
+                        <h4>Er influenceren en god rollemodel gennem sprogbrug, adfærd og moral?</h4>
+                        <div class="center-block">
+                            <fieldset class="rating" id="opførselBtn">
+                                <input type="radio" id="field2_star1" name="opførsel" value="1" asp-for="@Model.Opførsel" /><label class="full" for="field2_star1"></label>
+                                <input type="radio" id="field2_star2" name="opførsel" value="2" asp-for="@Model.Opførsel" /><label class="full" for="field2_star2"></label>
+                                <input type="radio" id="field2_star3" name="opførsel" value="3" asp-for="@Model.Opførsel" /><label class="full" for="field2_star3"></label>
+                                <input type="radio" id="field2_star4" name="opførsel" value="4" asp-for="@Model.Opførsel" /><label class="full" for="field2_star4"></label>
+                                <input type="radio" id="field2_star5" name="opførsel" value="5" asp-for="@Model.Opførsel" /><label class="full" for="field2_star5"></label>
+                            </fieldset>
                         </div>
                     </div>
-                    <br />
-                    <a id="basedOnBtn" class="done-button adisabled">Færdig</a>
-                </div>
 
-                <div class="col-md-12 col-xs-12 give-feedback-box" id="troværdighed" style="display: none">
-                    <h3>2. Troværdighed</h3>
-                    <h4>Er influenceren pålidelig og stoler du på det vedkommende siger?</h4>
+                    <div class="profile-box give-feedback-box" id="kvalitet" style="display: none;">
+                        <h3>Kvalitet</h3>
+                        <h4>Er influencerens indhold originalt og gennemarbejdet?</h4>
+                        <div class="center-block">
+                            <fieldset class="rating" id="kvalitetBtn">
+                                <input type="radio" id="field3_star1" name="kvalitet" value="1" asp-for="@Model.Kvalitet" /><label class="full" for="field3_star1"></label>
+                                <input type="radio" id="field3_star2" name="kvalitet" value="2" asp-for="@Model.Kvalitet" /><label class="full" for="field3_star2"></label>
+                                <input type="radio" id="field3_star3" name="kvalitet" value="3" asp-for="@Model.Kvalitet" /><label class="full" for="field3_star3"></label>
+                                <input type="radio" id="field3_star4" name="kvalitet" value="4" asp-for="@Model.Kvalitet" /><label class="full" for="field3_star4"></label>
+                                <input type="radio" id="field3_star5" name="kvalitet" value="5" asp-for="@Model.Kvalitet" /><label class="full" for="field3_star5"></label>
+                            </fieldset>
+                        </div>
+                    </div>
 
-                    <fieldset class="rating center-block" id="troværdighedBtn">
-                        <input type="radio" id="field2_star5" name="troværdighed" value="5" asp-for="@Model.Troværdighed" /><label class="full" for="field2_star5"></label>
+                    <div class="profile-box give-feedback-box" id="interaktion" style="display: none;">
+                        <h3>Interaktion</h3>
+                        <h4>Er influenceren god til at lytte til sine følgere?</h4>
+                        <div class="center-block">
+                            <fieldset class="rating" id="interaktionBtn">
+                                <input type="radio" id="field4_star1" name="interaktion" value="1" asp-for="@Model.Interaktion" /><label class="full" for="field4_star1"></label>
+                                <input type="radio" id="field4_star2" name="interaktion" value="2" asp-for="@Model.Interaktion" /><label class="full" for="field4_star2"></label>
+                                <input type="radio" id="field4_star3" name="interaktion" value="3" asp-for="@Model.Interaktion" /><label class="full" for="field4_star3"></label>
+                                <input type="radio" id="field4_star4" name="interaktion" value="4" asp-for="@Model.Interaktion" /><label class="full" for="field4_star4"></label>
+                                <input type="radio" id="field4_star5" name="interaktion" value="5" asp-for="@Model.Interaktion" /><label class="full" for="field4_star5"></label>
+                            </fieldset>
+                        </div>
+                    </div>
 
-                        <input type="radio" id="field2_star4" name="troværdighed" value="4" asp-for="@Model.Troværdighed" /><label class="full" for="field2_star4"></label>
-
-                        <input type="radio" id="field2_star3" name="troværdighed" value="3" asp-for="@Model.Troværdighed" /><label class="full" for="field2_star3"></label>
-
-                        <input type="radio" id="field2_star2" name="troværdighed" value="2" asp-for="@Model.Troværdighed" /><label class="full" for="field2_star2"></label>
-
-                        <input type="radio" id="field2_star1" name="troværdighed" value="1" asp-for="@Model.Troværdighed" /><label class="full" for="field2_star1" style="padding-left: 1px"></label>
-                    </fieldset>
-                </div>
-
-                <div class="col-md-12 col-xs-12 give-feedback-box" id="opførsel" style="display: none">
-                    <h3>3. Opførsel</h3>
-                    <h4>Er influenceren en god rollemodel gennem sprogbrug, adfærd og moral?</h4>
-
-                    <fieldset class="rating center-block" id="opførselBtn">
-                        <input type="radio" id="field3_star5" name="opførsel" value="5" asp-for="@Model.Opførsel" /><label class="full" for="field3_star5"></label>
-
-                        <input type="radio" id="field3_star4" name="opførsel" value="4" asp-for="@Model.Opførsel" /><label class="full" for="field3_star4"></label>
-
-                        <input type="radio" id="field3_star3" name="opførsel" value="3" asp-for="@Model.Opførsel" /><label class="full" for="field3_star3"></label>
-
-                        <input type="radio" id="field3_star2" name="opførsel" value="2" asp-for="@Model.Opførsel" /><label class="full" for="field3_star2"></label>
-
-                        <input type="radio" id="field3_star1" name="opførsel" value="1" asp-for="@Model.Opførsel" /><label class="full" for="field3_star1" style="padding-left: 1px"></label>
-
-                    </fieldset>
-                </div>
-
-                <div class="col-md-12 col-xs-12 give-feedback-box" id="kvalitet" style="display: none">
-                    <h3>4. Kvalitet</h3>
-                    <h4>Er influencerens indhold originalt og gennemarbejdet?</h4>
-
-                    <fieldset class="rating center-block" id="kvalitetBtn">
-                        <input type="radio" id="field1_star5" name="kvalitet" value="5" asp-for="@Model.Kvalitet" /><label class="full" for="field1_star5"></label>
-
-                        <input type="radio" id="field1_star4" name="kvalitet" value="4" asp-for="@Model.Kvalitet" /><label class="full" for="field1_star4"></label>
-
-                        <input type="radio" id="field1_star3" name="kvalitet" value="3" asp-for="@Model.Kvalitet" /><label class="full" for="field1_star3"></label>
-
-                        <input type="radio" id="field1_star2" name="kvalitet" value="2" asp-for="@Model.Kvalitet" /><label class="full" for="field1_star2"></label>
-
-                        <input type="radio" id="field1_star1" name="kvalitet" value="1" asp-for="@Model.Kvalitet" /><label class="full" for="field1_star1" style="padding-left: 1px"></label>
-
-                    </fieldset>
-                </div>
-
-                <div class="col-md-12 col-xs-12 give-feedback-box" id="interaktion" style="display: none">
-                    <h3>5. Interaktion</h3>
-                    <h4>Er influenceren engageret i sine følgere?</h4>
-
-                    <fieldset class="rating center-block" id="interaktionBtn">
-                        <input type="radio" id="field4_star5" name="interaktion" value="5" asp-for="@Model.Interaktion" /><label class="full" for="field4_star5"></label>
-
-                        <input type="radio" id="field4_star4" name="interaktion" value="4" asp-for="@Model.Interaktion" /><label class="full" for="field4_star4"></label>
-
-                        <input type="radio" id="field4_star3" name="interaktion" value="3" asp-for="@Model.Interaktion" /><label class="full" for="field4_star3"></label>
-
-                        <input type="radio" id="field4_star2" name="interaktion" value="2" asp-for="@Model.Interaktion" /><label class="full" for="field4_star2"></label>
-
-                        <input type="radio" id="field4_star1" name="interaktion" value="1" asp-for="@Model.Interaktion" /><label class="full" for="field4_star1" style="padding-left: 1px"></label>
-
-                    </fieldset>
-                </div>
-
-
-                <div id="feedbackText">
-                    <div class="col-md-12 col-xs-12 give-feedback-box" style="display: none" id="feedbackGodt">
-                        <h3>6. Hvad gør @Model.Influencer.Alias godt?</h3>
-                        <h4>Vær gerne specifik og kom med eksempler</h4>
-                        <div class="textarea-container">
+                    <div class="profile-box give-feedback-box" id="feedbackGodt" style="display: none; margin-bottom: 100px !important">
+                        <h3>Hvad gør @Model.Influencer.Alias godt?</h3>
+                        <h4 style="margin-bottom: 30px;">
+                            Vær gerne specifik og kom med eksempler
+                        </h4>
+                        <div class="textarea-container nopaddingmobile">
                             <textarea asp-for="@Model.FeedbackGood" id="feedbackGodtText"></textarea>
-                            <a id="feedbackGodtBtn">Færdig</a>
+
+                        </div>
+                        <a id="feedbackGodtBtn" class="done-button adisabled center-block">Videre</a>
+                    </div>
+
+                    <div class="profile-box give-feedback-box" id="feedbackBedre" style="display: none;">
+                        <h3>Hvad kan @Model.Influencer.Alias gøre bedre?</h3>
+                        <h4 style="margin-bottom: 30px;">Vær specifik og referer til adfærd, som det er muligt at ændre</h4>
+                        <div class="textarea-container nopaddingmobile">
+                            <textarea asp-for="@Model.FeedbackBetter" id="feedbackGodtText"></textarea>
+                        </div>
+                        <a id="feedbackBedreBtn" class="done-button adisabled center-block">Videre</a>
+                    </div>
+
+                    <div class="profile-box give-feedback-box" id="anbefaling" style="display: none;">
+                        <h3 style="margin-bottom: 50px;">Hvor stor er sandsynligheden for, at du vil anbefale @Model.Influencer.Alias til en ven?</h3>
+                        <h5 style="float: left">Ikke sansynligt</h5>
+                        <h5 style="float: right">Meget sansynligt</h5>
+                        <div style="display: inline-block; margin-top: 10px; width: 100%" id="anbefalingBtn">
+
+                            <div class="anbefaling">
+                                <input type="radio" name="anbefaling" id="anbefaling1" value="1" asp-for="@Model.Anbefaling" />
+                                <label for="anbefaling1" number="1"></label>
+                            </div>
+                            <div class="anbefaling">
+                                <input type="radio" name="anbefaling" id="anbefaling2" value="2" asp-for="@Model.Anbefaling" />
+                                <label for="anbefaling2" number="2"></label>
+                            </div>
+                            <div class="anbefaling">
+                                <input type="radio" name="anbefaling" id="anbefaling3" value="3" asp-for="@Model.Anbefaling" />
+                                <label for="anbefaling3" number="3"></label>
+                            </div>
+                            <div class="anbefaling">
+                                <input type="radio" name="anbefaling" id="anbefaling4" value="4" asp-for="@Model.Anbefaling" />
+                                <label for="anbefaling4" number="4"></label>
+                            </div>
+                            <div class="anbefaling">
+                                <input type="radio" name="anbefaling" id="anbefaling5" value="5" asp-for="@Model.Anbefaling" />
+                                <label for="anbefaling5" number="5"></label>
+                            </div>
+                            <div class="anbefaling">
+                                <input type="radio" name="anbefaling" id="anbefaling6" value="6" asp-for="@Model.Anbefaling" />
+                                <label for="anbefaling6" number="6"></label>
+                            </div>
+                            <div class="anbefaling">
+                                <input type="radio" name="anbefaling" id="anbefaling7" value="7" asp-for="@Model.Anbefaling" />
+                                <label for="anbefaling7" number="7"></label>
+                            </div>
+                            <div class="anbefaling">
+                                <input type="radio" name="anbefaling" id="anbefaling8" value="8" asp-for="@Model.Anbefaling" />
+                                <label for="anbefaling8" number="8"></label>
+                            </div>
+                            <div class="anbefaling">
+                                <input type="radio" name="anbefaling" id="anbefaling9" value="9" asp-for="@Model.Anbefaling" />
+                                <label for="anbefaling9" number="9"></label>
+                            </div>
+                            <div class="anbefaling">
+                                <input type="radio" name="anbefaling" id="anbefaling10" value="10" asp-for="@Model.Anbefaling" />
+                                <label for="anbefaling10" number="10"></label>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-md-12 col-xs-12 give-feedback-box" style="display: none" id="feedbackBedre">
-                        <h3>7. Hvad kan @Model.Influencer.Alias gøre bedre?</h3>
-                        <h4>Vær specifik og referer til adfærd, som det er muligt at ændre</h4>
-                        <div class="textarea-container">
-                            <textarea asp-for="@Model.FeedbackBetter" id="feedbackBedreText"></textarea>
-                            <a id="feedbackBedreBtn">Færdig</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12 col-xs-12 give-feedback-box" id="anbefaling" style="display: none">
-
-                    <h3 style="margin-bottom: 30px;">6. Hvor stor er sandsynligheden for, at du vil anbefale @Model.Influencer.Alias til en ven?</h3>
-                    <h4 class="pull-left">Ikke sandsynlig</h4><h4 class="pull-right" style="padding-right: 25px;" id="sansynligt">Meget sandsynlig</h4>
-
-                    <div style="display: inline-block; margin-top: 10px; width: 100%" id="anbefalingBtn">
-
-                        <div class="anbefaling">
-                            <input type="radio" name="anbefaling" id="anbefaling1" value="1" asp-for="@Model.Anbefaling" />
-                            <label for="anbefaling1" number="1"></label>
-                        </div>
-                        <div class="anbefaling">
-                            <input type="radio" name="anbefaling" id="anbefaling2" value="2" asp-for="@Model.Anbefaling" />
-                            <label for="anbefaling2" number="2"></label>
-                        </div>
-                        <div class="anbefaling">
-                            <input type="radio" name="anbefaling" id="anbefaling3" value="3" asp-for="@Model.Anbefaling" />
-                            <label for="anbefaling3" number="3"></label>
-                        </div>
-                        <div class="anbefaling">
-                            <input type="radio" name="anbefaling" id="anbefaling4" value="4" asp-for="@Model.Anbefaling" />
-                            <label for="anbefaling4" number="4"></label>
-                        </div>
-                        <div class="anbefaling">
-                            <input type="radio" name="anbefaling" id="anbefaling5" value="5" asp-for="@Model.Anbefaling" />
-                            <label for="anbefaling5" number="5"></label>
-                        </div>
-                        <div class="anbefaling">
-                            <input type="radio" name="anbefaling" id="anbefaling6" value="6" asp-for="@Model.Anbefaling" />
-                            <label for="anbefaling6" number="6"></label>
-                        </div>
-                        <div class="anbefaling">
-                            <input type="radio" name="anbefaling" id="anbefaling7" value="7" asp-for="@Model.Anbefaling" />
-                            <label for="anbefaling7" number="7"></label>
-                        </div>
-                        <div class="anbefaling">
-                            <input type="radio" name="anbefaling" id="anbefaling8" value="8" asp-for="@Model.Anbefaling" />
-                            <label for="anbefaling8" number="8"></label>
-                        </div>
-                        <div class="anbefaling">
-                            <input type="radio" name="anbefaling" id="anbefaling9" value="9" asp-for="@Model.Anbefaling" />
-                            <label for="anbefaling9" number="9"></label>
-                        </div>
-                        <div class="anbefaling">
-                            <input type="radio" name="anbefaling" id="anbefaling10" value="10" asp-for="@Model.Anbefaling" />
-                            <label for="anbefaling10" number="10"></label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-offset-3 col-md-6 col-xs-12" id="sendSvar" style="display: none; padding-top: 50px;">
-                    <button type="submit" class="edit-button-feedback">SEND SVAR</button>
-                </div>
-
-            </div>
-        </form>
+                    <button type="submit" class="edit-button-feedback" disabled id="sendBtn" style="display: none; margin-bottom: 50px;">SEND SVAR</button>
+                </div>  
+            </form>
+        </div>
     </div>
-
-
 </div>
 
 @section Scripts{
     <script>
 
-        function scrollToBottom() {
-            $("html, body").animate({ scrollTop: $(document).height() + 20 }, 400);
+        function scrollToBottom(id) {
+            var el = $(id);
+            var elOffset = el.offset().top;
+            var elHeight = el.height();
+            var windowHeight = window.innerHeight;
+            var offset;
+
+            if (elHeight < windowHeight) {
+                offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
+            }
+            else {
+                offset = elOffset;
+            }
+            var speed = 600;
+            $('html, body').animate({ scrollTop: offset + 100 }, speed);
         }
 
         $("#basedOnIcons").one("click", function () {
@@ -267,270 +261,60 @@
         });
 
         $("#basedOnBtn").one("click", function () {
-            $("#fbContainer").css("padding-bottom", "40vh");
+
             $("#basedOnBtn").css("opacity", 0)
-            $("#troværdighed").slideDown(300);
-            scrollToBottom();
+            $("#troværdighed").slideDown(400);
+            scrollToBottom("#troværdighed");
         });
 
         $("#troværdighedBtn").one("click", function () {
-            $("#opførsel").slideDown(300);
-            scrollToBottom();
+            $("#opførsel").slideDown(400);
+            scrollToBottom("#opførsel");
         });
 
         $("#opførselBtn").one("click", function () {
-            $("#kvalitet").slideDown(300);
-            scrollToBottom();
+            $("#kvalitet").slideDown(400);
+            scrollToBottom("#kvalitet");
         });
 
         var kvalitetInput = $("#kvalitet input");
 
         $("#kvalitetBtn").one("click", function () {
-            $("#interaktion").slideDown(300);
-            scrollToBottom();
+            $("#interaktion").slideDown(400);
+            scrollToBottom("#interaktion");
         });
 
         $("#interaktionBtn").one("click", function () {
-            $("#feedbackGodt").slideDown(300);
-            scrollToBottom();
+            $("#feedbackGodt").slideDown(400);
+            scrollToBottom("#feedbackGodt");
         });
 
         $("#feedbackGodtText").one("keyup", function () {
-            $("#feedbackGodtBtn").slideToggle("down");
+            $("#feedbackGodtBtn").css("opacity", 1);
+            $("#feedbackGodtBtn").removeClass("adisabled");
         });
 
         $("#feedbackGodtBtn").one("click", function () {
-            $("#feedbackGodtBtn").hide();
-            $("#feedbackBedre").slideDown(300);
-            scrollToBottom();
+            $("#feedbackGodtBtn").css("opacity", 0);
+            $("#feedbackBedre").slideDown(400);
+            scrollToBottom("#feedbackBedre");
         });
 
         $("#feedbackBedre").one("keyup", function () {
-            $("#feedbackBedreBtn").slideToggle("down");
+            $("#feedbackBedreBtn").css("opacity", 1);
+            $("#feedbackBedreBtn").removeClass("adisabled");
         });
 
         $("#feedbackBedreBtn").one("click", function () {
-            $("#feedbackBedreBtn").hide();
-            $("#anbefaling").slideDown(300);
-            scrollToBottom();
+            $("#feedbackBedreBtn").css("opacity", 0);
+            $("#anbefaling").slideDown(400);
+            scrollToBottom("#anbefaling");
         });
 
         $("#anbefalingBtn").one("click", function () {
-            $("#sendSvar").slideDown();
-            scrollToBottom(300);
+            $("#sendBtn").fadeIn(400); 
+            $("#sendBtn").removeAttr("disabled", false);
         });
     </script>
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*<div class="bottom-container">
-
-        <div class="container">
-            <form asp-area="" asp-controller="Influencer" asp-action="Give" method="post">
-                @Html.HiddenFor(x => x.Influenter.Id)
-                @Html.HiddenFor(x => x.Influenter.Alias)
-
-                <div class="col-md-12 col-sm-12 rating-box" id="kvalitetBox">
-                    <div class="col-md-4 col-sm-4 col-xs-12">
-                        <h4>
-                            Kvalitet
-                            <a class="visible-xs pull-right" title="Kvalitet" data-content="Er influencerens indhold originalt og af høj kvalitet? " data-toggle="popover" data-trigger="hover" data-placement="bottom" style="line-height: 100% !important; padding-top: 10px">
-                                <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #089de3; font-size: 1.2em !important;"></i>
-                            </a>
-                        </h4>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12 noPadding">
-                        <fieldset class="rating center-block" id="kvalitetCheckBox">
-                            <input type="radio" id="field1_star5" name="kvalitet" value="5" /><label class="full" for="field1_star5"></label>
-
-                            <input type="radio" id="field1_star4" name="kvalitet" value="4" /><label class="full" for="field1_star4"></label>
-
-                            <input type="radio" id="field1_star3" name="kvalitet" value="3" /><label class="full" for="field1_star3"></label>
-
-                            <input type="radio" id="field1_star2" name="kvalitet" value="2" /><label class="full" for="field1_star2"></label>
-
-                            <input type="radio" id="field1_star1" name="kvalitet" value="1" /><label class="full" for="field1_star1"></label>
-
-                        </fieldset>
-
-                        <i class="fa fa-check fa-3x pull-right" id="kvalitetCheck" aria-hidden="true" style="display: none"></i>
-
-                    </div>
-                    <div class="col-md-2 col-sm-2 hidden-xs">
-                        <a style="padding-left: 5px" class="pull-right" title="Kvalitet" data-content="Er influencerens indhold originalt og af høj kvalitet? " data-toggle="popover" data-trigger="hover" data-placement="left">
-                            <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #089de3;"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-md-12 col-sm-12 rating-box" id="troværdighedBox">
-                    <div class="col-md-4 col-sm-4 col-xs-12">
-                        <h4>
-                            Troværdighed
-                            <a class="visible-xs pull-right" title="Troværdighed" data-content="Hvor meget stoler du på hvad influenceren siger?" data-toggle="popover" data-trigger="hover" data-placement="bottom" style="line-height: 100% !important; padding-top: 10px">
-                                <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #089de3; font-size: 1.2em !important;"></i>
-                            </a>
-                        </h4>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12 noPadding">
-                        <fieldset class="rating center-block" id="troværdighedCheckBox">
-                            <input type="radio" id="field2_star5" name="troværdighed" value="5" /><label class="full" for="field2_star5"></label>
-
-                            <input type="radio" id="field2_star4" name="troværdighed" value="4" /><label class="full" for="field2_star4"></label>
-
-                            <input type="radio" id="field2_star3" name="troværdighed" value="3" /><label class="full" for="field2_star3"></label>
-
-                            <input type="radio" id="field2_star2" name="troværdighed" value="2" /><label class="full" for="field2_star2"></label>
-
-                            <input type="radio" id="field2_star1" name="troværdighed" value="1" /><label class="full" for="field2_star1"></label>
-
-                        </fieldset>
-
-                        <i class="fa fa-check fa-3x pull-right" id="troværdighedCheck" aria-hidden="true" style="display: none"></i>
-
-                    </div>
-                    <div class="col-md-2 col-sm-2 hidden-xs">
-                        <a style="padding-left: 5px" class="pull-right" title="Troværdighed" data-content="Hvor meget stoler du på hvad influenceren siger?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                            <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #089de3;"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-md-12 col-sm-12 rating-box" id="opførselBox">
-                    <div class="col-md-4 col-sm-4 col-xs-12">
-                        <h4>
-                            Opførsel
-                            <a class="visible-xs pull-right" title="Opførsel" data-content="Hvordan er influencerens sprogbrug, opførsel og moral?" data-toggle="popover" data-trigger="hover" data-placement="bottom" style="line-height: 100% !important; padding-top: 10px">
-                                <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #089de3; font-size: 1.2em !important;"></i>
-                            </a>
-                        </h4>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12 noPadding">
-                        <fieldset class="rating center-block" id="opførselCheckBox">
-                            <input type="radio" id="field3_star5" name="opførsel" value="5" /><label class="full" for="field3_star5"></label>
-
-                            <input type="radio" id="field3_star4" name="opførsel" value="4" /><label class="full" for="field3_star4"></label>
-
-                            <input type="radio" id="field3_star3" name="opførsel" value="3" /><label class="full" for="field3_star3"></label>
-
-                            <input type="radio" id="field3_star2" name="opførsel" value="2" /><label class="full" for="field3_star2"></label>
-
-                            <input type="radio" id="field3_star1" name="opførsel" value="1" /><label class="full" for="field3_star1"></label>
-
-                        </fieldset>
-
-                        <i class="fa fa-check fa-3x pull-right" id="opførselCheck" aria-hidden="true" style="display: none"></i>
-
-                    </div>
-                    <div class="col-md-2 col-sm-2 hidden-xs">
-                        <a style="padding-left: 5px" class="pull-right" title="Opførsel" data-content="Hvordan er influencerens sprogbrug, opførsel og moral?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                            <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #089de3;"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-md-12 col-sm-12 rating-box" id="interaktionBox">
-                    <div class="col-md-4 col-sm-4 col-xs-12">
-                        <h4>
-                            Interaktion
-                            <a class="visible-xs pull-right" title="Interaktion" data-content="Er influenceren engageret i sine følgere samt god til at lytte og samarbejde med dem?" data-toggle="popover" data-trigger="hover" data-placement="bottom" style="line-height: 100% !important; padding-top: 10px">
-                                <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #089de3; font-size: 1.2em !important;"></i>
-                            </a>
-                        </h4>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12 noPadding">
-                        <fieldset class="rating center-block" id="interaktionCheckBox">
-                            <input type="radio" id="field4_star5" name="interaktion" value="5" /><label class="full" for="field4_star5"></label>
-
-                            <input type="radio" id="field4_star4" name="interaktion" value="4" /><label class="full" for="field4_star4"></label>
-
-                            <input type="radio" id="field4_star3" name="interaktion" value="3" /><label class="full" for="field4_star3"></label>
-
-                            <input type="radio" id="field4_star2" name="interaktion" value="2" /><label class="full" for="field4_star2"></label>
-
-                            <input type="radio" id="field4_star1" name="interaktion" value="1" /><label class="full" for="field4_star1"></label>
-
-                        </fieldset>
-
-                        <i class="fa fa-check fa-3x pull-right" id="interaktionCheck" aria-hidden="true" style="display: none"></i>
-
-                    </div>
-                    <div class="col-md-2 col-sm-2 hidden-xs">
-                        <a style="padding-left: 5px" class="pull-right" title="Interaktion" data-content="Er influenceren engageret i sine følgere samt god til at lytte og samarbejde med dem?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                            <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #089de3;"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-md-12 col-sm-12 rating-box" id="anbefaling">
-                    <div class="col-md-4 col-sm-4">
-                        <h4>
-                            Anbefaling
-                            <a class="visible-xs pull-right" title="Anbefaling" data-content="Vil du anbefale influenceren til en ven?" data-toggle="popover" data-trigger="hover" data-placement="bottom" style="line-height: 100% !important; padding-top: 10px">
-                                <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #089de3; font-size: 1.2em !important;"></i>
-                            </a>
-                        </h4>
-                    </div>
-                    <div class="col-md-6 col-sm-6 noPadding">
-                        <div class="rating-radio">
-                            <div class="radio-inline">
-                                <input id="question1" name="anbefaling" type="radio" class="with-font" value="true" />
-                                <label for="question1">Ja</label>
-                            </div>
-                            <div class="radio-inline">
-                                <input id="question2" name="anbefaling" type="radio" class="with-font" value="false" />
-                                <label for="question2">Nej</label>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-2 col-sm-2 hidden-xs">
-                        <a style="padding-left: 5px" class="pull-right" title="Anbefaling" data-content="Vil du anbefale influenceren til en ven?" data-toggle="popover" data-trigger="hover" data-placement="left">
-                            <i class="fa fa-question-circle fa-2x" aria-hidden="true" style="color: #089de3;"></i>
-                        </a>
-                    </div>
-
-                </div>
-
-                <div class="col-md-12 col-sm-12 rating-box" style="border-bottom: none; height: 100%" id="feedbackText">
-                    <div class="col-md-4 col-sm-4">
-                        <h4>Feedback</h4>
-                    </div>
-                    <div class="col-md-6 col-sm-6 noPadding">
-                        <textarea class="rating-input" asp-for="@Model.Review" rows="8" placeholder="Hvad kan du godt lide ved influenceren og dennes indhold, hvad kan gøres bedre og hvad baserer du din feedback på?"></textarea>
-                    </div>
-
-                </div>
-
-                <div class="col-md-offset-4 col-md-6 col-xs-12 noPadding">
-                    <input type="submit" style="margin-bottom: 20px" class="edit-button-feedback" value="Send" />
-                </div>
-
-            </form>
-
-        </div>
-    </div>*@

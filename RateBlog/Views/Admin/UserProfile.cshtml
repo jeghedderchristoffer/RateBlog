@@ -44,8 +44,8 @@
                         </tr>
 
                         <tr>
-                            <td>Årgang</td>
-                            <td>@Model.Year</td>
+                            <td>Fødselsdag</td>
+                            <td>@Model.BirthDay</td>
                         </tr>
                         <tr>
                             <td>Postnummer</td>
@@ -73,10 +73,12 @@
             </div>
         </form>
         <div class="col-md-2">
-            <a asp-controller="Admin" asp-action="SeFeedback" asp-route-id="@Model.Id" style="background:#53b80a;" class="admin-btn"><b>Rediger</b></a>
-            <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@Model.Id" style="background:#089de3;" class="admin-btn"><b>Feedback</b></a>
-            <a asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@Model.Id" style="background:#c9302c;" class="admin-btn"><b>Slet</b></a>
+            <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@Model.Id" style="background:#089de3;" class="admin-btn"><b>Rediger</b></a>                     
             <a asp-controller="Admin" asp-action="BanUser" asp-route-id="@Model.Id" style="background:#ec971f;" class="admin-btn"><b>Ban</b></a>
+            <form asp-controller="Admin" asp-action="DeleteUser" method="post">
+                @Html.HiddenFor(x => x.Id)
+                <button type="submit" style="background:#c9302c;" class="admin-btn"><b>Slet</b></button>
+            </form>
         </div>
     </div>
 </div>
@@ -159,14 +161,14 @@
                             @if (PlatformRepo.Get(v.PlatformId).Name == "Facebook")
                             {
                                 <div class="admin-platforms">
-                                    <a href="http://www.facebook.com/@v.Link" target="_blank" class="fa fa-edit fa-facebook fa-facebook-edit"></a>
+                                    <a href="@v.Link" target="_blank" class="fa fa-edit fa-facebook fa-facebook-edit"></a>
                                     <p>@PlatformRepo.Get(v.PlatformId).Name</p>
                                 </div>
                             }
                             else if (PlatformRepo.Get(v.PlatformId).Name == "YouTube")
                             {
                                 <div class="admin-platforms">
-                                    <a href="http://www.youtube.com/user/@v.Link" target="_blank" class="fa fa-edit fa-youtube fa-youtube-edit"></a>
+                                    <a href="@v.Link" target="_blank" class="fa fa-edit fa-youtube fa-youtube-edit"></a>
                                     <p>@PlatformRepo.Get(v.PlatformId).Name</p>
                                 </div>
                             }
@@ -180,7 +182,7 @@
                             else if (PlatformRepo.Get(v.PlatformId).Name == "Website")
                             {
                                 <div class="admin-platforms">
-                                    <a class="fa fa-edit fa-globe fa-globe-edit"></a>
+                                    <a href="http://@v.Link" class="fa fa-edit fa-globe fa-globe-edit"></a>
                                     <p>@PlatformRepo.Get(v.PlatformId).Name</p>
                                 </div>
                             }
@@ -194,7 +196,7 @@
                             else if (PlatformRepo.Get(v.PlatformId).Name == "Twitch")
                             {
                                 <div class="admin-platforms">
-                                    <a href="http://www.twitch.tv/@v.Link" target="_blank" class="fa fa-edit fa-twitch fa-twitch-edit"></a>
+                                    <a href="@v.Link" target="_blank" class="fa fa-edit fa-twitch fa-twitch-edit"></a>
                                     <p>@PlatformRepo.Get(v.PlatformId).Name</p>
                                 </div>
                             }
@@ -229,7 +231,7 @@
                                     <p>@v</p>
                                 </div>
                             }
-                            if (v == "Lifestyles")
+                            if (v == "Lifestyle")
                             {
                                 <div class="admin-category">
                                     <img src="~/images/Kategori/lifestyle.png" alt="img">
@@ -294,11 +296,12 @@
                     else
                     {
                         <h4 class="text-center" style="margin-bottom: 20px;"><i class="fa fa-check" style="color:#53b80a " aria-hidden="true"></i> Denne influencer er godkendt</h4>
-
                     }
 
-
-                    <button style="background:#c9302c; border: none;" class="admin-btn"><b>FJERN INFLUENCER</b></button>
+                    <form asp-controller="Admin" asp-action="DisapproveInfluencer" method="post">
+                        @Html.HiddenFor(x => x.Id)
+                        <button style="background:#c9302c; border: none;" class="admin-btn"><b>FJERN INFLUENCER</b></button>
+                    </form>
                 </div>
                 <br /><br />
             </div>

@@ -113,12 +113,15 @@ namespace RateBlog.Services
             return 0;
         }
 
-        public IEnumerable<Feedback> GetLast3Feedback(string id)
+        public IEnumerable<Feedback> GetInfluencerLast3Feedback(string id)
         {
-            return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id).OrderByDescending(x => x.FeedbackDateTime).Take(3);
+            return _feedbackRepo.GetAll().Where(x => x.InfluenterId == id).OrderByDescending(x => x.FeedbackDateTime).Take(3);
         }
 
-       
+        public IEnumerable<Feedback> GetUserLast3Feedback(string id)
+        {
+            return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id).OrderByDescending(x => x.FeedbackDateTime).Take(3);
+        }     
 
         public int GetSingleFeedbackScoreAverage(string id)
         {

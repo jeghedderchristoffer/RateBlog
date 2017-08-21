@@ -12,7 +12,7 @@ namespace RateBlog.Models
     {
         public string Name { get; set; }
        
-        public int Year { get; set; }
+        public DateTime BirthDay { get; set; } 
        
         public int Postnummer { get; set; } 
 
@@ -26,7 +26,12 @@ namespace RateBlog.Models
 
         public DateTime Created { get; set; }
 
-        public DateTime LastLogin { get; set; } 
+        public DateTime LastLogin { get; set; }
+
+        public DateTime TermsAndConditions { get; set; }
+
+        public bool NewsLetter { get; set; } 
+
 
     }
 }

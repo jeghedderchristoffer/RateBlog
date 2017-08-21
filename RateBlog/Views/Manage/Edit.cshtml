@@ -81,9 +81,9 @@
                     <input asp-for="@Model.Email" class="edit-input" />
                     <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
 
-                    <p>Årgang:</p>
-                    <input asp-for="@Model.Year" class="edit-input" type="number" />
-                    <span asp-validation-for="@Model.Year" class="text-danger" style="margin-left: 5px;"></span>
+                    <p>Fødselsdag:</p>
+                    <input max="01-01-2017"  asp-for="@Model.Birthday" class="edit-input" type="date" />
+                    <span asp-validation-for="@Model.Birthday" class="text-danger" style="margin-left: 5px;"></span>
 
                     <p>Postnummer:</p>
                     <input asp-for="@Model.Postnummer" class="edit-input" />
@@ -98,7 +98,7 @@
 
                     <label>
                         <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
-                        Dame
+                        Kvinde
                     </label>
                     <br /><br />
 
@@ -141,9 +141,9 @@
                     <input asp-for="@Model.Email" class="edit-input" />
                     <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
 
-                    <p>Årgang:</p>
-                    <input asp-for="@Model.Year" class="edit-input" type="number" />
-                    <span asp-validation-for="@Model.Year" class="text-danger" style="margin-left: 5px;"></span>
+                    <p>Fødselsdag:</p>
+                    <input max="01-01-2017" asp-for="@Model.Birthday" class="edit-input" type="date" />
+                    <span asp-validation-for="@Model.Birthday" class="text-danger" style="margin-left: 5px;"></span>
 
                     <p>Postnummer:</p>
                     <input asp-for="@Model.Postnummer" class="edit-input" />
@@ -162,7 +162,7 @@
 
                     <label>
                         <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
-                        Dame
+                        Kvinde
                     </label>
                     <br /><br />
 
@@ -174,7 +174,7 @@
                     <div class="feedback-rating-all-box">
                         <div class="feedback-rating-all-box-item" style="padding: 20px;">
                             <h3 class="text-center">Kvalitetsindhold</h3>
-                            <p>Vi godkender dig som influencer, hvis du har mindst én profil på sociale medier og/eller en blog, hvor du regelmæssigt ligger indhold op med henblik på at inspirere, underholde, berige eller informere andre. Når du har oprettet dig, kigger vi din profiler igennem, inden den bliver offentlig, for at sikre troværdigheden.</p>
+                            <p>Vi godkender dig som influencer, hvis du har mindst én profil på sociale medier og/eller en blog, hvor du regelmæssigt lægger indhold op med henblik på at inspirere, underholde, berige eller informere andre. Når du har oprettet dig, kigger vi din profil igennem, inden den bliver offentlig, for at sikre troværdigheden.</p>
                         </div>
                     </div>
                     <div class="feedback-rating-all-box" style="margin-bottom: 0;">
@@ -201,50 +201,54 @@
 
                         @for (int i = 0; i < Model.IKList.Count; i++)
                         {
-                            <label>
-                                @Html.CheckBoxFor(x => x.IKList[i].IsSelected)
-                                <span>@Model.IKList[i].KategoriNavn</span>
-                                @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
-                            </label>
+                            <div class="tooltips">
+                                <div class="cat-check @Model.IKList[i].KategoriNavn">
+                                    <input asp-for="@Model.IKList[i].IsSelected" type="checkbox" id="@Model.IKList[i].KategoriNavn" /> <label for="@Model.IKList[i].KategoriNavn"></label>
+                                </div>
+                                <span style="bottom: 115%; left: 25px" class="tooltiptext">@Model.IKList[i].KategoriNavn</span>
+                            </div>
+                            @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
                         }
+
                     </div>
 
                     <p>Dine sociale medier:</p>
 
                     <div class="edit-social-box">
-                        <a class="fa fa-edit fa-facebook fa-facebook-edit"></a>
-                        <span><input id="editFacebook" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" /><span class="margin-left inside-span" id="editFacebookText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
                         <a class="fa fa-edit fa-instagram fa-instagram-edit"></a>
-                        <span><input id="editInstagram" asp-for="@Model.InstagramLink" type="text" placeholder="Instagram navn" /><span class="margin-left" id="editInstagramText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
-                        <span><input id="editYoutube" asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" /><span class="margin-left" id="editYoutubeText"></span></span>
-                    </div>
+                        <span><input autocomplete="off" id="editInstagram" asp-for="@Model.InstagramLink" type="text" placeholder="Instagram navn" /><span class="margin-left" id="editInstagramText"></span></span>
+                    </div>             
 
                     <div class="edit-social-box">
                         <a class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
-                        <span><input id="editSnapchat" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" /><span class="margin-left" id="editSnapchatText"></span></span>
+                        <span><input autocomplete="off" id="editSnapchat" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" /><span class="margin-left" id="editSnapchatText"></span></span>
                     </div>
 
                     <div class="edit-social-box">
                         <a class="fa fa-edit fa-twitter fa-twitter-edit"></a>
-                        <span><input id="editTwitter" asp-for="@Model.TwitterLink" type="text" placeholder="Twitter navn" /><span class="margin-left" id="editTwitterText"></span></span>
+                        <span><input autocomplete="off" id="editTwitter" asp-for="@Model.TwitterLink" type="text" placeholder="Twitter navn" /><span class="margin-left" id="editTwitterText"></span></span>
+                    </div>
+
+                    <div class="edit-social-box">
+                        <a class="fa fa-edit fa-facebook fa-facebook-edit"></a>
+                        <span><input autocomplete="off" id="editFacebook" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" /><span class="margin-left inside-span" id="editFacebookText"></span></span>
+                    </div>
+
+                    <div class="edit-social-box">
+                        <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
+                        <span><input autocomplete="off" id="editYoutube" asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" /><span class="margin-left" id="editYoutubeText"></span></span>
                     </div>
 
                     <div class="edit-social-box">
                         <a class="fa fa-edit fa-twitch fa-twitch-edit"></a>
-                        <span><input id="editTwitch" asp-for="@Model.TwitchLink" type="text" placeholder="Twitch navn" /><span class="margin-left" id="editTwitchText"></span></span>
+                        <span><input autocomplete="off" id="editTwitch" asp-for="@Model.TwitchLink" type="text" placeholder="Twitch link" /><span class="margin-left" id="editTwitchText"></span></span>
                     </div>
 
                     <div class="edit-social-box">
                         <a class="fa fa-edit fa-globe fa-globe-edit"></a>
-                        <span><input id="editWebsite" asp-for="@Model.WebsiteLink" type="text" placeholder="Hjemmeside link" /><span class="margin-left" id="editWebsiteText"></span></span>
+                        <span><input autocomplete="off" id="editWebsite" asp-for="@Model.WebsiteLink" type="text" placeholder="Hjemmeside link" /><span class="margin-left" id="editWebsiteText"></span></span>
                     </div>
+
 
                     <br />
                     <p>Profiltekst:</p>

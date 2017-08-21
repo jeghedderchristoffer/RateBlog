@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Models.AccountViewModels
+namespace RateBlog.Models.AdminViewModels
 {
-    public class ProfileViewModel
+    public class EditUserViewModel
     {
         public ApplicationUser ApplicationUser { get; set; }
-        public int Age { get; set; }
-        public string Gender { get; set; } 
+        public Influencer Influencer { get; set; } 
     }
 }

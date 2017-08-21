@@ -13,6 +13,11 @@ textarea {
     resize: none;
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-inner-spin-button {
+    display: none;
+}
+
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -1392,6 +1397,8 @@ ul li:hover .dropOut {
 
 .social-box {
     width: 100%;
+    display: inline-block;
+    margin-bottom: 20px;
 }
 
     .social-box a {
@@ -1400,6 +1407,8 @@ ul li:hover .dropOut {
         outline: none;
         text-decoration: none;
         color: #fff;
+        margin-right: 10px;
+        border-radius: 50%;
     }
 
 
@@ -1412,10 +1421,10 @@ ul li:hover .dropOut {
     display: block;
     padding: 15px;
     font-size: 24px !important;
-    width: 50px;
+    width: 54px;
     text-align: center;
     text-decoration: none;
-    margin: 5px 2px;
+    margin: 5px 0;
     border-radius: 5px;
     transition: all 0.3s ease 0s
 }
@@ -1792,48 +1801,14 @@ ul li:hover .dropOut {
 /*Kategori*/
 
 .choose-category {
-    width: 53%;
+    display: block;
+    width: 50%;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
-    .choose-category label {
-        position: relative;
-        cursor: pointer;
-        border-radius: 5px;
-        margin: 5px;
-        width: 30%;
-        user-select: none;
-    }
-
-    .choose-category span {
-        text-align: center;
-        width: 100%;
-        font-weight: normal;
-        transition: all 0.3s ease 0s;
-        border: 1px solid #000;
-        border-radius: 5px;
-    }
-
-    .choose-category label [type="checkbox"] {
+    .choose-category input{
         display: none;
-    }
-
-    .choose-category [type="checkbox"] + span {
-        display: inline-block;
-        padding: 1em;
-    }
-
-    .choose-category :checked + span {
-        background: #FFA500;
-        border-color: #FFA500;
-        display: inline-block;
-        border-radius: 4px;
-        color: #fff;
-        font-weight: normal;
-    }
-
-    .choose-category [type="checkbox"][disabled] + span {
-        background: #f00;
     }
 
 @media (max-width: 767px) {
@@ -1900,8 +1875,10 @@ ul li:hover .dropOut {
 
 .rating {
     border: none;
-    float: left;
     height: 70px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
 }
 
     .rating label {
@@ -1919,7 +1896,7 @@ ul li:hover .dropOut {
     }
 
     .rating > label {
-        float: right;
+
         padding: 10px;
         font-size: 36px;
         color: #DCDCDC;
@@ -1928,7 +1905,6 @@ ul li:hover .dropOut {
 
 @media screen and (max-width: 767px) {
     .rating > label {
-        float: right;
         padding: 10px;
         margin-top: -2px;
         font-size: 26px;
@@ -2115,7 +2091,7 @@ footer {
 
 @media screen and (max-width: 991px) {
     .footer-area {
-        height: 180px
+        height: 230px;
     }
 }
 
@@ -2782,7 +2758,7 @@ footer {
 
     .show-rating-back-show i, .show-rating-front-show i {
         font-size: 50px;
-        width: 50px;
+        width: 60px;
         text-align: center;
     }
 
@@ -3010,11 +2986,12 @@ footer {
     margin: 0;
     padding: 25px 0 25px 0;
     text-align: center;
+    display: block;
 }
 
 .give-feedback-box {
     margin-top: 50px;
-    margin-bottom: 50px;
+    margin-bottom: 50px !important;
     vertical-align: middle
 }
 
@@ -3030,6 +3007,7 @@ footer {
     display: block;
     text-align: center;
     width: 100px;
+    margin-top: 20px;
 }
 
     .done-button:hover {
@@ -3037,127 +3015,29 @@ footer {
         text-decoration: none;
     }
 
-#basedOn {
-    display: inline-block;
-}
 
-.basedOn {
-    display: inline-block;
-    user-select: none;
-}
-
-    .basedOn input[type=checkbox] {
-        display: none;
-    }
-
-        .basedOn input[type=checkbox] + label:before {
-            font-family: FontAwesome;
-            font-size: 60px;
-            opacity: 0.5;
-            font-weight: normal;
-            letter-spacing: 15px
-        }
-
-    .basedOn.facebook input[type=checkbox] + label:before {
-        content: "\f230";
-        opacity: 0.5;
-        color: #3B5998;
-    }
-
-    .basedOn.facebook input[type=checkbox]:checked + label:before {
-        opacity: 1;
-    }
-
-    .basedOn.instagram input[type=checkbox] + label:before {
-        content: "\f16d";
-        color: #bc2a8d;
-    }
-
-    .basedOn.instagram input[type=checkbox]:checked + label:before {
-        opacity: 1;
-    }
-
-    .basedOn.youtube input[type=checkbox] + label:before {
-        content: "\f166";
-        color: #bb0000;
-    }
-
-    .basedOn.youtube input[type=checkbox]:checked + label:before {
-        opacity: 1;
-    }
-
-    .basedOn.twitter input[type=checkbox] + label:before {
-        content: "\f081";
-        color: #55ACEE;
-    }
-
-    .basedOn.twitter input[type=checkbox]:checked + label:before {
-        opacity: 1;
-    }
-
-    .basedOn.twitch input[type=checkbox] + label:before {
-        content: "\f1e8";
-        color: #6441A5;
-    }
-
-    .basedOn.twitch input[type=checkbox]:checked + label:before {
-        opacity: 1;
-    }
-
-    .basedOn.snapchat input[type=checkbox] + label:before {
-        content: "\f2ad";
-        color: #fffc00;
-        opacity: 0.7
-    }
-
-    .basedOn.snapchat input[type=checkbox]:checked + label:before {
-        opacity: 1;
-        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black
-    }
-
-    .basedOn.website input[type=checkbox] + label:before {
-        content: "\f0ac";
-        color: #5E9DC8;
-        opacity: 0.5
-    }
-
-    .basedOn.website input[type=checkbox]:checked + label:before {
-        opacity: 1;
-    }
 
 .textarea-container {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 150px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
     .textarea-container textarea {
-        width: 50%;
+        width: 100%;
         max-width: 100%;
         height: 100%;
         box-sizing: border-box;
         padding: 15px 15px;
         margin-bottom: 30px;
         font-size: 16px;
-        border: 1px solid #dadada;
+        border: 1px solid #888;
         border-radius: 6px;
         margin-top: 10px;
         outline: none;
-    }
-
-    .textarea-container a {
-        position: absolute;
-        bottom: -10px;
-        right: 50%;
-        padding: 5px 20px 5px 20px;
-        background-color: #53b80a;
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        border-bottom-left-radius: 0;
-        border-top-right-radius: 0;
-        display: none;
-        cursor: pointer;
+        display: block;
     }
 
         .textarea-container a:hover {
@@ -3200,11 +3080,14 @@ footer {
             border: 1px solid #888;
         }
 
-@media(max-width: 767px) {
-
-    .done-button {
-        margin-bottom: 50px
+@media(max-width: 1200px){
+    .anbefaling{
+       width: 9.4%;
     }
+}
+
+
+@media(max-width: 767px) {
 
     .basedOn input[type=checkbox] + label:before {
         letter-spacing: 2px
@@ -3237,13 +3120,13 @@ footer {
     }
 
     .anbefaling input[type=radio] + label:before {
-        font-size: 8px;
+        font-size: 6px;
         font-weight: bold;
         text-align: center;
     }
 
     .anbefaling {
-        width: 8.9%;
+        width: 9.4%;
     }
 
     #fbContainer {
@@ -3259,12 +3142,21 @@ footer {
     #sansynligt {
         padding-right: 5px !important;
     }
+}
 
+@media(max-width: 605px) {
+    .anbefaling {
+        width: 8.7%;
+    }
+}
+
+@media (max-width: 991px) {
     .nopaddingmobile {
         padding-left: 0;
         padding-right: 0;
     }
 }
+
 
 
 .adisabled {
@@ -3555,6 +3447,393 @@ footer {
         width: 40px;
     }
 
-    .admin-platforms a:focus{
+        .admin-platforms a:focus {
+            color: #fff;
+        }
+
+
+.profile-box {
+    height: auto;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.19);
+}
+
+.tooltips {
+    position: relative;
+    display: inline-block;
+}
+
+    .tooltips img {
+        height: 54px;
+        vertical-align: middle;
+        margin-right: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .tooltips .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
         color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 110%;
+        left: 27px;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity .5s;
+    }
+
+        .tooltips .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+    .tooltips:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+.profile-stats {
+    width: 33%;
+    display: inline-block
+}
+
+.profile-stats-follower {
+    width: 49.5%;
+    display: inline-block
+}
+
+@media (max-width: 1200px) {
+    .profile-stats {
+        width: 32%;
+        display: inline-block
+    }
+}
+
+@media (max-width: 450px) {
+    .profile-stats-follower {
+        width: 100%;
+        display: inline-block
+    }
+
+    .profile-stats {
+        width: 100%;
+        display: inline-block
+    }
+}
+
+.profile-center-img {
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.profile-follower-ratings img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.influencer-read-stars {
+    float: right;
+}
+
+@media(max-width: 767px) {
+    .influencer-read-stars {
+        width: 100%;
+        text-align: center;
+        float: none;
+    }
+}
+
+.influencer-create {
+    padding-top: 40px;
+    padding-bottom: 100px;
+}
+
+    .influencer-create h2 {
+        margin-top: 5px;
+        text-align: center
+    }
+
+    .influencer-create p {
+        margin-top: 30px;
+        margin-bottom: 5px;
+    }
+
+    .influencer-create label {
+        user-select: none
+    }
+
+    .influencer-create input[type=checkbox] {
+        display: none;
+    }
+
+    .influencer-create textarea {
+        width: 100%;
+        max-width: 100%;
+        height: 200px;
+        box-sizing: border-box;
+        padding: 15px 15px;
+        margin-bottom: 30px;
+        font-size: 16px;
+        border: 1px solid #dadada;
+        border-radius: 6px;
+        margin-top: 10px;
+        outline: none;
+    }
+
+.cat-check {
+    display: inline-block;
+}
+
+    .cat-check.Beauty input[type="checkbox"] + label {
+        background: url(../images/Kategori/beauty.png) no-repeat;
+        background-size: 100%;
+        height: 50px;
+        width: 50px;
+        display: inline-block;
+        padding: 0 0 0 0px;
+        opacity: 0.5;
+        margin-right: 5px;
+    }
+
+    .cat-check.Beauty input[type="checkbox"]:checked + label {
+        opacity: 1;
+    }
+
+
+    .cat-check.Lifestyle input[type="checkbox"] + label {
+        background: url(../images/Kategori/lifestyle.png) no-repeat;
+        background-size: 100%;
+        height: 50px;
+        width: 50px;
+        display: inline-block;
+        padding: 0 0 0 0px;
+        opacity: 0.5;
+        margin-right: 5px;
+    }
+
+    .cat-check.Lifestyle input[type="checkbox"]:checked + label {
+        opacity: 1;
+    }
+
+    .cat-check.Fashion input[type="checkbox"] + label {
+        background: url(../images/Kategori/fashion.png) no-repeat;
+        background-size: 100%;
+        height: 50px;
+        width: 50px;
+        display: inline-block;
+        padding: 0 0 0 0px;
+        opacity: 0.5;
+        margin-right: 5px;
+    }
+
+    .cat-check.Fashion input[type="checkbox"]:checked + label {
+        opacity: 1;
+    }
+
+    .cat-check.Gaming input[type="checkbox"] + label {
+        background: url(../images/Kategori/gaming.png) no-repeat;
+        background-size: 100%;
+        height: 50px;
+        width: 50px;
+        display: inline-block;
+        padding: 0 0 0 0px;
+        opacity: 0.5;
+        margin-right: 5px;
+    }
+
+    .cat-check.Gaming input[type="checkbox"]:checked + label {
+        opacity: 1;
+    }
+
+    .cat-check.Entertainment input[type="checkbox"] + label {
+        background: url(../images/Kategori/entertainment.png) no-repeat;
+        background-size: 100%;
+        height: 50px;
+        width: 50px;
+        display: inline-block;
+        padding: 0 0 0 0px;
+        opacity: 0.5;
+        margin-right: 5px;
+    }
+
+    .cat-check.Entertainment input[type="checkbox"]:checked + label {
+        opacity: 1;
+    }
+
+    .cat-check.Personal input[type="checkbox"] + label {
+        background: url(../images/Kategori/personal.png) no-repeat;
+        background-size: 100%;
+        height: 50px;
+        width: 50px;
+        display: inline-block;
+        padding: 0 0 0 0px;
+        opacity: 0.5;
+        margin-right: 5px;
+    }
+
+    .cat-check.Personal input[type="checkbox"]:checked + label {
+        opacity: 1;
+    }
+
+    .cat-check.Interests input[type="checkbox"] + label {
+        background: url(../images/Kategori/interests.png) no-repeat;
+        background-size: 100%;
+        height: 50px;
+        width: 50px;
+        display: inline-block;
+        padding: 0 0 0 0px;
+        opacity: 0.5;
+        margin-right: 5px;
+    }
+
+    .cat-check.Interests input[type="checkbox"]:checked + label {
+        opacity: 1;
+    }
+
+
+.influencer-create-input {
+    width: 100%;
+    max-width: 100%;
+    height: 40px;
+    padding: 15px 15px;
+    font-size: 16px;
+    border: 1px solid #dadada;
+    border-radius: 6px;
+    outline: none;
+}
+
+
+/*Give*/
+
+.influencer-give h3 {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.influencer-give h4{
+    text-align: center;
+}
+
+.influencer-give-social {
+    display: inline-block
+}
+
+.influencer-give-social label{
+    font-weight: normal;
+    user-select: none;
+}
+
+    .influencer-give-social input[type=checkbox] {
+        display: none;
+        user-select: none;
+    }
+
+        .influencer-give-social input[type=checkbox] + label:before {
+            font-family: FontAwesome;
+            display: inline-block;
+            height: 54px;
+            width: 54px;
+            line-height: 54px;
+            text-align: center;
+            font-size: 24px;
+            border-radius: 50%;
+            opacity: 0.6;
+            color: #fff;
+            margin-right: 5px;
+        }
+
+    .influencer-give-social.Facebook input[type=checkbox] + label:before {
+        content: "\f09a";
+        background: #3B5998;
+    }
+
+    .influencer-give-social.Facebook input[type=checkbox]:checked + label:before {
+        content: "\f09a";
+        opacity: 1;
+    }
+
+    .influencer-give-social.Youtube input[type=checkbox] + label:before {
+        content: "\f167";
+        background: #bb0000;
+    }
+
+    .influencer-give-social.Youtube input[type=checkbox]:checked + label:before {
+        content: "\f167";
+        opacity: 1;
+    }
+
+    .influencer-give-social.Instagram input[type=checkbox] + label:before {
+        content: "\f16d";
+        background: #bc2a8d;
+    }
+
+    .influencer-give-social.Instagram input[type=checkbox]:checked + label:before {
+        content: "\f16d";
+        opacity: 1;
+    }
+
+    .influencer-give-social.Snapchat input[type=checkbox] + label:before {
+        content: "\f2ac";
+        background: #fffc00;
+    }
+
+    .influencer-give-social.Snapchat input[type=checkbox]:checked + label:before {
+        content: "\f2ac";
+        opacity: 1;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    }
+
+    .influencer-give-social.Twitter input[type=checkbox] + label:before {
+        content: "\f099";
+        background: #55ACEE;
+    }
+
+    .influencer-give-social.Twitter input[type=checkbox]:checked + label:before {
+        content: "\f099";
+        opacity: 1;
+    }
+
+
+    .influencer-give-social.Twitch input[type=checkbox] + label:before {
+        content: "\f1e8";
+        background: #6441A5;
+    }
+
+    .influencer-give-social.Twitch input[type=checkbox]:checked + label:before {
+        content: "\f1e8";
+        opacity: 1;
+    }
+
+    .influencer-give-social.Website input[type=checkbox] + label:before {
+        content: "\f0ac";
+        background: #5E9DC8;
+    }
+
+    .influencer-give-social.Website input[type=checkbox]:checked + label:before {
+        content: "\f0ac";
+        opacity: 1;
     }

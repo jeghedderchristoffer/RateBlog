@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,9 +16,8 @@ namespace RateBlog.Models.AccountViewModels
         [Required( ErrorMessage = "Du skal udfylde dit navn")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Du skal udfylde din årgang")]
-        [Range(1900, 2017, ErrorMessage = "Du skal vælge det år, som du er født i")]
-        public int? Year { get; set; }
+        [Required(ErrorMessage = "Du skal udfylde din fødselsdato")]
+        public DateTime? Birthday { get; set; }
 
         [Required(ErrorMessage = "Du skal udfylde dit postnummer ")]
         [Range(1000, 9999, ErrorMessage = "Du skal vælge et gyldigt postnummer")]
@@ -37,5 +37,17 @@ namespace RateBlog.Models.AccountViewModels
         [Required(ErrorMessage = "Du skal vælge dit køn")]
         [Display(Name = "Køn")]
         public string Gender { get; set; }
+
+        [Required]
+        [Compare("isTrue", ErrorMessage = "Du skal godkende betingelserne")]
+        public bool AcceptTermsAndConditions { get; set; }
+
+        public bool isTrue
+        { get { return true; } }
+
+
+        [DefaultValue(false)]
+        public bool NewLetter { get; set; } 
     }
 }
+ 

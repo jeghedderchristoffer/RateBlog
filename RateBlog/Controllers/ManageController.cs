@@ -90,33 +90,13 @@ namespace RateBlog.Controllers
                 return View("Error");
             }
 
-            var gender = (user.Gender == "male") ? "Mand" : "Dame";
-            var ageGroup = ""; 
-
-            if (user.Year > 2004)
-            {
-                ageGroup = "Under 13 år"; 
-            }
-            else if(user.Year > 1997)
-            {
-                ageGroup = "13-19 år"; 
-            }
-            else if(user.Year > 1990)
-            {
-                ageGroup = "20-26 år"; 
-            }
-            else if(user.Year > 1983)
-            {
-                ageGroup = "27-33 år";
-            }
-            else if(user.Year > 1977)
-            {
-                ageGroup = "34-39 år"; 
-            }
-            else
-            {
-                ageGroup = "Over 40 år"; 
-            }
+            var gender = (user.Gender == "male") ? "Mand" : "Kvinde";
+            // Save today's date.
+            var today = DateTime.Today;
+            // Calculate the age.
+            var age = today.Year - user.BirthDay.Year;
+            // Go back to the year the person was born in case of a leap year
+            if (user.BirthDay > today.AddYears(-age)) age--;
 
             var model = new IndexViewModel
             {
@@ -125,8 +105,8 @@ namespace RateBlog.Controllers
                 TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
                 Logins = await _userManager.GetLoginsAsync(user),
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
+                Age = age,
                 Gender = gender,
-                AgeGroup = ageGroup
             };
             return View(model);
         }
@@ -423,7 +403,7 @@ namespace RateBlog.Controllers
                 {
                     Name = user.Name,
                     Email = user.Email,
-                    Year = user.Year,
+                    Birthday = user.BirthDay,
                     Postnummer = user.Postnummer,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
@@ -445,7 +425,7 @@ namespace RateBlog.Controllers
                 {
                     Name = user.Name,
                     Email = user.Email,
-                    Year = user.Year,
+                    Birthday = user.BirthDay,
                     Postnummer = user.Postnummer,
                     PhoneNumber = user.PhoneNumber,
                     ProfileText = user.ProfileText,
@@ -472,10 +452,11 @@ namespace RateBlog.Controllers
                 user.Email = model.Email;
                 user.UserName = model.Email;
                 user.Name = model.Name;
-                user.Year = model.Year;
-                user.Postnummer = model.Postnummer;
+                user.BirthDay = model.Birthday.Value;
+                user.Postnummer = model.Postnummer.Value;
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
+                user.Gender = model.Gender; 
 
 
                 if (profilePic != null)
@@ -516,10 +497,11 @@ namespace RateBlog.Controllers
                 user.Email = model.Email;
                 user.UserName = model.Email;
                 user.Name = model.Name;
-                user.Year = model.Year;
-                user.Postnummer = model.Postnummer;
+                user.BirthDay = model.Birthday.Value;
+                user.Postnummer = model.Postnummer.Value;
                 user.PhoneNumber = model.PhoneNumber;
                 user.ProfileText = model.ProfileText;
+                user.Gender = model.Gender; 
 
                 if (model.ProfilePic != null)
                 {
@@ -622,6 +604,7 @@ namespace RateBlog.Controllers
         {
             var rating = _feedbackRepo.Get(model.Rating.Id);
             rating.Answer = model.Rating.Answer;
+            rating.AnswerDateTime = DateTime.Now; 
 
             _feedbackRepo.Update(rating);
 
@@ -711,7 +694,7 @@ namespace RateBlog.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error, 
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync()

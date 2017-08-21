@@ -18,7 +18,7 @@ namespace RateBlog.Models.ManageViewModels
 
         public bool BrowserRemembered { get; set; }
 
-        public string AgeGroup { get; set; } 
+        public int Age { get; set; } 
 
         public string Gender { get; set; }
     }

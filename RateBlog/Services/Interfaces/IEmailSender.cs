@@ -11,6 +11,8 @@ namespace RateBlog.Services
 
         Task SendWelcomeMailAsync(string name, string email);
 
-        Task SendInfluencerApprovedEmailAsync(string name, string email, string alias); 
+        Task SendInfluencerApprovedEmailAsync(string name, string email, string alias);
+
+        Task SendInfluencerDisapprovedEmailAsync(string name, string email); 
     }
 }

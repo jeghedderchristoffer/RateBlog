@@ -50,11 +50,11 @@
                             {
                                 @if (PlatformRepo.Get(platform.PlatformId).Name == "Facebook")
                                 {
-                                    <a href="http://www.facebook.com/@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
+                                    <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
                                 }
                                 else if (PlatformRepo.Get(platform.PlatformId).Name == "YouTube")
                                 {
-                                    <a href="http://www.youtube.com/user/@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
+                                    <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
                                 }
                                 else if (PlatformRepo.Get(platform.PlatformId).Name == "SnapChat")
                                 {
@@ -70,7 +70,7 @@
                                 }
                                 else if (PlatformRepo.Get(platform.PlatformId).Name == "Twitch")
                                 {
-                                    <a href="http://www.twitch.tv/@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
+                                    <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
                                 }
                                 else if (PlatformRepo.Get(platform.PlatformId).Name == "Website")
                                 {
