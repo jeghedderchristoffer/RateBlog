@@ -23,11 +23,11 @@
             <span asp-validation-for="@Model.Email" class="text-danger"></span>
 
             <p style="margin-top: 20px;">Fødselsdag</p>
-            <input asp-for="@Model.Birthday" class="create-profile-input" type="date"/>
+            <input asp-for="@Model.Birthday" class="create-profile-input" type="text"/>
             <span asp-validation-for="@Model.Birthday" class="text-danger"></span>
 
             <p style="margin-top: 20px;">Postnummer</p>
-            <input asp-for="@Model.Postnummer" class="create-profile-input" placeholder="I hvilket postnummer bor du?" />
+            <input asp-for="@Model.Postnummer" class="create-profile-input" placeholder="I hvilket postnummer bor du?" type="text" />
             <span asp-validation-for="@Model.Postnummer" class="text-danger"></span>
 
             <p style="margin-top: 20px;">Kodeord</p>
@@ -57,6 +57,7 @@
                 <input class="w3-radio" type="checkbox" asp-for="@Model.AcceptTermsAndConditions" value="true">
                 Jeg godkender Bestfluences <a asp-controller="Footer" asp-action="TermsAndConditions">Vilkår & Betingelser</a> og <a asp-controller="Footer" asp-action="Privacy">Persondatapolitik</a>.
             </label> 
+            <br />
             <label style="font-weight: normal;">
                 <input class="w3-radio" type="checkbox" asp-for="@Model.NewLetter">
                 Tilmeld Bestfluences nyhedsbrev
@@ -64,7 +65,7 @@
             <br />
             <span asp-validation-for="@Model.AcceptTermsAndConditions" class="text-danger"></span>
 
-            <button type="submit" class="edit-button-influ-create" style="width: 100%; margin-top: 40px">Opret profil</button>
+            <button id="createuser" type="submit" class="edit-button-influ-create" style="width: 100%; margin-top: 40px">Opret profil</button>
 
         </form>
     </div>

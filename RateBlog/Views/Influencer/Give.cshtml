@@ -12,7 +12,7 @@
 
     @if (TempData["Error"] != null)
     {
-        <div id="rateInfluencerErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+        <div id="rateInfluencerErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             @TempData["Error"]
         </div>
@@ -182,7 +182,7 @@
                     <div class="profile-box give-feedback-box" id="anbefaling" style="display: none;">
                         <h3 style="margin-bottom: 50px;">Hvor stor er sandsynligheden for, at du vil anbefale @Model.Influencer.Alias til en ven?</h3>
                         <h5 style="float: left">Ikke sansynligt</h5>
-                        <h5 style="float: right">Meget sansynligt</h5>
+                        <h5 class="hidden-xs" style="float: right">Meget sansynligt</h5>
                         <div style="display: inline-block; margin-top: 10px; width: 100%" id="anbefalingBtn">
 
                             <div class="anbefaling">
@@ -225,7 +225,9 @@
                                 <input type="radio" name="anbefaling" id="anbefaling10" value="10" asp-for="@Model.Anbefaling" />
                                 <label for="anbefaling10" number="10"></label>
                             </div>
-                        </div>
+                            <h5 class="visible-xs" style="float: right">Meget sansynligt</h5>
+                        </div>         
+                        
                     </div>
 
                     <button type="submit" class="edit-button-feedback" disabled id="sendBtn" style="display: none; margin-bottom: 50px;">SEND SVAR</button>

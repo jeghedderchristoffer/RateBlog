@@ -11,7 +11,8 @@ namespace RateBlog.Models
     public class ApplicationUser : IdentityUser
     {
         public string Name { get; set; }
-       
+
+        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]
         public DateTime BirthDay { get; set; } 
        
         public int Postnummer { get; set; } 

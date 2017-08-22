@@ -208,7 +208,7 @@ $(document).ready(function () {
     }
 
     WebsiteInput.keyup(function () {
-        WebsiteText.text( "http://"  + WebsiteInput.val());
+        WebsiteText.text("http://" + WebsiteInput.val());
     });
 
     TwitchInput.keyup(function () {
@@ -330,10 +330,10 @@ $(document).ready(function () {
         else {
             $("#emailCreate").slideDown();
             isOpenCreate ^= true;
-        }        
+        }
     });
 
-    var isOpenLogin = false; 
+    var isOpenLogin = false;
 
     $("#emailLoginButton").click(function () {
         if (isOpenLogin) {
@@ -355,7 +355,19 @@ $('input[name = "isInfluencerExternalLogin"]').change(function () {
     else {
         $("#isInfluencerExternalLoginBox").slideUp(300);
     }
-}); 
+});
 
 
 
+$(document).ready(function () {
+    $("input[name=Birthday]").datepicker({
+        dateFormat: "dd-mm-yy",
+        minDate: new Date(1910, 0, 1),
+        maxDate: new Date(2017, 0, 1),
+        yearRange: '1910:2017',
+        changeYear: true,
+        changeMonth: true, 
+        defaultDate: new Date("March 21, 2000")
+
+    });
+});

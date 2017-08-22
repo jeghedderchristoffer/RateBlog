@@ -18,6 +18,8 @@ namespace RateBlog.Models.AccountViewModels
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Du skal udfylde din fødselsdato")]
+        [DataType(DataType.Date, ErrorMessage = "Du skal udfylde en gyldig fødselsdato")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? Birthday { get; set; }
 
         [Required(ErrorMessage = "Du skal udfylde dit postnummer ")]

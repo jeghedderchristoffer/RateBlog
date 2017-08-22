@@ -232,7 +232,7 @@ namespace RateBlog.Controllers
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true);
             if (result.Succeeded)
             {
                 _logger.LogInformation(5, "User logged in with {Name} provider.", info.LoginProvider);
@@ -257,7 +257,8 @@ namespace RateBlog.Controllers
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
                 var name = info.Principal.FindFirstValue(ClaimTypes.Name);
                 var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);
-
+                //var birthDay = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth);
+                //var zipCode = info.Principal.FindFirstValue(ClaimTypes.PostalCode); 
                 //var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);               
                 //var acessToken = info.AuthenticationTokens.Single(x => x.Name == "access_token").Value;
 

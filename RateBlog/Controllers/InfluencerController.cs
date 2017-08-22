@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using RateBlog.Data;
+using RateBlog.Helper;
 using RateBlog.Models;
 using RateBlog.Models.InfluenterViewModels;
 using RateBlog.Models.ManageViewModels;
@@ -29,6 +31,8 @@ namespace RateBlog.Controllers
         private readonly IPlatformCategoryService _platformCategoryService;
         private readonly IFeedbackService _feedbackService;
         private readonly ISortService _sortService;
+
+        public static int Counter { get; set; } 
 
         public InfluencerController(IRepository<Category> categoryRepo, IRepository<Influencer> influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IPlatformCategoryService platformCategoryService, IFeedbackService feedbackService, ISortService sortService)
         {
@@ -130,7 +134,8 @@ namespace RateBlog.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser();
-                var email = "userInfluencer" + _influencerRepo.GetAll().Count() + _userManager.Users.Count() + "@bestfluence.dk"; 
+                var random = RandomString.GetString(10); 
+                var email = "userInfluencer" + random + "@bestfluence.dk"; 
 
                 user.UserName = email;
                 user.Email = email;
@@ -177,6 +182,11 @@ namespace RateBlog.Controllers
                     return View(model);
                 }
             }
+
+            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+            var message = allErrors.First();
+            TempData["Error"] = message.ErrorMessage;
+
             return View(model);
         }
 

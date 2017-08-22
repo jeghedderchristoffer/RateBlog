@@ -16,6 +16,7 @@ namespace RateBlog.Models.ManageViewModels
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Du skal udfylde din fødselsdato")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
 
         [Required(ErrorMessage = "Du skal udfylde dit postnummer")]
@@ -28,24 +29,7 @@ namespace RateBlog.Models.ManageViewModels
 
         public string ProfileText { get; set; }
 
-        public string PhoneNumber { get; set; }
-
         public IFormFile ProfilePic { get; set; }
-
-        public bool IsInfluenter { get; set; }
-
-        // Platform/link
-        public string FacebookLink { get; set; }
-        public string InstagramLink { get; set; }
-        public string SnapchatLink { get; set; }
-        public string YoutubeLink { get; set; }
-        public string WebsiteLink { get; set; }
-        public string TwitterLink { get; set; }
-        public string TwitchLink { get; set; }
-
-        public List<InfluenterKategoriViewModel> IKList { get; set; }
-
-        public Influencer Influenter { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

@@ -97,10 +97,10 @@
                             </div>
 
                             <div class="col-md-offset-2 col-md-10">
-                                <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes godt om følgende:</b></p>
+                                <p><b><i>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes godt om følgende:</i></b></p>
                                 <p style="white-space: pre-line">@v.FeedbackGood</p>
                                 <br />
-                                <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes følgende kan forbedres:</b></p>
+                                <p><b><i>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes følgende kan forbedres:</i></b></p>
                                 <p style="white-space: pre-line">@v.FeedbackBetter</p>
                             </div>
 
@@ -126,7 +126,7 @@
                                             <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.AnswerDateTime)</p>
                                         </div>
                                         <br />
-                                        <p><b>@Model.Influenter.Alias har svaret på feedbacken:</b></p>
+                                        <p><b><i>@Model.Influenter.Alias har svaret på feedbacken:</i></b></p>
                                         <p style="white-space: pre-line">@v.Answer</p>
                                     </div>
                                 </div>

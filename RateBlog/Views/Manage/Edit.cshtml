@@ -19,7 +19,7 @@
 
 @if (TempData["Success"] != null)
 {
-    <div id="editUserSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+    <div id="editUserSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         @TempData["Success"]
     </div>
@@ -32,7 +32,7 @@
 }
 @if (TempData["Error"] != null)
 {
-    <div id="editUserErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+    <div id="editUserErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         @TempData["Error"]
     </div>
@@ -46,232 +46,65 @@
 
 @Html.Partial("_NavbarAddonPartial")
 
-<div style="background: #fff; min-height: 80vh; padding-bottom: 100px;">
-    <div class="container">
-        <div class="editprofile-head">
-            <h2 sstyle="margin: 0">Rediger profil</h2>
-            @if (isInfluencer)
-            {
-                <button id="redigerInfluenterBtn" class="active">INFLUENCER</button>
-            }
-            else
-            {
-                <button id="redigerFanBtn" class="active">FØLGER</button>
-                <button id="redigerInfluenterBtn">INFLUENCER</button>
-            }
-        </div>
-
-        <br class="visible-xs" />
-        <br class="visible-xs" />
-        <br class="visible-xs" />
-        <br />
-
-
-        <div id="redigerFanContainer">
-            <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="Edit">
-                <div class="col-md-6 noPadding">
-
-                    <input asp-for="@Model.IsInfluenter" value="false" hidden="hidden" />
-                    <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
-                    <p>Fulde navn:</p>
-                    <input asp-for="@Model.Name" class="edit-input" />
-                    <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <p>Email:</p>
-                    <input asp-for="@Model.Email" class="edit-input" />
-                    <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <p>Fødselsdag:</p>
-                    <input max="01-01-2017"  asp-for="@Model.Birthday" class="edit-input" type="date" />
-                    <span asp-validation-for="@Model.Birthday" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <p>Postnummer:</p>
-                    <input asp-for="@Model.Postnummer" class="edit-input" />
-                    <span asp-validation-for="@Model.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <p>Køn</p>
-                    <label>
-                        <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
-                        Mand
-                    </label>
-                    <br />
-
-                    <label>
-                        <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
-                        Kvinde
-                    </label>
-                    <br /><br />
-
-                    <p>Profilbillede:</p>
-                    <input type="file" name="profilePic" class="input-files" />
-                    <br /><br />
-
-                    <p>Profiltekst:</p>
-                    <textarea asp-for="@Model.ProfileText" class="edit-input" rows="10" style="height: auto;" placeholder="Skriv om dig selv og dine interesser"></textarea>
-                    <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <input type="submit" class="edit-button-influ-create" style="width: 100%" value="Gem" />
-                </div>
-                <div class="col-md-offset-1 col-md-5 hidden-sm hidden-xs">
-                    <div class="feedback-rating-all-box">
-                        <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                            <h3 class="text-center">Gensidig troværdighed</h3>
-                            <p>Hos Bestfluence går vi op i at alle vores brugere har høj troværdighed. Da din profil og feedback er offentlig, vil vi derfor opfordre dig til at angive korrekte oplysninger, således dine bidrag kan bruges og gøre en forskel for andre.</p>
-                        </div>
-                    </div>
-                    <div class="feedback-rating-all-box">
-                        <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                            <h3 class="text-center">Følgerprofil</h3>
-                            <p>Med en følgerprofil kan du gå på opdagelse i vores univers af følgere, influencere og alt deres konstruktive feedback. Finder du en velkendt influencer undervejs, er du mere end velkommen til at give vedkommende din feedback, således vi sammen kan kortlægge og hylde dem der skaber kvalitetsindhold.</p>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div id="redigerInfluenterContainer">
-            <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="EditInfluenterProfile">
-                <div class="col-md-6 noPadding">
-                    <input asp-for="@Model.IsInfluenter" value="true" hidden="hidden" />
-                    <p>Fulde navn:</p>
-                    <input asp-for="@Model.Name" class="edit-input" />
-                    <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <p>Email:</p>
-                    <input asp-for="@Model.Email" class="edit-input" />
-                    <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <p>Fødselsdag:</p>
-                    <input max="01-01-2017" asp-for="@Model.Birthday" class="edit-input" type="date" />
-                    <span asp-validation-for="@Model.Birthday" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <p>Postnummer:</p>
-                    <input asp-for="@Model.Postnummer" class="edit-input" />
-                    <span asp-validation-for="@Model.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <p>Telefonnummer:</p>
-                    <input asp-for="@Model.PhoneNumber" class="edit-input" />
-                    <span asp-validation-for="@Model.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <p>Køn</p>
-                    <label>
-                        <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
-                        Mand
-                    </label>
-                    <br />
-
-                    <label>
-                        <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
-                        Kvinde
-                    </label>
-                    <br /><br />
-
-                    <p>Profilbillede:</p>
-                    <input type="file" name="ProfilePic" asp-for="@Model.ProfilePic" />
-                    <br />
-                </div>
-                <div class="col-md-offset-1 col-md-5 hidden-sm hidden-xs">
-                    <div class="feedback-rating-all-box">
-                        <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                            <h3 class="text-center">Kvalitetsindhold</h3>
-                            <p>Vi godkender dig som influencer, hvis du har mindst én profil på sociale medier og/eller en blog, hvor du regelmæssigt lægger indhold op med henblik på at inspirere, underholde, berige eller informere andre. Når du har oprettet dig, kigger vi din profil igennem, inden den bliver offentlig, for at sikre troværdigheden.</p>
-                        </div>
-                    </div>
-                    <div class="feedback-rating-all-box" style="margin-bottom: 0;">
-                        <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                            <h3 class="text-center">Influencerprofil</h3>
-                            <p>Med en influencerprofil, er du klar til at blive fundet og modtage feedback fra dine følgere. Vi har gjort det nemt for dig at besvare denne feedback, så nye og nuværende følgere kan lære dig bedre at kende.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Influenter Profil-->
-
-                <div class="col-md-12 noPadding">
-                    <br />
-                    <h4><b>Influencer oplysninger:</b></h4>
-                    <br />
-
-                    <p>Alias</p>
-                    <input asp-for="@Model.Influenter.Alias" class="edit-input-influ" />
-                    <span asp-validation-for="@Model.Influenter.Alias" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <p>Vælg dine kategorier:</p>
-                    <div class="choose-category">
-
-                        @for (int i = 0; i < Model.IKList.Count; i++)
-                        {
-                            <div class="tooltips">
-                                <div class="cat-check @Model.IKList[i].KategoriNavn">
-                                    <input asp-for="@Model.IKList[i].IsSelected" type="checkbox" id="@Model.IKList[i].KategoriNavn" /> <label for="@Model.IKList[i].KategoriNavn"></label>
-                                </div>
-                                <span style="bottom: 115%; left: 25px" class="tooltiptext">@Model.IKList[i].KategoriNavn</span>
-                            </div>
-                            @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
-                        }
-
-                    </div>
-
-                    <p>Dine sociale medier:</p>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-instagram fa-instagram-edit"></a>
-                        <span><input autocomplete="off" id="editInstagram" asp-for="@Model.InstagramLink" type="text" placeholder="Instagram navn" /><span class="margin-left" id="editInstagramText"></span></span>
-                    </div>             
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
-                        <span><input autocomplete="off" id="editSnapchat" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" /><span class="margin-left" id="editSnapchatText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-twitter fa-twitter-edit"></a>
-                        <span><input autocomplete="off" id="editTwitter" asp-for="@Model.TwitterLink" type="text" placeholder="Twitter navn" /><span class="margin-left" id="editTwitterText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-facebook fa-facebook-edit"></a>
-                        <span><input autocomplete="off" id="editFacebook" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" /><span class="margin-left inside-span" id="editFacebookText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
-                        <span><input autocomplete="off" id="editYoutube" asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" /><span class="margin-left" id="editYoutubeText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-twitch fa-twitch-edit"></a>
-                        <span><input autocomplete="off" id="editTwitch" asp-for="@Model.TwitchLink" type="text" placeholder="Twitch link" /><span class="margin-left" id="editTwitchText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-globe fa-globe-edit"></a>
-                        <span><input autocomplete="off" id="editWebsite" asp-for="@Model.WebsiteLink" type="text" placeholder="Hjemmeside link" /><span class="margin-left" id="editWebsiteText"></span></span>
-                    </div>
-
-
-                    <br />
-                    <p>Profiltekst:</p>
-                    <textarea asp-for="@Model.ProfileText" class="edit-input-influ" rows="10" style="height: auto;" placeholder="Skriv om dig selv og dine interesser"></textarea>
-                    <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <input type="submit" class="edit-button-influ-create" value="Gem" />
-                </div>
-            </form>
-            @*@if (isInfluencer == false)
-            {
-                <h5>* Der kan gå op til 24 timer før din influencer profil bliver godkendt og bliver offentlig </h5>
-            }
-            else
-            {
-                if (influencer.IsApproved == false)
-                {
-                    <h5>* Der kan gå op til 24 timer før din influencer profil bliver godkendt og bliver offentlig </h5>
-                }
-
-            }*@
-        </div>
-
+<div class="container" style="padding-bottom: 150px;">
+    <div class="col-md-12 col-xs-12 noPaddingLeft nopaddingmobile">
+        <h2 class="edituserh2">Profil oplysninger</h2>
+        @if (!isInfluencer)
+        {
+            <a asp-controller="Manage" asp-action="Influencer" class="become-influ">BLIV INFLUENCER</a>
+        }       
     </div>
 
+    <div class="col-md-6 noPadding col-xs-12" id="editProfile">
+        <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
+
+            <h4 style="margin-top: 15px">Fulde navn:</h4>
+            <input asp-for="@Model.Name" class="edit-profile-input" />
+            <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
+
+            <h4>Email:</h4>
+            <input asp-for="@Model.Email" class="edit-profile-input" />
+            <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
+
+            <h4>Fødselsdag:</h4>
+            <input max="01-01-2017" asp-for="@Model.Birthday" class="edit-profile-input" />
+            <span asp-validation-for="@Model.Birthday" class="text-danger" style="margin-left: 5px;" asp-format="0:dd/mm/yyyy}"></span>
+
+            <h4>Postnummer:</h4>
+            <input asp-for="@Model.Postnummer" class="edit-profile-input" type="text" />
+            <span asp-validation-for="@Model.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
+
+            <h4>Køn</h4>
+            <label style="font-weight: normal">
+                <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
+                Mand
+            </label>
+            <br />
+
+            <label style="font-weight: normal">
+                <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
+                Kvinde
+            </label>
+            <br /><br />
+
+            <h4>Profilbillede:</h4>
+            <input type="file" name="profilePic" class="input-files" />
+            <br /><br />
+
+            <h4>Profiltekst:</h4>
+            <textarea asp-for="@Model.ProfileText" class="edit-input" rows="10" style="height: auto;" placeholder="Skriv om dig selv og dine interesser"></textarea>
+            <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
+
+            <input type="submit" class="edit-button-influ-create" style="width: 100%" value="Gem" />
+        </form>
+    </div>
+    <div class="col-md-offset-1 col-md-5 hidden-sm hidden-xs">
+        <div class="feedback-rating-all-box">
+            <div class="feedback-rating-all-box-item" style="padding: 20px;">
+                <h3 class="text-center">Gensidig troværdighed</h3>
+                <p>Hos Bestfluence går vi op i at alle vores brugere har høj troværdighed. Da din profil og feedback er offentlig, vil vi derfor opfordre dig til at angive korrekte oplysninger, således dine bidrag kan bruges og gøre en forskel for andre.</p>
+            </div>
+        </div>
+    </div>
 </div>

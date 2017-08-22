@@ -1,0 +1,107 @@
+﻿@model RateBlog.Models.ManageViewModels.InfluencerViewModel
+@{
+    ViewData["Title"] = "Influencer";
+}
+
+<div class="navbar-allaround"></div>
+
+@if (TempData["Success"] != null)
+{
+    <div id="influEditSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["Success"]
+    </div>
+
+    <script>
+        window.setTimeout(function () {
+            $("#influEditSuc").fadeOut(1000);
+        }, 4000);
+    </script>
+}
+@if (TempData["Error"] != null)
+{
+    <div id="influEditErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["Error"]
+    </div>
+
+    <script>
+        window.setTimeout(function () {
+            $("#influEditErr").fadeOut(1000);
+        }, 2000);
+    </script>
+}
+
+@Html.Partial("_NavbarAddonPartial")
+
+<div class="container" style="padding-bottom: 150px">
+    <h2 style="margin: 25px 0 25px 0;">Influencer oplysninger</h2>
+
+    <div class="col-md-12 influencer-cont noPadding">
+        <form asp-controller="Manage" asp-action="Influencer" method="post">
+            @Html.HiddenFor(x => x.ApplicationUser.Id)
+
+            <h4 style="margin-top:15px">Alias</h4>
+            <input class="edit-input-influ" asp-for="@Model.Alias" />
+            <span asp-validation-for="@Model.Alias" class="text-danger" style="margin-left: 5px;"></span>
+
+            <h4>Dine kategorier:</h4>
+            <div class="choose-category">
+                @for (int i = 0; i < Model.IKList.Count; i++)
+                {
+                    <div class="tooltips">
+                        <div class="cat-check @Model.IKList[i].KategoriNavn">
+                            <input asp-for="@Model.IKList[i].IsSelected" type="checkbox" id="@Model.IKList[i].KategoriNavn" /> <label for="@Model.IKList[i].KategoriNavn"></label>
+                        </div>
+                        <span style="bottom: 115%; left: 25px" class="tooltiptext">@Model.IKList[i].KategoriNavn</span>
+                    </div>
+                    @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
+                }
+            </div>
+
+            <h4>Dine sociale medier:</h4>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-instagram fa-instagram-edit"></a>
+                <span><input autocomplete="off" id="editInstagram" asp-for="@Model.InstagramLink" type="text" placeholder="Instagram navn" /><span class="margin-left" id="editInstagramText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
+                <span><input autocomplete="off" id="editSnapchat" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" /><span class="margin-left" id="editSnapchatText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-twitter fa-twitter-edit"></a>
+                <span><input autocomplete="off" id="editTwitter" asp-for="@Model.TwitterLink" type="text" placeholder="Twitter navn" /><span class="margin-left" id="editTwitterText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-facebook fa-facebook-edit"></a>
+                <span><input autocomplete="off" id="editFacebook" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" /><span class="margin-left inside-span" id="editFacebookText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
+                <span><input autocomplete="off" id="editYoutube" asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" /><span class="margin-left" id="editYoutubeText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-twitch fa-twitch-edit"></a>
+                <span><input autocomplete="off" id="editTwitch" asp-for="@Model.TwitchLink" type="text" placeholder="Twitch link" /><span class="margin-left" id="editTwitchText"></span></span>
+            </div>
+
+            <div class="edit-social-box">
+                <a class="fa fa-edit fa-globe fa-globe-edit"></a>
+                <span><input autocomplete="off" id="editWebsite" asp-for="@Model.WebsiteLink" type="text" placeholder="Hjemmeside link" /><span class="margin-left" id="editWebsiteText"></span></span>
+            </div>
+
+            <input type="submit" class="edit-button-influ-create" style="margin-top: 50px" value="Gem" />
+
+        </form>
+    </div>
+
+
+
+
+</div>

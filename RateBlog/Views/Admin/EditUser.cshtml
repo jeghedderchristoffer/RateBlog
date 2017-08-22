@@ -1,6 +1,6 @@
 ﻿@model RateBlog.Models.AdminViewModels.EditUserViewModel
-@{ 
-    ViewData["Title"] = "Edit user"; 
+@{
+    ViewData["Title"] = "Edit user";
 }
 
 <div class="navbar-allaround"></div>
@@ -10,58 +10,99 @@
 
     <div class="container">
         <div class="col-md-offset-3 col-md-6" style="padding-top: 40px">
+            <form asp-controller="Admin" asp-action="EditUser" method="post" enctype="multipart/form-data">
+                @Html.HiddenFor(x => x.ApplicationUser.Id)
+                <div class="profile-box">
+                    <p>Fulde navn:</p>
+                    <input asp-for="@Model.ApplicationUser.Name" class="edit-input" />
+                    <span asp-validation-for="@Model.ApplicationUser.Name" class="text-danger" style="margin-left: 5px;"></span>
 
-            <div class="profile-box">
-                <p>Fulde navn:</p>
-                <input asp-for="@Model.ApplicationUser.Name" class="edit-input" />
-                <span asp-validation-for="@Model.ApplicationUser.Name" class="text-danger" style="margin-left: 5px;"></span>
+                    <p>Email:</p>
+                    <input asp-for="@Model.ApplicationUser.Email" class="edit-input" />
+                    <span asp-validation-for="@Model.ApplicationUser.Email" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Email:</p>
-                <input asp-for="@Model.ApplicationUser.Email" class="edit-input" />
-                <span asp-validation-for="@Model.ApplicationUser.Email" class="text-danger" style="margin-left: 5px;"></span>
+                    <p>Fødselsdag:</p>
+                    <input max="01-01-2017" asp-for="@Model.ApplicationUser.BirthDay" class="edit-input" type="date" />
+                    <span asp-validation-for="@Model.ApplicationUser.BirthDay" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Fødselsdag:</p>
-                <input max="01-01-2017" asp-for="@Model.ApplicationUser.BirthDay" class="edit-input" type="date" />
-                <span asp-validation-for="@Model.ApplicationUser.BirthDay" class="text-danger" style="margin-left: 5px;"></span>
+                    <p>Postnummer:</p>
+                    <input asp-for="@Model.ApplicationUser.Postnummer" class="edit-input" />
+                    <span asp-validation-for="@Model.ApplicationUser.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Postnummer:</p>
-                <input asp-for="@Model.ApplicationUser.Postnummer" class="edit-input" />
-                <span asp-validation-for="@Model.ApplicationUser.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
+                    <p>Telefonnummer:</p>
+                    <input asp-for="@Model.ApplicationUser.PhoneNumber" class="edit-input" />
+                    <span asp-validation-for="@Model.ApplicationUser.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Telefonnummer:</p>
-                <input asp-for="@Model.ApplicationUser.PhoneNumber" class="edit-input" />
-                <span asp-validation-for="@Model.ApplicationUser.PhoneNumber" class="text-danger" style="margin-left: 5px;"></span>
+                    <p>Køn</p>
+                    <label>
+                        <input asp-for="@Model.ApplicationUser.Gender" class="w3-radio" type="radio" name="gender" value="male">
+                        Mand
+                    </label>
+                    <br />
 
-                <p>Køn</p>
-                <label>
-                    <input asp-for="@Model.ApplicationUser.Gender" class="w3-radio" type="radio" name="gender" value="male">
-                    Mand
-                </label>
-                <br />
+                    <label>
+                        <input asp-for="@Model.ApplicationUser.Gender" class="w3-radio" type="radio" name="gender" value="female">
+                        Kvinde
+                    </label>
+                    <br /><br />
 
-                <label>
-                    <input asp-for="@Model.ApplicationUser.Gender" class="w3-radio" type="radio" name="gender" value="female">
-                    Kvinde
-                </label>
-                <br /><br />
+                    <p>Profilbillede:</p>
+                    <input type="file" name="ProfilePic" asp-for="@Model.ApplicationUser.ProfilePicture" />
+                    <br />
 
-                <p>Profilbillede:</p>
-                <input type="file" name="ProfilePic" asp-for="@Model.ApplicationUser.ProfilePicture" />
-                <br />
+                    <p>Profiltekst:</p>
+                    <textarea asp-for="@Model.ApplicationUser.ProfileText" class="edit-input-influ" rows="10" style="height: auto; width: 100%" placeholder="Skriv om dig selv og dine interesser"></textarea>
+                    <span asp-validation-for="@Model.ApplicationUser.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
 
-                <p>Profiltekst:</p>
-                <textarea asp-for="@Model.ApplicationUser.ProfileText" class="edit-input-influ" rows="10" style="height: auto; width: 100%" placeholder="Skriv om dig selv og dine interesser"></textarea>
-                <span asp-validation-for="@Model.ApplicationUser.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
+                    @if (Model.Influencer == null)
+                    {
+                        <button type="submit" class="admin-btn" style="background: #089de3">GEM</button>
 
-                @if(Model.Influencer != null)
-                {
+                    }
+                    else
+                    {
+                        <h4><b>Influencer oplysninger:</b></h4>
+                        <br />
+
+                        <p>Alias</p>
+                        <input asp-for="@Model.Influencer.Alias" class="edit-input" />
+                        <span asp-validation-for="@Model.Influencer.Alias" class="text-danger" style="margin-left: 5px;"></span>
+
+                        <p>Vælg dine kategorier:</p>
+                        <div class="choose-category" style="width: 100%">
+
+                            @for (int i = 0; i < Model.IKList.Count; i++)
+                            {
+                                <div class="tooltips">
+                                    <div class="cat-check @Model.IKList[i].KategoriNavn">
+                                        <input asp-for="@Model.IKList[i].IsSelected" type="checkbox" id="@Model.IKList[i].KategoriNavn" /> <label for="@Model.IKList[i].KategoriNavn"></label>
+                                    </div>
+                                    <span style="bottom: 115%; left: 25px" class="tooltiptext">@Model.IKList[i].KategoriNavn</span>
+                                </div>
+                                @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
+                            }
+
+                        </div>
+
+                        <p>Dine sociale medier:</p>
+
+                        <input class="edit-input" autocomplete="off" asp-for="@Model.InstagramLink" type="text" placeholder="Instagram navn" />
+                        <input class="edit-input" autocomplete="off" asp-for="@Model.TwitterLink" type="text" placeholder="Twitter navn" />
+                        <input class="edit-input" autocomplete="off" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" />
+                        <input class="edit-input" autocomplete="off" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" />
+                        <input class="edit-input" autocomplete="off" asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" />
+                        <input class="edit-input" autocomplete="off" asp-for="@Model.TwitchLink" type="text" placeholder="Twitch link" />
+                        <input class="edit-input" autocomplete="off" asp-for="@Model.WebsiteLink" type="text" placeholder="Website link" />
 
 
-                }
+
+                        <button type="submit" class="admin-btn" style="background: #089de3">GEM</button>
+                    }
 
 
-            </div>
+                </div>
 
+            </form>
         </div>
     </div>
 </div>

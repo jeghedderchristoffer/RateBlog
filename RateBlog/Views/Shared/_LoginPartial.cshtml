@@ -47,8 +47,12 @@
                         <div class="triangle"></div>
                         <ul>
                             <li><a asp-area="" asp-controller="Manage" asp-action="Profile" class="dropOut-a">Vis profil</a></li>
+                            @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
+                            {
+                                <li><a asp-area="" asp-controller="Manage" asp-action="Influencer" class="dropOut-a">Influencer</a></li>
+                            }
                             <li><a asp-area="" asp-controller="Manage" asp-action="Edit" class="dropOut-a">Rediger profil</a></li>
-                            <li><a asp-area="" asp-controller="Manage" asp-action="Password" class="dropOut-a">Indstillinger</a></li>
+                            @*<li><a asp-area="" asp-controller="Manage" asp-action="Password" class="dropOut-a">Indstillinger</a></li>*@
                             <li><a id="logOut" href="#" class="dropOut-a">Log af</a></li>
                         </ul>
                     </div>
@@ -57,7 +61,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right" id="dropdownMobile" style="display: none">
             @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
-            {
+                {
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Feedback">
                         Min feedback
@@ -81,8 +85,12 @@
                 </li>
             }
             <li><a asp-area="" asp-controller="Manage" asp-action="Profile">Vis profil</a></li>
-            <li><a asp-area="" asp-controller="Manage" asp-action="Edit">Rediger profil</a></li>
-            <li><a asp-area="" asp-controller="Manage" asp-action="Password">Indstillinger</a></li>
+            @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
+            {
+                <li><a asp-area="" asp-controller="Manage" asp-action="Influencer">Influencer</a></li>
+            }
+            <li><a asp-area="" asp-controller="Manage" asp-action="Edit">Rediger profil</a></li>           
+            @*<li><a asp-area="" asp-controller="Manage" asp-action="Password">Indstillinger</a></li>*@
             <li><a id="logOutMobile" href="#">Log af</a></li>
         </ul>
     </form>
@@ -90,7 +98,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a class="login-links" data-toggle="modal" data-target="#opretModal">Opret</a></li>
+        <li><a id="signup" class="login-links" data-toggle="modal" data-target="#opretModal">Opret</a></li>
         <li><a class="login-links" data-toggle="modal" data-target="#loginModal">Log ind</a></li>
     </ul>
 }

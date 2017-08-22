@@ -103,7 +103,7 @@ namespace RateBlog
             }
 
             // Skal bruges til at seperere double's decimaler med . og ikke , //
-            var cultureInfo = new CultureInfo("en-US");
+            var cultureInfo = new CultureInfo("da-DK");
             cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
