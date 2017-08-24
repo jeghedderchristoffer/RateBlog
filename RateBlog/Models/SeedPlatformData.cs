@@ -23,31 +23,32 @@ namespace RateBlog.Models
                 }
 
                 context.Platform.AddRange(
-                     new Platform
-                     {
-
-                         Name = "YouTube"
-                     },
-
-                     new Platform
-                     {
-                         Name = "Instagram",
-                     },
-
-                     new Platform
-                     {
-                         Name = "SnapChat",
-                     },
+                   new Platform
+                   {
+                       Name = "YouTube"
+                   },
+                   new Platform
+                   {
+                       Name = "SecondYoutube"
+                   },
 
                    new Platform
                    {
+                       Name = "Instagram",
+                   },
 
+                   new Platform
+                   {
+                       Name = "SnapChat",
+                   },
+
+                   new Platform
+                   {
                        Name = "Facebook",
                    },
 
                    new Platform
                    {
-
                        Name = "Twitch"
                    },
                    new Platform
@@ -58,7 +59,6 @@ namespace RateBlog.Models
                    {
                        Name = "Website"
                    }
-
                 );
                 context.SaveChanges();
 

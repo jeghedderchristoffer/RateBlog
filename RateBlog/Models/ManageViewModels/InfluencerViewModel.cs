@@ -21,6 +21,7 @@ namespace RateBlog.Models.ManageViewModels
         public string WebsiteLink { get; set; }
         public string TwitterLink { get; set; }
         public string TwitchLink { get; set; }
+        public string SecoundYoutubeLink { get; set; } 
 
         public List<InfluenterKategoriViewModel> IKList { get; set; }
 

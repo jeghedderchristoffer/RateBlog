@@ -47,11 +47,15 @@
                         <div class="triangle"></div>
                         <ul>
                             <li><a asp-area="" asp-controller="Manage" asp-action="Profile" class="dropOut-a">Vis profil</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Edit" class="dropOut-a">Rediger profil</a></li>
                             @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
                             {
                                 <li><a asp-area="" asp-controller="Manage" asp-action="Influencer" class="dropOut-a">Influencer</a></li>
                             }
-                            <li><a asp-area="" asp-controller="Manage" asp-action="Edit" class="dropOut-a">Rediger profil</a></li>
+                            else
+                            {
+                                <li><a asp-area="" asp-controller="Manage" asp-action="Influencer" class="dropOut-a">Bliv influencer</a></li>
+                            }
                             @*<li><a asp-area="" asp-controller="Manage" asp-action="Password" class="dropOut-a">Indstillinger</a></li>*@
                             <li><a id="logOut" href="#" class="dropOut-a">Log af</a></li>
                         </ul>
@@ -85,11 +89,15 @@
                 </li>
             }
             <li><a asp-area="" asp-controller="Manage" asp-action="Profile">Vis profil</a></li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="Edit">Rediger profil</a></li>   
             @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
             {
                 <li><a asp-area="" asp-controller="Manage" asp-action="Influencer">Influencer</a></li>
             }
-            <li><a asp-area="" asp-controller="Manage" asp-action="Edit">Rediger profil</a></li>           
+            else
+            {
+                <li><a asp-area="" asp-controller="Manage" asp-action="Influencer">Bliv influencer</a></li>
+            }
             @*<li><a asp-area="" asp-controller="Manage" asp-action="Password">Indstillinger</a></li>*@
             <li><a id="logOutMobile" href="#">Log af</a></li>
         </ul>

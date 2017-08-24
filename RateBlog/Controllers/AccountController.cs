@@ -168,7 +168,7 @@ namespace RateBlog.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterConfirmation(RegisterConfirmationViewModel model, string returnUrl = null)
+        public async Task<IActionResult> RegisterConfirmation(RegisterConfirmationViewModel model, bool isInfluencer, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -181,7 +181,15 @@ namespace RateBlog.Controllers
                     // Send velkomst mail
                     await _emailSender.SendWelcomeMailAsync(user.Name, user.Email); 
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToAction("Edit", "Manage");
+
+                    if (isInfluencer)
+                    {
+                        return RedirectToAction("Influencer", "Manage");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Edit", "Manage");
+                    }               
                 }
                 ModelState.AddModelError("", "Der findes allerede en bruger med denne email");
             }
@@ -272,7 +280,7 @@ namespace RateBlog.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl = null)
+        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, bool isInfluencer, string returnUrl = null)
         {
             if (ModelState.IsValid)
             {
@@ -312,7 +320,15 @@ namespace RateBlog.Controllers
                         await _userManager.UpdateAsync(user);
 
                         _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
-                        return RedirectToAction("Edit", "Manage");
+
+                        if (isInfluencer)
+                        {
+                            return RedirectToAction("Influencer", "Manage");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Edit", "Manage");
+                        }                   
                     }
                 }
                 AddErrors(result);

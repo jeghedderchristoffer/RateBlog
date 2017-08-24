@@ -161,10 +161,10 @@
                     <div class="profile-box give-feedback-box" id="feedbackGodt" style="display: none; margin-bottom: 100px !important">
                         <h3>Hvad gør @Model.Influencer.Alias godt?</h3>
                         <h4 style="margin-bottom: 30px;">
-                            Vær gerne specifik og kom med eksempler
+                            Vær specifik og kom med eksempler
                         </h4>
                         <div class="textarea-container nopaddingmobile">
-                            <textarea asp-for="@Model.FeedbackGood" id="feedbackGodtText"></textarea>
+                            <textarea asp-for="@Model.FeedbackGood" id="feedbackGodtText" placeholder="F.eks. du sætter fokus på relevante emner, fortæller din ærlige mening og laver godt indhold"></textarea>
 
                         </div>
                         <a id="feedbackGodtBtn" class="done-button adisabled center-block">Videre</a>
@@ -172,9 +172,9 @@
 
                     <div class="profile-box give-feedback-box" id="feedbackBedre" style="display: none;">
                         <h3>Hvad kan @Model.Influencer.Alias gøre bedre?</h3>
-                        <h4 style="margin-bottom: 30px;">Vær specifik og referer til adfærd, som det er muligt at ændre</h4>
+                        <h4 style="margin-bottom: 30px;">Kom med eksempler og referer til adfærd, som det er muligt at ændre</h4>
                         <div class="textarea-container nopaddingmobile">
-                            <textarea asp-for="@Model.FeedbackBetter" id="feedbackGodtText"></textarea>
+                            <textarea asp-for="@Model.FeedbackBetter" id="feedbackGodtText" placeholder="F.eks. jeg synes dit sprog er blevet hårdt igennem dine seneste videoer"></textarea>
                         </div>
                         <a id="feedbackBedreBtn" class="done-button adisabled center-block">Videre</a>
                     </div>

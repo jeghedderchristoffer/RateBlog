@@ -56,6 +56,10 @@
                                 {
                                     <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
                                 }
+                                else if (PlatformRepo.Get(platform.PlatformId).Name == "SecondYouTube")
+                                {
+                                    <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
+                                }
                                 else if (PlatformRepo.Get(platform.PlatformId).Name == "SnapChat")
                                 {
                                     <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>

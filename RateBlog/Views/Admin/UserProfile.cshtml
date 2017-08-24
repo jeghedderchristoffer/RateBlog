@@ -5,13 +5,28 @@
 @inject RateBlog.Services.Interfaces.IPlatformCategoryService PlatformCategoryService
 @inject RateBlog.Repository.IRepository<Platform> PlatformRepo
 @inject RateBlog.Repository.IRepository<Influencer> InfluencerRepo
-
-
 @{
     ViewData["Title"] = "ProfilePage";
     var isInfluencer = (await InfluencerService.IsUserInfluencerAsync(Model.Id)) ? "Influencer" : "Følger";
 }
 
+<div id="adminDeleteModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 style="margin-top: 0; margin-bottom: 0" class="modal-title">Vil du slette @Model.Name</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left">Fortryd</button>
+                <form asp-controller="Admin" asp-action="DeleteUser" method="post">
+                    @Html.HiddenFor(x => x.Id)
+                    <button type="submit" style="float: right" class="btn btn-danger"><b>Slet</b></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="navbar-allaround">
 
@@ -73,12 +88,10 @@
             </div>
         </form>
         <div class="col-md-2">
-            <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@Model.Id" style="background:#089de3;" class="admin-btn"><b>Rediger</b></a>                     
-            <a asp-controller="Admin" asp-action="BanUser" asp-route-id="@Model.Id" style="background:#ec971f;" class="admin-btn"><b>Ban</b></a>
-            <form asp-controller="Admin" asp-action="DeleteUser" method="post">
-                @Html.HiddenFor(x => x.Id)
-                <button type="submit" style="background:#c9302c;" class="admin-btn"><b>Slet</b></button>
-            </form>
+            <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@Model.Id" style="background:#ec971f;" class="admin-btn"><b>Rediger</b></a>
+            <a asp-controller="Admin" asp-action="Feedback" asp-route-id="@Model.Id" style="background:#089de3;" class="admin-btn"><b>Feedback</b></a>
+            <a data-toggle="modal" data-target="#adminDeleteModal" style="background:#c9302c;" class="admin-btn"><b>Slet</b></a>
+
         </div>
     </div>
 </div>

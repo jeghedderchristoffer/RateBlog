@@ -170,6 +170,10 @@
                                     {
                                         <a href="@v.Link" target="_blank" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
                                     }
+                                    else if (PlatformRepo.Get(v.PlatformId).Name == "SecondYouTube")
+                                    {
+                                        <a href="@v.Link" target="_blank" class="fa fa-profile fa-youtube fa-youtube-profile"></a>
+                                    }
                                     else if (PlatformRepo.Get(v.PlatformId).Name == "SnapChat")
                                     {
                                         <a href="http://www.snapchat.com/add/@v.Link" target="_blank" class="fa fa-profile fa-snapchat-ghost fa-snapchat-ghost-profile"></a>
@@ -190,6 +194,7 @@
                                     {
                                         <a href="http://@v.Link" target="_blank" class="fa fa-profile fa-globe fa-globe-profile"></a>
                                     }
+                                    
 
                                 }
                             </div>

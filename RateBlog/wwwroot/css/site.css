@@ -32,6 +32,10 @@ input[type="date"]::-webkit-inner-spin-button {
     display: none;
 }
 
+input[type="password"] {
+    padding: 10px;
+}
+
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -3607,6 +3611,7 @@ footer {
     margin-left: auto;
     margin-right: auto;
     height: 80px;
+    width: 80px;
     border-radius: 50%;
 }
 
@@ -3923,14 +3928,16 @@ footer {
     float: right;
     border: none;
     background: #53b80a;
-    border-radius: 5px;
     color: #fff;
     font-weight: bold;
     outline: none;
+    border-radius: 3px;
+    opacity: .9;
+    letter-spacing: 1.2px
 }
 
     .become-influ:hover {
-        opacity: .9;
+        opacity: 1;
         color: #fff;
         text-decoration: none;
     }
@@ -3952,7 +3959,98 @@ footer {
     }
 }
 
-.influencer-cont h4{
+.influencer-cont h4 {
     font-size: 16px;
     margin-top: 30px;
+}
+
+
+#sortMobileBtn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    background-color: #FFA500;
+    color: white;
+    cursor: pointer;
+    padding: 10px 16.5px 10px 16.5px;
+    border-radius: 50%;
+}
+
+    #sortMobileBtn i {
+        font-size: 2em !important;
+    }
+
+.admin-feedback-container {
+    border: 1px solid #888;
+    margin-bottom: 100px;
+}
+
+
+.create-account {
+    display: inline-block;
+    width: 49%;
+}
+
+    .create-account label {
+        width: 100%;
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .create-account input[type=radio] {
+        display: none;
+    }
+
+
+        .create-account input[type=radio] + label:before {
+            display: block;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            opacity: 0.7;
+            content: attr(number);
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            background: #fafafa;
+        }
+
+        .create-account input[type=radio]:checked + label:before {
+            opacity: 1;
+            background: #ddd;
+            border: 1px solid #888;
+        }
+
+
+.home-create-container {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background: #fafafa;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+    .home-create-container h2 {
+        margin: 0;
+    }
+
+    .home-create-container button {
+        margin-top: 50px;
+        background: #FFA500;
+        color: #fff;
+        padding: 15px 50px;
+        font-size: 16px;
+        border: none;
+        border-radius: 3px;
+        font-weight: bold;
+        letter-spacing: 1.3px;
+    }
+
+@media(max-width: 767px){
+    .home-create-container h2 {
+        font-size: 27px
+    }
 }

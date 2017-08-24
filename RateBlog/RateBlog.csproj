@@ -53,6 +53,8 @@
     <Content Include="wwwroot\images\index-img.jpeg" />
     <Content Include="wwwroot\images\programing.jpeg" />
     <Content Include="wwwroot\images\User icon.png" />
+    <Content Include="wwwroot\js\AdminStatisticsFilter.js" />
+    <Content Include="wwwroot\js\GoogleChartLoader.js" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.4.337" />

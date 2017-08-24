@@ -2,11 +2,16 @@
 @inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
 @{
     ViewData["Title"] = "Admin";
+    var list = Model.AllUsers.OrderByDescending(x => x.Created).ToList();
 }
 
 <div class="navbar-allaround"></div>
 
-<div class="admin-container">
+
+
+
+
+@*<div class="admin-container">
     <div class="col-md-4 admin-col">
         <div class="admin-index-box" id="style-4">
             <h3>Godkend influencers</h3>
@@ -43,13 +48,13 @@
                     </tr>
                 </thead>
                 <tbody id="table-rows">
-                    @for (int i = 0; i < Model.AllUsers.Count; i++)
+                    @for (int i = 0; i < list.Count; i++)
                     {
-                        var isInfluencer = await (InfluencerService.IsUserInfluencerAsync(Model.AllUsers[i].Id)) ? "Influencer" : "Bruger";
-                        <tr id="@Model.AllUsers[i].Id">
+                        var isInfluencer = await (InfluencerService.IsUserInfluencerAsync(list[i].Id)) ? "Influencer" : "Bruger";
+                        <tr id="@list[i].Id">
                             <th scope="row">@i</th>
-                            <td>@Model.AllUsers[i].Name</td>
-                            <td>@Model.AllUsers[i].Email</td>
+                            <td>@list[i].Name</td>
+                            <td>@list[i].Email</td>
                             <td>@isInfluencer</td>
                         </tr>
                     }
@@ -57,7 +62,12 @@
             </table>
         </div>
     </div>
-</div>
+</div>*@
+
+
+
+
+
 
 @section Scripts{
     <script>

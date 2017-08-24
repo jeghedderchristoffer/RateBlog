@@ -12,17 +12,32 @@
             <div class="no-list-style">
                 <div asp-validation-summary="All" class="text-danger"></div>
             </div>
+
+            <h4 style="margin-top: 20px; margin-bottom: 20px; text-align: center">Er du følger eller influencer?</h4>
+            <div style="display: inline-block; width: 100%" class="center-block">
+                <div class="create-account">
+                    <input type="radio" name="isInfluencer" id="follower" value="false" />
+                    <label for="follower" number="Følger"></label>
+                </div>
+
+                <div class="create-account">
+                    <input type="radio" name="isInfluencer" id="influencer" value="true" />
+                    <label for="influencer" number="Influencer"></label>
+                </div>
+            </div>
+
+            <hr />
+
             <p style="margin-top: 20px;"> Navn </p>
-            <input asp-for="@Model.Name" class="create-profile-input" />
+            <input asp-for="@Model.Name" class="create-profile-input" placeholder="Hvad hedder du?" />
             <span asp-validation-for="@Model.Name" class="text-danger"></span>
 
-
             <p style="margin-top: 20px;">Email</p>
-            <input asp-for="@Model.Email" class="create-profile-input" />
+            <input asp-for="@Model.Email" class="create-profile-input" placeholder="Hvad er din email?" />
             <span asp-validation-for="@Model.Email" class="text-danger"></span>
 
             <p style="margin-top: 20px;">Fødselsdag</p>
-            <input asp-for="@Model.Birthday" class="create-profile-input" type="text"/>
+            <input asp-for="@Model.Birthday" class="create-profile-input" placeholder="Hvornår har du fødselsdag?" type="text"/>
             <span asp-validation-for="@Model.Birthday" class="text-danger"></span>
 
             <p style="margin-top: 20px;">Postnummer</p>

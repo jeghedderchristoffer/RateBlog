@@ -1,0 +1,315 @@
+﻿@model RateBlog.Models.AdminViewModels.InfluenterStatisticsViewModel
+@inject RateBlog.Services.IFeedbackService FeedbackService
+@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
+@inject RateBlog.Services.Interfaces.IAdminService AdminFeedbackService
+@{
+    var isInfluencer = await InfluencerService.IsUserInfluencerAsync(Model.Influenter.Id);
+}
+
+<script type="text/javascript" src="~/js/AdminStatisticsFilter.js"></script>
+
+<script type="text/javascript" src="~/js/GoogleChartLoader.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var AgeToDisplay = [];
+        var PlatformToDisplay = [];
+        var GenderToDisplay = [];
+
+
+           @foreach (var d in AdminFeedbackService.GetAgeToDisplay(Model.Influenter.Id))
+            {
+                @:AgeToDisplay.push("@d");
+            }
+
+           @foreach (var d in AdminFeedbackService.GetPlatformToDisplay(Model.Influenter.Id))
+            {
+                @:PlatformToDisplay.push("@d");
+            }
+
+           @foreach (var d in AdminFeedbackService.GetGenderToDisplay(Model.Influenter.Id))
+            {
+                @:GenderToDisplay.push("@d");
+            }
+
+
+        initialiseStatisticsFilter(
+            "@Model.Influenter.Id",
+            AgeToDisplay,
+            PlatformToDisplay,
+            GenderToDisplay
+
+        );
+       });
+</script>
+
+
+
+
+
+
+<div class="col-md-4">
+    <p></p>
+    @*Chart 1 *@
+    <div id="piechart1Platform" style="width: 300px; height: 250px;"></div>
+</div>
+<div class="col-md-4">
+    <p></p>
+    @*Chart 2 *@
+    <div id="piechart2AgeGroup" style="width: 300px; height: 250px;"></div>
+</div>
+<div class="col-md-3">
+    <p></p>
+    @*Chart 3 *@
+    <div id="piechart3Gender" style="width: 300px; height: 250px;"></div>
+</div>
+
+
+
+    <div class="col-md-1">
+        <p></p>
+    </div>
+    <div class="col-md-2">
+        <p></p>
+        <i class="fa fa-users" aria-hidden="true"></i><span id="NumberUsers"></span>
+
+    </div>
+    <div class="col-md-2">
+        <p></p>
+        <i class="fa fa-star" aria-hidden="true"></i><span id="NumberTotalScore"></span>
+
+    </div>
+    <div class="col-md-2">
+        <p></p>
+        <i class="fa fa-tachometer" aria-hidden="true"></i><span id="NumberNps"></span>
+
+
+    </div>
+    <div class="col-md-2">
+        <p></p>
+        <i class="fa fa-hourglass-o" aria-hidden="true"></i>
+
+
+    </div>
+    <div class="col-md-2">
+        <p></p>
+        <i class="fa fa-info" aria-hidden="true"></i>
+    </div>
+
+<div class="row">
+    <div class="col-md-1">
+        <p></p>
+    </div>
+    <div class="col-md-7">
+        <p></p>
+        <div id="ChartAvgRatings"></div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-5">
+        <table>
+            <tr>
+                <th colspan="2">Sidste uge</th>
+                <th>(Iforhold til ugen før)</th>
+            </tr>
+            <tr>
+                <td colspan="2"><p>Antal feedback : </p></td>
+                @if (@AdminFeedbackService.GetNumberRatingDifferenceProcentage7days(Model.Influenter.Id, 7) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetFeedbackDifferenceInRatingLast7Days(Model.Influenter.Id, 7)[0].Count() (+@AdminFeedbackService.GetNumberRatingDifferenceProcentage7days(Model.Influenter.Id, 7)%) <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetFeedbackDifferenceInRatingLast7Days(Model.Influenter.Id, 7)[0].Count() (@AdminFeedbackService.GetNumberRatingDifferenceProcentage7days(Model.Influenter.Id, 7)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Samlet score : </p></td>
+                @if (@AdminFeedbackService.GetNumberTotalAvg7daysOrProcent(Model.Influenter.Id, false, 7) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetNumberTotalAvg7daysOrProcent(Model.Influenter.Id, true, 7) (+@AdminFeedbackService.GetNumberTotalAvg7daysOrProcent(Model.Influenter.Id, false, 7)%)  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetNumberTotalAvg7daysOrProcent(Model.Influenter.Id, true, 7) (@AdminFeedbackService.GetNumberTotalAvg7daysOrProcent(Model.Influenter.Id, false, 7)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Troværdighed : </p></td>
+                @if (@AdminFeedbackService.GetNumberTroværdighedDifference7days(Model.Influenter.Id, true, 7) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetNumberTroværdighedDifference7days(Model.Influenter.Id, false, 7) (+@AdminFeedbackService.GetNumberTroværdighedDifference7days(Model.Influenter.Id, true, 7)%)  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetNumberTroværdighedDifference7days(Model.Influenter.Id, false, 7) (@AdminFeedbackService.GetNumberTroværdighedDifference7days(Model.Influenter.Id, true, 7)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Opførsel : </p></td>
+                @if (@AdminFeedbackService.GetNumberOpførselDifference7days(Model.Influenter.Id, true, 7) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetNumberOpførselDifference7days(Model.Influenter.Id, false, 7) (+@AdminFeedbackService.GetNumberOpførselDifference7days(Model.Influenter.Id, true, 7)%)  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetNumberOpførselDifference7days(Model.Influenter.Id, false, 7) (@AdminFeedbackService.GetNumberOpførselDifference7days(Model.Influenter.Id, true, 7)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Interaktion : </p></td>
+                @if (@AdminFeedbackService.GetNumberInteraktionDifference7days(Model.Influenter.Id, true, 7) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetNumberInteraktionDifference7days(Model.Influenter.Id, false, 7) (+@AdminFeedbackService.GetNumberInteraktionDifference7days(Model.Influenter.Id, true, 7)%)  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetNumberInteraktionDifference7days(Model.Influenter.Id, false, 7) (@AdminFeedbackService.GetNumberInteraktionDifference7days(Model.Influenter.Id, true, 7)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Kvalitet : </p></td>
+                @if (@AdminFeedbackService.GetNumberKvalitetDifference7days(Model.Influenter.Id, true, 7) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetNumberKvalitetDifference7days(Model.Influenter.Id, false, 7) (+@AdminFeedbackService.GetNumberKvalitetDifference7days(Model.Influenter.Id, true, 7)%)  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetNumberKvalitetDifference7days(Model.Influenter.Id, false, 7) (@AdminFeedbackService.GetNumberKvalitetDifference7days(Model.Influenter.Id, true, 7)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Unik feedback :</p></td>
+                @if ((AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 7, 0) - AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 7, 1)) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 7, 0) (+@(AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 7, 0) - AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 7, 1)))  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 7, 0) (@(AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 7, 0) - AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 7, 1)))  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Tilbagevendende feedback:</p></td>
+                @if ((AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 7, 0) - AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 7, 1)) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 7, 0) (+@(AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 7, 0) - AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 7, 1)))  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 7, 0) (@(AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 7, 0) - AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 7, 1)))  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+
+
+        </table>
+
+    </div>
+
+
+
+    <div class="col-md-5">
+        <table>
+            <tr>
+                <th colspan="2">Sidste Måned</th>
+                <th>(Iforhold til Måneden før)</th>
+            </tr>
+            <tr>
+                <td colspan="2"><p>Antal feedback : </p></td>
+                @if (@AdminFeedbackService.GetNumberRatingDifferenceProcentage7days(Model.Influenter.Id, 30) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetFeedbackDifferenceInRatingLast7Days(Model.Influenter.Id, 30)[0].Count() (+@AdminFeedbackService.GetNumberRatingDifferenceProcentage7days(Model.Influenter.Id, 30)%) <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetFeedbackDifferenceInRatingLast7Days(Model.Influenter.Id, 30)[0].Count() (@AdminFeedbackService.GetNumberRatingDifferenceProcentage7days(Model.Influenter.Id, 30)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Samlet score : </p></td>
+                @if (@AdminFeedbackService.GetNumberTotalAvg7daysOrProcent(Model.Influenter.Id, false, 30) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetNumberTotalAvg7daysOrProcent(Model.Influenter.Id, true, 30) (+@AdminFeedbackService.GetNumberTotalAvg7daysOrProcent(Model.Influenter.Id, false, 30)%)  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetNumberTotalAvg7daysOrProcent(Model.Influenter.Id, true, 30) (@AdminFeedbackService.GetNumberTotalAvg7daysOrProcent(Model.Influenter.Id, false, 30)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Troværdighed : </p></td>
+                @if (@AdminFeedbackService.GetNumberTroværdighedDifference7days(Model.Influenter.Id, true, 30) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetNumberTroværdighedDifference7days(Model.Influenter.Id, false, 30) (+@AdminFeedbackService.GetNumberTroværdighedDifference7days(Model.Influenter.Id, true, 30)%)  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetNumberTroværdighedDifference7days(Model.Influenter.Id, false, 30) (@AdminFeedbackService.GetNumberTroværdighedDifference7days(Model.Influenter.Id, true, 30)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Opførsel : </p></td>
+                @if (@AdminFeedbackService.GetNumberOpførselDifference7days(Model.Influenter.Id, true, 30) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetNumberOpførselDifference7days(Model.Influenter.Id, false, 30) (+@AdminFeedbackService.GetNumberOpførselDifference7days(Model.Influenter.Id, true, 30)%)  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetNumberOpførselDifference7days(Model.Influenter.Id, false, 30) (@AdminFeedbackService.GetNumberOpførselDifference7days(Model.Influenter.Id, true, 30)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Interaktion : </p></td>
+                @if (@AdminFeedbackService.GetNumberInteraktionDifference7days(Model.Influenter.Id, true, 30) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetNumberInteraktionDifference7days(Model.Influenter.Id, false, 30) (+@AdminFeedbackService.GetNumberInteraktionDifference7days(Model.Influenter.Id, true, 30)%)  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetNumberInteraktionDifference7days(Model.Influenter.Id, false, 30) (@AdminFeedbackService.GetNumberInteraktionDifference7days(Model.Influenter.Id, true, 30)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Kvalitet : </p></td>
+                @if (@AdminFeedbackService.GetNumberKvalitetDifference7days(Model.Influenter.Id, true, 30) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.GetNumberKvalitetDifference7days(Model.Influenter.Id, false, 30) (+@AdminFeedbackService.GetNumberKvalitetDifference7days(Model.Influenter.Id, true, 30)%)  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.GetNumberKvalitetDifference7days(Model.Influenter.Id, false, 30) (@AdminFeedbackService.GetNumberKvalitetDifference7days(Model.Influenter.Id, true, 30)%)  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Unik feedback :</p></td>
+                @if ((AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 30, 0) - AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 30, 1)) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 30, 0) (+@(AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 30, 0) - AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 30, 1)))  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 30, 0) (@(AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 30, 0) - AdminFeedbackService.UniqeUsersComparedToDays(Model.Influenter.Id, 30, 1)))  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2"><p>Tilbagevendende feedback:</p></td>
+                @if ((AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 30, 0) - AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 30, 1)) >= 0)
+                {
+                    <td><p style="color:green">@AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 30, 0) (+@(AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 30, 0) - AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 30, 1)))  <i class="fa fa-caret-up" aria-hidden="true"></i></p></td>
+                }
+                else
+                {
+                    <td><p style="color:red">@AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 30, 0) (@(AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 30, 0) - AdminFeedbackService.ReturningUsersComparedToDays(Model.Influenter.Id, 30, 1)))  <i class="fa fa-caret-down" aria-hidden="true"></i></p></td>
+                }
+            </tr>
+
+
+        </table>
+
+    </div>
+
+
+</div>

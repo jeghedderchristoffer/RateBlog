@@ -452,97 +452,6 @@ namespace RateBlog.Controllers
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> EditInfluenterProfile(EditProfileViewModel model)
-        //{
-        //    var user = await _userManager.GetUserAsync(User);
-        //    var influencer = _influencerRepo.Get(user.Id); 
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        user.Email = model.Email;
-        //        user.UserName = model.Email;
-        //        user.Name = model.Name;
-        //        user.BirthDay = model.Birthday.Value;
-        //        user.Postnummer = model.Postnummer.Value;
-        //        user.PhoneNumber = model.PhoneNumber;
-        //        user.ProfileText = model.ProfileText;
-        //        user.Gender = model.Gender; 
-
-        //        if (model.ProfilePic != null)
-        //        {
-        //            MemoryStream ms = new MemoryStream();
-        //            model.ProfilePic.OpenReadStream().CopyTo(ms);
-        //            user.ProfilePicture = ms.ToArray();
-        //        }
-
-        //        var result = await _userManager.UpdateAsync(user);
-
-        //        if (result.Succeeded != true)
-        //        {
-        //            TempData["Error"] = "Der findes allerede en bruger med denne email!";
-        //            return RedirectToAction("Edit", model);
-        //        }
-
-        //        // Add if influenterId is null
-        //        if (influencer == null)
-        //        {
-        //            var newInfluenter = new Influencer();
-        //            newInfluenter.Id = user.Id; 
-        //            newInfluenter.Alias = model.Influenter.Alias;
-        //            _influencerRepo.Add(newInfluenter);
-        //            influencer = newInfluenter; 
-        //        }
-        //        else
-        //        {
-        //            influencer.Alias = model.Influenter.Alias;
-        //            _influencerRepo.Update(influencer);
-        //        }
-
-        //        // Indsætter links og platforme, hvis de ikke er null. Koden skal nok laves om...
-
-        //        _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id, model.YoutubeLink);
-        //        _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id, model.FacebookLink);
-        //        _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Instagram").Id, model.InstagramLink);
-        //        _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SnapChat").Id, model.SnapchatLink);
-        //        _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitter").Id, model.TwitterLink);
-        //        _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Website").Id, model.WebsiteLink);
-        //        _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitch").Id, model.TwitchLink);
-
-
-        //        // Insætter kategori
-        //        foreach (var v in model.IKList)
-        //        {
-        //            _platformCategoryService.InsertCategory(influencer.Id, _categoryRepo.GetAll().SingleOrDefault(x => x.Name == v.KategoriNavn).Id, v.IsSelected);
-        //        }
-
-        //        if (result.Succeeded)
-        //        {
-        //            TempData["Success"] = "Din profil blev opdateret!";
-        //            return RedirectToAction("Edit");
-        //        }
-
-        //        TempData["Error"] = "Der findes allerede en bruger med denne email!";
-        //        return RedirectToAction("Edit", model);
-        //    }
-
-        //    if (ModelState["ProfilePic"] != null)
-        //    {
-        //        IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-        //        var message = allErrors.First();
-        //        TempData["Error"] = message.ErrorMessage;
-        //    }
-        //    else
-        //    {
-        //        IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-        //        var message = allErrors.First();
-        //        TempData["Error"] = message.ErrorMessage;
-        //    }
-
-
-        //    return RedirectToAction("Edit", model);
-        //}
-
         [HttpGet]
         public async Task<IActionResult> Influencer()
         {
@@ -556,6 +465,7 @@ namespace RateBlog.Controllers
                 {
                     ApplicationUser = user,
                     Alias = influencer.Alias,
+                    SecoundYoutubeLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SecondYouTube").Id),
                     YoutubeLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "YouTube").Id),
                     FacebookLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Facebook").Id),
                     InstagramLink = _platformCategoryService.GetPlatformLink(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Instagram").Id),
@@ -605,7 +515,7 @@ namespace RateBlog.Controllers
                 _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitter").Id, model.TwitterLink);
                 _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Website").Id, model.WebsiteLink);
                 _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "Twitch").Id, model.TwitchLink);
-
+                _platformCategoryService.InsertPlatform(influencer.Id, _platformRepo.GetAll().SingleOrDefault(x => x.Name == "SecondYouTube").Id, model.SecoundYoutubeLink);
 
                 // Insætter kategori
                 foreach (var v in model.IKList)

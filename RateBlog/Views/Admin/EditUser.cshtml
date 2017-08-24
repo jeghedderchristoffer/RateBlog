@@ -35,19 +35,19 @@
 
                     <p>Køn</p>
                     <label>
-                        <input asp-for="@Model.ApplicationUser.Gender" class="w3-radio" type="radio" name="gender" value="male">
+                        <input asp-for="@Model.ApplicationUser.Gender" class="w3-radio" type="radio" value="male">
                         Mand
                     </label>
                     <br />
 
                     <label>
-                        <input asp-for="@Model.ApplicationUser.Gender" class="w3-radio" type="radio" name="gender" value="female">
+                        <input asp-for="@Model.ApplicationUser.Gender" class="w3-radio" type="radio" value="female">
                         Kvinde
                     </label>
                     <br /><br />
 
                     <p>Profilbillede:</p>
-                    <input type="file" name="ProfilePic" asp-for="@Model.ApplicationUser.ProfilePicture" />
+                    <input type="file" name="pic" />
                     <br />
 
                     <p>Profiltekst:</p>

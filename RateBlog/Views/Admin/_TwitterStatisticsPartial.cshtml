@@ -1,0 +1,9 @@
+﻿@model RateBlog.Models.AdminViewModels.InfluenterStatisticsViewModel
+@inject RateBlog.Services.IFeedbackService FeedbackService
+@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
+@inject RateBlog.Services.Interfaces.IAdminService AdminFeedbackService
+@{
+    var isInfluencer = await InfluencerService.IsUserInfluencerAsync(Model.Influenter.Id);
+}
+
+Twitter Stats Not Implementted Yet

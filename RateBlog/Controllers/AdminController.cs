@@ -26,8 +26,10 @@ namespace RateBlog.Controllers
         private readonly IPlatformCategoryService _platformCategoryService;
         private readonly IRepository<Platform> _platformRepo;
         private readonly IRepository<Category> _categoryRepo;
+        private readonly IRepository<Feedback> _feedbackRepo;
+        private readonly IAdminService _adminService;
 
-        public AdminController(IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IEmailSender emailSender, UserManager<ApplicationUser> userManager, IInfluencerService influencerService, IRepository<Influencer> influencerRepo, IPlatformCategoryService platformCategoryService)
+        public AdminController(IAdminService adminService, IRepository<Feedback> feedbackRepo, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IEmailSender emailSender, UserManager<ApplicationUser> userManager, IInfluencerService influencerService, IRepository<Influencer> influencerRepo, IPlatformCategoryService platformCategoryService)
         {
             _userManager = userManager;
             _influencerService = influencerService;
@@ -35,7 +37,9 @@ namespace RateBlog.Controllers
             _emailSender = emailSender;
             _platformCategoryService = platformCategoryService;
             _platformRepo = platformRepo;
-            _categoryRepo = categoryRepo; 
+            _categoryRepo = categoryRepo;
+            _feedbackRepo = feedbackRepo;
+            _adminService = adminService;
         }
 
         [HttpGet]
@@ -182,7 +186,7 @@ namespace RateBlog.Controllers
                 }
             }
 
-            return View(model);
+            return RedirectToAction("UserProfile", new { id = user.Id });
         }
 
         [HttpPost]
@@ -196,6 +200,112 @@ namespace RateBlog.Controllers
             else
                 return RedirectToAction("UserProfile", "Admin", new { id = id });
         }
+
+        public IActionResult Feedback(string id)
+        {
+            var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
+            var influencer = _influencerRepo.Get(id);
+            List<Feedback> feedbackList = new List<Feedback>(); 
+
+            if(influencer == null)
+            {
+                feedbackList.AddRange(_feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id));
+            }
+            else
+            {
+                feedbackList.AddRange(_feedbackRepo.GetAll().Where(x => x.InfluenterId == influencer.Id));
+            }
+
+            var model = new FeedbackViewModel()
+            {
+                ApplicationUser = user, 
+                Influencer = influencer, 
+                Feedbacks = feedbackList
+            };
+
+            return View(model); 
+        }
+
+        [HttpPost]
+        public IActionResult EditFeedback(Feedback feedback, string id, string feedbackId)
+        {
+            var editFeedback = _feedbackRepo.Get(feedbackId);
+            editFeedback.FeedbackGood = feedback.FeedbackGood;
+            editFeedback.FeedbackBetter = feedback.FeedbackBetter;
+            editFeedback.Answer = feedback.Answer; 
+            _feedbackRepo.Update(editFeedback);
+
+            return RedirectToAction("Feedback", new { id = id });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteFeedback(string id, string feedbackId)
+        {
+            var editFeedback = _feedbackRepo.Get(feedbackId);
+            _feedbackRepo.Delete(editFeedback);
+
+            return RedirectToAction("Feedback", new { id = id });
+        }
+
+        [HttpGet]
+        public IActionResult InfluenterStatistics(string id)
+        {
+            var getTheInfluenter = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            var listOfRatingsByTheInfluenter = _feedbackRepo.GetAll().Where(x => x.InfluenterId == getTheInfluenter.Id).ToList();
+
+            var StatisticVm = new InfluenterStatisticsViewModel()
+            {
+                Influenter = getTheInfluenter,
+                InfluentersFeedbacks = listOfRatingsByTheInfluenter
+            };
+            return View(StatisticVm);
+        }
+
+
+        public PartialViewResult InfluenterStatisticsBfStats(string id)
+        {
+            var getTheInfluenter = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            var listOfRatingsByTheInfluenter = _feedbackRepo.GetAll().Where(x => x.InfluenterId == getTheInfluenter.Id).ToList();
+
+            var StatisticVm = new InfluenterStatisticsViewModel()
+            {
+                Influenter = getTheInfluenter,
+                InfluentersFeedbacks = listOfRatingsByTheInfluenter
+            };
+            return PartialView("/Views/Admin/_BfStatisticsPartial.cshtml", StatisticVm);
+        }
+
+        public PartialViewResult InfluenterStatisticsTwitterStats(string id)
+        {
+            var getTheInfluenter = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            var listOfRatingsByTheInfluenter = _feedbackRepo.GetAll().Where(x => x.InfluenterId == getTheInfluenter.Id).ToList();
+
+            var StatisticVm = new InfluenterStatisticsViewModel()
+            {
+                Influenter = getTheInfluenter,
+                InfluentersFeedbacks = listOfRatingsByTheInfluenter
+            };
+            return PartialView("/Views/Admin/_TwitterStatisticsPartial.cshtml", StatisticVm);
+        }
+
+        public JsonResult PostFilter(AdminAjaxFilterViewMode data)
+        {
+            var feedAndUser = _adminService.GetTheFilterdFeedbacks(data.Id, data.Platform, data.AgeGroup, data.Gender);
+
+            var ResultData = new StatisticsFilteredDataViewModel()
+            {
+                FilterdNumberOfUsers = _adminService.GetFilterdUniqueUsers(feedAndUser),
+                FilterdNumberOfFeedbacks = _adminService.GetNumberFeedback(feedAndUser),
+                FilterdTroværdighed = _adminService.GetAverageTroværdighedForFiltered(feedAndUser),
+                FilterdKvalitet = _adminService.GetAverageKvalitetForFiltered(feedAndUser),
+                FilterdInteraktion = _adminService.GetAverageInteraktionForFiltered(feedAndUser),
+                FilterdOpførsel = _adminService.GetAverageOpførelseForFiltered(feedAndUser),
+                FilterdNps = _adminService.GetNpsForFilter(feedAndUser)
+            };
+
+            return Json(ResultData);
+        }
+
 
 
         private List<InfluenterKategoriViewModel> GetInfluenterKategoriList(string id)

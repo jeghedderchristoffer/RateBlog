@@ -177,7 +177,9 @@ $(document).ready(function () {
         TwitchInput = $("#editTwitch"),
         TwitchText = $("#editTwitchText"),
         WebsiteInput = $("#editWebsite"),
-        WebsiteText = $("#editWebsiteText");
+        WebsiteText = $("#editWebsiteText"),
+        SecondYoutubeInput = $("#editSecondYoutube"),
+        SecondYoutubeText = $("#editSecondYoutubeText");
 
     if (FacebookInput.val() !== "") {
         FacebookText.text($("#editFacebook").val());
@@ -189,6 +191,10 @@ $(document).ready(function () {
 
     if (YoutubeInput.val() !== "") {
         YoutubeText.text(YoutubeInput.val());
+    }
+
+    if (SecondYoutubeInput.val() !== "") {
+        SecondYoutubeText.text(SecondYoutubeInput.val());
     }
 
     if (SnapchatInput.val() !== "") {
@@ -233,6 +239,10 @@ $(document).ready(function () {
 
     YoutubeInput.keyup(function () {
         YoutubeText.text(YoutubeInput.val());
+    });
+
+    SecondYoutubeInput.keyup(function () {
+        SecondYoutubeText.text(SecondYoutubeInput.val());
     });
 
 });
