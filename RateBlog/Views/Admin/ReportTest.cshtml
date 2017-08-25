@@ -1,0 +1,15 @@
+﻿@model RateBlog.Models.AdminViewModels.ReportFeedbackViewModel
+
+<div class="navbar-allaround"></div>
+
+@foreach(var v in Model.ReportFeedbacks)
+{
+    <p>id @v.Id</p>
+    <p>is read @v.IsRead</p>
+    <p>Languse @v.LanguageUse</p>
+    <p>Other @v.Other</p>
+    <p>FeedId @v.FeedbackId</p>
+
+    <p>UserId @v.ApplicationUserId</p>
+
+}

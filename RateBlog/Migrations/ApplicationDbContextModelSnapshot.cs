@@ -8,10 +8,9 @@ using RateBlog.Data;
 namespace RateBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170817131548_updatedFeedb")]
-    partial class updatedFeedb
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -131,6 +130,8 @@ namespace RateBlog.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<DateTime>("BirthDay");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -150,6 +151,8 @@ namespace RateBlog.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
                     b.Property<string>("Name");
+
+                    b.Property<bool>("NewsLetter");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -171,12 +174,12 @@ namespace RateBlog.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<DateTime>("TermsAndConditions");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
-
-                    b.Property<int>("Year");
 
                     b.HasKey("Id");
 
@@ -312,6 +315,37 @@ namespace RateBlog.Migrations
                     b.ToTable("Platform");
                 });
 
+            modelBuilder.Entity("RateBlog.Models.ReportFeedback", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200);
+
+                    b.Property<bool>("Discrimination");
+
+                    b.Property<string>("FeedbackId");
+
+                    b.Property<bool>("IsRead");
+
+                    b.Property<bool>("LanguageUse");
+
+                    b.Property<bool>("Other");
+
+                    b.Property<bool>("Spam");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("FeedbackId");
+
+                    b.ToTable("ReportFeedback");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
@@ -393,6 +427,17 @@ namespace RateBlog.Migrations
                         .WithMany("InfluenterPlatform")
                         .HasForeignKey("PlatformId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("RateBlog.Models.ReportFeedback", b =>
+                {
+                    b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("RateBlog.Models.Feedback", "Feedback")
+                        .WithMany()
+                        .HasForeignKey("FeedbackId");
                 });
         }
     }

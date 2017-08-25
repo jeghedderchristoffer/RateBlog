@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace RateBlog.Migrations
 {
-    public partial class initt : Migration
+    public partial class _13dsa : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,25 +43,29 @@ namespace RateBlog.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
+                    BirthDay = table.Column<DateTime>(nullable: false),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Created = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     Gender = table.Column<string>(nullable: true),
+                    LastLogin = table.Column<DateTime>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     Name = table.Column<string>(nullable: true),
+                    NewsLetter = table.Column<bool>(nullable: false),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     PasswordHash = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    Postnummer = table.Column<int>(nullable: true),
+                    Postnummer = table.Column<int>(nullable: false),
                     ProfilePicture = table.Column<byte[]>(nullable: true),
                     ProfileText = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
+                    TermsAndConditions = table.Column<DateTime>(nullable: false),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Year = table.Column<int>(nullable: true)
+                    UserName = table.Column<string>(maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -204,6 +208,7 @@ namespace RateBlog.Migrations
                     Id = table.Column<string>(nullable: false),
                     Anbefaling = table.Column<int>(nullable: false),
                     Answer = table.Column<string>(nullable: true),
+                    AnswerDateTime = table.Column<DateTime>(nullable: false),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     BasedOnFacebook = table.Column<bool>(nullable: false),
                     BasedOnInstagram = table.Column<bool>(nullable: false),
@@ -237,7 +242,7 @@ namespace RateBlog.Migrations
                         column: x => x.InfluenterId,
                         principalTable: "Influencer",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -287,6 +292,37 @@ namespace RateBlog.Migrations
                         principalTable: "Platform",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReportFeedback",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(maxLength: 200, nullable: true),
+                    Discrimination = table.Column<bool>(nullable: false),
+                    FeedbackId = table.Column<string>(nullable: true),
+                    IsRead = table.Column<bool>(nullable: false),
+                    LanguageUse = table.Column<bool>(nullable: false),
+                    Other = table.Column<bool>(nullable: false),
+                    Spam = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportFeedback", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReportFeedback_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ReportFeedback_Feedback_FeedbackId",
+                        column: x => x.FeedbackId,
+                        principalTable: "Feedback",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -345,6 +381,16 @@ namespace RateBlog.Migrations
                 name: "IX_InfluencerPlatform_PlatformId",
                 table: "InfluencerPlatform",
                 column: "PlatformId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReportFeedback_ApplicationUserId",
+                table: "ReportFeedback",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReportFeedback_FeedbackId",
+                table: "ReportFeedback",
+                column: "FeedbackId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -365,13 +411,13 @@ namespace RateBlog.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Feedback");
-
-            migrationBuilder.DropTable(
                 name: "InfluencerCategory");
 
             migrationBuilder.DropTable(
                 name: "InfluencerPlatform");
+
+            migrationBuilder.DropTable(
+                name: "ReportFeedback");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -380,10 +426,13 @@ namespace RateBlog.Migrations
                 name: "Category");
 
             migrationBuilder.DropTable(
-                name: "Influencer");
+                name: "Platform");
 
             migrationBuilder.DropTable(
-                name: "Platform");
+                name: "Feedback");
+
+            migrationBuilder.DropTable(
+                name: "Influencer");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

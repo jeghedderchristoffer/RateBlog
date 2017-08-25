@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RateBlog.Models;
 using RateBlog.Models.AdminViewModels;
+using RateBlog.Models.InfluenterViewModels;
 using RateBlog.Models.ManageViewModels;
 using RateBlog.Repository;
 using RateBlog.Services;
@@ -28,8 +29,9 @@ namespace RateBlog.Controllers
         private readonly IRepository<Category> _categoryRepo;
         private readonly IRepository<Feedback> _feedbackRepo;
         private readonly IAdminService _adminService;
+        private readonly IRepository<ReportFeedback> _reportfeedRepo;
 
-        public AdminController(IAdminService adminService, IRepository<Feedback> feedbackRepo, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IEmailSender emailSender, UserManager<ApplicationUser> userManager, IInfluencerService influencerService, IRepository<Influencer> influencerRepo, IPlatformCategoryService platformCategoryService)
+        public AdminController(IAdminService adminService, IRepository<Feedback> feedbackRepo, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IEmailSender emailSender, UserManager<ApplicationUser> userManager, IInfluencerService influencerService, IRepository<Influencer> influencerRepo, IPlatformCategoryService platformCategoryService, IRepository<ReportFeedback> reportfeedRepo)
         {
             _userManager = userManager;
             _influencerService = influencerService;
@@ -40,6 +42,7 @@ namespace RateBlog.Controllers
             _categoryRepo = categoryRepo;
             _feedbackRepo = feedbackRepo;
             _adminService = adminService;
+            _reportfeedRepo = reportfeedRepo;
         }
 
         [HttpGet]
@@ -150,7 +153,7 @@ namespace RateBlog.Controllers
             user.Postnummer = model.ApplicationUser.Postnummer;
             user.Gender = model.ApplicationUser.Gender;
             user.PhoneNumber = model.ApplicationUser.PhoneNumber;
-            user.ProfileText = model.ApplicationUser.ProfileText; 
+            user.ProfileText = model.ApplicationUser.ProfileText;
 
             if (pic != null)
             {
@@ -163,7 +166,7 @@ namespace RateBlog.Controllers
 
             if (model.Influencer != null)
             {
-                var influencer = _influencerRepo.Get(model.ApplicationUser.Id); 
+                var influencer = _influencerRepo.Get(model.ApplicationUser.Id);
 
                 influencer.Alias = model.Influencer.Alias;
                 _influencerRepo.Update(influencer);
@@ -205,9 +208,9 @@ namespace RateBlog.Controllers
         {
             var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
             var influencer = _influencerRepo.Get(id);
-            List<Feedback> feedbackList = new List<Feedback>(); 
+            List<Feedback> feedbackList = new List<Feedback>();
 
-            if(influencer == null)
+            if (influencer == null)
             {
                 feedbackList.AddRange(_feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id));
             }
@@ -218,12 +221,12 @@ namespace RateBlog.Controllers
 
             var model = new FeedbackViewModel()
             {
-                ApplicationUser = user, 
-                Influencer = influencer, 
+                ApplicationUser = user,
+                Influencer = influencer,
                 Feedbacks = feedbackList
             };
 
-            return View(model); 
+            return View(model);
         }
 
         [HttpPost]
@@ -232,7 +235,7 @@ namespace RateBlog.Controllers
             var editFeedback = _feedbackRepo.Get(feedbackId);
             editFeedback.FeedbackGood = feedback.FeedbackGood;
             editFeedback.FeedbackBetter = feedback.FeedbackBetter;
-            editFeedback.Answer = feedback.Answer; 
+            editFeedback.Answer = feedback.Answer;
             _feedbackRepo.Update(editFeedback);
 
             return RedirectToAction("Feedback", new { id = id });
@@ -331,5 +334,42 @@ namespace RateBlog.Controllers
                 return new List<InfluenterKategoriViewModel>();
             }
         }
+
+
+        [AllowAnonymous]
+        public IActionResult ReportTest()
+        {
+            var reportFeeds = _reportfeedRepo.GetAll().ToList();
+
+            var themodel = new ReportFeedbackViewModel
+            {
+                ReportFeedbacks = reportFeeds
+
+            };
+
+            return View(themodel);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult ReportTest(ReportFeedback newFeedback)
+        {
+            _reportfeedRepo.Add(newFeedback);
+            
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public JsonResult ReportFeedbackJson(ReportFeedback newFeedback)
+        {
+            _reportfeedRepo.Add(newFeedback);
+            return Json(newFeedback);
+        }
+
+
+
+
+
     }
 }

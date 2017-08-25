@@ -84,6 +84,8 @@ namespace RateBlog
             services.AddTransient<ISortService, SortService>();
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IRepository<ReportFeedback>, Repository<ReportFeedback>>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
