@@ -7,16 +7,29 @@
 
 <div class="navbar-allaround"></div>
 
+@Html.Partial("_NavbarPartial")
 
-
-
-
-@*<div class="admin-container">
+<div id="indexContent" style="background: #fafafa;" class="admin-content">
     <div class="col-md-4 admin-col">
-        <div class="admin-index-box" id="style-4">
+        <div class="admin-index-box" id="style-4" style="height: calc(50vh - 92px)">
             <h3>Godkend influencers</h3>
 
-            <div id="approveInfluencers" style="height: 90%;">
+            <div id="approveInfluencers">
+                <ul>
+                    @foreach (var v in Model.InfluencerApprovedList)
+                    {
+                        <li><a asp-controller="Admin" asp-action="UserProfile" asp-route-id="@v.Id">@v.Name</a></li>
+                    }
+
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="admin-index-box" id="style-4" style="height: calc(50vh - 95px); margin-top: 40px">
+            <h3>Anmeldelser</h3>
+
+            <div id="approveInfluencers">
                 <ul>
                     @foreach (var v in Model.InfluencerApprovedList)
                     {
@@ -62,7 +75,95 @@
             </table>
         </div>
     </div>
-</div>*@
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<div class="admin-container">
+        <div class="col-md-4 admin-col">
+            <div class="admin-index-box" id="style-4">
+                <h3>Godkend influencers</h3>
+
+                <div id="approveInfluencers" style="height: 90%;">
+                    <ul>
+                        @foreach (var v in Model.InfluencerApprovedList)
+                        {
+                            <li><a asp-controller="Admin" asp-action="UserProfile" asp-route-id="@v.Id">@v.Name</a></li>
+                        }
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-8 admin-col">
+            <div class="admin-index-box" style="padding-top: 15px;" id="style-4">
+                <form method="get" asp-area="" asp-controller="Admin" asp-action="Index" class="form-inline center-block">
+                    <div class="input-group" style="width: 100%;">
+                        <input autocomplete="off" type="text" name="search" id="search" style="border: 1px solid #ddd" class="form-control admin-search-input" placeholder="Søg på influencers eller brugere" />
+                        <div class="input-group-btn" style="width: 1px;">
+                            <button class="btn admin-search-button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <table class="table table-hover" style="margin-top: 10px;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Fulde Navn</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-rows">
+                        @for (int i = 0; i < list.Count; i++)
+                        {
+                            var isInfluencer = await (InfluencerService.IsUserInfluencerAsync(list[i].Id)) ? "Influencer" : "Bruger";
+                            <tr id="@list[i].Id">
+                                <th scope="row">@i</th>
+                                <td>@list[i].Name</td>
+                                <td>@list[i].Email</td>
+                                <td>@isInfluencer</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>*@
 
 
 

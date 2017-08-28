@@ -18,6 +18,8 @@ namespace RateBlog.Models.ManageViewModels
 
         public bool BrowserRemembered { get; set; }
 
+        public ApplicationUser ApplicationUser { get; set; } 
+
         public int Age { get; set; } 
 
         public string Gender { get; set; }

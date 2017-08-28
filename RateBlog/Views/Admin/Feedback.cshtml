@@ -1,6 +1,7 @@
 ﻿@model RateBlog.Models.AdminViewModels.FeedbackViewModel
-@inject RateBlog.Repository.IRepository<Influencer> InfluencerRepo
+@inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
 @inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Services.IFeedbackService FeedbackService
 @{
     ViewData["Title"] = "Admin feedback";
 }
@@ -8,65 +9,161 @@
 
 <div class="navbar-allaround"></div>
 
-<div class="container">
-    <h2>@Model.ApplicationUser.Name's feedbacks</h2>
-    <hr />
+@Html.Partial("_NavbarPartial")
 
 
-    @foreach (var feedback in Model.Feedbacks.OrderByDescending(x => x.FeedbackDateTime))
-    {
+<div class="admin-content" style="background: #fafafa">
+    <div class="container">
+        <h2>@Model.ApplicationUser.Name's feedbacks</h2>
+        <hr />
 
-        <div class="col-md-12 admin-feedback-container noPadding">
-            <div class="col-md-10">
-                <h4><b>Feedback til:</b> @InfluencerRepo.Get(feedback.InfluenterId).Alias</h4>
-                <h5><b>Fra: </b>@UserManager.Users.SingleOrDefault(x => x.Id == feedback.ApplicationUserId).Name </h5>
-                <h5>@String.Format("{0:dd/MM/yyyy}", feedback.FeedbackDateTime)</h5>
-            </div>
-            <div class="col-md-2">
-                <form asp-controller="Admin" asp-action="DeleteFeedback">
-                    <input type="hidden" name="id" value="@Model.ApplicationUser.Id" />
-                    <input type="hidden" name="feedbackId" value="@feedback.Id" />
-                    <input class="btn btn-danger" value="SLET" type="submit" style="width: 100%; max-width: 100%; margin-top: 27px" />
-                </form>
-            </div>
-            <hr />
-            <div class="col-md-12" style="border-top: 1px solid #888">
-                <div class="col-md-8 noPadding">
-                    <form asp-controller="Admin" asp-action="EditFeedback">
+        @foreach (var v in Model.Feedbacks.OrderByDescending(x => x.FeedbackDateTime))
+        {
+            <a asp-controller="Admin" asp-action="EditFeedback" asp-route-id="@v.Id" style="color: #000">
+                <div class="col-md-12 noPadding profile-box">
+                    <div class="profile-follower-ratings">
+                        <div class="col-md-2 noPadding">
+
+                            <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
+
+                        </div>
+                        <div class="col-md-10">
+                            <div class="visible-xs text-center">
+                                <h4>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</h4>
+                                <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
+                                <br />
+                            </div>
+                            <div class="influencer-read-stars">
+                                <div class="show-rating">
+                                    <div class="show-rating-front">
+                                        @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
+                                        {
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        }
+                                    </div>
+                                    <div class="show-rating-back">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hidden-xs">
+                                <h4>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</h4>
+                                <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
+                            </div>
+
+                            <br />
+                        </div>
+
+                        <div class="col-md-offset-2 col-md-10">
+                            <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes godt om følgende:</b></p>
+                            <p style="white-space: pre-line">@v.FeedbackGood</p>
+                            <br />
+                            <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes følgende kan forbedres:</b></p>
+                            <p style="white-space: pre-line">@v.FeedbackBetter</p>
+                        </div>
+
+
+                        @if (v.Answer != null)
+                        {
+                            <div class="col-md-12 noPadding">
+                                <hr />
+
+                                <div class="col-md-2 noPadding">
+
+                                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.InfluenterId })" />
+
+                                </div>
+
+                                <div class="col-md-10">
+                                    <div class="hidden-xs">
+                                        <h4>@InfluencerRepo.Get(v.InfluenterId).Alias</h4>
+                                        <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.AnswerDateTime)</p>
+                                    </div>
+                                    <div class="visible-xs text-center">
+                                        <h4>@InfluencerRepo.Get(v.InfluenterId).Alias</h4>
+                                        <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.AnswerDateTime)</p>
+                                    </div>
+                                    <br />
+                                    <p><b>@InfluencerRepo.Get(v.InfluenterId).Alias har svaret på feedbacken:</b></p>
+                                    <p style="white-space: pre-line">@v.Answer</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </a>
+        }
+
+    </div>
+</div>
+
+
+
+
+
+@*<div class="container">
+        <h2>@Model.ApplicationUser.Name's feedbacks</h2>
+        <hr />
+
+
+        @foreach (var feedback in Model.Feedbacks.OrderByDescending(x => x.FeedbackDateTime))
+        {
+
+            <div class="col-md-12 admin-feedback-container noPadding">
+                <div class="col-md-10">
+                    <h4><b>Feedback til:</b> @InfluencerRepo.Get(feedback.InfluenterId).Alias</h4>
+                    <h5><b>Fra: </b>@UserManager.Users.SingleOrDefault(x => x.Id == feedback.ApplicationUserId).Name </h5>
+                    <h5>@String.Format("{0:dd/MM/yyyy}", feedback.FeedbackDateTime)</h5>
+                </div>
+                <div class="col-md-2">
+                    <form asp-controller="Admin" asp-action="DeleteFeedback">
                         <input type="hidden" name="id" value="@Model.ApplicationUser.Id" />
                         <input type="hidden" name="feedbackId" value="@feedback.Id" />
-                        <h4><b>Hvad gøres der godt:</b></h4>
-                        <div class="textarea-container" style="padding: 0; height: 100px;">
-                            <textarea asp-for="@feedback.FeedbackGood"></textarea>
-                        </div>
-
-                        <h4><b>Hvad kan der gøres bedre:</b></h4>
-                        <div class="textarea-container" style="padding: 0; height: 100px;">
-                            <textarea asp-for="@feedback.FeedbackBetter"></textarea>
-                        </div>
-
-                        <h4><b>Svar:</b></h4>
-                        <div class="textarea-container" style="padding: 0; height: 100px;">
-                            <textarea asp-for="@feedback.Answer"></textarea>
-                        </div>
-                        <input class="btn btn-primary" value="GEM" type="submit" style="width: 100%; max-width: 100%; margin-top: 20px; margin-bottom: 20px;" />
+                        <input class="btn btn-danger" value="SLET" type="submit" style="width: 100%; max-width: 100%; margin-top: 27px" />
                     </form>
                 </div>
-                <div class="col-md-4">
-                    <h4><b>Score:</b></h4>
-                    <hr />
-                    <h4>Kvalitet: <span class="pull-right">@feedback.Kvalitet</span></h4>
-                    <hr />
-                    <h4>Troværdighed: <span class="pull-right">@feedback.Troværdighed</span></h4>
-                    <hr />
-                    <h4>Opførsel: <span class="pull-right">@feedback.Opførsel</span></h4>
-                    <hr />
-                    <h4>Interaktion: <span class="pull-right">@feedback.Interaktion</span></h4>
-                    <hr />
+                <hr />
+                <div class="col-md-12" style="border-top: 1px solid #888">
+                    <div class="col-md-8 noPadding">
+                        <form asp-controller="Admin" asp-action="EditFeedback">
+                            <input type="hidden" name="id" value="@Model.ApplicationUser.Id" />
+                            <input type="hidden" name="feedbackId" value="@feedback.Id" />
+                            <h4><b>Hvad gøres der godt:</b></h4>
+                            <div class="textarea-container" style="padding: 0; height: 100px;">
+                                <textarea asp-for="@feedback.FeedbackGood"></textarea>
+                            </div>
+
+                            <h4><b>Hvad kan der gøres bedre:</b></h4>
+                            <div class="textarea-container" style="padding: 0; height: 100px;">
+                                <textarea asp-for="@feedback.FeedbackBetter"></textarea>
+                            </div>
+
+                            <h4><b>Svar:</b></h4>
+                            <div class="textarea-container" style="padding: 0; height: 100px;">
+                                <textarea asp-for="@feedback.Answer"></textarea>
+                            </div>
+                            <input class="btn btn-primary" value="GEM" type="submit" style="width: 100%; max-width: 100%; margin-top: 20px; margin-bottom: 20px;" />
+                        </form>
+                    </div>
+                    <div class="col-md-4">
+                        <h4><b>Score:</b></h4>
+                        <hr />
+                        <h4>Kvalitet: <span class="pull-right">@feedback.Kvalitet</span></h4>
+                        <hr />
+                        <h4>Troværdighed: <span class="pull-right">@feedback.Troværdighed</span></h4>
+                        <hr />
+                        <h4>Opførsel: <span class="pull-right">@feedback.Opførsel</span></h4>
+                        <hr />
+                        <h4>Interaktion: <span class="pull-right">@feedback.Interaktion</span></h4>
+                        <hr />
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
 
-</div>
+    </div>*@
 

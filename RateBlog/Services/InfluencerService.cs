@@ -12,9 +12,9 @@ namespace RateBlog.Services
     public class InfluencerService : IInfluencerService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IRepository<Influencer> _influencerRepo;
+        private readonly IInfluencerRepository _influencerRepo;
 
-        public InfluencerService(UserManager<ApplicationUser> userManger, IRepository<Influencer> influencerRepo)
+        public InfluencerService(UserManager<ApplicationUser> userManger, IInfluencerRepository influencerRepo)
         {
             _influencerRepo = influencerRepo;
             _userManager = userManger; 

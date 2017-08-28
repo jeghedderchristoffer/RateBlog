@@ -9,6 +9,6 @@ namespace RateBlog.Services.Interfaces
     public interface ISortService
     {
 
-        Task<IEnumerable<ApplicationUser>> SortInfluencer(string[] platforme, string[] kategorier, string search, int sortBy);
+        IEnumerable<Influencer> SortInfluencer(string[] platforme, string[] kategorier, string search, int sortBy);
     }
 }

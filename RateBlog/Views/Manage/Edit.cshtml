@@ -1,19 +1,7 @@
 ﻿@model EditProfileViewModel
-@inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
-@inject RateBlog.Repository.IRepository<Influencer> InfluencerRepo
 @{
-    var user = await UserManager.GetUserAsync(User);
-    var isInfluencer = await InfluencerService.IsUserInfluencerAsync(user.Id);
-    Influencer influencer = null;
-    if (isInfluencer)
-    {
-        influencer = InfluencerRepo.Get(user.Id);
-
-    }
     ViewData["Title"] = "Rediger din profil";
 }
-
 
 <div class="navbar-allaround"></div>
 
@@ -71,6 +59,10 @@
             <input asp-for="@Model.Postnummer" class="edit-profile-input" type="text" />
             <span asp-validation-for="@Model.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
 
+            <h4>Profilbillede:</h4>
+            <input type="file" name="profilePic" class="input-files" />
+            <br />
+
             <h4>Køn</h4>
             <label style="font-weight: normal">
                 <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
@@ -82,15 +74,7 @@
                 <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
                 Kvinde
             </label>
-            <br /><br />
-
-            <h4>Profilbillede:</h4>
-            <input type="file" name="profilePic" class="input-files" />
-            <br /><br />
-
-            <h4>Profiltekst:</h4>
-            <textarea asp-for="@Model.ProfileText" class="edit-input" rows="10" style="height: auto;" placeholder="Skriv om dig selv og dine interesser"></textarea>
-            <span asp-validation-for="@Model.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
+            <br /><br /><br />
 
             <input type="submit" class="edit-button-influ-create" style="width: 100%" value="Gem" />
         </form>

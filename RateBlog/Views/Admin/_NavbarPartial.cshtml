@@ -1,0 +1,21 @@
+﻿@inject RateBlog.Repository.IRepository<Feedback> FeedbackRepo 
+@inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
+
+<div class="admin-navbar">
+    <h2 style="text-align: center">Admin</h2>
+    <div class="list-group">
+        <a class="list-group-item" asp-controller="Admin" asp-action="Index"><i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp; Forside</a>
+        @*<a class="list-group-item" href="#"><i class="fa fa-users fa-fw" aria-hidden="true"></i>&nbsp; Alle brugere</a>*@
+        <a class="list-group-item" href="#"><i class="fa fa-exclamation fa-fw" aria-hidden="true"></i>&nbsp; Anmeldelser</a>
+        <a class="list-group-item" href="#"><i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>&nbsp; Statistik</a>
+        <a class="list-group-item" href="#"><i class="fa fa-pencil-square-o fa-fw" aria-hidden="true"></i>&nbsp; Blog</a>
+
+        <div style="padding: 10px 20px; border-bottom: 1px solid #ddd">
+            <h5>Feedback: <span style="float: right">@FeedbackRepo.GetAll().Count()</span></h5>
+            <h5>Users: <span style="float: right">@UserManager.Users.Count()</span></h5>
+            <h5>Influencers: <span style="float: right">@InfluencerRepo.GetAll().Count()</span></h5>
+        </div>
+        
+    </div>
+</div>

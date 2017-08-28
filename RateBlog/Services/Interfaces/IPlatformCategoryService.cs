@@ -73,14 +73,14 @@ namespace RateBlog.Services.Interfaces
         /// </summary>
         /// <param name="name">Platform Name</param>
         /// <returns></returns>
-        Task<IEnumerable<ApplicationUser>> GetAllInfluencersWithPlatform(string name);
+        IEnumerable<Influencer> GetAllInfluencersWithPlatform(string name);
 
         /// <summary>
         /// Gets all influencers with this category name
         /// </summary>
         /// <param name="name">Category Name</param>
         /// <returns></returns>
-        Task<IEnumerable<ApplicationUser>> GetAllInfluencersWithCategory(string name);
+        IEnumerable<Influencer> GetAllInfluencersWithCategory(string name);
 
     }
 }

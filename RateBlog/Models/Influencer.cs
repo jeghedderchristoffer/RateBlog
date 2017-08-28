@@ -17,6 +17,8 @@ namespace RateBlog.Models
         [Required(ErrorMessage = "Du skal udfylde Alias/kaldenavn")]
         public string Alias { get; set; }
 
+        public string ProfileText { get; set; }
+
         [DefaultValue(false)]
         public bool IsApproved { get; set; } 
 

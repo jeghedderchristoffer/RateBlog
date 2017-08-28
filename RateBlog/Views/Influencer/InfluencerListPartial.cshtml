@@ -1,8 +1,5 @@
-﻿@model List<ApplicationUser>
+﻿@model List<Influencer>
 @inject RateBlog.Services.IFeedbackService FeedbackService
-@inject RateBlog.Services.Interfaces.IPlatformCategoryService PlatformCategoryService
-@inject RateBlog.Repository.IRepository<Influencer> InfluencerRepo
-@inject RateBlog.Repository.IRepository<Platform> PlatformRepo
 
 @if (Model != null)
 {
@@ -15,104 +12,95 @@
                 <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@influ.Id">
                     <img class="influ-img" src="@Url.Action("UsersProfilePic", "Manage", new { id = influ.Id })" />
                 </a>
-
             </div>
+
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 noPadding" style="">
 
-                <h4>@InfluencerRepo.Get(influ.Id).Alias</h4>
-                <p style="margin-top: 15px;">
-                    @if (PlatformCategoryService.GetInfluencerCategoryNames(influ.Id) != null)
+                <h4>@influ.Alias</h4>
+                <p style="margin-top: 15px">
+                    @foreach (var category in influ.InfluenterKategori)
                     {
-                    <p style="margin-top: 15px;">
-                        @foreach (var kategori in PlatformCategoryService.GetInfluencerCategoryNames(influ.Id))
+                        if (category.Equals(influ.InfluenterKategori.Last()))
                         {
-                            @if (kategori.Equals(PlatformCategoryService.GetInfluencerCategoryNames(influ.Id).Last()))
-                            {
-                                @kategori
-                            }
-                            else
-                            {
-                                @kategori <span>|</span>
-                            }
-                        }
-                    </p>
-                    }
-                    else
-                    {
-                        <p>Ukendte kategorier</p>
-                    }
-
-
-                    <div class="a-center">
-                        @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(influ.Id) != null)
-                        {
-                            @foreach (var platform in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(influ.Id))
-                            {
-                                @if (PlatformRepo.Get(platform.PlatformId).Name == "Facebook")
-                                {
-                                    <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
-                                }
-                                else if (PlatformRepo.Get(platform.PlatformId).Name == "YouTube")
-                                {
-                                    <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
-                                }
-                                else if (PlatformRepo.Get(platform.PlatformId).Name == "SecondYouTube")
-                                {
-                                    <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
-                                }
-                                else if (PlatformRepo.Get(platform.PlatformId).Name == "SnapChat")
-                                {
-                                    <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>
-                                }
-                                else if (PlatformRepo.Get(platform.PlatformId).Name == "Instagram")
-                                {
-                                    <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search-o fa-instagram fa-instagram-search"></a>
-                                }
-                                else if (PlatformRepo.Get(platform.PlatformId).Name == "Twitter")
-                                {
-                                    <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search-o fa-twitter fa-twitter-search"></a>
-                                }
-                                else if (PlatformRepo.Get(platform.PlatformId).Name == "Twitch")
-                                {
-                                    <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
-                                }
-                                else if (PlatformRepo.Get(platform.PlatformId).Name == "Website")
-                                {
-                                    <a href="http://@platform.Link" target="_blank" class="fa fa-search-o fa-globe fa-globe-search"></a>
-                                }
-                            }
+                            @category.Category.Name
                         }
                         else
                         {
-                            <p style="margin-top: 15px">Ingen sociale medier</p>
+                            @category.Category.Name <span>|</span>
                         }
-                    </div>
+                    }
+                    @if(influ.InfluenterKategori.Count == 0)
+                    {                        
+                        <span>Ingen kategorier valgt</span>
+                    }
+                </p>
 
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding">
-                    <div class="show-rating-box">
-                        <div class="show-rating">
-                            <div class="show-rating-front">
-                                @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(influ.Id); i++)
-                                {
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                }
-                            </div>
-                            <div class="show-rating-back">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                        <p style="margin-bottom: 0; margin-top: 6px; text-align: center">@FeedbackService.GetTotalScore(influ.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(influ.Id) ratings</p>
-                    </div>
-                    
-                    <a asp-controller="Influencer" asp-action="Give" asp-route-id="@influ.Id" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
-                    <a asp-controller="Influencer" asp-action="Read" asp-route-id="@influ.Id" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />
-
+                <div class="a-center">
+                    @foreach (var platform in influ.InfluenterPlatform)
+                    {
+                        @if (platform.Platform.Name == "Facebook")
+                        {
+                            <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
+                        }
+                        else if (platform.Platform.Name == "YouTube")
+                        {
+                            <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
+                        }
+                        else if (platform.Platform.Name == "SecondYouTube")
+                        {
+                            <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-youtube fa-youtube-search"></a>
+                        }
+                        else if (platform.Platform.Name == "SnapChat")
+                        {
+                            <a href="http://www.snapchat.com/add/@platform.Link" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>
+                        }
+                        else if (platform.Platform.Name == "Instagram")
+                        {
+                            <a href="http://www.instagram.com/@platform.Link" target="_blank" class="fa fa-search-o fa-instagram fa-instagram-search"></a>
+                        }
+                        else if (platform.Platform.Name == "Twitter")
+                        {
+                            <a href="http://www.twitter.com/@platform.Link" target="_blank" class="fa fa-search-o fa-twitter fa-twitter-search"></a>
+                        }
+                        else if (platform.Platform.Name == "Twitch")
+                        {
+                            <a href="@platform.Link" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
+                        }
+                        else if (platform.Platform.Name == "Website")
+                        {
+                            <a href="http://@platform.Link" target="_blank" class="fa fa-search-o fa-globe fa-globe-search"></a>
+                        }
+                    }
+                    @if (influ.InfluenterPlatform.Count == 0)
+                    {
+                        <p style="margin-top: 15px">Ingen sociale medier</p>
+                    }
                 </div>
             </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding">
+                <div class="show-rating-box">
+                    <div class="show-rating">
+                        <div class="show-rating-front">
+                            @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(influ.Id); i++)
+                            {
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            }
+                        </div>
+                        <div class="show-rating-back">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 0; margin-top: 6px; text-align: center">@FeedbackService.GetTotalScore(influ.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(influ.Id) ratings</p>
+                </div>
+
+                <a asp-controller="Influencer" asp-action="Give" asp-route-id="@influ.Id" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
+                <a asp-controller="Influencer" asp-action="Read" asp-route-id="@influ.Id" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />
+
+            </div>
+        </div>
     }
 }

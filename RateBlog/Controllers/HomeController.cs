@@ -17,11 +17,11 @@ namespace RateBlog.Controllers
     {
         private readonly IRepository<Category> _categoryRepo;
         private readonly IRepository<Platform> _platformRepo;
-        private readonly IRepository<Influencer> _influencerRepo; 
+        private readonly IInfluencerRepository _influencerRepo; 
         private readonly UserManager<ApplicationUser> _userManger;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public HomeController(SignInManager<ApplicationUser> signInManager, IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IRepository<Influencer> influencerRepo, UserManager<ApplicationUser> userManger)
+        public HomeController(SignInManager<ApplicationUser> signInManager, IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IInfluencerRepository influencerRepo, UserManager<ApplicationUser> userManger)
         {
             _platformRepo = platformRepo;
             _categoryRepo = categoryRepo;

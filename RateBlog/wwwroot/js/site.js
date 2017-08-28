@@ -3,13 +3,13 @@
 $(document).ready(function () {
 
     $("#email").keydown(function (e) {
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
             loginFunction();
         }
     });
 
     $("#password").keydown(function (e) {
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
             loginFunction();
         }
     });
