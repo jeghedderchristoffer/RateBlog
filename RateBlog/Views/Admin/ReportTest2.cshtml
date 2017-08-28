@@ -1,0 +1,50 @@
+﻿@model RateBlog.Models.AdminViewModels.ReportFeedbackViewModel
+
+<div class="navbar-allaround"></div>
+
+<div class="container">
+    <div class="row" style="padding:12px">
+        <div class="col-md-4">
+            <b>Navn</b>
+        </div>
+        <div class="col-md-2">
+            <b>Emne(r)</b>
+        </div>
+        <div class="col-md-4">
+            <b>Begrundelse</b>
+        </div>
+        <div class="col-md-2">
+            <b>Status</b>
+        </div>
+    </div>
+    <div class="row" style="padding:12px">
+        <div class="col-md-4">
+            <p>@Model.TheReportedUser.Name</p>
+        </div>
+        <div class="col-md-2">
+            @if (Model.Report.Other == true)
+            {<p>Other </p>}
+            @if (Model.Report.LanguageUse == true)
+            {<p>Sprog </p>}
+            @if (Model.Report.Spam == true)
+            {<p>Spam </p>}
+            @if (Model.Report.Discrimination == true)
+            {<p>Diskriminerende </p>}
+        </div>
+        <div class="col-md-4">
+            <textarea cols="50" rows="4">@Model.Report.Description</textarea>
+        </div>
+        <div class="col-md-2">
+            <textarea cols="10" rows="4">??</textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a style="background-color:green;color:white" class="rapport-btn">Behold Feedback</a>
+        </div>
+        <div class="col-md-6">
+            <a style="background-color:darkred;color:white" class="rapport-btn">Slet Feedback</a>
+        </div>
+    </div>
+</div>
+

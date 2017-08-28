@@ -367,6 +367,22 @@ namespace RateBlog.Controllers
             return Json(newFeedback);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ReportTest2(string Id)
+        {
+            var report = _reportfeedRepo.Get(Id);
+            var reportedUsr = _userManager.Users.FirstOrDefault(x => x.Id == report.ApplicationUserId);
+
+            var ReportFeedback = new ReportFeedbackViewModel
+            {
+                Report=report,
+                TheReportedUser=reportedUsr
+                
+            };
+
+            return View(ReportFeedback);
+        }
 
 
 

@@ -1,15 +1,40 @@
 ﻿@model RateBlog.Models.AdminViewModels.ReportFeedbackViewModel
+@inject RateBlog.Repository.IRepository<Influencer> InfluencerRepo
+@inject UserManager<ApplicationUser> UserManager
+
 
 <div class="navbar-allaround"></div>
 
-@foreach(var v in Model.ReportFeedbacks)
-{
-    <p>id @v.Id</p>
-    <p>is read @v.IsRead</p>
-    <p>Languse @v.LanguageUse</p>
-    <p>Other @v.Other</p>
-    <p>FeedId @v.FeedbackId</p>
+<table >
+    <tr>
+        <th style="padding:8px;">Navn</th>
+        <th style="padding:8px;">Emne</th>
+        <th style="padding:8px;">Se Anmeldelsen</th>
+    </tr>
 
-    <p>UserId @v.ApplicationUserId</p>
+    @foreach (var v in Model.ReportFeedbacks)
+    {
+    var ReportedUsers = UserManager.Users.FirstOrDefault(x => x.Id == v.ApplicationUserId);
+
+        <tr>
+            <td colspan="2" style="padding:8px;display:inline-block"><p>Navn @ReportedUsers.Name</p></td>
+            <td style="padding:8px;">
+            
+            
+            @if (v.Other == true){<p>Other </p>} 
+            @if (v.LanguageUse == true){<p>Sprog </p>}
+            @if (v.Spam == true){<p>Spam </p>}
+            @if (v.Discrimination == true){<p>Diskriminerende </p>}
+               
+            </td>
+            <td style="padding:8px;display:inline-block"><p><a asp-controller="Admin" asp-action="ReportTest2" asp-route-id="@v.Id">Se Mere</a></p></td>
+        </tr>
+        
+}
+
+</table>
+@section scripts{
+
+ 
 
 }
