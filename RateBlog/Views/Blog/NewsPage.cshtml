@@ -1,44 +1,38 @@
-﻿
+﻿@model RateBlog.Models.BlogViewModel.BlogViewModel
 @{
     ViewData["Title"] = "Artikel navn";
 
 }
+
 <div class="navbar-allaround">
 
 </div>
-<div style="background:#f2f1ed">
+
     <div class="container">
        
+ 
+      
+       <div style="display: block;margin: 0 auto;margin-top:15px;">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/131611/avatar.jpg" class="blog-page-img" />
+    </div> 
 
+        <h3>@Model.blog.BriefText</h3>
+            <div>
+                <h4 style="opacity:0.9;padding-left;padding-bottom:5px;padding-top:5px;">@Model.blog.DateTime</h4>
+                    <div style="min-width:1000px;min-height:700px;">
 
-        <h1 class="blog-title">Artikel </h1>
-        <div style="align-content:center">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/131611/avatar.jpg" class="blog-page-img" center-block" />                               
-        </div>
+                        @Html.Raw(Model.blog.ArticleText) 
+                </div>
+          
+                      
+            </div>
 
-        <div class="blog-box">        
-                <p>5 kreative måder at markedsføre din virksomhed på
-14. juli 2017 af Brian Trinhammer Seiling 0 Likes
-marketing, kunder, anmeldelser
-Nyheder
-I mit daglige arbejde som Marketing Manager hos Trustpilot har jeg mulighed for at snakke med mange af vores kunder og høre, hvordan de drager nytte af Trustpilot. Og en af de ting, jeg altid bemærker, er, hvor gode vores kunder er til at inkludere deres kundebedømmelser og TrustScorer i deres markedsføring.
-
-Her finder du de fem mest interessante måder, jeg har set virksomheder bruge deres Trustpilot-bedømmelser på:
-
-Iøjnefaldende emballage
-
-En pakke fra webshoppen drinkstuff er altid et kærkomment syn. Du får ikke kun det, du skal bruge til at lave velsmagende drinks med (deres cocktailsæt er værd at kaste et blik på), men deres 5-stjernede bedømmelse på Trustpilot følger også med emballagen og opfordrer modtageren til at give dem feedback. Det er en smart markedsføringsstrategi taget i betragtning, hvor mange mennesker der ser denne kasse, før den når frem til modtageren.
-markedsføring på emballage, markedsføringsstrategi
-Anmeldelser i trykte annoncer
-</p>
-        </div>
-
-        <div>
+            <div>
 
 
 
+
+            </div>
 
         </div>
-
     </div>
-</div>

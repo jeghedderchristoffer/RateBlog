@@ -27,15 +27,10 @@ namespace RateBlog.Controllers
         {
             _feedBack = feedBack;
             _influenter = influenter;
-
             _userManager = userManager;
 
         }
-
-        //Virkede ikke så revertede. 
-        //var model = IndexViewModel()
-
-        public IndexViewModel viewmodel = new IndexViewModel();
+  public IndexViewModel viewmodel = new IndexViewModel();
 
         public IActionResult Index(string searchString)
         {
@@ -54,6 +49,10 @@ namespace RateBlog.Controllers
             viewmodel.InfluentList = model.ToList();
 
             return View(viewmodel);
+        //Virkede ikke så revertede. 
+        //var model = IndexViewModel()
+
+      
         }
 
         //redigere brugeren side

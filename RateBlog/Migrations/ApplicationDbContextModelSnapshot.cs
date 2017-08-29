@@ -185,6 +185,26 @@ namespace RateBlog.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("RateBlog.Models.Blog", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ArticleHeader");
+
+                    b.Property<string>("ArticleText");
+
+                    b.Property<string>("BriefText");
+
+                    b.Property<int>("DateTime");
+
+                    b.Property<string>("PictureLink");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Blog");
+                });
+
             modelBuilder.Entity("RateBlog.Models.Category", b =>
                 {
                     b.Property<string>("Id")

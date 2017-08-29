@@ -2,23 +2,85 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using RateBlog.Models;
+using RateBlog.Models.BlogViewModel;
+using RateBlog.Models.ManageViewModels;
+using RateBlog.Repository;
 
 namespace RateBlog.Controllers
 {
     public class BlogController : Controller
     {
-        
-        public IActionResult Index()
+        private readonly IRepository<Blog> _blogRepo;
+     
+        public BlogController(IRepository<Blog> blogRepository)
         {
-            return View();
+
+            _blogRepo = blogRepository;
+        
+        }
+      
+      
+
+           public IActionResult Index(string searchString)
+           {
+
+            var getAllBlogs = _blogRepo.GetAll();
+
+            var blog= new BlogViewModel()
+            {
+
+                BlogList = getAllBlogs.ToList(),
+                
+            };
+
+            return View(blog);
         }
 
-        public IActionResult NewsPage()
+        [HttpGet]
+        public IActionResult NewsPage(string id)
         {
-            return View();
+            var getBlog = _blogRepo.Get(id);
+            
+            var model = new BlogViewModel()
+            {
+                blog = getBlog,
+            };
+
+            return View(model); 
         }
+
+      
+        public IActionResult CreateArticle()
+        {
+            var model = new Blog(); 
+           
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public IActionResult CreateArticle(Blog model)
+        {
+            if (ModelState.IsValid)
+            {
+                _blogRepo.Add(model);
+
+            }
+            return RedirectToAction("Index");
+            
+        }
+
+        [HttpPost]
+        public IActionResult DeleteFeedback(string Id)
+        {
+            var getfeedback = _blogRepo.Get(Id);
+            _blogRepo.Delete(getfeedback);
+            return RedirectToAction("Index");
+        }
+
+        
     }
 }

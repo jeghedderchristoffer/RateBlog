@@ -3372,6 +3372,8 @@ footer {
         text-decoration: none;
     }
 
+
+
 .admin-botton {
     width: 100%;
     width: 500px;
@@ -3616,7 +3618,22 @@ footer {
 }
 
 .blog-page-img {
-    height: 500px;
-    width: 500px;
+    height: 50%;
+    width: 50%;
+    vertical-align:middle;
+}
+
+.blog-btn {
+    color: #FFF;
+    text-align: center;
+    
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    width: 23.5%;
+    height: 25%;
+    display: inline-block;
     text-align:center;
 }

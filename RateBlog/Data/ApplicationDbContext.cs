@@ -21,6 +21,7 @@ namespace RateBlog.Data
         public DbSet<Platform> Platform { get; set; }
         public DbSet<Feedback> Feedback { get; set; }
         public DbSet<Category> Category { get; set; }
+        public DbSet<Blog> Blog { get; set; }
         public DbSet<InfluencerPlatform> InfluencerPlatform { get; set; }
         public DbSet<InfluencerCategory> InfluencerCategory { get; set; } 
 
