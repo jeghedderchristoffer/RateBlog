@@ -1,10 +1,7 @@
-﻿@model RateBlog.Models.Blog
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+﻿@model RateBlog.Models.BlogViewModel.BlogViewModel
+
 @{
-    ViewData["Title"] = "ProfilePage";
+    ViewData["Title"] = "Opret en artikel";
 
 
 }
@@ -29,26 +26,33 @@
         </div>
 
 
-        <form id="createBlog" method="post" asp-controller="Blog" asp-action="CreateArticle">
+        <form id="createBlog" method="post" asp-controller="Blog" asp-action="CreateArticle" enctype="multipart/form-data">
             <div class="col-md-8">
                 <table class="table table-striped">
                     <thead></thead>
                     <tbody>
                         <tr>
-                            <td class="col-md-2"><h5>Navn på artikel</h5></td>
-                            <td class="col-md-4"><h5><input asp-for="@Model.ArticleHeader" placeholder="Navnet på artikel" /></h5></td>
+                            <td>Navn på artikel</td>
+                            <td><input asp-for="@Model.Blog.ArticleHeader" class="blog-input" placeholder="Navnet på artikel" /></td>
                         </tr>
 
                         <tr>
                             <td>Dato for artikel</td>
-                            <td><input type="text" asp-for="@Model.DateTime" placeholder="Dato på Artikel" id="datepicker"></td>
+                            <td><input type="text" class="blog-input" asp-for="@Model.Blog.DateTime" placeholder="Dato på Artikel" id="datepicker"></td>
                         </tr>
-                       
+                        <tr>
 
+                            <td>Katagorier</td>
+                            <td><input type="text" class="blog-input" asp-for="@Model.Blog.Categories" placeholder="Skriv katagorier" /></td>
+                        </tr>
+                        <tr>
+                            <td>Forfatteren</td>
+                            <td><input type="text" class="blog-input" asp-for="@Model.Blog.Author" placeholder="Forfatteren" /></td>
+                        </tr>
 
                         <tr>
                             <td>Ekstra undertekst</td>
-                            <td><input asp-for="@Model.BriefText" placeholder="Under teksten folk ser" /></td>
+                            <td><input asp-for="@Model.Blog.BriefText" class="blog-input" placeholder="Under teksten folk ser" /></td>
                         </tr>
                     </tbody>
                 </table>
@@ -57,22 +61,20 @@
     </div>
 </div>
 <div class="container">
-    <div>
+
+    <div style="text-align:center">
         <hr />
-        <a style="background:green;" class="blog-btn">Redigere artikeler</a>
-
         <input form="createBlog" style="background:blue;" type="submit" class="blog-btn" value="Gem" />
-        <a style="background:red;" class="blog-btn">Slet</a>
-        <a style="background:orange;" class="blog-btn">Læg nyt billed ind</a>
-
+        <input form="createBlog" style="background:orange;margin-left:440px;" type="file" value="Indset billed" class="blog-btn" asp-for="@Model.ArticlesPicture" />
         <hr />
     </div>
+    
 </div>
 <div class="admin-profile-middle">
     <div class="container">
 
         <h2 style="text-align:center;">Indtast den ønskede artikel.</h2>
-        <textarea form="createBlog" asp-for="@Model.ArticleText" id="txtEditor" style="min-height:1000px;"></textarea>
+        <textarea form="createBlog" asp-for="@Model.Blog.ArticleText" id="txtEditor" style="min-height:1000px;"></textarea>
 
     </div>
 
@@ -83,14 +85,8 @@
             });
         </script>
 
-    <script>
-        $(function () {
-            $("#datepicker").datepicker();
-            });
-    </script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
-    }
 
+    }
 
 </div>
 

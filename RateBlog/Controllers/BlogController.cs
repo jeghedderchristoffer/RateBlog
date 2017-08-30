@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -23,8 +24,7 @@ namespace RateBlog.Controllers
         }
       
       
-
-           public IActionResult Index(string searchString)
+         public IActionResult Index(string searchString)
            {
 
             var getAllBlogs = _blogRepo.GetAll();
@@ -46,7 +46,7 @@ namespace RateBlog.Controllers
             
             var model = new BlogViewModel()
             {
-                blog = getBlog,
+                Blog = getBlog,
             };
 
             return View(model); 
@@ -55,32 +55,54 @@ namespace RateBlog.Controllers
       
         public IActionResult CreateArticle()
         {
-            var model = new Blog(); 
+            var model = new BlogViewModel(); 
            
             return View(model);
         }
 
 
         [HttpPost]
-        public IActionResult CreateArticle(Blog model)
+        public IActionResult CreateArticle(BlogViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _blogRepo.Add(model);
+
+                if (model.ArticlesPicture != null)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    model.ArticlesPicture.OpenReadStream().CopyTo(ms);
+                    model.Blog.ArticlePicture = ms.ToArray();
+                }
+
+               
+                _blogRepo.Add(model.Blog);
 
             }
             return RedirectToAction("Index");
-            
         }
+       
 
         [HttpPost]
-        public IActionResult DeleteFeedback(string Id)
+        public IActionResult DeleteBlog(string Id)
         {
             var getfeedback = _blogRepo.Get(Id);
             _blogRepo.Delete(getfeedback);
             return RedirectToAction("Index");
         }
 
-        
-    }
+        [HttpGet]
+        public IActionResult BlogProfilePic(string id)
+        {
+            var blog = _blogRepo.Get(id); 
+            byte[] buffer = blog.ArticlePicture;
+            return File(buffer, "image/jpg", string.Format("{0}.jpg", blog.ArticlePicture));
+        }
+
+
+          
+
+    
+
+
+}
 }

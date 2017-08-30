@@ -1,4 +1,5 @@
 ﻿@model RateBlog.Models.BlogViewModel.BlogViewModel
+
 @{
     ViewData["Title"] = "Blog Index";
 
@@ -8,14 +9,12 @@
 </div>
 <div style="background:#f2f1ed">
 
-
-
     <div class="container">
         <h1 class="blog-title">Nyeste nyheder </h1>
         <hr style="color=" black" />
 
-
-        <div style="align-content:center;padding-left:300px;padding-bottom:30px;">
+         @*  Ikke nødvendig med søge function endnu, den er der i tilfælde det skulle blive relevant.    *@
+        @*<div style="align-content:center;padding-left:300px;padding-bottom:30px;">
 
 
             <form method="get" asp-area="" asp-controller="Admin" asp-action="Index">
@@ -24,27 +23,30 @@
                 <span>
                 </span>
             </form>
-        </div>
+        </div>*@
+
         @foreach (var article in Model.BlogList)
         {
             <div>
-                <div id="top">
+                <div style="display:inline-block;padding-top:15px;">
 
-                    <div class="col-md-12 blog-box">
-
-                        <div class="col-md-3">
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/131611/avatar.jpg" class="blog-img" center-block" />
+                    <div style="align-content:space-around;" class="blog-box">
+                        <div style="min-width:1000px;padding-right:100px;display:inline-block">                                                    
                         </div>
-
-
-                        <div class="col-md-9" style="min-width:1000px;">
-                            <h1 style="font-size:30px;opacity:0.8;margin-top:-3px;">@article.ArticleHeader</h1>
-                            <h5 style="opacity:0.5;padding-left;padding-bottom:3px;padding-top:3px;">@article.DateTime</h5>
+                      
+                        <div style="display:inline-block;vertical-align:top;padding-left:30px;">
+                            <img style="max-height:200px;max-width:200px;" src="@Url.Action("BlogProfilePic", "Blog", new { id = article.Id} )" />	
+                           
+                        </div>
+                        <div style="display:inline-block;padding-left:15px;">
+                          <h1 style="font-size:30px;opacity:0.8;margin-top:-3px;">@article.ArticleHeader</h1>
+                            <h5 style="opacity:0.5;padding-left;padding-bottom:3px;padding-top:3px;">@article.DateTime Af @article.Author</h5>
+                            <h5 style="opacity:0.5;padding-left;padding-bottom:3px;padding-top:3px;">@article.Categories</h5>
                             <h4 style="padding-bottom:20px;padding-top:10px;">@article.BriefText</h4>
-                            <a  asp-controller="Blog" asp-action="NewsPage" asp-route-id="@article.Id" style="font-size:20px;padding-top:30px;">Læs mere --></a>
-                            <hr style="padding:10px;" />
+                            <a asp-controller="Blog" asp-action="NewsPage" asp-route-id="@article.Id" style="font-size:20px;">Læs mere --></a>
+                            
                         </div>
-
+                       
                     </div>
 
 

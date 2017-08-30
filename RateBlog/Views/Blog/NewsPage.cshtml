@@ -7,24 +7,38 @@
 <div class="navbar-allaround">
 
 </div>
-
+<div style="background:#f2f1ed">
     <div class="container">
-       
- 
-      
-       <div style="display: block;margin: 0 auto;margin-top:15px;">
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/131611/avatar.jpg" class="blog-page-img" />
-    </div> 
 
-        <h3>@Model.blog.BriefText</h3>
-            <div>
-                <h4 style="opacity:0.9;padding-left;padding-bottom:5px;padding-top:5px;">@Model.blog.DateTime</h4>
-                    <div style="min-width:1000px;min-height:700px;">
+        <div id="top">
 
-                        @Html.Raw(Model.blog.ArticleText) 
+            <div style="align-content:space-around;" class="col-md-8 blog-box">
+
+
+                <div class="blog-page-img" style="display: block;">
+                    <img src="@Url.Action("BlogProfilePic", "Blog", new { id = Model.Blog.Id} )" />
                 </div>
-          
-                      
+
+                <div style="min-width:1000px;padding-right:100px;display:inline-block">
+                    <h1 style="padding-top:10px;font-size:60px;">@Model.Blog.ArticleHeader</h1>
+
+                    <div style="padding-top:10px;">
+
+                        <h4 style="opacity:0.6;padding-left;padding-bottom:5px;padding-top:10px;">@Model.Blog.DateTime Af @Model.Blog.Author</h4>
+                        <h4 style="opacity:0.6;padding-left;padding-bottom:5px;padding-top:5px;">@Model.Blog.Categories</h4>
+
+                        <div style="min-width:1000px;min-height:700px;padding-top:10px;">
+
+                            @Html.Raw(Model.Blog.ArticleText)
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+
             </div>
 
             <div>
@@ -36,3 +50,4 @@
 
         </div>
     </div>
+</div>
