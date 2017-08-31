@@ -7,11 +7,11 @@
 <div class="navbar-allaround">
 
 </div>
-<div style="background:#f2f1ed">
+<div style="background:#f2f1ed;min-height:4000px;">
 
     <div class="container">
-        <h1 class="blog-title">Nyeste nyheder </h1>
-        <hr style="color=" black" />
+        <h1 class="blog-title">Blog</h1>
+        <hr style="color="black" />
 
          @*  Ikke nødvendig med søge function endnu, den er der i tilfælde det skulle blive relevant.    *@
         @*<div style="align-content:center;padding-left:300px;padding-bottom:30px;">
@@ -28,32 +28,29 @@
         @foreach (var article in Model.BlogList)
         {
             <div>
-                <div style="display:inline-block;padding-top:15px;">
+                <div style="display:inline-block;padding-top:15px;m">
 
-                    <div style="align-content:space-around;" class="blog-box">
-                        <div style="min-width:1000px;padding-right:100px;display:inline-block">                                                    
-                        </div>
-                      
-                        <div style="display:inline-block;vertical-align:top;padding-left:30px;">
-                            <img style="max-height:200px;max-width:200px;" src="@Url.Action("BlogProfilePic", "Blog", new { id = article.Id} )" />	
+                    <div class="blog-box col-md-10">
+                                                                           
+                       
+                            <div class="col-md-2">
+                                <div style="display:inline-block;vertical-align:top;">
+                                    <img class="blog-picture" src="@Url.Action("IndexProfilePic", "Blog", new { id = article.Id} )" />
+                                </div>
+                            </div>
+                            <div class="col-md-8" style="display:inline-block;align-content:flex-end;margin-left:50px;min-width:875px;">
+
+
+                                    <h1 style="font-size:30px;opacity:0.8;margin-top:-3px;">@article.ArticleHeader</h1>
+                                    <h4 style="opacity:0.5;padding-bottom:3px;padding-top:3px;">@article.DateTime af @article.Author | @article.Categories</h4>
+                                    <h4 style="padding-bottom:20px;padding-top:10px;">@article.BriefText</h4>
+                                    <a asp-controller="Blog" asp-action="NewsPage" asp-route-id="@article.Id" style="font-size:20px;color:#089DE3;">Læs mere </a>
                            
-                        </div>
-                        <div style="display:inline-block;padding-left:15px;">
-                          <h1 style="font-size:30px;opacity:0.8;margin-top:-3px;">@article.ArticleHeader</h1>
-                            <h5 style="opacity:0.5;padding-left;padding-bottom:3px;padding-top:3px;">@article.DateTime Af @article.Author</h5>
-                            <h5 style="opacity:0.5;padding-left;padding-bottom:3px;padding-top:3px;">@article.Categories</h5>
-                            <h4 style="padding-bottom:20px;padding-top:10px;">@article.BriefText</h4>
-                            <a asp-controller="Blog" asp-action="NewsPage" asp-route-id="@article.Id" style="font-size:20px;">Læs mere --></a>
-                            
-                        </div>
+                            </div>
+                    
                        
                     </div>
-
-
-
-
                 </div>
-
             </div>
         }
     </div>

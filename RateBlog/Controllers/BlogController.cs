@@ -74,7 +74,13 @@ namespace RateBlog.Controllers
                     model.Blog.ArticlePicture = ms.ToArray();
                 }
 
-               
+                if (model.IndexPicture != null)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    model.IndexPicture.OpenReadStream().CopyTo(ms);
+                    model.Blog.IndexPicture = ms.ToArray();
+                }
+
                 _blogRepo.Add(model.Blog);
 
             }
@@ -98,11 +104,17 @@ namespace RateBlog.Controllers
             return File(buffer, "image/jpg", string.Format("{0}.jpg", blog.ArticlePicture));
         }
 
+        [HttpGet]
+        public IActionResult IndexProfilePic(string id)
+        {
+            var blog = _blogRepo.Get(id);
+            byte[] buffer = blog.IndexPicture;
+            return File(buffer, "image/jpg", string.Format("{0}.jpg", blog.IndexPicture));
+        }
 
-          
-
-    
 
 
-}
+
+
+    }
 }

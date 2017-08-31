@@ -17,6 +17,7 @@ namespace RateBlog.Models
         public string Author { get; set; }
         public string Categories { get; set; }
         public Byte[] ArticlePicture { get; set; }
+        public Byte[] IndexPicture { get; set; }
 
 
     }

@@ -11,70 +11,44 @@
 
 </div>
 <div class="container">
-    <div class="col-md-12">
-        <h1 style="text-align:center;">Lave en artikel</h1>
+    <div >
+        <h1 style="text-align:center;font-family:'Book Antiqua';font-size:60px">Skriv din egen artikel</h1>
         <br />
     </div>
 
-    <div class="col-md-12">
+    <form id="createBlog" method="post" asp-controller="Blog" asp-action="CreateArticle" enctype="multipart/form-data">
 
-
-
-        <div class="col-md-4">
-            <h2 style="margin-top:-30px">Indsæt billed til artikel</h2>
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/131611/avatar.jpg" style="margin-top:5px" />
+        <div>
+            <input asp-for="@Model.Blog.ArticleHeader" class="blog-input-styling" placeholder="Titel" />  
+            <br />
+            <input type="text" class="blog-input-styling" asp-for="@Model.Blog.DateTime" placeholder="Dato" id="datepicker">
+            <br />
+            <input type="text" class="blog-input-styling" asp-for="@Model.Blog.Categories" placeholder="Katagorier" />
+            <br />
+            <input type="text" class="blog-input-styling" asp-for="@Model.Blog.Author" placeholder="Forfatter" />
         </div>
+     
+        <div style="margin-top:15px;">
+            <input asp-for="@Model.Blog.BriefText" class="blog-input" placeholder="Index beskrivelse" style="direction: rtl; text-align:left   ;" />
+        </div>
+    </form>
 
-
-        <form id="createBlog" method="post" asp-controller="Blog" asp-action="CreateArticle" enctype="multipart/form-data">
-            <div class="col-md-8">
-                <table class="table table-striped">
-                    <thead></thead>
-                    <tbody>
-                        <tr>
-                            <td>Navn på artikel</td>
-                            <td><input asp-for="@Model.Blog.ArticleHeader" class="blog-input" placeholder="Navnet på artikel" /></td>
-                        </tr>
-
-                        <tr>
-                            <td>Dato for artikel</td>
-                            <td><input type="text" class="blog-input" asp-for="@Model.Blog.DateTime" placeholder="Dato på Artikel" id="datepicker"></td>
-                        </tr>
-                        <tr>
-
-                            <td>Katagorier</td>
-                            <td><input type="text" class="blog-input" asp-for="@Model.Blog.Categories" placeholder="Skriv katagorier" /></td>
-                        </tr>
-                        <tr>
-                            <td>Forfatteren</td>
-                            <td><input type="text" class="blog-input" asp-for="@Model.Blog.Author" placeholder="Forfatteren" /></td>
-                        </tr>
-
-                        <tr>
-                            <td>Ekstra undertekst</td>
-                            <td><input asp-for="@Model.Blog.BriefText" class="blog-input" placeholder="Under teksten folk ser" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
-    </div>
 </div>
-<div class="container">
 
-    <div style="text-align:center">
-        <hr />
-        <input form="createBlog" style="background:blue;" type="submit" class="blog-btn" value="Gem" />
-        <input form="createBlog" style="background:orange;margin-left:440px;" type="file" value="Indset billed" class="blog-btn" asp-for="@Model.ArticlesPicture" />
-        <hr />
-    </div>
-    
-</div>
-<div class="admin-profile-middle">
+
     <div class="container">
-
-        <h2 style="text-align:center;">Indtast den ønskede artikel.</h2>
+      
         <textarea form="createBlog" asp-for="@Model.Blog.ArticleText" id="txtEditor" style="min-height:1000px;"></textarea>
+    </div>
+
+    <div class="container" style="text-align:center">
+
+        <h3 style="padding-bottom:15px;">Indsæt index billede</h3>
+        <input form="createBlog" style="background:orange;margin-left:437px;" type="file" value="Indsæt billed" class="blog-btn" asp-for="@Model.IndexPicture" />
+        <h3 style="padding-bottom:15px;">Indsæt artikel billede</h3>
+        <input form="createBlog" style="background:orange;margin-left:437px;"" type="file" value="Indsæt billed" class="blog-btn" asp-for="@Model.ArticlesPicture" />
+        <h3>Offentliggør artikel</h3>
+        <input form="createBlog" style="background:blue;" type="submit" class="blog-btn" value="Gem" />
 
     </div>
 
@@ -88,7 +62,6 @@
 
     }
 
-</div>
 
 
 
