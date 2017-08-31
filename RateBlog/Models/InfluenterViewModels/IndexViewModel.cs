@@ -9,7 +9,7 @@ namespace RateBlog.Models.InfluenterViewModels
     {
         public string SearchString { get; set; }
         public List<ApplicationUser> InfluentList  { get; set; }       
-        public Dictionary<int, double> InfluenterRatings { get; set; }
-
+        public Dictionary<string, string> CategoryIds { get; set; }
+        public Dictionary<string, string> PlatformIds { get; set; }
     }
 }

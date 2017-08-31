@@ -1,11 +1,15 @@
 ﻿@model RateBlog.Models.AdminViewModels.EditUserViewModel
-@{
+@inject RateBlog.Repository.IRepository<Category> CategoryRepo
+@{ 
     ViewData["Title"] = "Edit user";
+    string currentBool = ""; 
 }
 
 <div class="navbar-allaround"></div>
 
-<div style="min-height: 100vh; padding-bottom: 40px; background: #fafafa">
+@Html.Partial("_NavbarPartial")
+
+<div class="admin-content" style="background: #fafafa">
 
 
     <div class="container">
@@ -50,10 +54,6 @@
                     <input type="file" name="pic" />
                     <br />
 
-                    <p>Profiltekst:</p>
-                    <textarea asp-for="@Model.ApplicationUser.ProfileText" class="edit-input-influ" rows="10" style="height: auto; width: 100%" placeholder="Skriv om dig selv og dine interesser"></textarea>
-                    <span asp-validation-for="@Model.ApplicationUser.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
-
                     @if (Model.Influencer == null)
                     {
                         <button type="submit" class="admin-btn" style="background: #089de3">GEM</button>
@@ -68,33 +68,42 @@
                         <input asp-for="@Model.Influencer.Alias" class="edit-input" />
                         <span asp-validation-for="@Model.Influencer.Alias" class="text-danger" style="margin-left: 5px;"></span>
 
-                        <p>Vælg dine kategorier:</p>
+                        <p>Kategorier</p>
                         <div class="choose-category" style="width: 100%">
-
-                            @for (int i = 0; i < Model.IKList.Count; i++)
+                            @foreach (var cat in CategoryRepo.GetAll())
                             {
-                                <div class="tooltips">
-                                    <div class="cat-check @Model.IKList[i].KategoriNavn">
-                                        <input asp-for="@Model.IKList[i].IsSelected" type="checkbox" id="@Model.IKList[i].KategoriNavn" /> <label for="@Model.IKList[i].KategoriNavn"></label>
-                                    </div>
-                                    <span style="bottom: 115%; left: 25px" class="tooltiptext">@Model.IKList[i].KategoriNavn</span>
-                                </div>
-                                @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
-                            }
+                                @if (Model.Influencer == null)
+                                {
+                                    currentBool = "";
+                                }
+                                else
+                                {
+                                    currentBool = (Model.Influencer.InfluenterKategori.Any(x => x.CategoryId == cat.Id)) ? "checked" : "";
+                                }
 
+                                <div class="tooltips">
+                                    <div class="cat-check @cat.Name">
+                                        <input @currentBool value="@cat.Id" name="categoriList" type="checkbox" id="@cat.Name" /> <label for="@cat.Name"></label>
+                                    </div>
+                                    <span style="bottom: 115%; left: 25px" class="tooltiptext">@cat.Name</span>
+                                </div>
+                            }
                         </div>
 
                         <p>Dine sociale medier:</p>
 
                         <input class="edit-input" autocomplete="off" asp-for="@Model.InstagramLink" type="text" placeholder="Instagram navn" />
                         <input class="edit-input" autocomplete="off" asp-for="@Model.TwitterLink" type="text" placeholder="Twitter navn" />
-                        <input class="edit-input" autocomplete="off" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" />
+                        <input class="edit-input" autocomplete="off" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" /> 
                         <input class="edit-input" autocomplete="off" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" />
                         <input class="edit-input" autocomplete="off" asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" />
+                        <input class="edit-input" autocomplete="off" asp-for="@Model.SecondYoutubeLink" type="text" placeholder="Second youtube link" />
                         <input class="edit-input" autocomplete="off" asp-for="@Model.TwitchLink" type="text" placeholder="Twitch link" />
                         <input class="edit-input" autocomplete="off" asp-for="@Model.WebsiteLink" type="text" placeholder="Website link" />
 
-
+                        <p>Profiltekst:</p>
+                        <textarea asp-for="@Model.Influencer.ProfileText" class="edit-input-influ" rows="10" style="height: auto; width: 100%" placeholder="Skriv om dig selv og dine interesser"></textarea>
+                        <span asp-validation-for="@Model.Influencer.ProfileText" class="text-danger" style="margin-left: 5px;"></span>
 
                         <button type="submit" class="admin-btn" style="background: #089de3">GEM</button>
                     }

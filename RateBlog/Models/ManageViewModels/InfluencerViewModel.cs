@@ -10,8 +10,9 @@ namespace RateBlog.Models.ManageViewModels
     {
         public ApplicationUser ApplicationUser { get; set; }
 
-        [Required (ErrorMessage = "Du skal angive dit alias")]
-        public string Alias { get; set; }
+        public Influencer Influencer { get; set; }
+
+        public string ProfileText { get; set; } 
 
         // Platform/link
         public string FacebookLink { get; set; }
@@ -22,8 +23,6 @@ namespace RateBlog.Models.ManageViewModels
         public string TwitterLink { get; set; }
         public string TwitchLink { get; set; }
         public string SecoundYoutubeLink { get; set; } 
-
-        public List<InfluenterKategoriViewModel> IKList { get; set; }
 
     }
 }

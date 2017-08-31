@@ -23,7 +23,7 @@ namespace RateBlog.Controllers
 {
     public class InfluencerController : Controller
     {
-        private readonly IRepository<Influencer> _influencerRepo;
+        private readonly IInfluencerRepository _influencerRepo;
         private readonly IRepository<Feedback> _feedbackRepo;
         private readonly IRepository<Platform> _platformRepo;
         private readonly IRepository<Category> _categoryRepo;
@@ -34,7 +34,7 @@ namespace RateBlog.Controllers
 
         public static int Counter { get; set; } 
 
-        public InfluencerController(IRepository<Category> categoryRepo, IRepository<Influencer> influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IPlatformCategoryService platformCategoryService, IFeedbackService feedbackService, ISortService sortService)
+        public InfluencerController(IRepository<Category> categoryRepo, IInfluencerRepository influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IPlatformCategoryService platformCategoryService, IFeedbackService feedbackService, ISortService sortService)
         {
             _influencerRepo = influencer;
             _userManager = userManager;
@@ -49,24 +49,42 @@ namespace RateBlog.Controllers
         [HttpGet]
         public IActionResult Index(string search)
         {
-            Dictionary<int, double> influenterRating = new Dictionary<int, double>();
+            Dictionary<string, string> categoriesIds = new Dictionary<string, string>();
+            Dictionary<string, string> platformIds = new Dictionary<string, string>();
 
             if (string.IsNullOrEmpty(search))
             {
                 search = "";
             }
 
+            var categories = _categoryRepo.GetAll();
+            var platforms = _platformRepo.GetAll(); 
+
+            foreach(var v in categories)
+            {
+                categoriesIds.Add(v.Name, v.Id); 
+            }
+
+            foreach(var v in platforms)
+            {
+                if(v.Name != "SecondYouTube")
+                    platformIds.Add(v.Name, v.Id); 
+            }
+
             var model = new Models.InfluenterViewModels.IndexViewModel()
             {
-                SearchString = search
+                SearchString = search, 
+                CategoryIds = categoriesIds,
+                PlatformIds = platformIds
             };
+
             return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> Profile(string id)
         {
-            var influenter = _influencerRepo.Get(id);
+            var influencer = _influencerRepo.Get(id);
 
             //Burde kun kunne få den pågældene user, da Index() metoden KUN returnere Users som er influenter...
             var user = await _userManager.FindByIdAsync(id);
@@ -82,7 +100,7 @@ namespace RateBlog.Controllers
             var model = new ShowViewModel()
             {
                 ApplicationUser = user,
-                Influenter = influenter,
+                Influenter = influencer,
                 Gender = gender, 
                 Age = age
             };
@@ -118,7 +136,7 @@ namespace RateBlog.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Create()
+        public IActionResult Create() 
         {
             var model = new CreateViewModel()
             {
@@ -140,7 +158,6 @@ namespace RateBlog.Controllers
                 user.UserName = email;
                 user.Email = email;
                 user.Name = model.Influenter.Alias;
-                user.ProfileText = model.ProfileText;
 
                 // Billede af influencer...
                 if (model.ProfilePic != null)
@@ -295,9 +312,9 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public async Task<PartialViewResult> Sorter(string[] platforme, string[] kategorier, int pageIndex, int pageSize, string search, int sortBy)
+        public PartialViewResult Sorter(string[] platforme, string[] kategorier, int pageIndex, int pageSize, string search, int sortBy)
         {
-            var list = await _sortService.SortInfluencer(platforme, kategorier, search, sortBy);
+            var list = _sortService.SortInfluencer(platforme, kategorier, search, sortBy);
             list = list.Where(x => _influencerRepo.Get(x.Id).IsApproved == true);
             var sortList = list.Take(pageSize * pageIndex);
 
@@ -305,9 +322,9 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        public async Task<PartialViewResult> GetNextFromList(int pageIndex, int pageSize, string search, string[] platforme, string[] kategorier, int sortBy)
+        public PartialViewResult GetNextFromList(int pageIndex, int pageSize, string search, string[] platforme, string[] kategorier, int sortBy)
         {
-            var sortList = await _sortService.SortInfluencer(platforme, kategorier, search, sortBy);
+            var sortList = _sortService.SortInfluencer(platforme, kategorier, search, sortBy);
             sortList = sortList.Where(x => _influencerRepo.Get(x.Id).IsApproved == true);
             sortList = sortList.Skip(pageIndex * pageSize).Take(pageSize);
 

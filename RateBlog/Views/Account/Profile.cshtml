@@ -1,6 +1,6 @@
 ﻿@model RateBlog.Models.AccountViewModels.ProfileViewModel
 @inject RateBlog.Services.IFeedbackService FeedbackService
-@inject RateBlog.Repository.IRepository<Influencer> InfluencerRepo
+@inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
 @{
     ViewData["Title"] = Model.ApplicationUser.Name + "'s profil";
 }
@@ -17,13 +17,7 @@
                 <hr />
                 <h3>@Model.ApplicationUser.Name</h3>
                 <h5>@Model.Age år</h5>
-                <h5>@Model.Gender</h5>
-                @if (!string.IsNullOrEmpty(Model.ApplicationUser.ProfileText))
-                {
-                    <br />
-                    <h3 style="font-family: 'Anton', sans-serif;">BIO</h3>
-                    <p style="word-break: break-word">@Model.ApplicationUser.ProfileText</p>
-                }               
+                <h5>@Model.Gender</h5>       
             </div>
 
         </div>

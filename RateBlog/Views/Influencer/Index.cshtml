@@ -1,44 +1,8 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.IndexViewModel
-@inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Services.Interfaces.IPlatformCategoryService PlatformCategoryService
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Find en influencer";
-    var user = await UserManager.GetUserAsync(User);
 }
-
-
-@*<div id="sortMobileModal" class="modal fade" role="dialog">
-        <div class="modal-dialog" style="max-width: 400px;">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h4 style="margin-top: 0"><b>Kategorier</b></h4>
-
-                    <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Lifestyle")" style="background: #fff">Lifestyle</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Beauty")" style="background: #fff">Beauty</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Fashion")" style="background: #fff">Fashion</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Gaming")" style="background: #fff">Gaming</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Entertainment")" style="background: #fff">Entertainment</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Personal")" style="background: #fff">Personal</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Interests")" style="background: #fff">Interests</label><br />
-
-                    <h4><b>Sociale medier</b></h4>
-                    <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Facebook")" style="background: #fff">Facebook</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Instagram")" style="background: #fff">Instagram</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("YouTube")" style="background: #fff;">YouTube</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Snapchat")" style="background: #fff">Snapchat</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Twitter")" style="background: #fff">Twitter</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Twitch")" style="background: #fff;">Twitch</label><br />
-                    <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Website")" style="background: #fff">Website</label><br />
-
-                    <a class="feedback-influencer-btn width100" data-dismiss="modal">FÆRDIG</a>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <button class="visible-xs visible-sm" id="sortMobileBtn" data-toggle="modal" data-target="#sortMobileModal"><i class="fa fa-sort" aria-hidden="true"></i></button>*@
 
 <div style="height: 100vh; background: #fafafa">
 
@@ -68,31 +32,22 @@
             <div class="col-md-12 noPaddingLeft">
                 <div class="col-md-3 hidden-sm hidden-xs noPaddingLeft">
                     <div class="sorter">
-
                         <div class="col-md-12 noPadding">
                             <h4><b>Kategorier</b></h4>
-
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Lifestyle")" style="background: #fff">Lifestyle</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Beauty")" style="background: #fff">Beauty</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Fashion")" style="background: #fff">Fashion</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Gaming")" style="background: #fff">Gaming</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Entertainment")" style="background: #fff">Entertainment</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Personal")" style="background: #fff">Personal</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@PlatformCategoryService.GetCategoryIdByName("Interests")" style="background: #fff">Interests</label><br />
+                            @foreach (var categories in Model.CategoryIds)
+                            {
+                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@categories.Value" style="background: #fff">@categories.Key</label><br />
+                            }
                         </div>
                         <div class="col-md-12 noPadding">
                             <hr />
                         </div>
                         <div class="col-md-12 noPadding">
                             <h4><b>Sociale medier</b></h4>
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Facebook")" style="background: #fff">Facebook</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Instagram")" style="background: #fff">Instagram</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("YouTube")" style="background: #fff;">YouTube</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Snapchat")" style="background: #fff">Snapchat</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Twitter")" style="background: #fff">Twitter</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Twitch")" style="background: #fff;">Twitch</label><br />
-                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@PlatformCategoryService.GetPlatformIdByName("Website")" style="background: #fff">Website</label><br />
-
+                            @foreach (var platform in Model.PlatformIds)
+                            {
+                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@platform.Value" style="background: #fff"/>@platform.Key</label><br />
+                            }
                         </div>
                     </div>
                 </div>

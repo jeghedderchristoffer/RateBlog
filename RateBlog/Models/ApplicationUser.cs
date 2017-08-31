@@ -17,8 +17,6 @@ namespace RateBlog.Models
        
         public int Postnummer { get; set; } 
 
-        public string ProfileText { get; set; }
-
         public string Gender { get; set; } 
 
         public Byte[] ProfilePicture { get; set; }

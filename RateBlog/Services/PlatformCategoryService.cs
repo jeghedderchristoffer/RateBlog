@@ -7,6 +7,7 @@ using RateBlog.Models;
 using Microsoft.AspNetCore.Identity;
 using RateBlog.Data;
 using RateBlog.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace RateBlog.Services
 {
@@ -16,10 +17,10 @@ namespace RateBlog.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly IRepository<Category> _categoryRepo;
         private readonly IRepository<Platform> _platformRepo;
-        private readonly IRepository<Influencer> _influencerRepo;
+        private readonly IInfluencerRepository _influencerRepo;
 
 
-        public PlatformCategoryService(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IRepository<Influencer> influencerRepo)
+        public PlatformCategoryService(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IInfluencerRepository influencerRepo)
         {
             _userManager = userManager;
             _dbContext = dbContext;
@@ -38,45 +39,49 @@ namespace RateBlog.Services
             return null;
         }
 
-        public async Task<IEnumerable<ApplicationUser>> GetAllInfluencersWithCategory(string name)
+        public IEnumerable<Influencer> GetAllInfluencersWithCategory(string name)
         {
-            var id = GetCategoryIdByName(name);
-            var ik = _dbContext.InfluencerCategory.Where(x => x.CategoryId == id);
+            //var id = GetCategoryIdByName(name);
+            //var ik = _dbContext.InfluencerCategory.Where(x => x.CategoryId == id);
 
-            List<ApplicationUser> userList = new List<ApplicationUser>();
+            //List<Influencer> userList = new List<Influencer>();
 
-            foreach (var v in ik)
-            {
-                var influencer = _influencerRepo.Get(v.InfluencerId);
-                var user = await _userManager.FindByIdAsync(influencer.Id); 
+            //foreach (var v in ik)
+            //{
+            //    var influencer = _influencerRepo.Get(v.InfluencerId);
+            //    var user = await _userManager.FindByIdAsync(influencer.Id); 
 
-                if (!user.Name.ToLower().Contains(name) && !influencer.Alias.ToLower().Contains(name))
-                {
-                    userList.Add(user);
-                }
-            }
+            //    if (!user.Name.ToLower().Contains(name) && !influencer.Alias.ToLower().Contains(name))
+            //    {
+            //        userList.Add(user);
+            //    }
+            //}
 
-            return userList;
+            //return userList;
+
+            return _dbContext.InfluencerCategory.Include(x => x.Category).Include(x => x.Influencer).Where(x => x.Category.Name.ToLower() == name).Select(x => x.Influencer); 
         }
        
-        public async Task<IEnumerable<ApplicationUser>> GetAllInfluencersWithPlatform(string name)
+        public IEnumerable<Influencer> GetAllInfluencersWithPlatform(string name)
         {
-            var id = GetPlatformIdByName(name);
-            var ik = _dbContext.InfluencerPlatform.Where(x => x.PlatformId == id);
+            //var id = GetPlatformIdByName(name);
+            //var ik = _dbContext.InfluencerPlatform.Where(x => x.PlatformId == id);
 
-            List<ApplicationUser> userList = new List<ApplicationUser>();
+            //List<Influencer> userList = new List<Influencer>();
 
-            foreach (var v in ik)
-            {
-                var influencer = _influencerRepo.Get(v.InfluencerId);
-                var user = await _userManager.FindByIdAsync(influencer.Id);
+            //foreach (var v in ik)
+            //{
+            //    var influencer = _influencerRepo.Get(v.InfluencerId);
+            //    var user = await _userManager.FindByIdAsync(influencer.Id);
 
-                if (!user.Name.ToLower().Contains(name) && !influencer.Alias.ToLower().Contains(name))
-                {
-                    userList.Add(user);
-                }
-            }
-            return userList;
+            //    if (!user.Name.ToLower().Contains(name) && !influencer.Alias.ToLower().Contains(name))
+            //    {
+            //        userList.Add(user);
+            //    }
+            //}
+            //return userList;
+
+            return _dbContext.InfluencerPlatform.Include(x => x.Platform).Include(x => x.Influencer).Where(x => x.Platform.Name.ToLower() == name).Select(x => x.Influencer); 
         }
 
         public string GetCategoryIdByName(string name)

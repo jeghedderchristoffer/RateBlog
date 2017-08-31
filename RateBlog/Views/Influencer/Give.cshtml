@@ -1,7 +1,5 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.GiveViewModel
 @inject RateBlog.Services.IFeedbackService FeedbackService
-@inject RateBlog.Repository.IRepository<Influencer> InfluencerRepo
-@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Feedback til " + Model.Influencer.Alias;
 }
@@ -35,7 +33,7 @@
                 <div class="col-md-5 col-xs-9 addon-box">
                     <div class="addon-number" style="text-align: left">
                         <p>Feedback til</p>
-                        <h3>@InfluencerRepo.Get(Model.Influencer.Id).Alias</h3>
+                        <h3>@Model.Influencer.Alias</h3>
                     </div>
 
                 </div>

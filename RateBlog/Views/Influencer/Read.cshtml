@@ -1,6 +1,5 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.ReadViewModel
 @inject RateBlog.Services.IFeedbackService FeedbackService
-@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s ratings";
     var isUserCreated = (Model.ApplicationUser.NormalizedEmail.StartsWith("USERINFLUENCER")) ? true : false;
@@ -19,7 +18,13 @@
                         <img class="profil-img center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
                     </a>
                     <hr />
-                    <h3>@Model.Influenter.Alias</h3>
+                    <h3>
+                        @Model.Influenter.Alias
+                        @if (!isUserCreated)
+                        {
+                            <i class="fa fa-check-circle" aria-hidden="true" style="color: #089de3;" title="Verificeret"></i>
+                        }
+                    </h3>
                     @if (!isUserCreated)
                     {
                         <h5>@Model.Age år</h5>
@@ -27,7 +32,7 @@
                     }
                     <br />
                     <h3 style="font-family: 'Anton', sans-serif;">BIO</h3>
-                    <p style="word-break: break-word">@Model.ApplicationUser.ProfileText</p>
+                    <p style="word-break: break-word">@Model.Influenter.ProfileText</p>
                     <br />
                     <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
                 </div>
@@ -56,7 +61,7 @@
                     <p class="text-center" style="margin-top: 20px; margin-bottom: 20px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
                 </div>
 
-                @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(Model.Influenter.Id).OrderByDescending(x => x.FeedbackDateTime))
+                @foreach (var v in Model.Influenter.Ratings.OrderByDescending(x => x.FeedbackDateTime))
                 {
                     <div class="col-md-12 noPadding profile-box">
                         <div style="z-index:1000;position:absolute;bottom:40px;right:40px;">
@@ -143,7 +148,7 @@
                             </div>
                             <div class="col-md-10">
                                 <div class="visible-xs text-center">
-                                    <h4>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</h4>
+                                    <h4>@v.ApplicationUser.Name</h4>
                                     <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
                                     <br />
                                 </div>
@@ -165,7 +170,7 @@
                                     </div>
                                 </div>
                                 <div class="hidden-xs">
-                                    <h4>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</h4>
+                                    <h4>@v.ApplicationUser.Name</h4>
                                     <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
                                 </div>
 
@@ -173,13 +178,12 @@
                             </div>
 
                             <div class="col-md-offset-2 col-md-10">
-                                <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes godt om følgende:</b></p>
+                                <p><b>@v.ApplicationUser.Name synes godt om følgende:</b></p>
                                 <p style="white-space: pre-line">@v.FeedbackGood</p>
                                 <br />
-                                <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes følgende kan forbedres:</b></p>
+                                <p><b>@v.ApplicationUser.Name synes følgende kan forbedres:</b></p>
                                 <p style="white-space: pre-line">@v.FeedbackBetter</p>
                             </div>
-
 
                             @if (v.Answer != null)
                             {
@@ -404,5 +408,3 @@
             </div>
         </div>
     </div>*@
-
-

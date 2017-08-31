@@ -18,9 +18,9 @@ namespace RateBlog.Services
         private readonly IRepository<Platform> _platformRepo;
         private readonly IRepository<Category> _categoryRepo;
         private readonly IPlatformCategoryService _platformCategoryService;
-        private readonly IRepository<Influencer> _influencerRepo;
+        private readonly IInfluencerRepository _influencerRepo;
 
-        public SortService(IRepository<Influencer> influencerRepo, ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, IFeedbackService feedbackService, IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IPlatformCategoryService platformCategoryService)
+        public SortService(IInfluencerRepository influencerRepo, ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, IFeedbackService feedbackService, IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IPlatformCategoryService platformCategoryService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -32,34 +32,36 @@ namespace RateBlog.Services
         }
 
        
-        public async Task<IEnumerable<ApplicationUser>> SortInfluencer(string[] platforme, string[] kategorier, string search, int sortBy)
+        public IEnumerable<Influencer> SortInfluencer(string[] platforme, string[] kategorier, string search, int sortBy)
         {
             if (string.IsNullOrEmpty(search))
             {
                 search = "";
             }
 
-            var influencer = from i in _influencerRepo.GetAll()
-                             join user in _userManager.Users.ToList() on i.Id equals user.Id
-                             select user;
+            search = search.ToLower(); 
 
-            var influencers = influencer.Where(x => x.Name.ToLower().Contains(search.ToLower()) || _influencerRepo.Get(x.Id).Alias.Contains(search.ToLower())).ToList(); 
+            var influencer = _influencerRepo.GetAll();
+
+            var influencers = influencer.Where(x => x.Alias.ToLower().Contains(search)).ToList();
 
             foreach (var kategori in _categoryRepo.GetAll())
             {
-                if (search.ToLower().Equals(kategori.Name.ToLower()))
+                if (search.Equals(kategori.Name.ToLower()))
                 {
-                    influencers.AddRange(await _platformCategoryService.GetAllInfluencersWithCategory(search.ToLower()));
+                    influencers.AddRange(_platformCategoryService.GetAllInfluencersWithCategory(search));
                 }
             }
 
             foreach (var platform in _platformRepo.GetAll())
             {
-                if (search.ToLower().Equals(platform.Name.ToLower()))
+                if (search.Equals(platform.Name.ToLower()))
                 {
-                    influencers.AddRange(await _platformCategoryService.GetAllInfluencersWithPlatform(search.ToLower()));
+                    influencers.AddRange(_platformCategoryService.GetAllInfluencersWithPlatform(search));
                 }
             }
+
+            influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
 
             if (platforme.Count() == 0 && kategorier.Count() == 0 && sortBy == 0)
             {
@@ -113,6 +115,7 @@ namespace RateBlog.Services
 
 
             var list = influencers.Where(x => ids.Contains(x.Id)).ToList();
+            list = list.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
 
             if (sortBy == 1)
             {

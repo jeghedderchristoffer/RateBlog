@@ -1,6 +1,9 @@
-﻿@model RateBlog.Models.ManageViewModels.InfluencerViewModel
+﻿@model InfluencerViewModel
+@inject RateBlog.Repository.IRepository<Category> CategoryRepo
+@inject RateBlog.Repository.IRepository<Platform> PlatformRepo
 @{
     ViewData["Title"] = "Influencer";
+    string currentBool = "";
 }
 
 <div class="navbar-allaround"></div>
@@ -39,26 +42,33 @@
 
     <div class="col-md-12 influencer-cont noPadding">
         <form asp-controller="Manage" asp-action="Influencer" method="post">
+            @Html.HiddenFor(x => x.Influencer.Id)
             @Html.HiddenFor(x => x.ApplicationUser.Id)
 
             <div class="col-md-6 noPadding">
-
-
                 <h4 style="margin-top:25px">Alias</h4>
-                <input class="edit-profile-input" asp-for="@Model.Alias" />
-                <span asp-validation-for="@Model.Alias" class="text-danger" style="margin-left: 5px;"></span>
+                <input class="edit-profile-input" asp-for="@Model.Influencer.Alias" />
+                <span asp-validation-for="@Model.Influencer.Alias" class="text-danger" style="margin-left: 5px;"></span>
 
                 <h4>Dine kategorier:</h4>
                 <div class="choose-category" style="width: 100%">
-                    @for (int i = 0; i < Model.IKList.Count; i++)
+                    @foreach (var cat in CategoryRepo.GetAll())
                     {
+                        @if (Model.Influencer == null)
+                        {
+                            currentBool = "";
+                        }
+                        else
+                        {
+                            currentBool = (Model.Influencer.InfluenterKategori.Any(x => x.CategoryId == cat.Id)) ? "checked" : "";
+                        }
+
                         <div class="tooltips">
-                            <div class="cat-check @Model.IKList[i].KategoriNavn">
-                                <input asp-for="@Model.IKList[i].IsSelected" type="checkbox" id="@Model.IKList[i].KategoriNavn" /> <label for="@Model.IKList[i].KategoriNavn"></label>
+                            <div class="cat-check @cat.Name">
+                                <input @currentBool value="@cat.Id" name="categoriList" type="checkbox" id="@cat.Name" /> <label for="@cat.Name"></label>
                             </div>
-                            <span style="bottom: 115%; left: 25px" class="tooltiptext">@Model.IKList[i].KategoriNavn</span>
+                            <span style="bottom: 115%; left: 25px" class="tooltiptext">@cat.Name</span>
                         </div>
-                        @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
                     }
                 </div>
             </div>
@@ -113,6 +123,9 @@
                     <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
                     <span><input autocomplete="off" id="editSecondYoutube" asp-for="@Model.SecoundYoutubeLink" type="text" placeholder="Second Youtube link" /><span class="margin-left" id="editSecondYoutubeText"></span></span>
                 </div>
+
+                <h4>Profil tekst</h4>
+                <textarea class="edit-input-influ" asp-for="@Model.ProfileText" cols="10" rows="10" style="height: 100%" placeholder="Skriv lidt om dig selv"></textarea>
 
                 <input type="submit" class="edit-button-influ-create" style="margin-top: 50px" value="Gem" />
 

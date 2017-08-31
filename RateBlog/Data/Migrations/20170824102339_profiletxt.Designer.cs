@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170824102339_profiletxt")]
+    partial class profiletxt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -315,37 +316,6 @@ namespace RateBlog.Migrations
                     b.ToTable("Platform");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.ReportFeedback", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApplicationUserId");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(200);
-
-                    b.Property<bool>("Discrimination");
-
-                    b.Property<string>("FeedbackId");
-
-                    b.Property<bool>("IsRead");
-
-                    b.Property<bool>("LanguageUse");
-
-                    b.Property<bool>("Other");
-
-                    b.Property<bool>("Spam");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("FeedbackId");
-
-                    b.ToTable("ReportFeedback");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
@@ -427,17 +397,6 @@ namespace RateBlog.Migrations
                         .WithMany("InfluenterPlatform")
                         .HasForeignKey("PlatformId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RateBlog.Models.ReportFeedback", b =>
-                {
-                    b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("RateBlog.Models.Feedback", "Feedback")
-                        .WithMany()
-                        .HasForeignKey("FeedbackId");
                 });
         }
     }

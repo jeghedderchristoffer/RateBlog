@@ -80,7 +80,7 @@ namespace RateBlog
             services.AddTransient<IRepository<Platform>, Repository<Platform>>();
             services.AddTransient<IRepository<Category>, Repository<Category>>();
             services.AddTransient<IRepository<Feedback>, Repository<Feedback>>();
-            services.AddTransient<IRepository<Influencer>, Repository<Influencer>>();
+            services.AddTransient<IInfluencerRepository, InfluencerRepository>();
             services.AddTransient<ISortService, SortService>();
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();
