@@ -27,8 +27,6 @@ namespace RateBlog.Models.ManageViewModels
         [Display(Name = "Køn")]
         public string Gender { get; set; }
 
-        public string ProfileText { get; set; }
-
         public IFormFile ProfilePic { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

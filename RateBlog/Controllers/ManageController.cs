@@ -42,6 +42,7 @@ namespace RateBlog.Controllers
         private readonly IRepository<Feedback> _feedbackRepo;
         private readonly IPlatformCategoryService _platformCategoryService;
         private readonly IHostingEnvironment _env;
+        private readonly IFeedbackService _feedbackService;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
@@ -55,7 +56,8 @@ namespace RateBlog.Controllers
           IRepository<Category> categoryRepo,
           IRepository<Feedback> feedbackRepo,
           IPlatformCategoryService platformCategoryService,
-          IHostingEnvironment env)
+          IHostingEnvironment env, 
+          IFeedbackService feedbackService)
         {
             _influencerRepo = influencerRepo;
             _platformRepo = platformRepo;
@@ -69,6 +71,7 @@ namespace RateBlog.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _feedbackService = feedbackService;
         }
 
         //
@@ -550,20 +553,27 @@ namespace RateBlog.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true, Duration = 0)]
-        public IActionResult Feedback()
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> Feedback()
         {
-            return View();
+            var user = await GetCurrentUserAsync();
+            var influencer = _influencerRepo.Get(user.Id); 
+
+            var model = new FeedbackViewModel()
+            {
+                ApplicationUser = user, 
+                Influencer = influencer
+            };
+
+            return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         [Route("/[controller]/Feedback/[action]/{id}")]
         public IActionResult Answer(string id)
         {
             var rating = _feedbackRepo.Get(id);
-            rating.IsRead = true;
-            _feedbackRepo.Update(rating);
+            rating.ApplicationUser = _userManager.Users.SingleOrDefault(x => x.Id == rating.ApplicationUserId);
 
             var model = new FeedbackResponseViewModel()
             {
@@ -595,18 +605,12 @@ namespace RateBlog.Controllers
             return RedirectToAction("Feedback");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         [Route("/[controller]/Feedback/[action]/{id}")]
         public IActionResult Read(string id)
         {
             var rating = _feedbackRepo.Get(id);
-
-            if (!string.IsNullOrEmpty(rating.Answer))
-            {
-                rating.IsAnswerRead = true;
-                _feedbackRepo.Update(rating);
-            }
+            rating.Influenter = _influencerRepo.Get(rating.InfluenterId); 
 
             var model = new MinAnmeldelseViewModel()
             {
@@ -614,6 +618,19 @@ namespace RateBlog.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public JsonResult GetUnreadFeedback(string id)
+        {
+            return Json(_feedbackService.UnreadFeedbackCount(id)); 
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ReadFeedback(string id)
+        {
+            var user = await GetCurrentUserAsync();
+            return Json(_feedbackService.ReadFeedback(id, user.Id)); 
         }
 
         [HttpGet]
@@ -626,8 +643,8 @@ namespace RateBlog.Controllers
             if (buffer == null)
             {
                 var dir = _env.WebRootPath;
-                var path = Path.Combine(dir, "/images", "BF" + ".png");
-                return File(path, "image/jpeg");
+                var path = Path.Combine(dir, "/images", "bfprofilepic" + ".png");
+                return File(path, "image/png");
             }
 
             return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ProfilePicture));
@@ -644,8 +661,8 @@ namespace RateBlog.Controllers
             if (buffer == null)
             {
                 var dir = _env.WebRootPath;
-                var path = Path.Combine(dir, "/images", "BF" + ".png");
-                return File(path, "image/jpeg");
+                var path = Path.Combine(dir, "/images", "bfprofilepic" + ".png");
+                return File(path, "image/png");
             }
 
             return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ProfilePicture));

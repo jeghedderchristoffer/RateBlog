@@ -4,127 +4,124 @@
     ViewData["Title"] = "Find en influencer";
 }
 
-<div style="height: 100vh; background: #fafafa">
+<div class="navbar-allaround"></div>
 
-    <div class="navbar-allaround"></div>
+<div class="background-all">
 
-    <div style="background-color: #fff; height: 188px">
-        <div class="outer">
-            <div class="middle">
-                <div class="inner">
-                    <h2 style="margin-bottom: 30px; margin-top: 0">Søg på influencere</h2>
-                    <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index" class="form-inline">
-                        <div class="input-group">
-                            <input autocomplete="off" type="text" name="search" id="search" style="border: 1px solid #ddd" class="form-control search-input" list="searchSug" placeholder="F.eks. Anna, Fashion eller YouTube" />
-                            <datalist id="searchSug"></datalist>
-                            <div class="input-group-btn">
-                                <button class="btn search-button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+
+    @*<div style="background-color: #fff; height: 188px">
+            <div class="outer">
+                <div class="middle">
+                    <div class="inner">
+                        <h2 style="margin-bottom: 30px; margin-top: 0">Søg på influencere</h2>
+                        <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index" class="form-inline">
+                            <div class="input-group">
+                                <input autocomplete="off" type="text" name="search" id="search" style="border: 1px solid #ddd" class="form-control search-input" list="searchSug" placeholder="F.eks. Anna, Fashion eller YouTube" />
+                                <datalist id="searchSug"></datalist>
+                                <div class="input-group-btn">
+                                    <button class="btn search-button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div style="padding-bottom: 50px; background: #fafafa; border-top: 1px solid #ddd">
-        <div class="container" style="padding-top: 20px; padding-left: 0; padding-right: 0;">
-            <div class="col-md-12 noPaddingLeft">
-                <div class="col-md-3 hidden-sm hidden-xs noPaddingLeft">
-                    <div class="sorter">
-                        <div class="col-md-12 noPadding">
-                            <h4><b>Kategorier</b></h4>
-                            @foreach (var categories in Model.CategoryIds)
-                            {
-                                <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@categories.Value" style="background: #fff">@categories.Key</label><br />
-                            }
-                        </div>
-                        <div class="col-md-12 noPadding">
-                            <hr />
-                        </div>
-                        <div class="col-md-12 noPadding">
-                            <h4><b>Sociale medier</b></h4>
-                            @foreach (var platform in Model.PlatformIds)
-                            {
-                                <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@platform.Value" style="background: #fff"/>@platform.Key</label><br />
-                            }
-                        </div>
+                        </form>
                     </div>
                 </div>
-
-                <div class="col-md-9 col-sm-12 noPadding">
-                    <div class="infoInfluenter">
-                        <h2 style="margin-top: 0; margin-bottom: 20px;">
-                            Resultater for @Model.SearchString
-
-                            <span style="float: right;" class="hidden-xs">
-                                <select id="sortBy" class="dropdown-sort">
-                                    <option value="" disabled selected hidden>Sorter rating</option>
-                                    <option value="1">Højeste</option>
-                                    <option value="2">Laveste</option>
-                                    <option value="3">Fleste</option>
-                                    <option value="4">Færreste</option>
-                                </select>
-                            </span>
-
-                        </h2>
-
-                        @if (!SignInManager.IsSignedIn(User))
+            </div>
+        </div>*@
+    <div class="container" style="padding-top: 20px; padding-left: 0; padding-right: 0;">
+        <div class="col-md-12">
+            <div class="col-md-3 hidden-sm hidden-xs">
+                <div class="sort-box">
+                    <div class="col-md-12 noPadding">
+                        <h4><b>Kategorier</b></h4>
+                        @foreach (var categories in Model.CategoryIds)
                         {
-                            <div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px; height: 150px">
-                                <div class="outer">
-                                    <div class="middle">
-                                        <div class="inner">
-                                            <h4 style="margin: 0">Bruger du sociale medier?</h4>
-                                            <a data-toggle="modal" data-target="#opretModal" class="a-button center-block" style="cursor: pointer; background-color: #FFA500; float: none; letter-spacing: 1.5px; margin-top: 20px; width: 170px">Opret en profil</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <label class="checkbox-inline"><input type="checkbox" name="kategorier" value="@categories.Value" style="background: #fff">@categories.Key</label><br />
                         }
+                    </div>
+                    <div class="col-md-12 noPadding">
+                        <hr />
+                    </div>
+                    <div class="col-md-12 noPadding">
+                        <h4><b>Sociale medier</b></h4>
+                        @foreach (var platform in Model.PlatformIds)
+                        {
+                            <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@platform.Value" style="background: #fff" />@platform.Key</label><br />
+                        }
+                    </div>
 
-                        <div class="col-md-12">
-                            <div style="height: 50px; margin-bottom: 30px; margin-top: 30px; display: none" id="sortLoadingBox">
-                                <div class="text-center">
-                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                                    <span class="sr-only">Loading...</span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-9 col-sm-12 nopaddingmobile">
+
+                <h2 class="search-string">
+                    Resultater for @Model.SearchString
+                    <span class="hidden-xs">
+                        <select id="sortBy" class="dropdown-sort">
+                            <option value="" disabled selected hidden>Sorter rating</option>
+                            <option value="1">Højeste</option>
+                            <option value="2">Laveste</option>
+                            <option value="3">Fleste</option>
+                            <option value="4">Færreste</option>
+                        </select>
+                    </span>
+                </h2>
+
+                @if (!SignInManager.IsSignedIn(User))
+                {
+                    <div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px; height: 150px">
+                        <div class="outer">
+                            <div class="middle">
+                                <div class="inner">
+                                    <h4 style="margin-top: 0; margin-bottom: 15px">Bruger du sociale medier?</h4>
+                                    <a href="#" data-toggle="modal" data-target="#opretModal" class="btn-create center-block">Opret en profil</a>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                }
 
-
-                        <div id="listOfInfluencers">
-                            @Html.Partial("InfluencerListPartial", Model.InfluentList)
-                        </div>
-
-                        <div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px; height: 150px; display: none" id="createInfluencer">
-                            <div class="outer">
-                                <div class="middle">
-                                    <div class="inner">
-                                        <h4 style="margin: 0">Mangler vi din influencer?</h4>
-                                        <a asp-controller="Influencer" asp-action="Create" class="a-button center-block" style="background-color: #FFA500; float: none; letter-spacing: 1.5px; margin-top: 20px; width: 200px">Opret din influencer</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 text-center" id="loadingBox" style="height: 50px; display: none">
+                <div class="col-md-12">
+                    <div class="loading-box-top" id="sortLoadingBox">
+                        <div class="text-center">
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
                 </div>
+
+                <div id="listOfInfluencers">
+
+                </div>
+
+                <div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px; height: 150px; display: none" id="createInfluencer">
+                    <div class="outer">
+                        <div class="middle">
+                            <div class="inner">
+                                <h4 style="margin-top: 0; margin-bottom: 15px">Mangler vi din influencer?</h4>
+                                <a asp-controller="Influencer" asp-action="Create" class="btn-create center-block">Opret din influencer</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 text-center" id="loadingBox" style="height: 50px; display: none">
+                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
         </div>
     </div>
 
-</div>
 
+</div>
 
 @section Scripts{
     <script>
-
-        var pageSize = 10;
+        var pageSize = 20;
         var pageIndex = 0;
         var searchString = "@Model.SearchString";
         var currentUsersArray;
@@ -176,11 +173,6 @@
                 jsonPlatformArray[i] = platformArray[i];
             }
 
-            // Gets the current users, so i can make sure they dont appear twice in list...
-            var currentInfluencers = UpdateCurrentUserList();
-
-            var lastInfluencer = currentInfluencers[currentInfluencers.length - 1];
-
             var sortBy = $("#sortBy").val();
 
             $.ajax({
@@ -199,23 +191,101 @@
                     search: searchString,
                     platforme: jsonPlatformArray,
                     kategorier: jsonKategoriArray,
-                    lastUser: lastInfluencer,
                     sortBy: sortBy
                 },
                 error: function (request, error) {
                     ajaxDone--;
                 },
                 success: function (response) {
-                    ajaxDone--;
-                    if (response.trim()) {
-                        $("#listOfInfluencers").append(response);
-                        pageIndex++;
-                        currentUsersArray = UpdateCurrentUserList();
-                    }
-                    else {
+                    if (response.length === 0) {
                         loadingComplete = true;
                         $("#createInfluencer").css("display", "block");
                     }
+                    ajaxDone--;
+                    pageIndex++;
+                    $.each(response, function (i, item) {
+                        var id = item.id;
+                        var alias = item.alias;
+                        var platforms = item.platforms;
+                        var categories = item.categories;
+                        if (item.categories) {
+
+                        } else {
+                            categories = "Ingen kategorier"
+                        }
+
+                        if (platforms) {
+
+                        } else {
+                            platforms = "Ingen sociale medier"
+                        }
+
+                        var stars = "";
+                        var value = item.feedbackScore;
+                        var round = Math.round(value * 2) / 2;
+                        var floor = Math.floor(round);
+                        var hasDeciaml = (round % 1) != 0;
+
+                        for (var i = 0; i <= floor; i++){
+                            if (hasDeciaml) {
+                                if (i === floor) {
+                                    stars += '<div class="show-rating-box"><i class="fa fa-star-half" aria-hidden="true"></i></div>'
+                                }
+                                else {
+                                    stars += '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>'
+                                }
+                            } else {
+                                if (floor <= i) {
+                                    break;
+                                }
+                                stars += '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>'
+                            }
+                        }
+
+                        $("#listOfInfluencers").append(
+                            '<div class="col-md-12 search-result noPaddingLeft">' +
+                            '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">' +
+                            ' <a href="/Influencer/Profile/' + id + '">' +
+                            ' <img class="influ-img" src="/Manage/UsersProfilePic/' + id + '" />' +
+                            '</a>' +
+                            '</div>' +
+
+                            '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 noPadding">' +
+                            '<h4>' + alias + '</h4>' +
+                            '<p style="margin-top: 15px">' + categories + '</p>' +
+                            '<div class="center-social">' +
+                            platforms +
+                            '</div>' +
+                            '</div>' +
+
+                            '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding influencer-index">' +
+                            '<div class="show-rating" style="margin-top: 15px;">' +
+                            '<div class="show-rating-container center-block">' +
+
+                            '<div class="show-rating-front">' +
+                            stars +
+                            '</div>' +
+
+                            '<div class="show-rating-back">' +
+                            '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                            '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                            '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                            '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                            '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '<p class="show-score">' + (item.feedbackScore).toFixed(2) + ' af ' + item.feedbackCount + ' ratings</p>' +
+
+                            '</div>' +
+                            '<a href="/Influencer/Feedback/Give/' + id + '" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>' +
+                            '<a href="/Influencer/Feedback/Read/' + id + '" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />' +
+
+                            '</div>' +
+                            '</div>'
+                        );
+                    });
                 },
                 complete: function () {
                         $("#loadingBox").css("display", "none");
@@ -272,7 +342,91 @@
 
                 },
                 success: function (response) {
-                    $("#listOfInfluencers").html(response);
+                    $("#listOfInfluencers").html("");
+                    $.each(response, function (i, item) {
+                        var id = item.id;
+                        var alias = item.alias;
+                        var platforms = item.platforms;
+                        var categories = item.categories;
+                        if (item.categories) {
+
+                        } else {
+                            categories = "Ingen kategorier"
+                        }
+
+                        if (platforms) {
+
+                        } else {
+                            platforms = "Ingen sociale medier"
+                        }
+
+                        var stars = "";
+                        var value = item.feedbackScore;
+                        var round = Math.round(value * 2) / 2;
+                        var floor = Math.floor(round);
+                        var hasDeciaml = (round % 1) != 0;
+
+                        for (var i = 0; i <= floor; i++) {
+                            if (hasDeciaml) {
+                                if (i === floor) {
+                                    stars += '<div class="show-rating-box"><i class="fa fa-star-half" aria-hidden="true"></i></div>'
+                                }
+                                else {
+                                    stars += '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>'
+                                }
+                            } else {
+                                if (floor <= i) {
+                                    break;
+                                }
+                                stars += '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>'
+                            }
+                        }
+
+                        console.log(item.feedbackScore)
+
+                        $("#listOfInfluencers").append(
+                            '<div class="col-md-12 search-result noPaddingLeft">' +
+                            '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">' +
+                            ' <a href="/Influencer/Profile/' + id + '">' +
+                            ' <img class="influ-img" src="/Manage/UsersProfilePic/' + id + '" />' +
+                            '</a>' +
+                            '</div>' +
+
+                            '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 noPadding">' +
+                            '<h4>' + alias + '</h4>' +
+                            '<p style="margin-top: 15px">' + categories + '</p>' +
+                            '<div class="a-center">' +
+                            platforms +
+                            '</div>' +
+                            '</div>' +
+
+                            '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding influencer-index">' +
+                            '<div class="show-rating" style="margin-top: 15px;">' +
+                            '<div class="show-rating-container center-block">' +
+
+                            '<div class="show-rating-front">' +
+                            stars +
+                            '</div>' +
+
+                            '<div class="show-rating-back">' +
+                            '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                            '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                            '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                            '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                            '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '<p class="show-score">' + (item.feedbackScore).toFixed(2) + ' af ' + item.feedbackCount + ' ratings</p>' +
+                            '</div>' +
+                            '<a href="/Influencer/Feedback/Give/' + id + '" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>' +
+                            '<a href="/Influencer/Feedback/Read/' + id + '" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />' +
+
+                            '</div>' +
+                            '</div>'
+                        );
+                    });
                 },
                 complete: function () {
                     $("#sortLoadingBox").css("display", "none");

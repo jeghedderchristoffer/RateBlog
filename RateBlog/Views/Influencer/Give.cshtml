@@ -3,9 +3,7 @@
 @{
     ViewData["Title"] = "Feedback til " + Model.Influencer.Alias;
 }
-
-<div style="min-height: 100.1vh; padding-bottom: 40vh; background: #fafafa;">
-
+<div class="background-all" style="min-height: 100.1vh">
     <div class="navbar-allaround"></div>
 
     @if (TempData["Error"] != null)
@@ -18,48 +16,25 @@
         <script>
             window.setTimeout(function () {
                 $("#rateInfluencerErr").fadeOut(1000);
-            }, 2000);
+            }, 5000);
         </script>
     }
 
-    <div class="navbar-addon" style="background: #fff">
-        <div class="container">
-            <div class="col-md-12 col-xs-12 noPadding">
-                <div class="col-md-2 col-xs-2 noPadding addon-box">
-                    <div class="addon-img-container">
-                        <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.Influencer.Id })" />
-                    </div>
-                </div>
-                <div class="col-md-5 col-xs-9 addon-box">
-                    <div class="addon-number" style="text-align: left">
-                        <p>Feedback til</p>
-                        <h3>@Model.Influencer.Alias</h3>
-                    </div>
 
-                </div>
-                <div class="col-md-5 col-xs-12 addon-box">
-                    <div class="addon-number">
-                        <h1>@FeedbackService.GetInfluencerFeedbackCount(Model.Influencer.Id)</h1>
-                        <p>Ratings</p>
-                    </div>
-                    <div class="addon-number">
-                        <h1>@Math.Round(FeedbackService.GetInfluencerAnswerPercentage(Model.Influencer.Id), 1)%</h1>
-                        <p>Svarprocent</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="container" style="padding-top: 40px;" id="fbContainer">
+    <div class="container" style="padding-top: 50px; padding-bottom: 45vh;" id="fbContainer">
+
+
+        <h1 class="feedback-title">Feedback til @Model.Influencer.Alias</h1>
+
         <div class="col-md-12 influencer-give noPadding">
             <form asp-controller="Influencer" asp-action="Give" method="post">
 
                 @Html.HiddenFor(x => x.Influencer.Id)
                 @Html.HiddenFor(x => x.Follower.Id)
                 @Html.HiddenFor(x => x.Influencer.Alias)
-                <div class="col-md-offset-2 col-md-8">
-                    <div class="profile-box influencer-give-social give-feedback-box" style="margin-bottom: 0 !important;">
+                <div class="col-md-offset-2 col-md-8 noPadding">
+                    <div class="white-box influencer-give-social give-feedback-box" style="margin-bottom: 0 !important;">
                         <h3>Hvilke sociale medier baserer du din feedback på?</h3>
 
                         <div style="text-align: center; width: 100%;" id="basedOnIcons">
@@ -94,12 +69,11 @@
                             </div>
                         </div>
 
-
                         <a id="basedOnBtn" class="done-button adisabled center-block">Videre</a>
                     </div>
 
 
-                    <div class="profile-box give-feedback-box" id="troværdighed" style="display: none">
+                    <div class="white-box give-feedback-box" id="troværdighed" style="display: none">
                         <h3>Troværdighed</h3>
                         <h4>Er influenceren pålidelig og stoler du på det vedkommende siger?</h4>
                         <div class="center-block">
@@ -114,7 +88,7 @@
 
                     </div>
 
-                    <div class="profile-box give-feedback-box" id="opførsel" style="display: none;">
+                    <div class="white-box give-feedback-box" id="opførsel" style="display: none;">
                         <h3>Opførsel</h3>
                         <h4>Er influenceren en god rollemodel gennem sprogbrug, adfærd og moral?</h4>
                         <div class="center-block">
@@ -128,7 +102,7 @@
                         </div>
                     </div>
 
-                    <div class="profile-box give-feedback-box" id="kvalitet" style="display: none;">
+                    <div class="white-box give-feedback-box" id="kvalitet" style="display: none;">
                         <h3>Kvalitet</h3>
                         <h4>Er influencerens indhold originalt og gennemarbejdet?</h4>
                         <div class="center-block">
@@ -142,7 +116,7 @@
                         </div>
                     </div>
 
-                    <div class="profile-box give-feedback-box" id="interaktion" style="display: none;">
+                    <div class="white-box give-feedback-box" id="interaktion" style="display: none;">
                         <h3>Interaktion</h3>
                         <h4>Er influenceren god til at lytte til sine følgere?</h4>
                         <div class="center-block">
@@ -156,7 +130,7 @@
                         </div>
                     </div>
 
-                    <div class="profile-box give-feedback-box" id="feedbackGodt" style="display: none; margin-bottom: 100px !important">
+                    <div class="white-box give-feedback-box" id="feedbackGodt" style="display: none; margin-bottom: 100px !important">
                         <h3>Hvad gør @Model.Influencer.Alias godt?</h3>
                         <h4 style="margin-bottom: 30px;">
                             Vær specifik og kom med eksempler
@@ -165,20 +139,20 @@
                             <textarea asp-for="@Model.FeedbackGood" id="feedbackGodtText" placeholder="F.eks. du sætter fokus på relevante emner, fortæller din ærlige mening og laver godt indhold"></textarea>
 
                         </div>
-                        <a id="feedbackGodtBtn" class="done-button adisabled center-block">Videre</a>
+                        <a id="feedbackGodtBtn" class="done-button center-block" style="opacity: 1">Videre</a>
                     </div>
 
-                    <div class="profile-box give-feedback-box" id="feedbackBedre" style="display: none;">
+                    <div class="white-box give-feedback-box" id="feedbackBedre" style="display: none;">
                         <h3>Hvad kan @Model.Influencer.Alias gøre bedre?</h3>
                         <h4 style="margin-bottom: 30px;">Kom med eksempler og referer til adfærd, som det er muligt at ændre</h4>
                         <div class="textarea-container nopaddingmobile">
                             <textarea asp-for="@Model.FeedbackBetter" id="feedbackGodtText" placeholder="F.eks. jeg synes dit sprog er blevet hårdt igennem dine seneste videoer"></textarea>
                         </div>
-                        <a id="feedbackBedreBtn" class="done-button adisabled center-block">Videre</a>
+                        <a id="feedbackBedreBtn" class="done-button center-block" style="opacity: 1">Videre</a>
                     </div>
 
-                    <div class="profile-box give-feedback-box" id="anbefaling" style="display: none;">
-                        <h3 style="margin-bottom: 50px;">Hvor stor er sandsynligheden for, at du vil anbefale @Model.Influencer.Alias til en ven?</h3>
+                    <div class="white-box give-feedback-box" id="anbefaling" style="display: none;">
+                        <h3>Hvor stor er sandsynligheden for, at du vil anbefale @Model.Influencer.Alias til en ven?</h3>
                         <h5 style="float: left">Ikke sansynligt</h5>
                         <h5 class="hidden-xs" style="float: right">Meget sansynligt</h5>
                         <div style="display: inline-block; margin-top: 10px; width: 100%" id="anbefalingBtn">
@@ -224,12 +198,12 @@
                                 <label for="anbefaling10" number="10"></label>
                             </div>
                             <h5 class="visible-xs" style="float: right">Meget sansynligt</h5>
-                        </div>         
-                        
+                        </div>
+
                     </div>
 
-                    <button type="submit" class="edit-button-feedback" disabled id="sendBtn" style="display: none; margin-bottom: 50px;">SEND SVAR</button>
-                </div>  
+                    <button type="submit" class="give-feedback-btn" disabled id="sendBtn" style="display: none; margin-bottom: 50px;">SEND SVAR</button>
+                </div>
             </form>
         </div>
     </div>
@@ -238,11 +212,13 @@
 @section Scripts{
     <script>
 
-        function scrollToBottom(id) {
+        function scrollToBottom(id, number) {
+            var element = $(id); 
+
             var el = $(id);
             var elOffset = el.offset().top;
             var elHeight = el.height();
-            var windowHeight = window.innerHeight;
+            var windowHeight = $(window).height();
             var offset;
 
             if (elHeight < windowHeight) {
@@ -251,8 +227,11 @@
             else {
                 offset = elOffset;
             }
-            var speed = 600;
-            $('html, body').animate({ scrollTop: offset + 100 }, speed);
+
+            $('html body').animate({
+                scrollTop: offset + number
+            }, 600);
+
         }
 
         $("#basedOnIcons").one("click", function () {
@@ -264,51 +243,62 @@
 
             $("#basedOnBtn").css("opacity", 0)
             $("#troværdighed").slideDown(400);
-            scrollToBottom("#troværdighed");
+            scrollToBottom("#troværdighed", 100);
         });
 
         $("#troværdighedBtn").one("click", function () {
             $("#opførsel").slideDown(400);
-            scrollToBottom("#opførsel");
+            scrollToBottom("#opførsel", 100);
         });
 
         $("#opførselBtn").one("click", function () {
             $("#kvalitet").slideDown(400);
-            scrollToBottom("#kvalitet");
+            scrollToBottom("#kvalitet", 100);
         });
-
-        var kvalitetInput = $("#kvalitet input");
 
         $("#kvalitetBtn").one("click", function () {
             $("#interaktion").slideDown(400);
-            scrollToBottom("#interaktion");
+            scrollToBottom("#interaktion", 100);
         });
 
         $("#interaktionBtn").one("click", function () {
             $("#feedbackGodt").slideDown(400);
-            scrollToBottom("#feedbackGodt");
-        });
 
-        $("#feedbackGodtText").one("keyup", function () {
-            $("#feedbackGodtBtn").css("opacity", 1);
-            $("#feedbackGodtBtn").removeClass("adisabled");
+            if ($(window).width() < 767) {
+                scrollToBottom("#feedbackGodt", 200);
+            }
+            else {
+                scrollToBottom("#feedbackGodt", 100);
+            }
         });
 
         $("#feedbackGodtBtn").one("click", function () {
             $("#feedbackGodtBtn").css("opacity", 0);
             $("#feedbackBedre").slideDown(400);
-            scrollToBottom("#feedbackBedre");
-        });
 
-        $("#feedbackBedre").one("keyup", function () {
-            $("#feedbackBedreBtn").css("opacity", 1);
-            $("#feedbackBedreBtn").removeClass("adisabled");
+            if ($(window).width() < 767) {
+                scrollToBottom("#feedbackBedre", 200);
+            }
+            else {
+                scrollToBottom("#feedbackBedre", 100);
+            }
+
+            
         });
 
         $("#feedbackBedreBtn").one("click", function () {
+            $("#anbefaling").css("margin-bottom", "100px")
             $("#feedbackBedreBtn").css("opacity", 0);
             $("#anbefaling").slideDown(400);
-            scrollToBottom("#anbefaling");
+
+            if ($(window).width() < 767) {
+                scrollToBottom("#anbefaling", 200);
+            }
+            else {
+                scrollToBottom("#anbefaling", 100);
+            }
+
+           
         });
 
         $("#anbefalingBtn").one("click", function () {

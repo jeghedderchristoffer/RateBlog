@@ -1,9 +1,10 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.CreateViewModel
+@inject RateBlog.Repository.IRepository<Category> CategoryRepo
 @{
     ViewData["Title"] = "Opret ny influencer";
 }
 
-<div style="min-height: 100vh; background-color: #fafafa">
+<div class="background-all">
     <div class="navbar-allaround"></div>
 
 
@@ -21,103 +22,48 @@
         </script>
     }
 
-    <div class="container influencer-create">
-        <div class="col-md-offset-3 col-md-6 nopaddingmobile">
-            <div class="profile-box">
-                <h2>Opret en influencer</h2>
-                <hr />  
-                <form asp-controller="Influencer" asp-action="Create" method="post" enctype="multipart/form-data">
-                    <h4><b>Alias på influenceren</b>:</h4>
-                    <span asp-validation-for="@Model.Influenter.Alias" class="text-danger"></span>
-                    <input autocomplete="off" class="influencer-create-input" asp-for="@Model.Influenter.Alias" style="font-size: 14px" placeholder="F.eks. Homer Simpsons" />
-
-                    <br /><br />
-
-                    <h4><b>Billede af influenceren</b>:</h4>
-                    <input type="file" name="ProfilePic" asp-for="@Model.ProfilePic" />
-                    <span asp-validation-for="@Model.ProfilePic" class="text-danger"></span>
-                    <br />  
+    <div class="container">
+        <div class="edit-user-container" style="padding-top: 40px;">
+            <div class="col-md-offset-3 col-md-6 noPadding">
+                <div class="white-box">
+                    <h2 style="margin-bottom: 15px; text-align: center">Opret en influencer</h2>
+                    <p style="text-align: center; margin-top: 15px;">... som du derefter kan give feedback til!</p>
                     <hr />
 
-                    <h4><b>Vælg mindst en kategori, som passer til influenceren</b>:</h4>
-                    <br />
+                    <form asp-controller="Influencer" asp-action="Create" method="post">
+                        <p>Alias</p>
+                        <input type="text" asp-for="@Model.Influenter.Alias" placeholder="Hvad hedder influenceren på de sociale medier?" />
 
+                        <p>Hvilke kategorier hører influenceren under?</p>
 
-                    <div style="display: block; width: 100%">
-
-                        @for (int i = 0; i < Model.IKList.Count; i++)
-                        {
-                            <div class="tooltips">
-                                <div class="cat-check @Model.IKList[i].KategoriNavn">
-                                    <input asp-for="@Model.IKList[i].IsSelected" type="checkbox" id="@Model.IKList[i].KategoriNavn" /> <label for="@Model.IKList[i].KategoriNavn"></label>
+                        <div class="choose-category" style="width: 100%">
+                            @foreach (var cat in CategoryRepo.GetAll())
+                            {
+                                <div class="tooltips">
+                                    <div class="cat-check @cat.Name">
+                                        <input value="@cat.Id" name="categoriList" type="checkbox" id="@cat.Name" /> <label for="@cat.Name" style="border: none"></label>
+                                    </div>
+                                    <span style="bottom: 115%; left: 25px" class="tooltiptext">@cat.Name</span>
                                 </div>
-                                <span style="bottom: 115%; left: 25px" class="tooltiptext">@Model.IKList[i].KategoriNavn</span>
-                            </div>
-                            @Html.HiddenFor(x => x.IKList[i].KategoriNavn)
-                        }
+                            }
+                        </div>
 
-                        <br />
-                    </div>
-                    <hr />
-                    <h4><b>Referer til mindst et socialt medie:</b></h4>
-                    <br />     
+                        <p>Hvilke sociale medier bruger influenceren?</p>
+                        <input class="icon-input" placeholder="&#xf16d; &nbsp; Instagram navn" type="text" asp-for="@Model.InstagramLink" />
+                        <input class="icon-input" placeholder="&#xf2ac; &nbsp; Snapchat navn" type="text" asp-for="@Model.SnapchatLink" />
+                        <input class="icon-input" placeholder="&#xf099; &nbsp; Twitter navn" type="text" asp-for="@Model.TwitterLink" />
+                        <hr style="margin-top: 5px" />
+                        <input class="icon-input" placeholder="&#xf1e8; &nbsp; Twitch link" type="text" asp-for="@Model.TwitchLink" />
+                        <input class="icon-input" placeholder="&#xf09a; &nbsp;&nbsp; Facebook link" type="text" asp-for="@Model.FacebookLink" />
+                        <input class="icon-input" placeholder="&#xf0ac; &nbsp; Hjemmeside/blog link" type="text" asp-for="@Model.WebsiteLink" />
+                        <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link" type="text" asp-for="@Model.YoutubeLink" />
 
-                    <h5><b>Instagram navn</b>:</h5>
-                    <span>
-                        <input autocomplete="off" class="create-profile-input" id="editInstagram" asp-for="@Model.InstagramLink" style="font-size: 14px; margin-bottom: 5px" type="text" placeholder="F.eks. homersimpsons" />
-                        <span style="margin-left: 4px;" class="inside-span" id="editInstagramText"></span>
-                    </span>
-                    <br /><br />
+                        <p>Fortæl lidt om influenceren</p>
+                        <textarea rows="10" placeholder="Hvilket indhold laver personen? " asp-for="@Model.ProfileText"></textarea>
 
-                    <h5><b>Snapchat navn</b>:</h5>
-                    <span>
-                        <input autocomplete="off" class="create-profile-input" id="editSnapchat" asp-for="@Model.SnapchatLink" style="font-size: 14px; margin-bottom: 5px" type="text" placeholder="F.eks. HomerSimpsons" />
-                        <span style="margin-left: 4px;" class="inside-span" id="editSnapchatText"></span>
-                    </span>
-                    <br /><br />
-
-                    <h5><b>Twitter navn</b>:</h5>
-                    <span>
-                        <input autocomplete="off" class="create-profile-input" id="editTwitter" asp-for="@Model.TwitterLink" style="font-size: 14px; margin-bottom: 5px" type="text" placeholder="F.eks. HomerSimpsons" />
-                        <span style="margin-left: 4px;" class="inside-span" id="editTwitterText"></span>
-                    </span>
-                    <br /><br />
-
-                    <h5><b>Facebook link</b>:</h5>
-                    <span>
-                        <input autocomplete="off" class="create-profile-input" id="editFacebook" asp-for="@Model.FacebookLink" style="font-size: 14px; margin-bottom: 5px" type="text" placeholder="F.eks. https://www.facebook.com/homer.simpsons" />
-                        <span style="margin-left: 4px;" class="inside-span" id="editFacebookText"><b></b></span>
-                    </span>
-                    <br /><br />
-
-                    <h5><b>Youtube link</b>:</h5>
-                    <span>
-                        <input autocomplete="off" class="create-profile-input" id="editYoutube" asp-for="@Model.YoutubeLink" style="font-size: 14px; margin-bottom: 5px" type="text" placeholder="F.eks. https://www.youtube.com/user/homersimpsons" />
-                        <span style="margin-left: 4px;" class="inside-span" id="editYoutubeText"><b></b></span>
-                    </span>
-                    <br /><br />
-
-                    <h5><b>Twitch link</b>:</h5>
-                    <span>
-                        <input autocomplete="off" class="create-profile-input" id="editTwitch" asp-for="@Model.TwitchLink" style="font-size: 14px; margin-bottom: 5px" type="text" placeholder="F.eks. https://www.twitch.tv/homersimpsons" />
-                        <span style="margin-left: 4px;" class="inside-span" id="editTwitchText"><b></b></span>
-                    </span>
-                    <br /><br />
-
-                    <h5><b>Blog/hjemmeside link</b>:</h5>
-                    <span>
-                        <input autocomplete="off" class="create-profile-input" id="editWebsite" asp-for="@Model.WebsiteLink" style="font-size: 14px; margin-bottom: 5px" type="text" placeholder="F.eks. www.homersimpsons.com" />
-                        <span style="margin-left: 4px;" class="inside-span" id="editWebsiteText"></span>
-                    </span>
-                    <br />
-
-                    <h4><b>Profiltekst til influenceren</b></h4>
-                    <textarea asp-for="@Model.ProfileText" placeholder="F.eks. Homer Simpsons er en mand, som altid roder sig ud i problemer. Han laver underholdning på højt plan og er super sjov at følge."></textarea>
-                    <br />
-                    <br />
-
-                    <input type="submit" class="edit-button-influ-create" style="width: 100%" value="Opret influencer" />
-                </form>
+                        <button type="submit">Gem oplysninger</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

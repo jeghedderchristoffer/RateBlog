@@ -5,108 +5,207 @@
     ViewData["Title"] = "Feedback";
 }
 
-<div class="navbar-allaround"></div>
+<div class="background-all">
+    <div class="navbar-allaround"></div>
 
-@Html.Partial("_NavbarAddonPartial")
-<div class="bottom-container" style="background: #fafafa">
-    <div style="background: #fff !important">
-        <div class="navbar-addon" style="padding-bottom: 20px; border: none; background:#fff">
-            <div class="container">
-                <div class="col-md-12 col-xs-12 noPadding">
-                    <div class="col-md-2 col-xs-2 noPadding addon-box">
-                        <div class="addon-img-container">
-                            <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Rating.ApplicationUserId">
-                                <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.Rating.ApplicationUserId })" />
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-5 col-xs-9 addon-box">
-                        <div class="addon-number" style="text-align: left">
-                            <p>Du har fået feedback af</p>
-                            <h3>@UserManager.Users.Single(x => x.Id == Model.Rating.ApplicationUserId).Name</h3>
-                        </div>
+    <div class="container">
+        <div class="col-md-12 noPadding" style="padding-top: 40px;">
+            <div class="col-md-offset-2 col-md-8 nopaddingmobile">
+                <div class="col-md-12 col-sm-12 col-xs-12 white-box read-feedback-container">
+                    <h2>Din feedback fra @Model.Rating.ApplicationUser.Name</h2>
+                    <hr />
+                    <div class="col-md-6">
+                        <p>Troværdighed</p>
 
-
-                    </div>
-                    <div class="col-md-5 col-xs-12 addon-box">
-                        <div class="addon-number">
-                            <div class="se-anmeldelse-center se-anmeldelse-padding">
-                                <h2 class="text-center">Samlet score</h2>
-                                <br />
-                                <div class="show-rating-box-se">
-                                    <div class="show-rating-se">
-                                        <div class="show-rating-front-se">
-                                            @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(Model.Rating.Id); i++)
-                                            {
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                            }
-                                        </div>
-                                        <div class="show-rating-back-se">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                        <div class="show-rating">
+                            <div class="show-rating-container center-block" style="width: 164px; float: none;">
+                                <div class="show-rating-front">
+                                    @for (int i = 0; i < Model.Rating.Troværdighed; i++)
+                                    {
+                                        <div class="show-rating-box">
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                         </div>
+                                    }
+                                </div>
+                                <div class="show-rating-back">
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+                    </div>
+
+                    <div class="col-md-6">
 
 
+                        <p>Opførsel</p>
+
+                        <div class="show-rating">
+                            <div class="show-rating-container center-block" style="width: 164px; float: none;">
+                                <div class="show-rating-front">
+                                    @for (int i = 0; i < Model.Rating.Opførsel; i++)
+                                    {
+                                        <div class="show-rating-box">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="show-rating-back">
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <p>Kvalitet</p>
+
+                        <div class="show-rating">
+                            <div class="show-rating-container center-block" style="width: 164px; float: none;">
+                                <div class="show-rating-front">
+                                    @for (int i = 0; i < Model.Rating.Kvalitet; i++)
+                                    {
+                                        <div class="show-rating-box">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="show-rating-back">
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p>Interaktion</p>
+
+                        <div class="show-rating">
+                            <div class="show-rating-container center-block" style="width: 164px; float: none;">
+                                <div class="show-rating-front">
+                                    @for (int i = 0; i < Model.Rating.Interaktion; i++)
+                                    {
+                                        <div class="show-rating-box">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="show-rating-back">
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 noPadding">
+                        <hr style="margin-top: 40px" />
+
+                        <p>@Model.Rating.ApplicationUser.Name har skrevet følgende om dig:</p>
+
+                        <div class="col-md-6">
+                            <p style="text-align: left; font-size: 15px"><b>@Model.Rating.ApplicationUser.Name synes godt om følgende:</b></p>
+                            <p class="normal-text">@Model.Rating.FeedbackGood</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p style="text-align: left; font-size: 15px"><b>@Model.Rating.ApplicationUser.Name synes du kan forbedre følgende:</b></p>
+                            <p class="normal-text">@Model.Rating.FeedbackBetter</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <hr />
+                        <p>Hvad har du at sige om denne feedback?</p>
+                        <form asp-area="" asp-controller="Manage" asp-action="AnswerFeedback">
+                            @Html.HiddenFor(x => x.Rating.Id)
+                            <div class="textarea-container nopaddingmobile">
+                                <textarea asp-for="@Model.Rating.Answer" placeholder="Altid hold den gode tone"></textarea>
+                            </div>
+                            <div style="padding-left: 40px; padding-right: 40px;" class="nopaddingmobile">
+                                <button type="submit" class="give-feedback-btn" id="sendBtn" style="margin-top: 25px; margin-bottom: 25px;">SEND SVAR</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div style="border-bottom: 1px solid #ddd ">
-            <div class="container" style="padding-top: 30px; padding-bottom: 30px;">
-                <div class="col-md-12">
-                    @if (!string.IsNullOrEmpty(Model.Rating.FeedbackGood) && !string.IsNullOrEmpty(Model.Rating.FeedbackBetter))
-                    {
-                        <div class="col-md-6 se-anmeldelse-padding">
-                            <h4><i>Følgeren synes godt om følgende:</i></h4>
-                            <br />
-                            <p style="line-height: 180%">@Model.Rating.FeedbackGood</p>
-                        </div>
-                        <div class="col-md-offset-1 col-md-5 se-anmeldelse-padding">
-                            <h4><i>Følgeren synes du kan forbedre følgende:</i></h4>
-                            <br />
-                            <p style="line-height: 180%">@Model.Rating.FeedbackBetter</p>
-                        </div>
-                    }
-                    else if (!string.IsNullOrEmpty(Model.Rating.FeedbackBetter))
-                    {
-                        <div class="col-md-6 se-anmeldelse-padding">
-                            <h4><i>Følgeren synes du kan forbedre følgende:</i></h4>
-                            <br />
-                            <p style="line-height: 180%">@Model.Rating.FeedbackBetter</p>
-                        </div>
-                    }
-                    else if (!string.IsNullOrEmpty(Model.Rating.FeedbackGood))
-                    {
-                        <div class="col-md-6 se-anmeldelse-padding">
-                            <h4><i>Følgeren synes godt om følgende:</i></h4>
-                            <br />
-                            <p style="line-height: 180%">@Model.Rating.FeedbackGood</p>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container noPadding" style="padding-top: 30px;">
-        <div class="col-md-12 noPadding">
-            <div class="col-md-offset-3 col-md-6">
-                <form asp-area="" asp-controller="Manage" asp-action="AnswerFeedback">
-                    <h4 class="text-center">Besvar din feedback</h4>
-                    @Html.HiddenFor(x => x.Rating.Id)
-                    <textarea asp-for="@Model.Rating.Answer" class="rating-input" style="margin-bottom: 15px" rows="8" placeholder="Hvad tænker du om den feedback du har modtaget?"></textarea>
-                    <input type="submit" style="margin-bottom: 20px; background-color: #089de3 !important" class="edit-button" value="Send" />
-                </form>
             </div>
         </div>
     </div>
 </div>
 
+@section Scripts{
+    <script>
+        var id = {};
+        id = '@Model.Rating.Id';
+
+        $.ajax({
+            url: "/Manage/ReadFeedback",
+            method: "POST",
+            dataType: 'json',
+            data: {
+                id: id
+            },
+            success: function (result) {
+                updateNotification(result);
+            },
+            error: function () {
+                console.log("fail");
+            }
+        });
+    </script>
+}

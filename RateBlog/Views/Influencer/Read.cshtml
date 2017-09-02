@@ -3,19 +3,19 @@
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s ratings";
     var isUserCreated = (Model.ApplicationUser.NormalizedEmail.StartsWith("USERINFLUENCER")) ? true : false;
+    var totalScore = FeedbackService.GetTotalScore(Model.Influenter.Id);
 }
 
 <div class="navbar-allaround"></div>
 
-<div style="min-height: 101vh; background: #fafafa; padding-bottom: 60px;">
+<div class="background-all" style="padding-top: 40px;">
 
-
-    <div class="container" style="padding-top: 40px;">
+    <div class="container" >
         <div class="col-md-12 noPadding">
-            <div class="col-md-4 noPaddingLeft nopaddingmobile">
-                <div class="profile-box">
+            <div class="col-md-4 nopaddingmobile">
+                <div class="white-box">
                     <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@Model.Influenter.Id">
-                        <img class="profil-img center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
+                        <img class="profile-img-big center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
                     </a>
                     <hr />
                     <h3>
@@ -37,62 +37,104 @@
                     <a asp-controller="Influencer" asp-action="Give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
                 </div>
             </div>
-            <div class="col-md-8 noPaddingRight nopaddingmobile">
-
-                <div class="profile-box">
-                    <h3 class="text-center" style="margin-bottom: 20px"><b>SAMLET SCORE</b></h3>
-                    <div class="show-rating-box-show">
-                        <div class="show-rating-show">
-                            <div class="show-rating-front-show">
-                                @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.Influenter.Id); i++)
+            <div class="col-md-8 nopaddingmobile">
+                <div class="white-box">
+                    <h3 class="text-center" style="margin-bottom: 20px;"><b>SAMLET SCORE</b></h3>
+                    <div class="show-rating-medium" style="margin-top: 20px;">
+                        <div class="show-rating-container-medium center-block">
+                            <div class="show-rating-front-medium">
+                                @foreach (var v in FeedbackService.GetStars(totalScore))
                                 {
-                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    if (v)
+                                    {
+                                        <div class="show-rating-box-medium">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="show-rating-box">
+                                            <i class="fa fa-star-half" aria-hidden="true"></i>
+                                        </div>
+                                    }
                                 }
                             </div>
-                            <div class="show-rating-back-show">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
+                            <div class="show-rating-back-medium">
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <p class="text-center" style="margin-top: 20px; margin-bottom: 20px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
+                    <p class="text-center" style="margin-top: 20px; margin-bottom: 20px; font-size: 16px">@totalScore.ToString("0.00") af @Model.Influenter.Ratings.Count ratings</p>
                 </div>
 
                 @foreach (var v in Model.Influenter.Ratings.OrderByDescending(x => x.FeedbackDateTime))
                 {
-                    <div class="col-md-12 noPadding profile-box">
+                    <div class="col-md-12 noPadding white-box">
                         <div class="profile-follower-ratings">
                             <div class="col-md-2 noPadding">
                                 <a asp-controller="Account" asp-action="Profile" asp-route-id="@v.ApplicationUserId">
                                     <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
                                 </a>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-md-10 noPaddingRight">
                                 <div class="visible-xs text-center">
                                     <h4>@v.ApplicationUser.Name</h4>
                                     <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
                                     <br />
                                 </div>
-                                <div class="influencer-read-stars">
-                                    <div class="show-rating">
+                                <div class="show-rating float-center">
+                                    <div class="show-rating-container center-block" style="width: 164px">
                                         <div class="show-rating-front">
-                                            @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
+                                            @foreach (var p in FeedbackService.GetStars(FeedbackService.GetSingleScore(v.Id)))
                                             {
-                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                if (p)
+                                                {
+                                                    <div class="show-rating-box">
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="show-rating-box">
+                                                        <i class="fa fa-star-half" aria-hidden="true"></i>
+                                                    </div>
+                                                }
                                             }
                                         </div>
                                         <div class="show-rating-back">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <div class="show-rating-box">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="show-rating-box">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="show-rating-box">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="show-rating-box">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="show-rating-box">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="hidden-xs">
                                     <h4>@v.ApplicationUser.Name</h4>
                                     <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
@@ -101,7 +143,7 @@
                                 <br />
                             </div>
 
-                            <div class="col-md-offset-2 col-md-10">
+                            <div class="col-md-offset-2 col-md-10 noPaddingLeft">
                                 <p><b>@v.ApplicationUser.Name synes godt om følgende:</b></p>
                                 <p style="white-space: pre-line">@v.FeedbackGood</p>
                                 <br />

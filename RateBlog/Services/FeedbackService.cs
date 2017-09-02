@@ -9,228 +9,147 @@ namespace RateBlog.Services
 {
     public class FeedbackService : IFeedbackService
     {
+        private readonly IInfluencerRepository _influencerRepo;
         private readonly IRepository<Feedback> _feedbackRepo;
-        private readonly UserManager<ApplicationUser> _userManager; 
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public FeedbackService(IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager)
+        public FeedbackService(IInfluencerRepository influencerRepo, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager)
         {
+            _influencerRepo = influencerRepo;
             _feedbackRepo = feedbackRepo;
-            _userManager = userManager; 
+            _userManager = userManager;
         }
 
-        public IEnumerable<Feedback> GetAllFeedbackByInfluencer(string id)
+        public double FeedbackCountdown(string userId, string influencerId)
         {
-            return _feedbackRepo.GetAll().Where(x => x.InfluenterId == id);
-        }
+            var feedback = _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == userId && x.InfluenterId == influencerId);
 
-        public IEnumerable<Feedback> GetAllFeedbackByUser(string id)
-        {
-            return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id);
-        }       
-
-        public int GetAverageFeedbackScore(string id)
-        {
-            if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id))
+            if (feedback != null && feedback.Count() != 0)
             {
-                var feedbacks = _feedbackRepo.GetAll().Where(x => x.InfluenterId == id);
-                int numberOfFeedbacks = 0;
-                double allFeedbackSums = 0;
-
-                foreach (var f in feedbacks)
-                {
-                    double feedbackSum = 0;
-
-                    // Tager alle værdier, plusser dem sammen og dividere dem med antallet af ratings == gennemsnit
-                    var feedback = _feedbackRepo.Get(f.Id);
-
-                    feedbackSum += feedback.Interaktion;
-                    feedbackSum += feedback.Opførsel;
-                    feedbackSum += feedback.Troværdighed;
-                    feedbackSum += feedback.Kvalitet;
-                    feedbackSum = feedbackSum / 4;
-
-                    // Antal ratings
-                    numberOfFeedbacks++;
-
-                    // Tilføjer dem til samlingen
-                    allFeedbackSums += feedbackSum;
-                }
-
-                double average = (allFeedbackSums / numberOfFeedbacks);
-
-                return (int)Math.Round(average, 0, MidpointRounding.AwayFromZero);
-            }
-
-            return 0;
-        }
-
-        public double GetHoursLeftToRate(string userId, string influenterId)
-        {
-            if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == influenterId && x.ApplicationUserId == userId))
-            {
-                var user = _userManager.Users.SingleOrDefault(x => x.Id == userId);
-                var feedback = _feedbackRepo.GetAll().Where(x => x.InfluenterId == influenterId && x.ApplicationUserId == userId).OrderByDescending(x => x.FeedbackDateTime).FirstOrDefault();
-
-                var timeSpan = DateTime.Now - feedback.FeedbackDateTime;
+                var latestFeedback = feedback.OrderByDescending(x => x.FeedbackDateTime).FirstOrDefault();
+                var timeSpan = DateTime.Now - latestFeedback.FeedbackDateTime;
                 var hours = timeSpan.TotalHours;
 
                 return hours;
             }
-
             return 0;
         }
 
-        public double GetInfluencerAnswerPercentage(string id)
+        public int GetFeedbackCount(string id, bool isInfluencer)
         {
-            if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id && x.Answer != null))
-            {
-                var numberOfAnswer = _feedbackRepo.GetAll().Where(x => x.InfluenterId == id && x.Answer != null).Count();
-                var numberOfFeedbacks = _feedbackRepo.GetAll().Where(x => x.InfluenterId == id && x.IsRead == true).Count();
-
-                double result = (100.0 / numberOfFeedbacks) * numberOfAnswer;
-
-                return result;
-
-            }
-            return 0;
-        }
-
-        public int GetInfluencerFeedbackAnswersCount(string id)
-        {
-            if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id && x.Answer != null))
-            {
-                return _feedbackRepo.GetAll().Where(x => x.InfluenterId == id && x.Answer != null).Count();
-            }
-            return 0;
-        }
-
-        public int GetInfluencerFeedbackCount(string id)
-        {
-            if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id))
+            if (isInfluencer)
             {
                 return _feedbackRepo.GetAll().Where(x => x.InfluenterId == id).Count();
             }
-            return 0;
+            else
+            {
+                return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id).Count();
+            }
         }
 
-        public IEnumerable<Feedback> GetInfluencerLast3Feedback(string id)
-        {
-            return _feedbackRepo.GetAll().Where(x => x.InfluenterId == id).OrderByDescending(x => x.FeedbackDateTime).Take(3);
-        }
-
-        public IEnumerable<Feedback> GetUserLast3Feedback(string id)
-        {
-            return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id).OrderByDescending(x => x.FeedbackDateTime).Take(3);
-        }     
-
-        public int GetSingleFeedbackScoreAverage(string id)
+        public double GetSingleScore(string id)
         {
             var feedback = _feedbackRepo.Get(id);
-            double feedbackSum = 0;
 
-            // Tager alle værdier, plusser dem sammen og dividere dem med antallet af ratings == gennemsnit
+            var feedbackSum = 0.0;
+
             feedbackSum += feedback.Interaktion;
             feedbackSum += feedback.Opførsel;
             feedbackSum += feedback.Troværdighed;
             feedbackSum += feedback.Kvalitet;
             feedbackSum = feedbackSum / 4;
 
-            return (int)Math.Round(feedbackSum, 0, MidpointRounding.AwayFromZero);
+            return Math.Round(feedbackSum, 2);
+        }
+
+        public List<bool> GetStars(double value)
+        {
+            var round = Math.Round(value * 2, MidpointRounding.AwayFromZero) / 2;
+            var floor = Math.Floor(round);
+            var hasDeciaml = (round % 1) != 0;
+            var list = new List<bool>();
+
+            for (int i = 0; i <= floor; i++)
+            {
+                if (!hasDeciaml)
+                {
+                    if (i >= floor) return list;
+                    list.Add(true);
+                }
+                else
+                {
+                    if (floor == i)
+                        list.Add(false);
+                    else
+                        list.Add(true);
+                }
+            }
+            return list;
         }
 
         public double GetTotalScore(string id)
         {
-            if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id))
+            var influencer = _influencerRepo.Get(id);
+
+            var feedbacks = influencer.Ratings;
+
+            if (feedbacks.Count == 0)
+                return 0;
+
+            int numberOfFeedbacks = 0;
+            double allFeedbackSums = 0;
+
+            foreach (var f in feedbacks)
             {
-                var feedbacks = _feedbackRepo.GetAll().Where(x => x.InfluenterId == id);
-                int numberOfFeedbacks = 0;
-                double allFeedbackSums = 0;
+                double feedbackSum = 0;
 
-                foreach (var f in feedbacks)
-                {
-                    double feedbackSum = 0;
+                feedbackSum += f.Interaktion;
+                feedbackSum += f.Opførsel;
+                feedbackSum += f.Troværdighed;
+                feedbackSum += f.Kvalitet;
+                feedbackSum = feedbackSum / 4;
 
-                    // Tager alle værdier, plusser dem sammen og dividere dem med antallet af ratings == gennemsnit
-                    var feedback = _feedbackRepo.Get(f.Id);
+                // Antal ratings
+                numberOfFeedbacks++;
 
-                    feedbackSum += feedback.Interaktion;
-                    feedbackSum += feedback.Opførsel;
-                    feedbackSum += feedback.Troværdighed;
-                    feedbackSum += feedback.Kvalitet;
-                    feedbackSum = feedbackSum / 4;
-
-                    // Antal ratings
-                    numberOfFeedbacks++;
-
-                    // Tilføjer dem til samlingen
-                    allFeedbackSums += feedbackSum;
-                }
-
-                double average = (allFeedbackSums / numberOfFeedbacks);
-
-                return Math.Round(average, 1);
+                // Tilføjer dem til samlingen
+                allFeedbackSums += feedbackSum;
             }
 
-            return 0.0;
+            double average = (allFeedbackSums / numberOfFeedbacks);
+
+            return Math.Round(average, 2);
         }
 
-        public int GetUnreadAnswerCount(string id)
+        public int ReadFeedback(string id, string userId)
         {
-            var allFeedbacks = _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id);
-            int count = 0;
-            foreach (var v in allFeedbacks)
-            {
-                if (!string.IsNullOrEmpty(v.Answer) && v.IsAnswerRead == false)
-                {
-                    count++;
-                }
-            }
+            var user = _userManager.Users.SingleOrDefault(x => x.Id == userId);
+            var influencer = _influencerRepo.Get(userId);
+            var feedback = _feedbackRepo.Get(id);
 
-            return count;
+            if (influencer == null)
+            {
+                feedback.IsAnswerRead = true;
+                _feedbackRepo.Update(feedback);
+                return _feedbackRepo.GetAll().Where(x => x.IsAnswerRead == false && x.Answer != null && x.ApplicationUserId == userId).Count();
+            }
+            else
+            {
+                feedback.IsRead = true;
+                _feedbackRepo.Update(feedback);
+                return influencer.Ratings.Where(x => x.IsRead == false).Count();
+            }
         }
 
-        public int GetUnreadFeedbackCount(string id)
+        public int UnreadFeedbackCount(string id)
         {
-            var feedbacks = _feedbackRepo.GetAll().Where(x => x.InfluenterId == id);
+            var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
+            var influencer = _influencerRepo.Get(id);
 
-            int number = 0;
-
-            foreach (var v in feedbacks)
-            {
-                if (_feedbackRepo.Get(v.Id).IsRead == false)
-                {
-                    number++;
-                }
-            }
-
-            return number;
-        }
-
-        public int GetUserFeedbackAnswersCount(string id)
-        {
-            if (_feedbackRepo.GetAll().Any(x => x.ApplicationUserId == id && x.Answer != null))
-            {
-                return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id && x.Answer != null).Count();
-            }
-            return 0;
-        }
-
-        public int GetUserFeedbackCount(string id)
-        {
-            if (_feedbackRepo.GetAll().Any(x => x.ApplicationUserId == id))
-            {
-                return _feedbackRepo.GetAll().Where(x => x.ApplicationUserId == id).Count();
-            }
-            return 0;
-        }
-
-        public bool HasFeedback(string id)
-        {
-            if (_feedbackRepo.GetAll().Any(x => x.InfluenterId == id))
-            {
-                return true;
-            }
-            return false;
+            if (influencer != null)
+                return influencer.Ratings.Where(x => x.IsRead == false).Count();
+            else
+                return _feedbackRepo.GetAll().Where(x => x.IsAnswerRead == false && x.Answer != null && x.ApplicationUserId == id).Count();
         }
     }
 }

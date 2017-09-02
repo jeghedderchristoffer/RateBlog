@@ -144,8 +144,6 @@ namespace RateBlog.Migrations
 
                     b.Property<string>("Gender");
 
-                    b.Property<DateTime>("LastLogin");
-
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");

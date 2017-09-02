@@ -1,306 +1,284 @@
-﻿@inject RateBlog.Services.IFeedbackService FeedbackService
-@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
+﻿@model FeedbackViewModel
+@inject RateBlog.Services.IFeedbackService FeedbackService
 @inject UserManager<ApplicationUser> UserManager
+@inject RateBlog.Repository.IRepository<Feedback> FeedbackRepo
+@inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
 @{
     ViewData["Title"] = "Feedback";
-    var user = await UserManager.GetUserAsync(User);
-    var isInfluencer = await InfluencerService.IsUserInfluencerAsync(user.Id);
+    var totalScore = 0.0;
+    var numberOfFeedback = 0;
+
+    if (Model.Influencer != null)
+    {
+        totalScore = FeedbackService.GetTotalScore(Model.Influencer.Id);
+        numberOfFeedback = Model.Influencer.Ratings.Count;
+    }
 }
 
+<div class="background-all">
 
+    <div class="navbar-allaround"></div>
 
-<div class="navbar-allaround"></div>
+    @if (TempData["Success"] != null)
+    {
+        <div id="anmeldelserSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Success"]
+        </div>
+        <script>
+            window.setTimeout(function () {
+                $("#anmeldelserSuc").fadeOut(1000);
+            }, 2000);
+        </script>
+    }
 
+    @if (TempData["Error"] != null)
+    {
+        <div id="anmeldelserErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Error"]
+        </div>
 
-@if (TempData["Success"] != null)
-{
-    <div id="anmeldelserSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        @TempData["Success"]
-    </div>
-    <script>
-        window.setTimeout(function () {
-            $("#anmeldelserSuc").fadeOut(1000);
-        }, 2000);
-    </script>
-}
+        <script>
+            window.setTimeout(function () {
+                $("#anmeldelserErr").fadeOut(1000);
+            }, 2000);
+        </script>
+    }
 
-@if (TempData["Error"] != null)
-{
-    <div id="anmeldelserErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5000; left: 20%; right: 20%">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        @TempData["Error"]
-    </div>
+    <div class="container nopaddingmobile">
 
-    <script>
-        window.setTimeout(function () {
-            $("#anmeldelserErr").fadeOut(1000);
-        }, 2000);
-    </script>
-}
+        <div class="feedback-container">
+            <div class="col-md-12 nopaddingmobile">
+                <div class="col-md-8">
 
+                    <h2>Min feedback</h2>
 
-@Html.Partial("_NavbarAddonPartial")
-
-<div onload="closeAfter3Seconds()" class="bottom-container">
-
-    <div class="container">
-        <h2 class="anmeldelser-h2">Feedback</h2>
-
-        @if (isInfluencer)
-            {
-            <div class="col-xs-12 visible-xs padding-anmeldelser-responsive ">
-                <div class="col-md-4 padding-anmeldelser-responsive">
-                    <div class="feedback-rating-all-box">
-                        <div class="feedback-rating-all-box-item">
-                            <h3 class="text-center"><b>SAMLET SCORE</b></h3>
-                            <div class="show-rating-box-show">
-                                <div class="show-rating-show">
-                                    <div class="show-rating-front-show">
-                                        @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(user.Id); i++)
-                                        {
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        }
-                                    </div>
-                                    <div class="show-rating-back-show">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-center" style="margin-top: 20px; margin-bottom: 0">@FeedbackService.GetTotalScore(user.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(user.Id) ratings</p>
-                        </div>
-                    </div>
-                    <hr />
-                </div>
-            </div>
-
-            <div class="col-md-12 col-xs-12 col-sm-12 noPadding">
-                <div class="col-md-8 col-xs-12 col-sm-8 noPadding">
-
-                    @if (FeedbackService.GetAllFeedbackByInfluencer(user.Id).ToList().Count != 0)
+                    @if (Model.Influencer != null)
                     {
-                        @foreach (var v in FeedbackService.GetAllFeedbackByInfluencer(user.Id).OrderByDescending(x => x.FeedbackDateTime))
+
+                        @foreach (var v in Model.Influencer.Ratings.OrderByDescending(x => x.FeedbackDateTime))
                         {
-                            <form asp-area="" asp-controller="Manage" asp-action="Answer" asp-route-id="@v.Id">
-                                <a class="feedback-link" onclick="$(this).closest('form').submit();">
-                                    <div class="col-md-12 noPadding feedback-container">
-                                        <div class="col-md-2 col-sm-2 noPadding">
-                                            <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
-                                        </div>
-                                        <div class="col-md-4 col-sm-12 visible-xs" style="height: 100%">
-                                            <div class="show-rating-box">
-                                                <div class="show-rating">
-                                                    <div class="show-rating-front">
-                                                        @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
+                            <a asp-controller="Manage" asp-action="Answer" asp-route-id="@v.Id" style="color: #000; text-decoration: none;">
+                                <div class="white-box col-md-12 col-sm-12">
+                                    <div class="col-md-2 col-sm-2">
+                                        <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6">
+                                        <p style="margin-bottom: 3px">Du har fået feedback af @v.ApplicationUser.Name</p>
+                                        <p style="color: #a8a8a8; margin-bottom: 0;">
+                                            @String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)
+                                            <br class="hidden-xs hidden-sm" />
+
+                                            @if (!v.IsRead)
+                                            {
+                                                <span class="label" style="font-family: Arial; background: #FFA500">Ny feedback</span>
+                                            }
+                                            else if (v.IsRead && string.IsNullOrEmpty(v.Answer))
+                                            {
+                                                <span class="label" style="font-family: Arial; background: #808080">Læst</span>
+                                            }
+                                            else if (v.IsRead && !string.IsNullOrEmpty(v.Answer))
+                                            {
+                                                <span class="label" style="font-family: Arial; background: #479b0a">Svaret</span>
+                                            }
+
+                                        </p>
+
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="show-rating feedback-margin">
+                                            <div class="show-rating-container center-block" style="width: 164px">
+                                                <div class="show-rating-front">
+                                                    @foreach (var p in FeedbackService.GetStars(FeedbackService.GetSingleScore(v.Id)))
+                                                    {
+                                                        if (p)
                                                         {
-                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <div class="show-rating-box">
+                                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                            </div>
                                                         }
+                                                        else
+                                                        {
+                                                            <div class="show-rating-box">
+                                                                <i class="fa fa-star-half" aria-hidden="true"></i>
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                                <div class="show-rating-back">
+                                                    <div class="show-rating-box">
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
                                                     </div>
-                                                    <div class="show-rating-back">
+                                                    <div class="show-rating-box">
                                                         <i class="fa fa-star" aria-hidden="true"></i>
+                                                    </div>
+                                                    <div class="show-rating-box">
                                                         <i class="fa fa-star" aria-hidden="true"></i>
+                                                    </div>
+                                                    <div class="show-rating-box">
                                                         <i class="fa fa-star" aria-hidden="true"></i>
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                    </div>
+                                                    <div class="show-rating-box">
                                                         <i class="fa fa-star" aria-hidden="true"></i>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-8 noPadding padding-anmeldelser">
-                                            <p>Du har fået feedback af @UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</p>
-                                            <p style="color: #989898">
-                                                @String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime) &ensp;
-                                                @if (!v.IsRead)
-                                                {
-                                                    <span class="badge" style="font-family: Arial; background: #FFA500">Ny feedback</span>
-                                                }
-                                                else if (v.IsRead && string.IsNullOrEmpty(v.Answer))
-                                                {
-                                                    <span class="badge" style="font-family: Arial;">Læst</span>
-                                                }
-                                                else if (v.IsRead && !string.IsNullOrEmpty(v.Answer))
-                                                {
-                                                    <span class="badge" style="font-family: Arial; background: #479b0a">Svaret</span>
 
-                                                }
+                                    </div>
 
-                                            </p>
+                                </div>
+                            </a>
+                        }
+                        if (Model.Influencer.Ratings.Count == 0)
+                        {
+                            <p>Du har ikke modtaget feedback</p>
+                        }
+                    }
+                    else
+                    {
+                        var list = FeedbackRepo.GetAll().Where(x => x.ApplicationUserId == Model.ApplicationUser.Id).OrderByDescending(p => p.FeedbackDateTime);
+                        if (list.Count() != 0)
+                        {
+                            @foreach (var v in list)
+                            {
+                                <a class="feedback-link" asp-controller="Manage" asp-action="Read" asp-route-id="@v.Id" style="color: #000; text-decoration: none;">
+                                    <div class="white-box col-md-12 col-sm-12">
+                                        <div class="col-md-2 col-sm-2">
+                                            <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.InfluenterId })" />
                                         </div>
-                                        <div class="col-md-4 col-sm-12 hidden-xs" style="height: 100%">
-                                            <div class="show-rating-box">
-                                                <div class="show-rating">
+
+                                        <div class="col-md-6 col-sm-6">
+                                            <p style="margin-bottom: 3px">Du har givet feedback til @InfluencerRepo.Get(v.InfluenterId).Alias</p>
+                                            <p style="color: #a8a8a8; margin-bottom: 0;">
+                                                @String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)
+                                                <br class="hidden-xs hidden-sm" />
+                                                @if (!v.IsAnswerRead && !string.IsNullOrEmpty(v.Answer))
+                                                {
+                                                    <span class="label" style="font-family: Arial; background: #FFA500">Nyt svar</span>
+                                                }
+                                                else if (!string.IsNullOrEmpty(v.Answer))
+                                                {
+                                                    <span class="label" style="font-family: Arial; background: #479b0a">Læst</span>
+                                                }
+                                                else if (string.IsNullOrEmpty(v.Answer))
+                                                {
+                                                    <span class="label" style="font-family: Arial; background: #808080">Intet svar</span>
+                                                }
+                                            </p>
+                                            
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="show-rating feedback-margin">
+                                                <div class="show-rating-container center-block" style="width: 164px">
                                                     <div class="show-rating-front">
-                                                        @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
+                                                        @foreach (var p in FeedbackService.GetStars(FeedbackService.GetSingleScore(v.Id)))
                                                         {
-                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            if (p)
+                                                            {
+                                                                <div class="show-rating-box">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="show-rating-box">
+                                                                    <i class="fa fa-star-half" aria-hidden="true"></i>
+                                                                </div>
+                                                            }
                                                         }
                                                     </div>
                                                     <div class="show-rating-back">
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <div class="show-rating-box">
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                        </div>
+                                                        <div class="show-rating-box">
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                        </div>
+                                                        <div class="show-rating-box">
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                        </div>
+                                                        <div class="show-rating-box">
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                        </div>
+                                                        <div class="show-rating-box">
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </a>
-                            </form>
+                            }
                         }
+                        else
+                        {
+                            <p>Du har ikke givet noget feedback</p>
+                        }
+                    }
 
-                    }
-                    else
-                    {
-                        <p> Du har desværre intet feedback</p>
-                    }
 
                 </div>
-                <div class="col-md-4 col-sm-4 hidden-xs">
-                    <div class="feedback-rating-all-box">
-                        <div class="feedback-rating-all-box-item">
-                            <h3 class="text-center"><b>SAMLET SCORE</b></h3>
-                            <div class="show-rating-box-show">
-                                <div class="show-rating-show">
-                                    <div class="show-rating-front-show">
-                                        @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(user.Id); i++)
+
+                <div class="col-md-4 hidden-xs hidden-sm" style="padding-top: 73px">
+                    <div class="white-box">
+
+                        @if (Model.Influencer != null)
+                        {
+                            <h2 style="text-align: center;">SAMLET SCORE</h2>
+                            <div class="show-rating-medium" style="margin-top: 20px;">
+                                <div class="show-rating-container-medium center-block">
+                                    <div class="show-rating-front-medium">
+                                        @foreach (var v in FeedbackService.GetStars(totalScore))
                                         {
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            if (v)
+                                            {
+                                                <div class="show-rating-box-medium">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="show-rating-box">
+                                                    <i class="fa fa-star-half" aria-hidden="true"></i>
+                                                </div>
+                                            }
                                         }
                                     </div>
-                                    <div class="show-rating-back-show">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    <div class="show-rating-back-medium">
+                                        <div class="show-rating-box-medium">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="show-rating-box-medium">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="show-rating-box-medium">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="show-rating-box-medium">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="show-rating-box-medium">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 20px">@FeedbackService.GetTotalScore(user.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(user.Id) ratings</p>
+                            <h4 style="text-align: center">@totalScore.ToString("0.00") ud af @numberOfFeedback feedbacks</h4>
+                        }
+                        else
+                        {
+                            <!--FØLGER DELEN HER-->
+                        }
 
-                        </div>
                     </div>
                 </div>
             </div>
-        }
-        else
-        {
-            <div class="col-md-8 col-sm-12">
-                @if (FeedbackService.GetAllFeedbackByUser(user.Id).ToList().Count != 0)
-                {
-                    @foreach (var v in FeedbackService.GetAllFeedbackByUser(user.Id).OrderByDescending(x => x.FeedbackDateTime))
-                    {
-                        <form asp-area="" asp-controller="Manage" asp-action="Read" asp-route-id="@v.Id">
-                            <a class="feedback-link" onclick="$(this).closest('form').submit();">
-                                <div class="col-md-12 noPadding feedback-container active">
-                                    <div class="col-md-2 col-sm-2 noPadding">
-                                        <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = UserManager.Users.SingleOrDefault(x => x.Id == v.InfluenterId).Id })" />
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 visible-xs" style="height: 100%">
-                                        <div class="show-rating-box">
-                                            <div class="show-rating">
-                                                <div class="show-rating-front">
-                                                    @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
-                                                    {
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                    }
-                                                </div>
-                                                <div class="show-rating-back">
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 noPadding padding-anmeldelser">
-                                        <p>Du har givet feedback til @UserManager.Users.SingleOrDefault(x => x.Id == v.InfluenterId).Name</p>
-                                        <p style="color: #989898">
-                                            @String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)  &ensp;
-                                            @if (!v.IsAnswerRead && !string.IsNullOrEmpty(v.Answer))
-                                            {
-                                                <span class="badge" style="font-family: Arial; background: #FFA500">Nyt svar</span>
-                                            }
-                                            else if (!string.IsNullOrEmpty(v.Answer))
-                                            {
-                                                <span class="badge" style="font-family: Arial; background: #479b0a">Læst</span>
-                                            }
-                                            else if (string.IsNullOrEmpty(v.Answer))
-                                            {
-                                                <span class="badge danger" style="font-family: Arial;">Intet svar</span>
-                                            }
-                                        </p>
-                                    </div>
-                                    <div class="col-md-4 col-sm-4 hidden-xs" style="height: 100%">
-                                        <div class="show-rating-box">
-                                            <div class="show-rating">
-                                                <div class="show-rating-front">
-                                                    @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
-                                                    {
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                    }
-                                                </div>
-                                                <div class="show-rating-back">
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </a>
-                        </form>
-                    }
-                }
-                else
-                {
-                    <p>Du har ikke givet noget feedback endnu</p>
-                }
-            </div>
-            <div class="col-md-4 hidden-xs hidden-sm">
-                <div class="feedback-rating-all-box">
-                    <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                        <h3 class="text-center">Feedback</h3>
-                        <p>Efter 24 timer har du muligheden for, at give feedback til den samme influencer igen. Dette gør, at du altid kan give din mening!</p>
-                    </div>
-                </div>
-
-                <div class="feedback-rating-all-box">
-                    <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                        <h3 class="text-center">Influencere</h3>
-                        <p>Kan du ikke finde den influencer du ønsker at give feedback til? Du har mulighed for at oprette influenceren, og derefter give feedback!</p>
-                        <a asp-controller="Influencer" asp-action="Create" class="a-button" style="float: none; width: 100%; margin-top: 20px; background-color: #FFA500">OPRET INFLUENCER</a>
-                    </div>
-                </div>
-
-            </div>
-        }
+        </div>
     </div>
 </div>
-
-<input id="alwaysFetch" type="hidden" />
-
-@section Scripts{
-    <script>
-        $(document).ready(function () {
-            setTimeout(function () {
-                var el = document.getElementById('alwaysFetch');
-                el.value = el.value ? location.reload() : true;
-            }, 0);
-        });
-
-    </script>
-}

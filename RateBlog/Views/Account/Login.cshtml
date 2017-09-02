@@ -6,46 +6,50 @@
     ViewData["Title"] = "Log in";
 }
 
-<div class="navbar-allaround"></div>
+<div class="background-all">
+    <div class="navbar-allaround"></div>
+    <div class="container">
 
-<div class="container">
+        <div class="col-md-offset-3 col-md-6" style="padding-top: 40px;">
 
-    <div class="col-md-offset-3 col-md-6">
-        @if (ViewData["ReturnUrl"] != null)
-        {
-            <h2 class="text-center">Du skal logge ind</h2>
-        }
-        else
-        {
-            <h2 class="text-center">Log ind</h2>
-        }
-        <hr />
-        <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-            <button name="provider" value="Facebook" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
-                <span class="fa fa-facebook"></span> Log ind via Facebook
-            </button>
-            <button name="provider" type="submit" class="btn btn-block btn-social btn-google btn-lg" value="Google" style="margin-top: 20px;">
-                <span class="fa fa-google"></span> Log ind via Google
-            </button>
-        </form>
-        <div class="divider">
-            <h4><span>ELLER</span></h4>
+            <div class="white-box">
+
+                @if (ViewData["ReturnUrl"] != null)
+                {
+                    <h2 class="text-center" style="font-family: 'Raleway', sans-serif; margin-bottom: 30px;">Du skal logge ind</h2>
+                }
+                else
+                {
+                    <h2 class="text-center" style="font-family: 'Raleway', sans-serif; margin-bottom: 30px;">Log ind</h2>
+                }
+                <hr />
+                <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <button name="provider" value="Facebook" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
+                        <span class="fa fa-facebook"></span> Log ind via Facebook
+                    </button>
+                    <button name="provider" type="submit" class="btn btn-block btn-social btn-google btn-lg" value="Google" style="margin-top: 20px;">
+                        <span class="fa fa-google"></span> Log ind via Google
+                    </button>
+                </form>
+                <div class="divider">
+                    <h4><span>ELLER</span></h4>
+                </div>
+                <span id="errorMsgTop1" style="color: red"></span>
+                @Html.AntiForgeryToken()
+                <input id="email1" type="email" class="text-input" placeholder="Email" />
+                <span id="errorMsgBot1" style="color: red"></span>
+                <input id="password1" class="text-input" placeholder="Kodeord" type="password" />
+                <input type="submit" class="login-button" id="loginBtn1" value="Log på" />
+
+
+
+                <a id="signup2" data-toggle="modal" href="#opretModal" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Ny på Bestfluence? Opret en profil</p></a>
+                <a href="/Account/ForgotPassword" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Har du glemt kodeord?</p></a>
+            </div>
         </div>
-        <span id="errorMsgTop1" style="color: red"></span>
-        @Html.AntiForgeryToken()
-        <input id="email1" type="email" class="text-input" placeholder="Email" />
-        <span id="errorMsgBot1" style="color: red"></span>
-        <input id="password1" class="text-input" placeholder="Kodeord" type="password" />
-        <input type="submit" class="login-button" id="loginBtn1" value="Log på" />
-        
-
-        
-        <a id="signup2" data-toggle="modal" href="#opretModal" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Ny på Bestfluence? Opret en profil</p></a>
-        <a href="/Account/ForgotPassword" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Har du glemt kodeord?</p></a>
     </div>
+
 </div>
-
-
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

@@ -22,12 +22,7 @@
             <a asp-controller="Admin" asp-action="EditFeedback" asp-route-id="@v.Id" style="color: #000">
                 <div class="col-md-12 noPadding profile-box">
                     <div class="profile-follower-ratings">
-                        <div class="col-md-2 noPadding">
-
-                            <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
-
-                        </div>
-                        <div class="col-md-10">
+                        <div class="col-md-12">
                             <div class="visible-xs text-center">
                                 <h4>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</h4>
                                 <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
@@ -35,20 +30,44 @@
                             </div>
                             <div class="influencer-read-stars">
                                 <div class="show-rating">
-                                    <div class="show-rating-front">
-                                        @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(v.Id); i++)
-                                        {
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        }
-                                    </div>
-                                    <div class="show-rating-back">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    <div class="show-rating-container center-block" style="width: 164px">
+                                        <div class="show-rating-front">
+                                            @foreach (var p in FeedbackService.GetStars(FeedbackService.GetSingleFeedbackScoreAverage(v.Id)))
+                                            {
+                                                if (p)
+                                                {
+                                                    <div class="show-rating-box">
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="show-rating-box">
+                                                        <i class="fa fa-star-half" aria-hidden="true"></i>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="show-rating-back">
+                                            <div class="show-rating-box">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="show-rating-box">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="show-rating-box">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="show-rating-box">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="show-rating-box">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                             <div class="hidden-xs">
                                 <h4>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name</h4>
@@ -58,7 +77,7 @@
                             <br />
                         </div>
 
-                        <div class="col-md-offset-2 col-md-10">
+                        <div class="col-md-12">
                             <p><b>@UserManager.Users.SingleOrDefault(x => x.Id == v.ApplicationUserId).Name synes godt om følgende:</b></p>
                             <p style="white-space: pre-line">@v.FeedbackGood</p>
                             <br />
@@ -67,32 +86,27 @@
                         </div>
 
 
-                        @if (v.Answer != null)
-                        {
-                            <div class="col-md-12 noPadding">
-                                <hr />
-
-                                <div class="col-md-2 noPadding">
-
-                                    <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.InfluenterId })" />
-
+                        <div class="col-md-12 noPadding">
+                            <hr />
+                            <div class="col-md-10">
+                                <div class="hidden-xs">
+                                    <h4>@InfluencerRepo.Get(v.InfluenterId).Alias</h4>
+                                    <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.AnswerDateTime)</p>
                                 </div>
-
-                                <div class="col-md-10">
-                                    <div class="hidden-xs">
-                                        <h4>@InfluencerRepo.Get(v.InfluenterId).Alias</h4>
-                                        <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.AnswerDateTime)</p>
-                                    </div>
-                                    <div class="visible-xs text-center">
-                                        <h4>@InfluencerRepo.Get(v.InfluenterId).Alias</h4>
-                                        <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.AnswerDateTime)</p>
-                                    </div>
-                                    <br />
+                                <br />
+                                @if (v.Answer != null)
+                                {
                                     <p><b>@InfluencerRepo.Get(v.InfluenterId).Alias har svaret på feedbacken:</b></p>
                                     <p style="white-space: pre-line">@v.Answer</p>
-                                </div>
+                                }
+                                else
+                                {
+                                    <p><b>Intet svar</b></p>
+                                }
+
                             </div>
-                        }
+                        </div>
+
                     </div>
                 </div>
             </a>

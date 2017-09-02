@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using RateBlog.Models;
 using RateBlog.Helper;
 using RateBlog.Services;
+using RateBlog.Models.FooterViewModels;
 
 namespace RateBlog.Controllers
 {
@@ -20,20 +21,101 @@ namespace RateBlog.Controllers
         private readonly IInfluencerRepository _influencerRepo; 
         private readonly UserManager<ApplicationUser> _userManger;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailSender _mailSender;
 
-        public HomeController(SignInManager<ApplicationUser> signInManager, IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IInfluencerRepository influencerRepo, UserManager<ApplicationUser> userManger)
+        public HomeController(IEmailSender mailSender, SignInManager<ApplicationUser> signInManager, IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IInfluencerRepository influencerRepo, UserManager<ApplicationUser> userManger)
         {
             _platformRepo = platformRepo;
             _categoryRepo = categoryRepo;
             _influencerRepo = influencerRepo;
             _userManger = userManger;
             _signInManager = signInManager;
+            _mailSender = mailSender;
         }
 
         public IActionResult Index()
         {
             return View();
         }
+
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        public IActionResult Presse()
+        {
+            return View();
+        }
+
+        public IActionResult Job()
+        {
+            return View();
+        }
+
+        public IActionResult Blog()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Contact(ContactViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _mailSender.SendEmailAsync(model.Name, "support@bestfluence.com", model.Title, "Fra email: " + model.Email + "<br><br>" + model.Text);
+                TempData["Success"] = "Du har sendt en mail. Vi kontakter dig hurtigst muligt!";
+                return View();
+            }
+
+            return View(model);
+        }
+
+        public IActionResult How()
+        {
+            return View();
+        }
+
+        public IActionResult Parents()
+        {
+            return View();
+        }
+
+        public IActionResult FAQ()
+        {
+            return View();
+        }
+
+        public IActionResult Kommunikation()
+        {
+            return View();
+        }
+
+        public IActionResult UserGuidelines()
+        {
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
+
+        public PartialViewResult LoginPartial()
+        {
+            return PartialView("_LoginPartial");
+        }
+
 
         public PartialViewResult SearchHelp(string search)
         {
@@ -64,20 +146,7 @@ namespace RateBlog.Controllers
             }
 
             return PartialView("_SearchHelpPartial", model);
-        } 
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-            return View();
-        }
+        }      
 
         public IActionResult Error()
         {

@@ -28,10 +28,71 @@ namespace RateBlog.Services
             _platformRepo = platformRepo;
             _categoryRepo = categoryRepo;
             _platformCategoryService = platformCategoryService;
-            _influencerRepo = influencerRepo; 
+            _influencerRepo = influencerRepo;
         }
 
-       
+        //public IEnumerable<Influencer> SortInfluencer(string[] platforme, string[] kategorier, string search, int sortBy)
+        //{
+        //    if (string.IsNullOrEmpty(search))
+        //        search = "";
+
+        //    var influencers = _influencerRepo.GetAll().Where(x => x.IsApproved == true && x.Alias.ToLower().Contains(search.ToLower()));
+
+        //    foreach (var v in _platformRepo.GetAll())
+        //    {
+        //        if (search.ToLower().Equals(v.Name.ToLower()))
+        //        {
+        //            influencers = influencers.Where(x => x.InfluenterPlatform.Any(p => p.Platform.Name == v.Name));
+        //        }
+        //    }
+
+        //    foreach (var v in _categoryRepo.GetAll())
+        //    {
+        //        if (search.ToLower().Equals(v.Name.ToLower()))
+        //        {
+        //            influencers = influencers.Where(x => x.InfluenterKategori.Any(p => p.Category.Name == v.Name));
+        //        }
+        //    }
+
+        //    if (platforme.Count() == 0 && kategorier.Count() == 0 && sortBy == 0)
+        //    {
+        //        influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+        //        return influencers;
+        //    }
+
+        //    if(kategorier.Count() != 0)
+        //    {
+        //        influencers = influencers.Where(x => x.InfluenterKategori.Any(p => kategorier.Contains(p.CategoryId))); 
+        //    }
+
+        //    if (platforme.Count() != 0)
+        //    {
+        //        influencers = influencers.Where(x => x.InfluenterPlatform.Any(p => platforme.Contains(p.PlatformId)));
+        //    }
+
+        //    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+
+        //    if (sortBy == 1)
+        //    {
+        //        influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetTotalScore(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+        //    }
+        //    else if (sortBy == 2)
+        //    {
+        //        influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetTotalScore(x.Id) }).OrderBy(o => o.score).Select(x => x.user).ToList();
+        //    }
+        //    else if (sortBy == 3)
+        //    {
+        //        influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+        //    }
+        //    else if (sortBy == 4)
+        //    {
+        //        influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderBy(o => o.score).Select(x => x.user).ToList();
+        //    }
+
+        //    return influencers;
+        //}
+
+
         public IEnumerable<Influencer> SortInfluencer(string[] platforme, string[] kategorier, string search, int sortBy)
         {
             if (string.IsNullOrEmpty(search))
@@ -39,7 +100,7 @@ namespace RateBlog.Services
                 search = "";
             }
 
-            search = search.ToLower(); 
+            search = search.ToLower();
 
             var influencer = _influencerRepo.GetAll();
 
@@ -61,7 +122,7 @@ namespace RateBlog.Services
                 }
             }
 
-            influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+            influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetFeedbackCount(x.Id, true) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
 
             if (platforme.Count() == 0 && kategorier.Count() == 0 && sortBy == 0)
             {
@@ -79,11 +140,11 @@ namespace RateBlog.Services
                 }
                 else if (sortBy == 3)
                 {
-                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetFeedbackCount(x.Id, true) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
                 }
                 else if (sortBy == 4)
                 {
-                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderBy(o => o.score).Select(x => x.user).ToList();
+                    influencers = influencers.Select(x => new { user = x, score = _feedbackService.GetFeedbackCount(x.Id, true) }).OrderBy(o => o.score).Select(x => x.user).ToList();
                 }
                 return influencers;
             }
@@ -115,7 +176,7 @@ namespace RateBlog.Services
 
 
             var list = influencers.Where(x => ids.Contains(x.Id)).ToList();
-            list = list.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+            list = list.Select(x => new { user = x, score = _feedbackService.GetFeedbackCount(x.Id, true) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
 
             if (sortBy == 1)
             {
@@ -127,11 +188,11 @@ namespace RateBlog.Services
             }
             else if (sortBy == 3)
             {
-                list = list.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
+                list = list.Select(x => new { user = x, score = _feedbackService.GetFeedbackCount(x.Id, true) }).OrderByDescending(o => o.score).Select(x => x.user).ToList();
             }
             else if (sortBy == 4)
             {
-                list = list.Select(x => new { user = x, score = _feedbackService.GetInfluencerFeedbackCount(x.Id) }).OrderBy(o => o.score).Select(x => x.user).ToList();
+                list = list.Select(x => new { user = x, score = _feedbackService.GetFeedbackCount(x.Id, true) }).OrderBy(o => o.score).Select(x => x.user).ToList();
             }
 
             return list;

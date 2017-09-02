@@ -25,8 +25,6 @@ namespace RateBlog.Models
 
         public DateTime Created { get; set; }
 
-        public DateTime LastLogin { get; set; }
-
         public DateTime TermsAndConditions { get; set; }
 
         public bool NewsLetter { get; set; } 

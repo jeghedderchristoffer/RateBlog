@@ -2,86 +2,88 @@
 @{
     ViewData["Title"] = "Register";
 }
-<div class="navbar-allaround"></div>
+<div class="background-all">
 
-<div class="container">
-    <div class="col-md-offset-3 col-md-6" style="padding-bottom: 100px;">
-        <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-            <h2 class="text-center">Opret din profil</h2>
-            <hr />
-            <div class="no-list-style">
-                <div asp-validation-summary="All" class="text-danger"></div>
-            </div>
+    <div class="navbar-allaround"></div>
 
-            <h4 style="margin-top: 20px; margin-bottom: 20px; text-align: center">Er du følger eller influencer?</h4>
-            <div style="display: inline-block; width: 100%" class="center-block">
-                <div class="create-account">
-                    <input type="radio" name="isInfluencer" id="follower" value="false" />
-                    <label for="follower" number="Følger"></label>
+    <div class="container">
+        <div class="col-md-12 noPadding" style="padding-top: 40px;">
+            <div class="col-md-offset-3 col-md-6 nopaddingmobile">
+                <div class="col-md-12 col-sm-12 col-xs-12 white-box create-container">
+                    <h2>Du er næsten klar...</h2>
+
+                    <form asp-controller="Account" asp-action="RegisterConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                        <p>Er du influencer eller følger?</p>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 noPaddingLeft nopaddingmobile">
+                            <input type="radio" name="radio" id="radio1" class="radio" />
+                            <label for="radio1">Jeg er influencer</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 noPaddingRight nopaddingmobile">
+                            <input type="radio" name="radio" id="radio2" class="radio" />
+                            <label for="radio2">Jeg er følger</label>
+                        </div>
+
+
+                        <div class="col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <div class="no-list-style">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                            </div>
+
+
+                            <p>Hvad hedder du?</p>
+                            <input asp-for="@Model.Name" placeholder="Hvad er dit navn?" />
+
+                            <p>Hvad er din email?</p>
+                            <input asp-for="@Model.Email" placeholder="Hvad er din email?" type="text" />
+
+                            <p>Hvornår har du fødselsdag?</p>
+                            <input asp-for="@Model.Birthday" placeholder="Hvornår har du fødselsdag?" type="text" />
+
+                            <p>Hvad er dit postnummer?</p>
+                            <input asp-for="@Model.Postnummer" placeholder="I hvilket postnummer bor du?" type="text" />
+
+                            <p>Er du en mand eller kvinde?</p>
+                            <div class="control-group">
+                                <label class="control control-radio">
+                                    Mand
+                                    <input type="radio" name="gender" asp-for="@Model.Gender" value="male" />
+                                    <div class="control_indicator"></div>
+                                </label>
+                                <label class="control control-radio">
+                                    Kvinde
+                                    <input type="radio" name="gender" asp-for="@Model.Gender" value="female" />
+                                    <div class="control_indicator"></div>
+                                </label>
+                            </div>
+
+                            <p>Godkender du vores betingelser?</p>
+                            <label class="control control-radio">
+                                Jeg godkender Bestfluences <a asp-controller="Home" asp-action="TermsAndConditions" target="_blank">Vilkår & Betingelser</a> og <a asp-controller="Home" asp-action="Privacy" target="_blank">Persondatapolitik</a>.
+                                <input type="checkbox" name="accept" asp-for="@Model.AcceptTermsAndConditions" value="true" />
+                                <div class="control_indicator" style="border-radius: unset"></div>
+                            </label>
+                            <label class="control control-radio">
+                                Modtag vores nyhedsbrev
+                                <input type="checkbox" name="accept" asp-for="@Model.NewLetter" />
+                                <div class="control_indicator" style="border-radius: unset"></div>
+                            </label>
+
+                            <button id="createuser" type="submit" style="width: 100%; margin-top: 40px">Opret profil</button>
+
+                        </div>
+
+
+                    </form>
+
                 </div>
-
-                <div class="create-account">
-                    <input type="radio" name="isInfluencer" id="influencer" value="true" />
-                    <label for="influencer" number="Influencer"></label>
-                </div>
             </div>
-
-            <hr />
-
-            <p style="margin-top: 20px;"> Navn </p>
-            <input asp-for="@Model.Name" class="create-profile-input" placeholder="Hvad hedder du?" />
-            <span asp-validation-for="@Model.Name" class="text-danger"></span>
-
-            <p style="margin-top: 20px;">Email</p>
-            <input asp-for="@Model.Email" class="create-profile-input" placeholder="Hvad er din email?" />
-            <span asp-validation-for="@Model.Email" class="text-danger"></span>
-
-            <p style="margin-top: 20px;">Fødselsdag</p>
-            <input asp-for="@Model.Birthday" class="create-profile-input" placeholder="Hvornår har du fødselsdag?" type="text"/>
-            <span asp-validation-for="@Model.Birthday" class="text-danger"></span>
-
-            <p style="margin-top: 20px;">Postnummer</p>
-            <input asp-for="@Model.Postnummer" class="create-profile-input" placeholder="I hvilket postnummer bor du?" type="text" />
-            <span asp-validation-for="@Model.Postnummer" class="text-danger"></span>
-
-            <p style="margin-top: 20px;">Køn</p>
-            <label>
-                <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
-                Mand
-            </label>
-            <br />
-
-            <label>
-                <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
-                Kvinde
-            </label>
-            <br />  
-
-            <br />
-            <label style="font-weight: normal;">
-                <input class="w3-radio" type="checkbox" asp-for="@Model.AcceptTermsAndConditions" value="true">
-                Jeg godkender Bestfluences <a asp-controller="Footer" asp-action="TermsAndConditions">Vilkår & Betingelser</a> og <a asp-controller="Footer" asp-action="Privacy">Persondatapolitik</a>.
-            </label>
-            <br />
-            <label style="font-weight: normal;">
-                <input class="w3-radio" type="checkbox" asp-for="@Model.NewLetter">
-                Tilmeld Bestfluences nyhedsbrev
-            </label>
-            <br />
-            <span asp-validation-for="@Model.AcceptTermsAndConditions" class="text-danger"></span>
-
-            <button type="submit" class="edit-button-influ-create" style="width: 100%; margin-top: 40px;">Opret profil</button>
-
-        </form>
+        </div>
     </div>
-
 </div>
 
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-
-
-
-
 }

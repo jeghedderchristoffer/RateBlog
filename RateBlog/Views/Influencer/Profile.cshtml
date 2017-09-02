@@ -3,31 +3,33 @@
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s profil";
     var isUserCreated = (Model.ApplicationUser.NormalizedEmail.StartsWith("USERINFLUENCER")) ? true : false;
+    var totalScore = FeedbackService.GetTotalScore(Model.Influenter.Id);
 }
 
-<div style="padding-bottom: 100px; min-height: 100vh; background-color: #fafafa">
-    <div class="navbar-allaround"></div>
+<div class="navbar-allaround"></div>
 
-    @if (TempData["Success"] != null)
-    {
-        <div id="showSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5; left: 20%; right: 20%">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            @TempData["Success"]
-        </div>
+@if (TempData["Success"] != null)
+{
+    <div id="showSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5; left: 20%; right: 20%">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["Success"]
+    </div>
 
-        <script>
-            window.setTimeout(function () {
-                $("#showSuc").fadeOut(1000);
-            }, 5000);
-        </script>
-    }
+    <script>
+        window.setTimeout(function () {
+            $("#showSuc").fadeOut(1000);
+        }, 5000);
+    </script>
+}
 
-    <div class="container" style="padding-top: 40px;">
+<div class="background-all" style="padding-top: 40px;">
+
+    <div class="container">
         <div class="col-md-12 noPadding">
-            <div class="col-md-4 noPaddingLeft nopaddingmobile">
-                <div class="profile-box">
+            <div class="col-md-4 nopaddingmobile">
+                <div class="white-box">
 
-                    <img class="profil-img center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
+                    <img class="profile-img-big center-block" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
                     <hr />
                     <h3>
                         @Model.Influenter.Alias
@@ -52,32 +54,53 @@
 
                 </div>
             </div>
-            <div class="col-md-8 noPaddingRight nopaddingmobile">
-                <div class="profile-box">
+            <div class="col-md-8 nopaddingmobile">
+                <div class="white-box">
                     <h3 class="text-center" style="margin-bottom: 20px;"><b>SAMLET SCORE</b></h3>
-                    <div class="show-rating-box-show">
-                        <div class="show-rating-show">
-                            <div class="show-rating-front-show">
-                                @for (int i = 0; i < FeedbackService.GetAverageFeedbackScore(Model.Influenter.Id); i++)
+                    <div class="show-rating-medium" style="margin-top: 20px;">
+                        <div class="show-rating-container-medium center-block">
+                            <div class="show-rating-front-medium">
+                                @foreach (var v in FeedbackService.GetStars(totalScore))
                                 {
-                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    if (v)
+                                    {
+                                        <div class="show-rating-box-medium">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="show-rating-box">
+                                            <i class="fa fa-star-half" aria-hidden="true"></i>
+                                        </div>
+                                    }
                                 }
                             </div>
-                            <div class="show-rating-back-show">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
+                            <div class="show-rating-back-medium">
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <p class="text-center" style="margin-top: 20px; margin-bottom: 20px">@FeedbackService.GetTotalScore(Model.Influenter.Id).ToString("0.0") af @FeedbackService.GetInfluencerFeedbackCount(Model.Influenter.Id) ratings</p>
+                    <p class="text-center" style="margin-top: 20px; margin-bottom: 20px; font-size: 16px">@totalScore.ToString("0.00") af @Model.Influenter.Ratings.Count ratings</p>
                 </div>
 
-                <div class="profile-box">
+                <div class="white-box">
                     <h3 class="text-center" style="margin-bottom: 20px;"><b>KATEGORIER</b></h3>
-                    <div class="profile-center-img">
+                    <div class="center-icons">
                         @foreach (var v in Model.Influenter.InfluenterKategori)
                         {
                             var srcName = v.Category.Name.ToLower() + ".png";
@@ -89,7 +112,7 @@
                     </div>
                 </div>
 
-                <div class="profile-box" style="padding-top: 20px; padding-bottom: 20px">
+                <div class="white-box" style="padding-top: 20px; padding-bottom: 20px">
                     <h3 class="text-center" style="margin-bottom: 20px;"><b>SOCIALE MEDIER</b></h3>
                     <div class="social-box" style="text-align: center">
 
@@ -130,12 +153,7 @@
                         }
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
-
-
-
 </div>

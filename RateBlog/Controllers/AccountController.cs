@@ -80,7 +80,6 @@ namespace RateBlog.Controllers
                 {
                     _logger.LogInformation(1, "User logged in.");
                     var user = _userManager.Users.SingleOrDefault(x => x.Email.ToLower() == model.Email.ToLower());
-                    user.LastLogin = DateTime.Now;
                     await _userManager.UpdateAsync(user); 
                     return Json(new { result = "Accepted" });
                 }
@@ -173,7 +172,7 @@ namespace RateBlog.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, BirthDay = model.Birthday.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, LastLogin = DateTime.Now, TermsAndConditions = DateTime.Now, NewsLetter = model.NewLetter };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, BirthDay = model.Birthday.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, TermsAndConditions = DateTime.Now, NewsLetter = model.NewLetter };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -245,7 +244,6 @@ namespace RateBlog.Controllers
             {
                 _logger.LogInformation(5, "User logged in with {Name} provider.", info.LoginProvider);
                 var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-                user.LastLogin = DateTime.Now;
                 await _userManager.UpdateAsync(user);
                 return RedirectToLocal(returnUrl);
             }
@@ -291,7 +289,7 @@ namespace RateBlog.Controllers
                     return View("ExternalLoginFailure");
                 }
                
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, BirthDay = model.Birthday.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, LastLogin = DateTime.Now, NewsLetter = model.NewLetter, TermsAndConditions = DateTime.Now };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, BirthDay = model.Birthday.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, NewsLetter = model.NewLetter, TermsAndConditions = DateTime.Now };
 
                 if (info.LoginProvider == "Facebook")
                 {
@@ -316,7 +314,6 @@ namespace RateBlog.Controllers
 
                         //await _userManager.AddClaimAsync(user, new Claim("FacebookAccessToken", info.AuthenticationTokens.SingleOrDefault(x => x.Name == "access_token").Value)); 
 
-                        user.LastLogin = DateTime.Now;
                         await _userManager.UpdateAsync(user);
 
                         _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);

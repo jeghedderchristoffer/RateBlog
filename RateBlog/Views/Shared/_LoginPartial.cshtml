@@ -9,39 +9,22 @@
     var user = await UserManager.GetUserAsync(User);
 }
 
+
 @if (SignInManager.IsSignedIn(User))
 {
-
+    <input type="hidden" value="@user.Id" id="applicationUserId"/>
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right" id="dropdownPc">
 
-            @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
-            {
-                <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Min feedback
-                        @if (FeedbackService.GetUnreadFeedbackCount(user.Id) != 0)
-                        {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(user.Id)</span>
-                        }
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Min feedback
-                        @if (FeedbackService.GetUnreadAnswerCount(user.Id) != 0)
-                        {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadAnswerCount(user.Id)</span>
-                        }
-                    </a>
-                </li>
-            }
+            <li>
+                <a asp-area="" asp-controller="Manage" asp-action="Feedback" class="navLinks">
+                    Min feedback
+                    <span class="badge navbarBagde" style="font-family: Arial; background: #FFA500"></span>
+                </a>
+            </li>
 
             <li class="drop">
-                <a href="#">Konto</a>
+                <a href="#" class="navLinks">Konto</a>
                 <div class="dropdownContain">
                     <div class="dropOut">
                         <div class="triangle"></div>
@@ -64,32 +47,16 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right" id="dropdownMobile" style="display: none">
-            @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
-                {
-                <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Min feedback
-                        @if (FeedbackService.GetUnreadFeedbackCount(user.Id) != 0)
-                        {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadFeedbackCount(user.Id)</span>
-                        }
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="Feedback">
-                        Min feedback
-                        @if (FeedbackService.GetUnreadAnswerCount(user.Id) != 0)
-                        {
-                            <span class="badge" style="font-family: Arial; background: #FFA500">@FeedbackService.GetUnreadAnswerCount(user.Id)</span>
-                        }
-                    </a>
-                </li>
-            }
+
+            <li>
+                <a asp-area="" asp-controller="Manage" asp-action="Feedback">
+                    Min feedback
+                    <span class="badge navbarBagde" style="font-family: Arial; background: #FFA500"></span>
+                </a>
+            </li>
+
             <li><a asp-area="" asp-controller="Manage" asp-action="Profile">Vis profil</a></li>
-            <li><a asp-area="" asp-controller="Manage" asp-action="Edit">Rediger profil</a></li>   
+            <li><a asp-area="" asp-controller="Manage" asp-action="Edit">Rediger profil</a></li>
             @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
             {
                 <li><a asp-area="" asp-controller="Manage" asp-action="Influencer">Influencer</a></li>
@@ -106,7 +73,8 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a id="signup" class="login-links" data-toggle="modal" data-target="#opretModal">Opret</a></li>
-        <li><a class="login-links" data-toggle="modal" data-target="#loginModal">Log ind</a></li>
+        <li><a id="signup" class="login-links navLinks" data-toggle="modal" data-target="#opretModal">Opret</a></li>
+        <li><a class="login-links navLinks" data-toggle="modal" data-target="#loginModal">Log ind</a></li>
     </ul>
 }
+

@@ -1,93 +1,206 @@
 ﻿@model MinAnmeldelseViewModel
 @inject RateBlog.Services.IFeedbackService FeedbackService
 @inject UserManager<ApplicationUser> UserManager
-@{ 
-    ViewData["Title"] = "Min feedback"; 
+@{
+    ViewData["Title"] = "Min feedback";
 }
 
-<div class="navbar-allaround"></div>
+<div class="background-all">
+    <div class="navbar-allaround"></div>
 
-@Html.Partial("_NavbarAddonPartial")
+    <div class="container">
+        <div class="col-md-12 noPadding" style="padding-top: 40px;">
+            <div class="col-md-offset-2 col-md-8 nopaddingmobile">
+                <div class="col-md-12 col-sm-12 col-xs-12 white-box read-feedback-container">
+                    <h2>Din feedback til @Model.Rating.Influenter.Alias</h2>
+                    <hr />
+                    <div class="col-md-6">
+                        <p>Troværdighed</p>
 
-<div class="bottom-container" style="background: #fff">
-    <div style="background: #fff !important">
-        <div class="navbar-addon noborderbottomMobile" style="padding-bottom: 20px; background:#fff">
-            <div class="container">
-                <div class="col-md-12 col-xs-12 noPadding">
-                    <div class="col-md-2 col-xs-2 noPadding addon-box">
-                        <div class="addon-img-container">
-                            <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.Rating.InfluenterId })" />
-                        </div>
-                    </div>
-                    <div class="col-md-5 col-xs-9 addon-box">
-                        <div class="addon-number" style="text-align: left">
-                            <p>Du har givet feedback til</p>
-                            <h3>@UserManager.Users.SingleOrDefault(x => x.Id == Model.Rating.InfluenterId).Name</h3>
-                        </div>
-
-
-                    </div>
-                    <div class="col-md-5 col-xs-12 addon-box">
-                        <div class="addon-number">
-                            <div class="se-anmeldelse-center se-anmeldelse-padding">
-                                <h2 class="text-center">Samlet score</h2>
-                                <br />
-                                <div class="show-rating-box-se">
-                                    <div class="show-rating-se">
-                                        <div class="show-rating-front-se">
-                                            @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(Model.Rating.Id); i++)
-                                            {
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                            }
-                                        </div>
-                                        <div class="show-rating-back-se">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                        <div class="show-rating">
+                            <div class="show-rating-container center-block" style="width: 164px; float: none;">
+                                <div class="show-rating-front">
+                                    @for (int i = 0; i < Model.Rating.Troværdighed; i++)
+                                    {
+                                        <div class="show-rating-box">
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                         </div>
+                                    }
+                                </div>
+                                <div class="show-rating-back">
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
-
-
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <div>
-            <div class="container" style="padding-top: 30px; padding-bottom: 30px;">
-                <div class="col-md-12">
-                    <div class="col-md-6 se-anmeldelse-padding">
-                        <h4><i>Du har skrevet følgende om @UserManager.Users.SingleOrDefault(x => x.Id == Model.Rating.InfluenterId).Name:</i></h4>
-                        <br />
-                        <h4><b>Hvad gør influenceren godt?</b></h4>
-                        <p style="line-height: 180%">@Model.Rating.FeedbackGood</p>
+                    <div class="col-md-6">
 
-                        <h4 style="margin-top: 50px;"><b>Hvad kan influenceren gøre bedre?</b></h4>
-                        <p style="line-height: 180%">@Model.Rating.FeedbackBetter</p>
+
+                        <p>Opførsel</p>
+
+                        <div class="show-rating">
+                            <div class="show-rating-container center-block" style="width: 164px; float: none;">
+                                <div class="show-rating-front">
+                                    @for (int i = 0; i < Model.Rating.Opførsel; i++)
+                                    {
+                                        <div class="show-rating-box">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="show-rating-back">
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 se-anmeldelse-padding">
-                        @if (!string.IsNullOrEmpty(Model.Rating.Answer))
-                        {
-                            <h4><i>@UserManager.Users.SingleOrDefault(x => x.Id == Model.Rating.InfluenterId).Name har svaret på din feedback:</i></h4>
-                            <br />
-                            <h4><b>Svar:</b></h4>
-                            <p style="line-height: 180%">@Model.Rating.Answer</p>
-                        }
-                        else
-                        {
-                            <h4><i>@UserManager.Users.SingleOrDefault(x => x.Id == Model.Rating.InfluenterId).Name har ikke svaret på din feedback</i></h4>
 
-                        }
+                    <div class="col-md-6">
+
+                        <p>Kvalitet</p>
+
+                        <div class="show-rating">
+                            <div class="show-rating-container center-block" style="width: 164px; float: none;">
+                                <div class="show-rating-front">
+                                    @for (int i = 0; i < Model.Rating.Kvalitet; i++)
+                                    {
+                                        <div class="show-rating-box">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="show-rating-back">
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <p>Interaktion</p>
+
+                        <div class="show-rating">
+                            <div class="show-rating-container center-block" style="width: 164px; float: none;">
+                                <div class="show-rating-front">
+                                    @for (int i = 0; i < Model.Rating.Interaktion; i++)
+                                    {
+                                        <div class="show-rating-box">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="show-rating-back">
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="show-rating-box">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 noPadding">
+                        <hr style="margin-top: 40px" />
+
+                        <p>Du har skrevet følgende om @Model.Rating.Influenter.Alias</p>
+
+                        <div class="col-md-6">
+                            <p style="text-align: left; font-size: 15px"><b>Hvad gør @Model.Rating.Influenter.Alias godt?</b></p>
+                            <p class="normal-text">@Model.Rating.FeedbackGood</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p style="text-align: left; font-size: 15px"><b>Hvad kan @Model.Rating.Influenter.Alias gøre bedre?</b></p>
+                            <p class="normal-text">@Model.Rating.FeedbackBetter</p>
+                        </div>
+                    </div>
+
+                    @if (Model.Rating.Answer != null)
+                    {
+                        <div class="col-md-12 noPadding">
+                            <hr />
+                            <p>@Model.Rating.Influenter.Alias har svaret på din feedback</p>
+                            <p class="normal-text" style="text-align: center !important">@Model.Rating.Answer</p>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+        var id = {};
+        id = '@Model.Rating.Id';
+
+        $.ajax({
+            url: "/Manage/ReadFeedback",
+            method: "POST",
+            dataType: 'json',
+            data: {
+                id: id
+            },
+            success: function (result) {
+                updateNotification(result);
+            },
+            error: function () {
+                console.log("fail");
+            }
+        });
+    </script>
+}

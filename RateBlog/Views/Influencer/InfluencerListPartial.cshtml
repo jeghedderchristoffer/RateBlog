@@ -1,7 +1,16 @@
 ﻿@model List<Influencer>
 @inject RateBlog.Services.IFeedbackService FeedbackService
 
-@if (Model != null)
+@foreach(var v in Model)
+{
+    <p></p>
+
+}
+
+
+
+
+@*@if (Model != null)
 {
     @foreach (var influ in Model)
     {
@@ -103,4 +112,4 @@
             </div>
         </div>
     }
-}
+}*@

@@ -21,18 +21,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\css\beststyle.css" />
     <Content Include="wwwroot\css\social-buttons.css" />
-    <Content Include="wwwroot\images\airbnb.png" />
-    <Content Include="wwwroot\images\BF.png" />
+    <Content Include="wwwroot\images\bestfluence-logo-white.svg" />
+    <Content Include="wwwroot\images\bestfluence-logo.svg" />
+    <Content Include="wwwroot\images\bfprofilepic.png" />
     <Content Include="wwwroot\images\Category\Beauty.png" />
     <Content Include="wwwroot\images\Category\Fashion.png" />
     <Content Include="wwwroot\images\Category\Interests 2.png" />
     <Content Include="wwwroot\images\Category\lipstick.png" />
     <Content Include="wwwroot\images\Category\Personal.png" />
-    <Content Include="wwwroot\images\cat\Fashion.png" />
-    <Content Include="wwwroot\images\cat\Gaming.png" />
-    <Content Include="wwwroot\images\cat\Interests.png" />
-    <Content Include="wwwroot\images\cat\Lifestyle.png" />
+    <Content Include="wwwroot\images\Fav (2).png" />
+    <Content Include="wwwroot\images\Fav.PNG" />
     <Content Include="wwwroot\images\Footer\About.jpg" />
     <Content Include="wwwroot\images\Footer\FAQ.jpeg" />
     <Content Include="wwwroot\images\Footer\guide-lines.jpeg" />
@@ -41,6 +41,9 @@
     <Content Include="wwwroot\images\Footer\privacy.jpeg" />
     <Content Include="wwwroot\images\Footer\termsandconditions.jpeg" />
     <Content Include="wwwroot\images\Forside.jpeg" />
+    <Content Include="wwwroot\images\home-img.jpeg" />
+    <Content Include="wwwroot\images\home-photo.jpg" />
+    <Content Include="wwwroot\images\home.jpeg" />
     <Content Include="wwwroot\images\Jyllandsposten.png" />
     <Content Include="wwwroot\images\Kategori\beauty.png" />
     <Content Include="wwwroot\images\Kategori\entertainment.png" />
@@ -52,8 +55,8 @@
     <Content Include="wwwroot\images\kommunikation.jpeg" />
     <Content Include="wwwroot\images\index-img.jpeg" />
     <Content Include="wwwroot\images\programing.jpeg" />
-    <Content Include="wwwroot\images\User icon.png" />
     <Content Include="wwwroot\js\AdminStatisticsFilter.js" />
+    <Content Include="wwwroot\js\bestjavascript.js" />
     <Content Include="wwwroot\js\GoogleChartLoader.js" />
   </ItemGroup>
   <ItemGroup>

@@ -88,15 +88,7 @@ function isEmail(email) {
     return regex.test(email);
 }
 
-$(document).ready(function () {
-    $("#forgotPasswordBtn").click(function () {
-        $("#forgotPassword").css("display", "block");
-    });
 
-    $('#loginModal').on('hidden.bs.modal', function () {
-        $("#forgotPassword").css("display", "none");
-    });
-});
 
 // Log af
 
@@ -283,7 +275,7 @@ $(document).ready(function () {
 
     //setup before functions
     var typingTimer;                //timer identifier
-    var doneTypingInterval = 500;  //time in ms, 5 second for example
+    var doneTypingInterval = 100;  //time in ms, 5 second for example
     var $input = $('#search');
 
     //on keyup, start the countdown
@@ -368,16 +360,14 @@ $('input[name = "isInfluencerExternalLogin"]').change(function () {
 });
 
 
-
+// Change color if root or footer
 $(document).ready(function () {
-    $("input[name=Birthday]").datepicker({
-        dateFormat: "dd-mm-yy",
-        minDate: new Date(1910, 0, 1),
-        maxDate: new Date(2017, 0, 1),
-        yearRange: '1910:2017',
-        changeYear: true,
-        changeMonth: true, 
-        defaultDate: new Date("March 21, 2000")
+    var is_root = location.pathname == "/";
 
-    });
-});
+    if (!is_root) {
+        $(".navbar-brand").css("color", "#FFA500");
+    } else {
+        $("#navbarLogo").attr("src", "/images/bestfluence-logo-white.svg");
+    }
+
+}); 

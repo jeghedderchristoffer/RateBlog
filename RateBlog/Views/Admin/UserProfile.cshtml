@@ -1,31 +1,22 @@
-﻿@model ApplicationUser
-@inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
-@inject RateBlog.Services.IFeedbackService FeedbackServce
-@inject RateBlog.Services.Interfaces.IPlatformCategoryService PlatformCategoryService
-@inject RateBlog.Repository.IRepository<Platform> PlatformRepo
-@inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
+﻿@model RateBlog.Models.AdminViewModels.UserProfileViewModel
+@inject RateBlog.Services.IFeedbackService FeedbackService
+@inject RateBlog.Repository.IRepository<Feedback> FeedbackRepo
+@inject RateBlog.Repository.IRepository<Category> CategoryRepo
 @{
-    ViewData["Title"] = "ProfilePage";
-    var isInfluencer = (await InfluencerService.IsUserInfluencerAsync(Model.Id)) ? "Influencer" : "Følger";
+    var isInfluencer = (Model.InfluencerViewModel == null) ? "Følger" : "Influencer";
 }
-
-<div class="navbar-allaround"></div>
-
-@Html.Partial("_NavbarPartial")
-
 
 <div id="adminDeleteModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 style="margin-top: 0; margin-bottom: 0" class="modal-title">Vil du slette @Model.Name</h4>
+                <h4 style="margin-top: 0; margin-bottom: 0" class="modal-title">Vil du slette @Model.EditProfileViewModel.Name</h4>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left">Fortryd</button>
                 <form asp-controller="Admin" asp-action="DeleteUser" method="post">
-                    @Html.HiddenFor(x => x.Id)
+                    @Html.HiddenFor(x => x.ApplicationUser.Id)
                     <button type="submit" style="float: right" class="btn btn-danger"><b>Slet</b></button>
                 </form>
             </div>
@@ -34,309 +25,621 @@
 </div>
 
 
-<div id="indexContent" class="admin-content">
-    <div class="col-md-10 noPadding">
+<div class="background-all" style="padding-bottom: 0">
 
+    @Html.Partial("_NavbarPartial", "yolo")
 
+    <div class="navbar-allaround" style="position: relative"></div>
+
+    <div class="admin-container" style="padding-top: 30px; padding-bottom: 80px; overflow-y: scroll; height: calc(100vh - 70px)">
         <div class="col-md-12">
-            <h2 style="text-align:center; margin-bottom: 40px; margin-top: 40px;">@Model.Name</h2>
-        </div>
-
-        <div class="col-md-12">
-            <div class="col-md-4" style="margin-top: 15px">
-                <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.Id} )" class="admin-img center-block" />
-            </div>
-
             <div class="col-md-6">
-                <table class="table table-striped">
-                    <thead></thead>
-                    <tbody>
-                        <tr>
-                            <td>Navn</td>
-                            <td>@Model.Name</td>
-                        </tr>
+                <div class="col-md-12 white-box">
+                    <h3 style="text-align: center; margin-top: 10px">Personlige oplysninger:</h3>
+                    <hr />
+                    <table class="table table-striped">
+                        <thead></thead>
+                        <tbody>
+                            <tr>
+                                <td>Navn</td>
+                                <td>@Model.ApplicationUser.Name</td>
+                            </tr>
 
-                        <tr>
-                            <td>Email</td>
-                            <td>@Model.Email</td>
-                        </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>@Model.ApplicationUser.Email</td>
+                            </tr>
 
-                        <tr>
-                            <td>Fødselsdag</td>
-                            <td>@Model.BirthDay</td>
-                        </tr>
-                        <tr>
-                            <td>Postnummer</td>
-                            <td>@Model.Postnummer</td>
-                        </tr>
-                        <tr>
-                            <td>Status</td>
-                            <td>@isInfluencer</td>
-                        </tr>
+                            <tr>
+                                <td>Fødselsdag</td>
+                                <td>@String.Format("{0:dd/MM/yyyy}", Model.ApplicationUser.BirthDay)</td>
+                            </tr>
+                            <tr>
+                                <td>Postnummer</td>
+                                <td>@Model.ApplicationUser.Postnummer</td>
+                            </tr>
+                            <tr>
+                                <td>Køn</td>
+                                <td>@Model.ApplicationUser.Gender</td>
+                            </tr>
+                            <tr>
+                                <td>Oprettet</td>
+                                <td>@String.Format("{0:dd/MM/yyyy}", Model.ApplicationUser.Created)</td>
+                            </tr>
+                            <tr>
+                                <td>Type:</td>
+                                <td>@isInfluencer</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 white-box" style="margin-top: 10px">
+                    <div class="edit-user-container" style="padding-top: 0;">
+                        <h3 style="text-align: center; margin-top: 10px">Rediger personlige oplysninger:</h3>
+                        <hr />
 
-                        <tr>
-                            <td>Telefon nummer</td>
-                            <td>@Model.PhoneNumber</td>
-                        </tr>
-                        <tr>
-                            <td>Oprettet</td>
-                            <td>@Model.Created</td>
-                        </tr>
-                        <tr>
-                            <td>Sidst set</td>
-                            <td>@Model.LastLogin</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-2">
-                <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@Model.Id" style="background:#ec971f;" class="admin-btn"><b>Rediger</b></a>
-                <a asp-controller="Admin" asp-action="Feedback" asp-route-id="@Model.Id" style="background:#089de3;" class="admin-btn"><b>Feedback</b></a>
-                <a asp-controller="Admin" asp-action="ChangePassword" asp-route-id="@Model.Id" style="background: #000" class="admin-btn">SKIFT KODEORD</a>
-                <a data-toggle="modal" data-target="#adminDeleteModal" style="background:#c9302c;" class="admin-btn"><b>Slet</b></a>
-            </div>
-        </div>
-    </div>
+                        <form asp-controller="Admin" asp-action="EditUser" method="post" enctype="multipart/form-data">
+                            @Html.HiddenFor(x => x.ApplicationUser.Id)
+                            <p style="margin-top: 5px">Navn</p>
+                            <input type="text" asp-for="@Model.EditProfileViewModel.Name" />
 
-    <div class="col-md-12 noPadding" style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; margin-top: 60px;">
+                            <p>Email</p>
+                            <input type="text" asp-for="@Model.EditProfileViewModel.Email" />
 
-        <div class="col-md-12 text-center" style="padding-top: 40px; padding-bottom: 60px;">
-            @if (await InfluencerService.IsUserInfluencerAsync(Model.Id))
-            {
-                <div class="col-md-6">
-                    <h2 style="margin-bottom:30px">Influencer</h2>
-                    <div class="col-md-3">
-                        <h4>@FeedbackServce.GetInfluencerFeedbackCount(Model.Id)</h4>
-                        <h5>Rating</h5>
-                    </div>
+                            <p>Fødselsdato</p>
+                            <input type="text" asp-for="@Model.EditProfileViewModel.Birthday" />
 
-                    <div class="col-md-3">
-                        <h4>@FeedbackServce.GetInfluencerFeedbackAnswersCount(Model.Id)</h4>
-                        <h5>Svaret</h5>
-                    </div>
+                            <p>Postnummer</p>
+                            <input type="text" asp-for="@Model.EditProfileViewModel.Postnummer" />
 
-                    <div class="col-md-3">
-                        <h4>@FeedbackServce.GetInfluencerAnswerPercentage(Model.Id)%</h4>
-                        <h5>Svar procent</h5>
-                    </div>
+                            <p>Profilbillede</p>
+                            <input type="file" name="profilePic" />
 
-                    <div class="col-md-3">
-                        <h4>@FeedbackServce.GetTotalScore(Model.Id)</h4>
-                        <h5>Score</h5>
+                            <p>Køn</p>
+                            <div class="control-group">
+                                <label class="control control-radio">
+                                    Mand
+                                    <input type="radio" asp-for="@Model.EditProfileViewModel.Gender" value="male" />
+                                    <div class="control_indicator"></div>
+                                </label>
+                                <label class="control control-radio">
+                                    Kvinde
+                                    <input type="radio" asp-for="@Model.EditProfileViewModel.Gender" value="female" />
+                                    <div class="control_indicator"></div>
+                                </label>
+                            </div>
+                            <button type="submit">Gem oplysningerne</button>
+                        </form>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <h2 style="margin-bottom:30px">Profil tekst</h2>
-                    @if (string.IsNullOrEmpty(InfluencerRepo.Get(Model.Id).ProfileText))
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-12 white-box">
+                    <h3 style="text-align: center; margin-top: 10px">@isInfluencer oplysninger:</h3>
+                    <hr />
+
+                    <img class="center-block" style="height: 150px; width: 150px; margin-bottom: 30px; margin-top: 25px; border-radius: 50%; border: 1px solid #ddd" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
+
+                    @if (isInfluencer == "Influencer")
                     {
-                        <p style="text-align:center; max-width: 600px;margin:0 auto;">Denne Bruger har ikke skrevet nogen profiltekst</p>
+                        <table class="table table-striped">
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ratings modtaget: </td>
+                                    <td>@Model.InfluencerViewModel.Influencer.Ratings.Count</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Svar givet:</td>
+                                    <td>@Model.InfluencerViewModel.Influencer.Ratings.Where(x => x.Answer != null).Count()</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     }
                     else
                     {
-                        <p style="text-align:center; max-width: 600px;margin:0 auto;">@InfluencerRepo.Get(Model.Id).ProfileText</p>
+                        <table class="table table-striped">
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ratings givet:</td>
+                                    <td>@FeedbackService.GetFeedbackCount(Model.ApplicationUser.Id, false)</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Svar modtaget:</td>
+                                    <td>@FeedbackRepo.GetAll().Where(x => x.ApplicationUserId == Model.ApplicationUser.Id && x.Answer != null).Count()</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     }
-                </div>
-            }
-            else
-            {
-                <h2 style="margin-bottom:30px">Følger</h2>
-                <div class="col-md-6">
-                    <h4>@FeedbackServce.GetUserFeedbackCount(Model.Id)</h4>
-                    <h5>Ratings givet</h5>
-                </div>
 
-                    <div class="col-md-6">
-                        <h4>@FeedbackServce.GetUserFeedbackAnswersCount(Model.Id)</h4>
-                        <h5>Svar modtaget</h5>
+                </div>
+                <div class="col-md-12 white-box" style="margin-top: 10px">
+                    <h3 style="text-align: center; margin-top: 10px">Rediger @isInfluencer oplysninger</h3>
+                    <hr />
+
+                    @if (isInfluencer == "Influencer")
+                    {
+                        var currentBool = "";
+
+                        <div class="edit-user-container" style="padding-top: 0">                          
+                            <p style="margin-top: 5px">Alias</p>
+                            <input type="text" asp-for="@Model.InfluencerViewModel.Influencer.Alias" />
+
+                            <p>Dine kategorier</p>
+
+                            <div class="choose-category" style="width: 100%">
+                                @foreach (var cat in CategoryRepo.GetAll())
+                                {
+                                    currentBool = (Model.InfluencerViewModel.Influencer.InfluenterKategori.Any(x => x.CategoryId == cat.Id)) ? "checked" : "";
+
+                                    <div class="tooltips">
+                                        <div class="cat-check @cat.Name">
+                                            <input @currentBool value="@cat.Id" name="categoriList" type="checkbox" id="@cat.Name" /> <label for="@cat.Name"></label>
+                                        </div>
+                                        <span style="bottom: 115%; left: 25px" class="tooltiptext">@cat.Name</span>
+                                    </div>
+                                }
+                            </div>
+
+                            <p>Dine sociale medier</p>
+
+                            <input class="icon-input" placeholder="&#xf16d; &nbsp; Instagram navn" type="text" asp-for="@Model.InfluencerViewModel.InstagramLink" />
+                            <input class="icon-input" placeholder="&#xf2ac; &nbsp; Snapchat navn" type="text" asp-for="@Model.InfluencerViewModel.SnapchatLink" />
+                            <input class="icon-input" placeholder="&#xf099; &nbsp; Twitter navn" type="text" asp-for="@Model.InfluencerViewModel.TwitterLink" />
+                            <hr style="margin-top: 5px" />
+                            <input class="icon-input" placeholder="&#xf1e8; &nbsp; Twitch link" type="text" asp-for="@Model.InfluencerViewModel.TwitchLink" />
+                            <input class="icon-input" placeholder="&#xf09a; &nbsp;&nbsp; Facebook link" type="text" asp-for="@Model.InfluencerViewModel.FacebookLink" />
+                            <input class="icon-input" placeholder="&#xf0ac; &nbsp; Hjemmeside/blog link" type="text" asp-for="@Model.InfluencerViewModel.WebsiteLink" />
+                            <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link" type="text" asp-for="@Model.InfluencerViewModel.YoutubeLink" />
+                            <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link 2" type="text" asp-for="@Model.InfluencerViewModel.SecoundYoutubeLink" />
+
+                            <p>Din profiltekst</p>
+                            <textarea rows="10" placeholder="Skriv lidt om dig selv.." asp-for="@Model.InfluencerViewModel.ProfileText"></textarea>
+
+                            <button type="submit">Gem oplysninger</button>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+    <div class="background-all">
+
+        <div class="navbar-allaround"></div>
+
+        @Html.Partial("_NavbarPartial")
+
+        <div class="admin-container">
+
+            <div class="col-md-12" style="padding-left: 40px; padding-right: 40px;">
+                <div class="edit-user-container">
+                    <div class="white-box" style="height: calc(100vh - 150px)">
+
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h2>Profil oplysninger:</h2>
+
+                            <p style="margin-top: 5px">Navn</p>
+                            <input type="text" asp-for="@Model.EditProfileViewModel.Name" />
+
+                            <p>Email</p>
+                            <input type="text" asp-for="@Model.EditProfileViewModel.Email" />
+
+                            <p>Fødselsdato</p>
+                            <input type="text" asp-for="@Model.EditProfileViewModel.Birthday" />
+
+                            <p>Postnummer</p>
+                            <input type="text" asp-for="@Model.EditProfileViewModel.Postnummer" />
+
+                            <p>Profilbillede</p>
+                            <input type="file" name="profilePic" />
+
+                            <p>Køn</p>
+                            <div class="control-group">
+                                <label class="control control-radio">
+                                    Mand
+                                    <input type="radio" name="gender" asp-for="@Model.EditProfileViewModel.Gender" value="male" />
+                                    <div class="control_indicator"></div>
+                                </label>
+                                <label class="control control-radio">
+                                    Kvinde
+                                    <input type="radio" name="gender" asp-for="@Model.EditProfileViewModel.Gender" value="female" />
+                                    <div class="control_indicator"></div>
+                                </label>
+                            </div>
+
+                            <button type="submit">Gem oplysningerne</button>
+                        </div>
+
+                        <div class="col-md-6">
+                            @if(Model.InfluencerViewModel == null)
+                            {
+                                <h2 style="text-align: center">Denne person er ikke influencer</h2>
+
+                                <div class="text-center">
+                                    <p>@Model.EditProfileViewModel.Name har givet <b>4</b> feedbacks</p>
+                                    <p>@Model.EditProfileViewModel.Name har givet <b>4</b> feedbacks</p>
+
+                                </div>
+
+                            }
+                        </div>
+
                     </div>
-            }
-
-
+                </div>
+            </div>
         </div>
     </div>
 
 
 
-    <div class="col-md-12" style="padding-top: 40px; padding-bottom: 100px;">
-        @if (await InfluencerService.IsUserInfluencerAsync(Model.Id))
-        {
+    <div class="navbar-allaround"></div>
 
 
 
-            <h2 style="text-align:center; margin-bottom: 30px;">@InfluencerRepo.Get(Model.Id).Alias</h2>
+
+        <div id="adminDeleteModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 style="margin-top: 0; margin-bottom: 0" class="modal-title">Vil du slette @Model.Name</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left">Fortryd</button>
+                        <form asp-controller="Admin" asp-action="DeleteUser" method="post">
+                            @Html.HiddenFor(x => x.Id)
+                            <button type="submit" style="float: right" class="btn btn-danger"><b>Slet</b></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-            <div class="col-md-6">
-                <h3>Sociale medier</h3>
-                <hr />
-                @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.Id) != null)
-                {
-                    @foreach (var v in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.Id))
+        <div id="indexContent" class="admin-content">
+            <div class="col-md-10 noPadding">
+
+
+                <div class="col-md-12">
+                    <h2 style="text-align:center; margin-bottom: 40px; margin-top: 40px;">@Model.Name</h2>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="col-md-4" style="margin-top: 15px">
+                        <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.Id} )" class="admin-img center-block" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <table class="table table-striped">
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <td>Navn</td>
+                                    <td>@Model.Name</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Email</td>
+                                    <td>@Model.Email</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Fødselsdag</td>
+                                    <td>@Model.BirthDay</td>
+                                </tr>
+                                <tr>
+                                    <td>Postnummer</td>
+                                    <td>@Model.Postnummer</td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td>@isInfluencer</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Telefon nummer</td>
+                                    <td>@Model.PhoneNumber</td>
+                                </tr>
+                                <tr>
+                                    <td>Oprettet</td>
+                                    <td>@Model.Created</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-2">
+                        <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@Model.Id" style="background:#ec971f;" class="admin-btn"><b>Rediger</b></a>
+                        <a asp-controller="Admin" asp-action="Feedback" asp-route-id="@Model.Id" style="background:#089de3;" class="admin-btn"><b>Feedback</b></a>
+                        <a asp-controller="Admin" asp-action="ChangePassword" asp-route-id="@Model.Id" style="background: #000" class="admin-btn"><b>Skift kodeord</b></a>
+                        <a data-toggle="modal" data-target="#adminDeleteModal" style="background:#c9302c;" class="admin-btn"><b>Slet</b></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 noPadding" style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; margin-top: 60px;">
+
+                <div class="col-md-12 text-center" style="padding-top: 40px; padding-bottom: 60px;">
+                    @if (await InfluencerService.IsUserInfluencerAsync(Model.Id))
                     {
-                        @if (PlatformRepo.Get(v.PlatformId).Name == "Facebook")
-                        {
-                            <div class="admin-platforms">
-                                <a href="@v.Link" target="_blank" class="fa fa-edit fa-facebook fa-facebook-edit"></a>
-                                <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+                        <div class="col-md-6">
+                            <h2 style="margin-bottom:30px">Influencer</h2>
+                            <div class="col-md-3">
+                                <h4>@FeedbackServce.GetInfluencerFeedbackCount(Model.Id)</h4>
+                                <h5>Rating</h5>
                             </div>
-                        }
-                        else if (PlatformRepo.Get(v.PlatformId).Name == "YouTube")
-                        {
-                            <div class="admin-platforms">
-                                <a href="@v.Link" target="_blank" class="fa fa-edit fa-youtube fa-youtube-edit"></a>
-                                <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+
+                            <div class="col-md-3">
+                                <h4>@FeedbackServce.GetInfluencerFeedbackAnswersCount(Model.Id)</h4>
+                                <h5>Svaret</h5>
                             </div>
-                        }
-                        else if (PlatformRepo.Get(v.PlatformId).Name == "SecondYouTube")
-                        {
-                            <div class="admin-platforms">
-                                <a href="@v.Link" target="_blank" class="fa fa-edit fa-youtube fa-youtube-edit"></a>
-                                <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+
+                            <div class="col-md-3">
+                                <h4>@FeedbackServce.GetInfluencerAnswerPercentage(Model.Id)%</h4>
+                                <h5>Svar procent</h5>
                             </div>
-                        }
-                        else if (PlatformRepo.Get(v.PlatformId).Name == "Instagram")
-                        {
-                            <div class="admin-platforms">
-                                <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-edit fa-instagram fa-instagram-edit"></a>
-                                <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+
+                            <div class="col-md-3">
+                                <h4>@FeedbackServce.GetTotalScore(Model.Id)</h4>
+                                <h5>Score</h5>
                             </div>
-                        }
-                        else if (PlatformRepo.Get(v.PlatformId).Name == "Website")
-                        {
-                            <div class="admin-platforms">
-                                <a href="http://@v.Link" class="fa fa-edit fa-globe fa-globe-edit"></a>
-                                <p>@PlatformRepo.Get(v.PlatformId).Name</p>
-                            </div>
-                        }
-                        else if (PlatformRepo.Get(v.PlatformId).Name == "Twitter")
-                        {
-                            <div class="admin-platforms">
-                                <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-edit fa-twitter fa-twitter-edit"></a>
-                                <p>@PlatformRepo.Get(v.PlatformId).Name</p>
-                            </div>
-                        }
-                        else if (PlatformRepo.Get(v.PlatformId).Name == "Twitch")
-                        {
-                            <div class="admin-platforms">
-                                <a href="@v.Link" target="_blank" class="fa fa-edit fa-twitch fa-twitch-edit"></a>
-                                <p>@PlatformRepo.Get(v.PlatformId).Name</p>
-                            </div>
-                        }
-                        else if (PlatformRepo.Get(v.PlatformId).Name == "SnapChat")
-                        {
-                            <div class="admin-platforms">
-                                <a href="http://www.snapchat.com/add/@v.Link" class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
-                                <p>@PlatformRepo.Get(v.PlatformId).Name</p>
-                            </div>
-                        }
+                        </div>
+                        <div class="col-md-6">
+                            <h2 style="margin-bottom:30px">Profil tekst</h2>
+                            @if (string.IsNullOrEmpty(InfluencerRepo.Get(Model.Id).ProfileText))
+                            {
+                                <p style="text-align:center; max-width: 600px;margin:0 auto;">Denne Bruger har ikke skrevet nogen profiltekst</p>
+                            }
+                            else
+                            {
+                                <p style="text-align:center; max-width: 600px;margin:0 auto;">@InfluencerRepo.Get(Model.Id).ProfileText</p>
+                            }
+                        </div>
                     }
-                }
-
-                else
-                {
-                    <h4>Denne influencer har ikke tilknyttet nogle sociale medier</h4>
-                }
-                <br /><br />
-                <h3>Katagorier</h3>
-                <hr />
-
-                @if (PlatformCategoryService.GetInfluencerCategoryNames(Model.Id) != null)
-                {
-
-                    @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(Model.Id))
+                    else
                     {
-                        if (v == "Gaming")
-                        {
-                            <div class="admin-category">
-                                <img src="~/images/Kategori/gaming.png" alt="img">
-                                <p>@v</p>
-                            </div>
-                        }
-                        if (v == "Lifestyle")
-                        {
-                            <div class="admin-category">
-                                <img src="~/images/Kategori/lifestyle.png" alt="img">
-                                <p>@v</p>
-                            </div>
-                        }
-                        if (v == "Beauty")
-                        {
-                            <div class="admin-category">
-                                <img src="~/images/Kategori/beauty.png" alt="img">
-                                <p>@v</p>
-                            </div>
-                        }
-                        if (v == "Entertainment")
-                        {
-                            <div class="admin-category">
-                                <img src="~/images/Kategori/entertainment.png" alt="img">
-                                <p>@v </p>
-                            </div>
-                        }
-                        if (v == "Fashion")
-                        {
-                            <div class="admin-category">
-                                <img src="~/images/Kategori/fashion.png" alt="img">
-                                <p>@v</p>
-                            </div>
-                        }
-                        if (v == "Interests")
-                        {
-                            <div class="admin-category">
-                                <img src="~/images/Kategori/interests.png" alt="img">
-                                <p>@v</p>
-                            </div>
-                        }
-                        if (v == "Personal")
-                        {
-                            <div class="admin-category">
-                                <img src="~/images/Kategori/personal.png" alt="img">
-                                <p>Personal </p>
-                            </div>
-                        }
+                        <h2 style="margin-bottom:30px">Følger</h2>
+                        <div class="col-md-6">
+                            <h4>@FeedbackServce.GetUserFeedbackCount(Model.Id)</h4>
+                            <h5>Ratings givet</h5>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h4>@FeedbackServce.GetUserFeedbackAnswersCount(Model.Id)</h4>
+                            <h5>Svar modtaget</h5>
+                        </div>
                     }
+
+
+                </div>
+            </div>
+
+
+
+            <div class="col-md-12" style="padding-top: 40px; padding-bottom: 100px;">
+                @if (await InfluencerService.IsUserInfluencerAsync(Model.Id))
+                {
+
+
+
+                    <h2 style="text-align:center; margin-bottom: 30px;">@InfluencerRepo.Get(Model.Id).Alias</h2>
+
+
+                    <div class="col-md-6">
+                        <h3>Sociale medier</h3>
+                        <hr />
+                        @if (PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.Id) != null)
+                        {
+                            @foreach (var v in PlatformCategoryService.GetAllInfluencerPlatformForInfluencer(Model.Id))
+                            {
+                                @if (PlatformRepo.Get(v.PlatformId).Name == "Facebook")
+                                {
+                                    <div class="admin-platforms">
+                                        <a href="@v.Link" target="_blank" class="fa fa-edit fa-facebook fa-facebook-edit"></a>
+                                        <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+                                    </div>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "YouTube")
+                                {
+                                    <div class="admin-platforms">
+                                        <a href="@v.Link" target="_blank" class="fa fa-edit fa-youtube fa-youtube-edit"></a>
+                                        <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+                                    </div>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "SecondYouTube")
+                                {
+                                    <div class="admin-platforms">
+                                        <a href="@v.Link" target="_blank" class="fa fa-edit fa-youtube fa-youtube-edit"></a>
+                                        <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+                                    </div>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Instagram")
+                                {
+                                    <div class="admin-platforms">
+                                        <a href="http://www.instagram.com/@v.Link" target="_blank" class="fa fa-edit fa-instagram fa-instagram-edit"></a>
+                                        <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+                                    </div>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Website")
+                                {
+                                    <div class="admin-platforms">
+                                        <a href="http://@v.Link" class="fa fa-edit fa-globe fa-globe-edit"></a>
+                                        <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+                                    </div>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Twitter")
+                                {
+                                    <div class="admin-platforms">
+                                        <a href="http://www.twitter.com/@v.Link" target="_blank" class="fa fa-edit fa-twitter fa-twitter-edit"></a>
+                                        <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+                                    </div>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "Twitch")
+                                {
+                                    <div class="admin-platforms">
+                                        <a href="@v.Link" target="_blank" class="fa fa-edit fa-twitch fa-twitch-edit"></a>
+                                        <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+                                    </div>
+                                }
+                                else if (PlatformRepo.Get(v.PlatformId).Name == "SnapChat")
+                                {
+                                    <div class="admin-platforms">
+                                        <a href="http://www.snapchat.com/add/@v.Link" class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
+                                        <p>@PlatformRepo.Get(v.PlatformId).Name</p>
+                                    </div>
+                                }
+                            }
+                        }
+
+                        else
+                        {
+                            <h4>Denne influencer har ikke tilknyttet nogle sociale medier</h4>
+                        }
+                        <br /><br />
+                        <h3>Kategorier</h3>
+                        <hr />
+
+                        @if (PlatformCategoryService.GetInfluencerCategoryNames(Model.Id) != null)
+                        {
+
+                            @foreach (var v in PlatformCategoryService.GetInfluencerCategoryNames(Model.Id))
+                            {
+                                if (v == "Gaming")
+                                {
+                                    <div class="admin-category">
+                                        <img src="~/images/Kategori/gaming.png" alt="img">
+                                        <p>@v</p>
+                                    </div>
+                                }
+                                if (v == "Lifestyle")
+                                {
+                                    <div class="admin-category">
+                                        <img src="~/images/Kategori/lifestyle.png" alt="img">
+                                        <p>@v</p>
+                                    </div>
+                                }
+                                if (v == "Beauty")
+                                {
+                                    <div class="admin-category">
+                                        <img src="~/images/Kategori/beauty.png" alt="img">
+                                        <p>@v</p>
+                                    </div>
+                                }
+                                if (v == "Entertainment")
+                                {
+                                    <div class="admin-category">
+                                        <img src="~/images/Kategori/entertainment.png" alt="img">
+                                        <p>@v </p>
+                                    </div>
+                                }
+                                if (v == "Fashion")
+                                {
+                                    <div class="admin-category">
+                                        <img src="~/images/Kategori/fashion.png" alt="img">
+                                        <p>@v</p>
+                                    </div>
+                                }
+                                if (v == "Interests")
+                                {
+                                    <div class="admin-category">
+                                        <img src="~/images/Kategori/interests.png" alt="img">
+                                        <p>@v</p>
+                                    </div>
+                                }
+                                if (v == "Personal")
+                                {
+                                    <div class="admin-category">
+                                        <img src="~/images/Kategori/personal.png" alt="img">
+                                        <p>Personal </p>
+                                    </div>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <h4> Denne influencer har ikke angivet nogen kategorier</h4>
+                        }
+
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3 style="text-align:center;">Godkendelse</h3>
+                        <hr />
+                        @if (!InfluencerRepo.Get(Model.Id).IsApproved)
+                        {
+                            <form asp-controller="Admin" asp-action="ApproveInfluencer" method="post">
+                                @Html.HiddenFor(x => x.Id)
+                                <button type="submit" style="background:#53b80a; border: none;" class="admin-btn"><b>ACCEPTER INFLUENCER</b></button>
+                            </form>
+                        }
+                        else
+                        {
+                            <h4 class="text-center" style="margin-bottom: 20px;"><i class="fa fa-check" style="color:#53b80a " aria-hidden="true"></i> Denne influencer er godkendt</h4>
+                        }
+
+                        <form asp-controller="Admin" asp-action="DisapproveInfluencer" method="post">
+                            @Html.HiddenFor(x => x.Id)
+                            <button style="background:#c9302c; border: none;" class="admin-btn"><b>FJERN INFLUENCER</b></button>
+                        </form>
+                    </div>
+
                 }
+            </div>
+
+
+            @*
+
+
                 else
                 {
-                    <h3> Denne influencer har ikke angivet nogen sociale medier.</h3>
+                    <div style="padding-bottom: 100px;">
+
+                    </div>
                 }
 
-
-            </div>
-
-            <div class="col-md-6">
-                <h3 style="text-align:center;">Godkendelse</h3>
-                <hr />
-                @if (!InfluencerRepo.Get(Model.Id).IsApproved)
-                {
-                    <form asp-controller="Admin" asp-action="ApproveInfluencer" method="post">
-                        @Html.HiddenFor(x => x.Id)
-                        <button type="submit" style="background:#53b80a; border: none;" class="admin-btn"><b>ACCEPTER INFLUENCER</b></button>
-                    </form>
-                }
-                else
-                {
-                    <h4 class="text-center" style="margin-bottom: 20px;"><i class="fa fa-check" style="color:#53b80a " aria-hidden="true"></i> Denne influencer er godkendt</h4>
-                }
-
-                <form asp-controller="Admin" asp-action="DisapproveInfluencer" method="post">
-                    @Html.HiddenFor(x => x.Id)
-                    <button style="background:#c9302c; border: none;" class="admin-btn"><b>FJERN INFLUENCER</b></button>
-                </form>
-            </div>
-
-        }
-    </div>
-
-
-    @*
-
-
-        else
-        {
-            <div style="padding-bottom: 100px;">
-
-            </div>
-        }*@
-
-</div>
+        </div>*@

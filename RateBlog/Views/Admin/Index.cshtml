@@ -5,7 +5,92 @@
     var list = Model.AllUsers.OrderByDescending(x => x.Created).ToList();
 }
 
-<div class="navbar-allaround"></div>
+
+<div class="background-all" style="padding-bottom: 0">
+
+    @Html.Partial("_NavbarPartial", "")
+
+    <div class="navbar-allaround" style="position: relative"></div>
+    
+    <div class="admin-container">
+        <div class="col-md-12" style="padding-top: 40px;">
+            <div class="col-md-6 noPadding">
+                <div class="col-md-12">
+                    <div class="white-box scroll" style="height: calc(50vh - 110px)">
+                        <h3>Godkend influencers</h3>
+                        <hr style="margin-top: 5px;" />
+                        <div id="approveInfluencers">
+                            <ul>
+                                @foreach (var v in Model.InfluencerApprovedList)
+                                {
+                                    <li><a asp-controller="Admin" asp-action="UserProfile" asp-route-id="@v.Id">@v.Name</a></li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-top: 10px;">
+                    <div class="white-box scroll" style="height: calc(50vh - 70px)">
+                        <h3>Anmeldelser</h3>
+                        <hr style="margin-top: 5px;" />
+                        <div id="approveInfluencers">
+                            <ul>
+                                @foreach (var v in Model.InfluencerApprovedList)
+                                {
+                                    <li><a asp-controller="Admin" asp-action="UserProfile" asp-route-id="@v.Id">@v.Name</a></li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="white-box scroll" style="height: calc(100vh - 150px)">
+                    <h3>100 nyeste brugere</h3>
+                    <hr style="margin-top: 5px;" />
+                    <form method="get" asp-area="" asp-controller="Admin" asp-action="Index" class="form-inline center-block">
+                        <div class="input-group" style="width: 100%;">
+                            <input autocomplete="off" type="text" name="search" id="search" style="border: 1px solid #ddd" class="form-control admin-search-input" placeholder="Søg på influencers eller brugere" />
+                            <div class="input-group-btn" style="width: 1px;">
+                                <button class="btn admin-search-button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="table table-hover" style="margin-top: 10px;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fulde Navn</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-rows">
+                            @for (int i = 0; i < list.Count; i++)
+                            {
+                                var isInfluencer = await (InfluencerService.IsUserInfluencerAsync(list[i].Id)) ? "Influencer" : "Bruger";
+                                <tr id="@list[i].Id">
+                                    <th scope="row">@i</th>
+                                    <td>@list[i].Name</td>
+                                    <td>@list[i].Email</td>
+                                    <td>@isInfluencer</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*<div class="navbar-allaround"></div>
 
 @Html.Partial("_NavbarPartial")
 
@@ -35,7 +120,6 @@
                     {
                         <li><a asp-controller="Admin" asp-action="UserProfile" asp-route-id="@v.Id">@v.Name</a></li>
                     }
-
                 </ul>
             </div>
 
@@ -75,7 +159,7 @@
             </table>
         </div>
     </div>
-</div>
+</div>*@
 
 
 
