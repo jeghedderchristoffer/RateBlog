@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170830084244_treportinguseradded")]
+    partial class treportinguseradded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -201,20 +202,6 @@ namespace RateBlog.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("RateBlog.Models.EmailNotification", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("FeedbackUpdate");
-
-                    b.Property<bool>("NewsLetter");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmailNotification");
                 });
 
             modelBuilder.Entity("RateBlog.Models.Feedback", b =>

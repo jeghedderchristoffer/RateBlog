@@ -29,9 +29,10 @@ namespace RateBlog.Controllers
         private readonly IRepository<Category> _categoryRepo;
         private readonly IRepository<Feedback> _feedbackRepo;
         private readonly IAdminService _adminService;
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher; 
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IRepository<ReportFeedback> _reportfeedRepo;
 
-        public AdminController(IPasswordHasher<ApplicationUser> passwordHasher, IAdminService adminService, IRepository<Feedback> feedbackRepo, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IEmailSender emailSender, UserManager<ApplicationUser> userManager, IInfluencerService influencerService, IInfluencerRepository influencerRepo, IPlatformCategoryService platformCategoryService)
+        public AdminController(IPasswordHasher<ApplicationUser> passwordHasher, IAdminService adminService, IRepository<Feedback> feedbackRepo, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IEmailSender emailSender, UserManager<ApplicationUser> userManager, IInfluencerService influencerService, IInfluencerRepository influencerRepo, IPlatformCategoryService platformCategoryService, IRepository<ReportFeedback> reportfeedRepo)
         {
             _userManager = userManager;
             _influencerService = influencerService;
@@ -42,7 +43,8 @@ namespace RateBlog.Controllers
             _categoryRepo = categoryRepo;
             _feedbackRepo = feedbackRepo;
             _adminService = adminService;
-            _passwordHasher = passwordHasher; 
+            _passwordHasher = passwordHasher;
+            _reportfeedRepo = reportfeedRepo;
         }
 
         [HttpGet]
@@ -65,11 +67,14 @@ namespace RateBlog.Controllers
                 }
             }
 
+           
+
             var model = new Models.AdminViewModels.IndexViewModel()
             {
                 AllUsers = listOfUsers,
-                InfluencerApprovedList = notApprovedList
-            };
+                InfluencerApprovedList = notApprovedList,
+                ReportedFeedbacks = _reportfeedRepo.GetAll().ToList()
+        };
 
             return View(model);
         }
@@ -428,15 +433,8 @@ namespace RateBlog.Controllers
         [AllowAnonymous]
         public IActionResult ReportTest()
         {
-            var reportFeeds = _reportfeedRepo.GetAll().ToList();
-
-            var themodel = new ReportFeedbackViewModel
-            {
-                ReportFeedbacks = reportFeeds
-
-            };
-
-            return View(themodel);
+            
+            return View();
         }
 
         [AllowAnonymous]
@@ -450,27 +448,80 @@ namespace RateBlog.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public JsonResult ReportFeedbackJson(ReportFeedback newFeedback)
+        public async Task<JsonResult> ReportFeedbackJson(ReportFeedback newFeedback)
         {
-            _reportfeedRepo.Add(newFeedback);
-            return Json(newFeedback);
+            string reportingUserId = (await _userManager.GetUserAsync(HttpContext.User))?.Id;
+            string status = "";
+
+            if (!_reportfeedRepo.GetAll().Where(x => x.ApplicationUserId == newFeedback.ApplicationUserId).Where(x => x.TheUserWhoReportedId == reportingUserId).Where(x=>x.FeedbackId == newFeedback.FeedbackId).Any())
+            {
+                newFeedback.TheUserWhoReportedId = reportingUserId;
+                newFeedback.ReportedDateTime = DateTime.Now;
+                _reportfeedRepo.Add(newFeedback);
+                status = "Sucess";
+            }
+            else
+            {
+                status = "Failure";
+            }
+            return Json(status);
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ReportTest2(string Id)
+        public IActionResult ManageReportedFeedback(string Id)
         {
             var report = _reportfeedRepo.Get(Id);
             var reportedUsr = _userManager.Users.FirstOrDefault(x => x.Id == report.ApplicationUserId);
+            var reportedFeed = _feedbackRepo.GetAll().FirstOrDefault(x=> x.Id == report.FeedbackId);
+            var reportFeedbackList = _reportfeedRepo.GetAll().Where(x => x.FeedbackId == report.FeedbackId).ToList();
 
             var ReportFeedback = new ReportFeedbackViewModel
             {
+                TheReportedFeedback = reportedFeed,
                 Report=report,
-                TheReportedUser=reportedUsr
-                
+                TheReportedUser=reportedUsr,
+                ReportFeedbacks=reportFeedbackList
             };
 
             return View(ReportFeedback);
+        }
+
+        [HttpPost]
+        public IActionResult EditReport()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult DeleteFeedbackAndReport(ReportFeedbackViewModel Reportfeedback)
+        {
+            var reportsFeedbacks = _reportfeedRepo.GetAll().Where(x=>x.FeedbackId == Reportfeedback.Report.FeedbackId);
+
+            var editFeedback = _feedbackRepo.Get(Reportfeedback.Report.FeedbackId);
+
+            foreach(var x in reportsFeedbacks.ToList())
+            {
+                _reportfeedRepo.Delete(x);
+            }
+            _feedbackRepo.Delete(editFeedback);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult SvaretReport(ReportFeedbackViewModel Reportfeedback)
+        {
+            var reportsFeedbacks = _reportfeedRepo.GetAll().Where(x => x.FeedbackId == Reportfeedback.Report.FeedbackId);
+
+            foreach (var x in reportsFeedbacks.ToList())
+            {
+                x.IsRead = true;
+                _reportfeedRepo.Update(x);
+            }
+
+            return RedirectToAction("Index");
         }
 
 

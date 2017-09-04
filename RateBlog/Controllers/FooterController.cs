@@ -44,6 +44,11 @@ namespace RateBlog.Controllers
             return View();
         }
 
+        public IActionResult FeedbackAndAnswers()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Contact(ContactViewModel model)
         {

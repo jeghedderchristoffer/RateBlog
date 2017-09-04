@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot/css\site.min.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Properties\PublishProfiles\Bestfluence - Web Deploy.pubxml" />
   </ItemGroup>
 
@@ -33,6 +37,8 @@
     <Content Include="wwwroot\images\cat\Gaming.png" />
     <Content Include="wwwroot\images\cat\Interests.png" />
     <Content Include="wwwroot\images\cat\Lifestyle.png" />
+    <Content Include="wwwroot\images\Cecilia.png" />
+    <Content Include="wwwroot\images\CH.PNG" />
     <Content Include="wwwroot\images\Footer\About.jpg" />
     <Content Include="wwwroot\images\Footer\FAQ.jpeg" />
     <Content Include="wwwroot\images\Footer\guide-lines.jpeg" />
@@ -51,6 +57,7 @@
     <Content Include="wwwroot\images\Kategori\personal.png" />
     <Content Include="wwwroot\images\kommunikation.jpeg" />
     <Content Include="wwwroot\images\index-img.jpeg" />
+    <Content Include="wwwroot\images\Nikolaj.png" />
     <Content Include="wwwroot\images\programing.jpeg" />
     <Content Include="wwwroot\images\User icon.png" />
     <Content Include="wwwroot\js\AdminStatisticsFilter.js" />

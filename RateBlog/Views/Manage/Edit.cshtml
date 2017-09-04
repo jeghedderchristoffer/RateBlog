@@ -5,87 +5,98 @@
 
 <div class="navbar-allaround"></div>
 
-@if (TempData["Success"] != null)
-{
-    <div id="editUserSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        @TempData["Success"]
+<div class="container">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li><a href="/Manage/Profile/Edit">Profile</a></li>
+            <li><a href="#">Skiftkode ord</a></li>
+            <li><a href="/Manage/Email">Email</a></li>
+            <li><a href="#">Statestik</a></li>
+        </ul>
     </div>
+</div>
 
-    <script>
-        window.setTimeout(function () {
-            $("#editUserSuc").fadeOut(1000);
-        }, 2000);
-    </script>
-}
-@if (TempData["Error"] != null)
-{
-    <div id="editUserErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        @TempData["Error"]
-    </div>
+    @if (TempData["Success"] != null)
+    {
+        <div id="editUserSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Success"]
+        </div>
 
-    <script>
-        window.setTimeout(function () {
-            $("#editUserErr").fadeOut(1000);
-        }, 2000);
-    </script>
-}
+        <script>
+            window.setTimeout(function () {
+                $("#editUserSuc").fadeOut(1000);
+            }, 2000);
+        </script>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div id="editUserErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Error"]
+        </div>
 
-@Html.Partial("_NavbarAddonPartial")
+        <script>
+            window.setTimeout(function () {
+                $("#editUserErr").fadeOut(1000);
+            }, 2000);
+        </script>
+    }
 
-<div class="container" style="padding-bottom: 150px;">
-    <div class="col-md-12 col-xs-12 noPaddingLeft nopaddingmobile">
-        <h2 class="edituserh2">Profil oplysninger</h2>     
-    </div>
+    @Html.Partial("_NavbarAddonPartial")
 
-    <div class="col-md-6 noPadding col-xs-12" id="editProfile">
-        <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
+    <div class="container" style="padding-bottom: 150px;">
+        <div class="col-md-12 col-xs-12 noPaddingLeft nopaddingmobile">
+            <h2 class="edituserh2">Profil oplysninger</h2>
+        </div>
 
-            <h4 style="margin-top: 15px">Fulde navn:</h4>
-            <input asp-for="@Model.Name" class="edit-profile-input" />
-            <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
+        <div class="col-md-6 noPadding col-xs-12" id="editProfile">
+            <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
 
-            <h4>Email:</h4>
-            <input asp-for="@Model.Email" class="edit-profile-input" />
-            <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
+                <h4 style="margin-top: 15px">Fulde navn:</h4>
+                <input asp-for="@Model.Name" class="edit-profile-input" />
+                <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
 
-            <h4>Fødselsdag:</h4>
-            <input max="01-01-2017" asp-for="@Model.Birthday" class="edit-profile-input" />
-            <span asp-validation-for="@Model.Birthday" class="text-danger" style="margin-left: 5px;" asp-format="0:dd/mm/yyyy}"></span>
+                <h4>Email:</h4>
+                <input asp-for="@Model.Email" class="edit-profile-input" />
+                <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
 
-            <h4>Postnummer:</h4>
-            <input asp-for="@Model.Postnummer" class="edit-profile-input" type="text" />
-            <span asp-validation-for="@Model.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
+                <h4>Fødselsdag:</h4>
+                <input max="01-01-2017" asp-for="@Model.Birthday" class="edit-profile-input" />
+                <span asp-validation-for="@Model.Birthday" class="text-danger" style="margin-left: 5px;" asp-format="0:dd/mm/yyyy}"></span>
 
-            <h4>Profilbillede:</h4>
-            <input type="file" name="profilePic" class="input-files" />
-            <br />
+                <h4>Postnummer:</h4>
+                <input asp-for="@Model.Postnummer" class="edit-profile-input" type="text" />
+                <span asp-validation-for="@Model.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
 
-            <h4>Køn</h4>
-            <label style="font-weight: normal">
-                <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
-                Mand
-            </label>
-            <br />
+                <h4>Profilbillede:</h4>
+                <input type="file" name="profilePic" class="input-files" />
+                <br />
 
-            <label style="font-weight: normal">
-                <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
-                Kvinde
-            </label>
-            <br /><br /><br />
+                <h4>Køn</h4>
+                <label style="font-weight: normal">
+                    <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
+                    Mand
+                </label>
+                <br />
 
-            <input type="submit" class="edit-button-influ-create" style="width: 100%" value="Gem" />
-        </form>
-    </div>
-    <div class="col-md-offset-1 col-md-5 hidden-sm hidden-xs">
-        <div class="feedback-rating-all-box">
-            <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                <h3 class="text-center">Gensidig troværdighed</h3>
-                <p>Hos Bestfluence går vi op i at alle vores brugere har høj troværdighed. Da din profil og feedback er offentlig, vil vi derfor opfordre dig til at angive korrekte oplysninger, således dine bidrag kan bruges og gøre en forskel for andre.</p>
+                <label style="font-weight: normal">
+                    <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
+                    Kvinde
+                </label>
+                <br /><br /><br />
+
+                <input type="submit" class="edit-button-influ-create" style="width: 100%" value="Gem" />
+            </form>
+        </div>
+        <div class="col-md-offset-1 col-md-5 hidden-sm hidden-xs">
+            <div class="feedback-rating-all-box">
+                <div class="feedback-rating-all-box-item" style="padding: 20px;">
+                    <h3 class="text-center">Gensidig troværdighed</h3>
+                    <p>Hos Bestfluence går vi op i at alle vores brugere har høj troværdighed. Da din profil og feedback er offentlig, vil vi derfor opfordre dig til at angive korrekte oplysninger, således dine bidrag kan bruges og gøre en forskel for andre.</p>
+                </div>
             </div>
         </div>
-    </div>   
-</div>
+    </div>
 

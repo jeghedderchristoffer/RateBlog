@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿    using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -31,10 +31,13 @@ namespace RateBlog.Controllers
         private readonly IPlatformCategoryService _platformCategoryService;
         private readonly IFeedbackService _feedbackService;
         private readonly ISortService _sortService;
+        private readonly IEmailSender _emailSender;
+        private readonly IRepository<EmailNotification> _emailNotification;
+
 
         public static int Counter { get; set; } 
 
-        public InfluencerController(IRepository<Category> categoryRepo, IInfluencerRepository influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IPlatformCategoryService platformCategoryService, IFeedbackService feedbackService, ISortService sortService)
+        public InfluencerController(IRepository<Category> categoryRepo, IInfluencerRepository influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IPlatformCategoryService platformCategoryService, IFeedbackService feedbackService, ISortService sortService, IEmailSender emailSender, IRepository<EmailNotification> emailNotification)
         {
             _influencerRepo = influencer;
             _userManager = userManager;
@@ -44,6 +47,8 @@ namespace RateBlog.Controllers
             _platformCategoryService = platformCategoryService;
             _feedbackService = feedbackService;
             _sortService = sortService;
+            _emailSender = emailSender;
+            _emailNotification = emailNotification;
         }
 
         [HttpGet]
@@ -112,6 +117,8 @@ namespace RateBlog.Controllers
         [Route("/[controller]/Feedback/[action]/{id}")]
         public async Task<IActionResult> Read(string id)
         {
+            string reportingUserId = (await _userManager.GetUserAsync(HttpContext.User))?.Id;
+
             var influencer = _influencerRepo.Get(id);
             var user = await _userManager.FindByIdAsync(influencer.Id);
 
@@ -125,6 +132,7 @@ namespace RateBlog.Controllers
 
             var model = new ReadViewModel()
             {
+                TheLogInUserId = reportingUserId,
                 ApplicationUser = user,
                 Influenter = influencer,
                 Gender = gender,
@@ -228,7 +236,7 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> Give(GiveViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
-            var influencer = _influencerRepo.Get(user.Id); 
+            var influencer = _influencerRepo.Get(user.Id);
             
             if (influencer != null)
             {
@@ -303,6 +311,22 @@ namespace RateBlog.Controllers
                 };
                 _feedbackRepo.Add(feedback);
                 TempData["Success"] = "Du har givet din feedback til " + model.Influencer.Alias;
+
+                var WantNotify =_emailNotification.Get(feedback.InfluenterId);
+                if (WantNotify == null)
+                {
+                    var NyEmailNotifyOpret = new EmailNotification() { Id = feedback.InfluenterId, FeedbackUpdate = true, NewsLetter = false };
+                    _emailNotification.Add(NyEmailNotifyOpret);
+                    await _emailSender.SendInfluencerFeedbackUpdateEmailAsync(feedback.Influenter.Alias, _userManager.Users.FirstOrDefault(x => x.Id == model.Influencer.Id).Email, user.Name);
+                }
+                else
+                {
+                    if (WantNotify.FeedbackUpdate)
+                    {
+                        await _emailSender.SendInfluencerFeedbackUpdateEmailAsync(model.Influencer.Alias, _userManager.Users.FirstOrDefault(x => x.Id == model.Influencer.Id).Email, user.Name);
+                    }
+                }
+
                 return RedirectToAction("Profile", "Influencer", new { Id = model.Influencer.Id });
             }
 
@@ -344,6 +368,8 @@ namespace RateBlog.Controllers
                 new InfluenterKategoriViewModel(){ KategoriNavn = "Personal", IsSelected = false },
             };
         }
+
+
     }
 }
 

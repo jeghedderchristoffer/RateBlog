@@ -1,0 +1,220 @@
+﻿@model RateBlog.Models.AdminViewModels.ReportFeedbackViewModel
+@inject RateBlog.Services.IFeedbackService FeedbackService
+@inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
+
+
+<div class="navbar-allaround"></div>
+@Html.Partial("_NavbarPartial")
+
+
+<div class="admin-content" style="background: #fafafa">
+    <div class="container">
+        <div class="row" style="padding:12px">
+            <div class="col-md-3">
+                <b>Navn</b>
+            </div>
+            <div class="col-md-2">
+                <b>Emne(r)</b>
+            </div>
+            <div class="col-md-3">
+                <b>Begrundelse</b>
+            </div>
+            <div class="col-md-2">
+                <b>Status</b>
+            </div>
+            <div class="col-md-2">
+                <b>Rapporerings Dato</b>
+            </div>
+        </div>
+        @foreach (var v in Model.ReportFeedbacks.Where(x => x.FeedbackId == Model.TheReportedFeedback.Id).OrderByDescending(x => x.IsRead))
+        {
+            if (!v.IsRead)
+            {
+            <div class="col-md-12 noPadding profile-box">
+                <div class="row" style="padding:12px">
+                    <div class="col-md-3">
+                        <p>@Model.TheReportedUser.Name</p>
+                    </div>
+                    <div class="col-md-2">
+                        @if (v.Other == true)
+                        {<p>Other </p>}
+                        @if (v.LanguageUse == true)
+                        {<p>Sprog </p>}
+                        @if (v.Spam == true)
+                        {<p>Spam </p>}
+                        @if (v.Discrimination == true)
+                        {<p>Diskriminerende </p>}
+                    </div>
+                    <div class="col-md-3">
+                        <p style="display:block;width: 200px;word-wrap: break-word;">@v.Description</p>
+                    </div>
+                    <div class="col-md-2">
+                        @if (v.IsRead)
+                        {
+                            <span style="color:greenyellow;">Feedback beholdt</span>
+                        }
+                        else
+                        {
+                            <span style="display:block;color:red;width: 200px;word-wrap: break-word;"> Ikke reageret</span>
+                        }
+                    </div>
+                    <div class="col-md-2">
+                        <p>@v.ReportedDateTime</p>
+                    </div>
+                </div>
+
+            </div>
+            }
+        }
+
+       @foreach (var v in Model.ReportFeedbacks.Where(x=>x.FeedbackId == Model.TheReportedFeedback.Id).OrderByDescending(x => x.IsRead))
+        {
+            if (v.IsRead) { 
+            <div class="col-md-12 noPadding profile-box">
+                <div class="row" style="padding:12px">
+
+                    <div class="col-md-3">
+                        <p>@Model.TheReportedUser.Name</p>
+                    </div>
+                    <div class="col-md-2">
+                        @if (v.Other == true)
+                        {<p>Other </p>}
+                        @if (v.LanguageUse == true)
+                        {<p>Sprog </p>}
+                        @if (v.Spam == true)
+                        {<p>Spam </p>}
+                        @if (v.Discrimination == true)
+                        {<p>Diskriminerende </p>}
+                    </div>
+                    <div class="col-md-3">
+                       <p style="display:block;width: 200px;word-wrap: break-word;">@v.Description</p>
+                    </div>
+                    <div class="col-md-2">
+                        @if (v.IsRead)
+                        {
+                            <span style="color:greenyellow;">Feedback beholdt</span>
+                        }
+                        else
+                        {
+                            <span style="color:red;"> Ikke reageret</span>
+                        }
+                    </div>
+                    <div class="col-md-2">
+                        <p>@v.ReportedDateTime</p>
+                    </div>
+                </div>
+
+            </div>
+            }
+        }
+
+        <div class="row" style="padding-top:20px">
+            <div class="col-md-6" style="padding-left:100px">
+                <form method="post" asp-controller="Admin" asp-action="SvaretReport">
+                    @*@Html.Hidden("Id", Model.Report.FeedbackId)
+                    @Html.Hidden("ApplicationUserId", Model.TheReportedFeedback.ApplicationUserId)*@
+                    @Html.HiddenFor(x => x.Report.Id)
+                    @Html.HiddenFor(x => x.Report.FeedbackId)
+
+                    <input type="submit" style="background-color:green;color:white" class="rapport-btn" value="Behold Feedback" />
+                </form>
+            </div>
+            <div class="col-md-6" style="padding-left:100px">
+                <form method="post" asp-controller="Admin" asp-action="DeleteFeedbackAndReport">
+                    @*<input type="hidden" name="Id" id="Id" value="@Model.Report.FeedbackId" />*@
+
+                    @Html.HiddenFor(x => x.Report.Id)
+                    @Html.HiddenFor(x => x.Report.FeedbackId)
+
+
+                    <input type="submit" style="background-color:darkred;color:white" class="rapport-btn" value="Slet Feedback" />
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="padding:40px;">
+                @*  *@
+                <a asp-controller="Admin" asp-action="EditFeedback" asp-route-id="@Model.TheReportedUser.Id" style="color: #000">
+                    <div class="col-md-12 noPadding profile-box">
+                        <div class="profile-follower-ratings">
+                            <div class="col-md-2 noPadding">
+
+                                <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.TheReportedUser.Id })" />
+
+                            </div>
+                            <div class="col-md-10">
+                                <div class="visible-xs text-center">
+                                    <h4>@Model.TheReportedUser.Name</h4>
+                                    <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", Model.TheReportedFeedback.FeedbackDateTime)</p>
+                                    <br />
+                                </div>
+                                <div class="influencer-read-stars">
+                                    <div class="show-rating">
+                                        <div class="show-rating-front">
+                                            @for (int i = 0; i < FeedbackService.GetSingleFeedbackScoreAverage(Model.TheReportedFeedback.Id); i++)
+                                            {
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            }
+                                        </div>
+                                        <div class="show-rating-back">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hidden-xs">
+
+                                    <h4>@Model.TheReportedUser.Name</h4>
+                                    <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", Model.TheReportedFeedback.FeedbackDateTime)</p>
+                                </div>
+
+                                <br />
+                            </div>
+
+                            <div class="col-md-offset-2 col-md-10">
+                                <p><b>@Model.TheReportedUser.Name synes godt om følgende:</b></p>
+                                <p style="white-space: pre-line">@Model.TheReportedFeedback.FeedbackGood</p>
+                                <br />
+                                <p><b>@Model.TheReportedUser.Name synes følgende kan forbedres:</b></p>
+                                <p style="white-space: pre-line">@Model.TheReportedFeedback.FeedbackBetter</p>
+                            </div>
+
+
+                            @if (Model.TheReportedFeedback.Answer != null)
+                            {
+                                <div class="col-md-12 noPadding">
+                                    <hr />
+
+                                    <div class="col-md-2 noPadding">
+
+                                        <img src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.TheReportedUser.Id })" />
+
+                                    </div>
+
+                                    <div class="col-md-10">
+                                        <div class="hidden-xs">
+                                            <h4>@InfluencerRepo.Get(Model.TheReportedUser.Id).Alias</h4>
+                                            <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", Model.TheReportedFeedback.AnswerDateTime)</p>
+                                        </div>
+                                        <div class="visible-xs text-center">
+                                            <h4>@InfluencerRepo.Get(Model.TheReportedUser.Id).Alias</h4>
+                                            <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", Model.TheReportedFeedback.AnswerDateTime)</p>
+                                        </div>
+                                        <br />
+                                        <p><b>@InfluencerRepo.Get(Model.TheReportedUser.Id).Alias har svaret på feedbacken:</b></p>
+                                        <p style="white-space: pre-line">@Model.TheReportedFeedback.Answer</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

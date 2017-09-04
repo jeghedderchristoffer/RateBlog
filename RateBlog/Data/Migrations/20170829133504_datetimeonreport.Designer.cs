@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170829133504_datetimeonreport")]
+    partial class datetimeonreport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -203,20 +204,6 @@ namespace RateBlog.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.EmailNotification", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("FeedbackUpdate");
-
-                    b.Property<bool>("NewsLetter");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmailNotification");
-                });
-
             modelBuilder.Entity("RateBlog.Models.Feedback", b =>
                 {
                     b.Property<string>("Id")
@@ -353,15 +340,11 @@ namespace RateBlog.Migrations
 
                     b.Property<bool>("Spam");
 
-                    b.Property<string>("TheUserWhoReportedId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("FeedbackId");
-
-                    b.HasIndex("TheUserWhoReportedId");
 
                     b.ToTable("ReportFeedback");
                 });
@@ -458,10 +441,6 @@ namespace RateBlog.Migrations
                     b.HasOne("RateBlog.Models.Feedback", "Feedback")
                         .WithMany()
                         .HasForeignKey("FeedbackId");
-
-                    b.HasOne("RateBlog.Models.ApplicationUser", "TheUserWhoReported")
-                        .WithMany()
-                        .HasForeignKey("TheUserWhoReportedId");
                 });
         }
     }

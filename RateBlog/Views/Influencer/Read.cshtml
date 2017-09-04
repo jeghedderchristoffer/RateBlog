@@ -1,8 +1,11 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.ReadViewModel
+@inject SignInManager<ApplicationUser> SignedInUser
 @inject RateBlog.Services.IFeedbackService FeedbackService
+@inject RateBlog.Repository.IRepository<ReportFeedback> ReportFeedbackService
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s ratings";
     var isUserCreated = (Model.ApplicationUser.NormalizedEmail.StartsWith("USERINFLUENCER")) ? true : false;
+
 }
 
 <div class="navbar-allaround"></div>
@@ -64,80 +67,24 @@
                 @foreach (var v in Model.Influenter.Ratings.OrderByDescending(x => x.FeedbackDateTime))
                 {
                     <div class="col-md-12 noPadding profile-box">
-                        <div style="z-index:1000;position:absolute;bottom:40px;right:40px;">
-                            <a data-toggle="modal" data-target="#reportModal" class="btn btn-danger">
-                                <i class="fa fa-exclamation" aria-hidden="true"></i>
-                            </a>
 
-                        </div>      
-                            <!-- Modal -->
-
-                            <div class="modal fade" id="reportModal" role="dialog">
-                                <div class="modal-dialog" style="max-width:300px">
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="border-bottom: 1px solid #ddd; background: #fafafa;border-radius:10px">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 style="margin: 0;" class="modal-title"> Rapportér feedback </h4>
-                                        </div>
-                                        @Html.Hidden("FeedbackId", v.Id)
-                                        @Html.Hidden("ApplicationUserId", Model.Influenter.Id)
-
-                                        <div class="modal-body" margin="40px">
-                                            <input style="margin-left:10px;" type="checkbox" id="LanguageUse" value="True"> Upassende sprogbrug<br>
-
-                                            <input style="margin-left:10px;margin-top:10px" type="checkbox" id="Spam" value="True"> Spam<br>
-
-                                            <input style="margin-left:10px;margin-top:10px" type="checkbox" id="Discrimination" value="True"> Diskriminerende<br>
-
-                                            <input style="margin-left:10px;margin-top:10px" type="checkbox" id="Other" value="True"> Andet<br>
-                                            <br />
-                                            <textarea rows="4" cols="29" style="margin-left:10px;padding:10px" placeholder="Beskrivelse" id="Description" name="Description"></textarea>
-
-                                            <br>
-                                            <br>
-
-                                            <div class="modal-footer" style="max-height:50px">
-                                                <button style="background-color:red;opacity:0.70;color:white" id="ReportButton" type="button" class="btn btn-default pull-right">Rapporter</button>
-                                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                                            </div>
-
-                                            @section Scripts{
-                                                <script type="text/javascript">
-                                        $("#ReportButton").click(function () {
-
-//                                            if (document.getElementById("LanguageUse").checked == null &&)
-
-                                            var data = {
-                                                FeedbackId: "@v.Id",
-                                                ApplicationUserId: "@Model.Influenter.Id",
-                                                LanguageUse: document.getElementById("LanguageUse").checked,
-                                                Spam: document.getElementById('Spam').checked,
-                                                Discrimination: document.getElementById('Discrimination').checked,
-                                                Other: document.getElementById('Other').checked,
-                                                Description: document.getElementById('Description').value
-                                            };
-
-                                            $.ajax({
-                                                url: "/Admin/ReportFeedbackJson",
-                                                type: "GET",
-                                                traditional: true,
-                                                data: data,
-                                                success: function (newObject) {
-                                                    $("#reportModal").modal('hide');
-                                                }
-                                            })
-                                          });
-                                                </script>
-                                            }
-
-                                        </div>
-
-                                    </div>
-                                </div>
+                        @if (SignedInUser.IsSignedIn(User))
+                        {
+                            <div style="z-index:1000;position:absolute;bottom:20px;right:20px;">
+                                <a onclick="SetId(this.id)" data-toggle="modal" data-target="#reportModal" id="@v.Id" class="btn btn-default">
+                                    <i style="color:black;background-color:white" class="fa fa-exclamation" aria-hidden="true"></i>
+                                </a>
                             </div>
+                        }
+                        else
+                        {
+                            <div style="z-index:1000;position:absolute;bottom:40px;right:40px;">
+                                <a class="btn btn-danger" data-toggle="modal" data-target="#loginModal">
+                                    <i class="fa fa-exclamation" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        }
 
-                            
 
 
                         <div class="profile-follower-ratings">
@@ -228,6 +175,44 @@
 </div>
 
 
+<!-- Modal -->
+
+<div class="modal fade" id="reportModal" role="dialog">
+    <div class="modal-dialog" style="max-width:300px">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 1px solid #ddd; background: #fafafa;border-radius:10px">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 style="margin: 0;" class="modal-title"> Rapportér feedback </h4>
+            </div>
+            <div class="modal-body" margin="40px">
+                <div style="color:red;margin-left:10px" id="alertHint"></div>
+                <input style="margin-left:10px;" type="checkbox" id="LanguageUse" value="True"> Upassende sprogbrug<br>
+
+                <input style="margin-left:10px;margin-top:10px" type="checkbox" id="Spam" value="True"> Spam<br>
+
+                <input style="margin-left:10px;margin-top:10px" type="checkbox" id="Discrimination" value="True"> Diskriminerende<br>
+
+                <input style="margin-left:10px;margin-top:10px" type="checkbox" id="Other" value="True"> Andet<br>
+                <br />
+                <textarea rows="4" cols="29" style="margin-left:10px;padding:10px" placeholder="Beskrivelse" id="Description" name="Description"></textarea>
+
+                <br>
+                <br>
+
+                <div class="modal-footer" style="max-height:50px">
+
+                    <button onclick="SendIt()" style="background-color:red;opacity:0.70;color:white" id="ReportButton" type="button" class="btn btn-default pull-right">Rapporter</button>
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
 
 @*<div class="navbar-addon">
         <div class="container">
@@ -408,3 +393,49 @@
             </div>
         </div>
     </div>*@
+
+
+@section Scripts{
+    <script type="text/javascript">
+        var vId = "";
+
+        function SetId(theId) {
+            vId = theId;
+        }
+
+        function SendIt() {
+
+            if (document.getElementById("LanguageUse").checked == true || document.getElementById('Spam').checked == true || document.getElementById('Discrimination').checked == true || document.getElementById('Other').checked == true) {
+
+            var data = {
+                FeedbackId: vId.toString(),
+                ApplicationUserId: "@Model.Influenter.Id",
+                LanguageUse: document.getElementById("LanguageUse").checked,
+                Spam: document.getElementById('Spam').checked,
+                Discrimination: document.getElementById('Discrimination').checked,
+                Other: document.getElementById('Other').checked,
+                Description: document.getElementById('Description').value,
+            };
+
+            $.ajax({
+                url: "/Admin/ReportFeedbackJson",
+                type: "GET",
+                traditional: true,
+                data: data,
+                success: function (newObject) {
+                    if (newObject == "Failure") {
+                        document.getElementById("alertHint").innerHTML = "<p>Du kan kun rapportére den <br/>samme feedback én gang</p>";
+                    } else {
+                        $("#reportModal").modal('hide');
+
+                    }
+                    
+                }
+                });
+            } else {
+                document.getElementById("alertHint").innerHTML = "<p>Du skal som minimum udfylde ét felt</p>";
+                }
+        }
+
+    </script>
+}

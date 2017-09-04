@@ -10,6 +10,6 @@ namespace RateBlog.Models.AdminViewModels
         public List<ReportFeedback> ReportFeedbacks { get; set; }
         public ReportFeedback Report { get; set; }
         public ApplicationUser TheReportedUser { get; set; }
-
+        public Feedback TheReportedFeedback { get; set; }
     }
 }

@@ -85,6 +85,7 @@ namespace RateBlog
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IRepository<ReportFeedback>, Repository<ReportFeedback>>();
+            services.AddTransient<IRepository<EmailNotification>, Repository<EmailNotification>>();
 
         }
 

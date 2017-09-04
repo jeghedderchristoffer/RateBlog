@@ -1,0 +1,104 @@
+﻿@model EmailNotification
+@inject UserManager<ApplicationUser> UserManager
+@{ 
+    var LogedInUser = await UserManager.GetUserAsync(User);
+}
+
+<div class="navbar-allaround"></div>
+
+<div class="container">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li><a href="/Manage/Profile/Edit">Profile</a></li>
+            <li><a href="#">Skiftkode ord</a></li>
+            <li><a href="/Manage/Email">Email</a></li>
+            <li><a href="#">Statestik</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    <form method="post" asp-controller="Manage" asp-action="EmailOptions">
+    <div class="col-md-4">
+        <p>Tilmeld nyhedsbrev</p>
+        <p>Tilmeld profil- og feedback opdateringer</p>
+    </div>
+    <div class="col-md-3">
+        <div class="addon-box">
+            <table>
+                <tr>
+                    @if (Model.NewsLetter)
+                    {
+                        <td><p>Ja <input type="radio" id="NewsJa" class="btn btn-default" name="NewsLetter" value="True" checked/></p></td>
+                        <td style="padding-left:20px"><p>Nej <input type="radio" id="NewsNej" class="btn btn-default" value="False" name="NewsLetter"/></p></td>
+                    }
+                    else
+                    {
+                        <td><p>Ja <input type="radio" id="NewsJa" class="btn btn-default" name="NewsLetter" value="True" /></p></td>
+                        <td style="padding-left:20px"><p>Nej <input type="radio" id="NewsNej" class="btn btn-default" value="False" name="NewsLetter" checked /></p></td>
+                    }
+                </tr>
+                <tr>
+                    @if (Model.FeedbackUpdate)
+                    {
+                        <td><p>Ja <input type="radio" id="UpdatesJa" class="btn btn-default" name="FeedbackUpdate" value="True" checked /></p></td>
+                        <td style="padding-left:20px"><p>Nej <input type="radio" id="UpdatesNej" class="btn btn-default" value="False" name="FeedbackUpdate" /></p></td>
+                    }
+                    else
+                    {
+                        <td><p>Ja <input type="radio" id="UpdatesJa" class="btn btn-default" name="FeedbackUpdate" value="True" /></p></td>
+                        <td style="padding-left:20px"><p>Nej <input type="radio" id="UpdatesNej" class="btn btn-default" value="False" name="FeedbackUpdate" checked /></p></td>
+                    }
+                </tr>
+            </table>
+         </div>
+    </div>
+    <div class="col-md-4">
+        
+    </div>
+    <div class="col-md-3">
+    
+    </div>
+    <div class="col-md-12">
+        <input type="submit" value="Gem" />
+    </div>
+    </form>
+</div>
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+
+        function NewsLetterJa() {
+            $("#NewsJa").addClass("active");
+
+        }
+
+
+        function UpdateEmailOptions() {
+
+            var data = {
+                FeedbackId: vId.toString(),
+                ApplicationUserId: ""
+            };
+
+            $.ajax({
+                url: "/Manage/EmailOptions",
+                type: "GET",
+                traditional: true,
+                data: data,
+                success: function (newObject) {
+                    if (newObject == "Failure") {
+
+                    } else {
+
+                    }
+
+                }
+            });
+        }
+</script>
+
+}

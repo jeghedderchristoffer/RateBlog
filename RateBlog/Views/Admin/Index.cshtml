@@ -1,5 +1,6 @@
 ﻿@model RateBlog.Models.AdminViewModels.IndexViewModel
 @inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Admin";
     var list = Model.AllUsers.OrderByDescending(x => x.Created).ToList();
@@ -31,9 +32,9 @@
 
             <div id="approveInfluencers">
                 <ul>
-                    @foreach (var v in Model.InfluencerApprovedList)
+                    @foreach (var v in Model.ReportedFeedbacks.Where(x=>x.IsRead == false).GroupBy(x => x.FeedbackId).Select(grp => grp.First()).GroupBy(x => x.FeedbackId).Select(grp => grp.First()).ToList())
                     {
-                        <li><a asp-controller="Admin" asp-action="UserProfile" asp-route-id="@v.Id">@v.Name</a></li>
+                      <li><a asp-action="ManageReportedFeedback" asp-route-id="@v.Id">@UserManager.Users.FirstOrDefault(x => x.Id == v.ApplicationUserId).Name</a></li>
                     }
 
                 </ul>

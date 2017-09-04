@@ -17,6 +17,9 @@ namespace RateBlog.Models
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
+        public string TheUserWhoReportedId { get; set; }
+        public ApplicationUser TheUserWhoReported { get; set; }
+
         [DefaultValue(false)]
         public bool LanguageUse { get; set; }
         [DefaultValue(false)]
@@ -27,6 +30,8 @@ namespace RateBlog.Models
         public bool Other { get; set; }
         [DefaultValue(false)]
         public bool IsRead { get; set; }
+        
+        public DateTime ReportedDateTime { get; set; }
 
         [DefaultValue(null)]
         [StringLength(200)]

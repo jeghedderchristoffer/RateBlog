@@ -34,6 +34,7 @@ namespace RateBlog.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly IRepository<EmailNotification> _emailNotification;
 
 
         private readonly IInfluencerRepository _influencerRepo;
@@ -55,6 +56,7 @@ namespace RateBlog.Controllers
           IRepository<Category> categoryRepo,
           IRepository<Feedback> feedbackRepo,
           IPlatformCategoryService platformCategoryService,
+          IRepository<EmailNotification> emailNotification,
           IHostingEnvironment env)
         {
             _influencerRepo = influencerRepo;
@@ -69,6 +71,7 @@ namespace RateBlog.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _emailNotification = emailNotification;
         }
 
         //
@@ -575,7 +578,7 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AnswerFeedback(FeedbackResponseViewModel model)
+        public async Task<IActionResult> AnswerFeedback(FeedbackResponseViewModel model)
         {
             var rating = _feedbackRepo.Get(model.Rating.Id);
             rating.Answer = model.Rating.Answer;
@@ -590,8 +593,19 @@ namespace RateBlog.Controllers
             else
             {
                 TempData["Success"] = "Du har sendt dit svar!";
-            }
 
+                var TheUser = _userManager.Users.FirstOrDefault(x => x.Id == rating.ApplicationUserId);
+                var TheInfluenter = _influencerRepo.Get(rating.InfluenterId);
+                if (HasNotificationsElseCreateTable(TheUser))
+                {
+                    var WantNotify = _emailNotification.Get(rating.ApplicationUserId);
+                    if (WantNotify.FeedbackUpdate == true)
+                    {
+                        await _emailSender.SendUserFeedbackUpdateEmailAsync(TheInfluenter.Alias, TheUser.Email, TheUser.Name);
+                    }
+                }
+
+            }
             return RedirectToAction("Feedback");
         }
 
@@ -734,6 +748,51 @@ namespace RateBlog.Controllers
         }
 
         #endregion
+
+        public async Task<IActionResult> Email()
+        {
+            var TheUser = (await _userManager.GetUserAsync(HttpContext.User));
+            var ExcistingEmail = _emailNotification.Get(TheUser.Id);
+            if (HasNotificationsElseCreateTable(TheUser))
+            {
+            }
+            else
+            {
+            ExcistingEmail = _emailNotification.Get(TheUser.Id);
+            }
+            return View(ExcistingEmail);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EmailOptions(EmailNotification EmailOptions)
+        {
+            var TheUser = (await _userManager.GetUserAsync(HttpContext.User));
+            var ExcistingEmail = _emailNotification.Get(TheUser.Id);
+            if (HasNotificationsElseCreateTable(TheUser))
+            {
+                ExcistingEmail.FeedbackUpdate = EmailOptions.FeedbackUpdate;
+                ExcistingEmail.NewsLetter = EmailOptions.NewsLetter;
+                _emailNotification.Update(ExcistingEmail);
+            }
+
+            return RedirectToAction("Email", "Manage");
+        }
+
+        public bool HasNotificationsElseCreateTable(ApplicationUser user)
+        {
+            //Creates the newstable(emailnotification table) for the user if they dont already have
+            var HasExcistingEmailOptions = _emailNotification.Get(user.Id);
+            if (HasExcistingEmailOptions == null)
+            {
+                var NyEmailNotifyOpret = new EmailNotification() { Id = user.Id, FeedbackUpdate = true, NewsLetter = user.NewsLetter };
+                _emailNotification.Add(NyEmailNotifyOpret);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
     }
 }

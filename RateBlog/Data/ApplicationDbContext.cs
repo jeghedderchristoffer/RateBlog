@@ -24,6 +24,7 @@ namespace RateBlog.Data
         public DbSet<InfluencerPlatform> InfluencerPlatform { get; set; }
         public DbSet<InfluencerCategory> InfluencerCategory { get; set; }
         public DbSet<ReportFeedback> ReportFeedback { get; set; }
+        public DbSet<EmailNotification> EmailNotification { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
