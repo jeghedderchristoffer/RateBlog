@@ -1,4 +1,4 @@
-﻿@model RateBlog.Models.BlogViewModel.BlogViewModel
+﻿@model RateBlog.Models.BlogViewModel.CreateArticlesViewModel
 
 @{
     ViewData["Title"] = "Opret en artikel";
@@ -11,56 +11,178 @@
 
 </div>
 <div class="container">
-    <div >
+    <div>
         <h1 style="text-align:center;font-family:'Book Antiqua';font-size:60px">Skriv din egen artikel</h1>
         <br />
     </div>
 
-    <form id="createBlog" method="post" asp-controller="Blog" asp-action="CreateArticle" enctype="multipart/form-data">
 
-        <div>
-            <input asp-for="@Model.Blog.ArticleHeader" class="blog-input-styling" placeholder="Titel" />  
-            <br />
-            <input type="text" class="blog-input-styling" asp-for="@Model.Blog.DateTime" placeholder="Dato" id="datepicker">
-            <br />
-            <input type="text" class="blog-input-styling" asp-for="@Model.Blog.Categories" placeholder="Katagorier" />
-            <br />
-            <input type="text" class="blog-input-styling" asp-for="@Model.Blog.Author" placeholder="Forfatter" />
-        </div>
-     
-        <div style="margin-top:15px;">
-            <input asp-for="@Model.Blog.BriefText" class="blog-input" placeholder="Index beskrivelse" style="direction: rtl; text-align:left   ;" />
-        </div>
-    </form>
+
+    <div>
+        <input class="blog-input-styling" placeholder="Titel" id="articleHeaderId" />
+        <br />
+        <input class="blog-input-styling" placeholder="Dato" id="datetimeId">
+        <br />
+        <input class="blog-input-styling" placeholder="Katagorier" id="catagoriesId" />
+        <br />
+        <input class="blog-input-styling" placeholder="Forfatter" id="authorId" />
+    </div>
+
+    <div style="margin-top:15px;">
+        <input class="blog-input" placeholder="Index beskrivelse" style="direction: rtl; text-align:left;" id="brieftextId" />
+    </div>
+
 
 </div>
 
 
-    <div class="container">
-      
-        <textarea form="createBlog" asp-for="@Model.Blog.ArticleText" id="txtEditor" style="min-height:1000px;"></textarea>
+<div class="container">
+
+    <div class="row" style="padding-top:10px;">
+
+        <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+            <div class="btn-group">
+                <a class="btn btn-primary " data-toggle="dropdown" title="" data-original-title="Font"><i class="glyphicon glyphicon-font"></i><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a data-edit="fontName Serif" style="font-family:'Serif'">Serif</a></li>
+                    <li><a data-edit="fontName Sans" style="font-family:'Sans'">Sans</a></li>
+                    <li><a data-edit="fontName Arial" style="font-family:'Arial'">Arial</a></li>
+                    <li><a data-edit="fontName Arial Black" style="font-family:'Arial Black'">Arial Black</a></li>
+                    <li><a data-edit="fontName Courier" style="font-family:'Courier'">Courier</a></li>
+                    <li><a data-edit="fontName Courier New" style="font-family:'Courier New'">Courier New</a></li>
+                    <li><a data-edit="fontName Comic Sans MS" style="font-family:'Comic Sans MS'">Comic Sans MS</a></li>
+                    <li><a data-edit="fontName Helvetica" style="font-family:'Helvetica'">Helvetica</a></li>
+                    <li><a data-edit="fontName Impact" style="font-family:'Impact'">Impact</a></li>
+                    <li><a data-edit="fontName Lucida Grande" style="font-family:'Lucida Grande'">Lucida Grande</a></li>
+                    <li><a data-edit="fontName Lucida Sans" style="font-family:'Lucida Sans'">Lucida Sans</a></li>
+                    <li><a data-edit="fontName Tahoma" style="font-family:'Tahoma'">Tahoma</a></li>
+                    <li><a data-edit="fontName Times" style="font-family:'Times'">Times</a></li>
+                    <li><a data-edit="fontName Times New Roman" style="font-family:'Times New Roman'">Times New Roman</a></li>
+                    <li><a data-edit="fontName Verdana" style="font-family:'Verdana'">Verdana</a></li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-primary" data-toggle="dropdown" title="" data-original-title="Font Size"><i class="glyphicon glyphicon-text-height"></i>&nbsp;<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+                    <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+                    <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-primary" data-edit="bold" title="Bold "><i class="glyphicon glyphicon-bold"></i></a>
+                <a class="btn btn-primary" data-edit="italic" title="Italic"><i class="glyphicon glyphicon-italic"></i></a>
+                <a class="btn btn-primary" data-edit="underline" title="Underline"><i class="glyphicon glyphicon-text-width"></i></a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-primary" data-edit="insertunorderedlist" title="Bullet list"><i class="glyphicon glyphicon-list"></i></a>
+                <a class="btn btn-primary" data-edit="insertorderedlist" title="Number list"><i class="glyphicon glyphicon-list-alt"></i></a>
+                <a class="btn btn-primary" data-edit="outdent" title="Reduce indent "><i class="glyphicon glyphicon-indent-left"></i></a>
+                <a class="btn btn-primary" data-edit="indent" title="Indent"><i class="glyphicon glyphicon-indent-right"></i></a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-primary" data-edit="justifyleft" title="Align Left"><i class="glyphicon glyphicon-align-left"></i></a>
+                <a class="btn btn-primary" data-edit="justifycenter" title="Center"><i class="glyphicon glyphicon-align-center"></i></a>
+                <a class="btn btn-primary" data-edit="justifyright" title="Align Right"><i class="glyphicon glyphicon-align-right"></i></a>
+                <a class="btn btn-primary" data-edit="justifyfull" title="Justify"><i class="glyphicon glyphicon-align-justify"></i></a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-primary" data-toggle="dropdown" title="Hyperlink"><i class="glyphicon glyphicon-link"></i></a>
+                <div class="dropdown-menu input-append">
+                    <input class="span2" placeholder="URL" type="text" data-edit="createLink">
+                    <button class="btn" type="button">Add</button>
+                </div>
+                <a class="btn btn-primary" data-edit="unlink" title="Remove Hyperlink"><i class="glyphicon glyphicon-remove"></i></a>
+
+            </div>
+
+            <div class="btn-group">
+                <a class="btn btn-primary" id="pictureBtn" title="Insert picture (or just drag &amp; drop)"><i class="glyphicon glyphicon-picture"></i></a>
+                <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" style="opacity: 0; position: absolute; top: 0px; left: 0px; width: 37px; height: 30px;">
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-primary" data-edit="undo" title="Undo"><i class="glyphicon glyphicon-backward"></i></a>
+                <a class="btn btn-primary" data-edit="redo" title="Redo"><i class="glyphicon glyphicon-forward"></i></a>
+            </div>
+        </div>
+
+
+        <div id="editor">
+        </div>
+
+
+
     </div>
 
-    <div class="container" style="text-align:center">
+</div>
 
-        <h3 style="padding-bottom:15px;">Indsæt index billede</h3>
-        <input form="createBlog" style="background:orange;margin-left:437px;" type="file" value="Indsæt billed" class="blog-btn" asp-for="@Model.IndexPicture" />
-        <h3 style="padding-bottom:15px;">Indsæt artikel billede</h3>
-        <input form="createBlog" style="background:orange;margin-left:437px;"" type="file" value="Indsæt billed" class="blog-btn" asp-for="@Model.ArticlesPicture" />
-        <h3>Offentliggør artikel</h3>
-        <input form="createBlog" style="background:blue;" type="submit" class="blog-btn" value="Gem" />
 
-    </div>
+<div class="container" style="text-align:center">
 
-    @section Scripts{
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#txtEditor").jqte();
+    <h3 style="padding-bottom:15px;">Indsæt index billede</h3>
+    <input form="createBlog" style="background:orange;margin-left:437px;" type="file" value="Indsæt billed" class="blog-btn" asp-for="@Model.IndexPicture" />
+    <h3 style="padding-bottom:15px;">Indsæt artikel billede</h3>
+    <input form="createBlog" style="background:orange;margin-left:437px;" type="file" value="Indsæt billed" class="blog-btn" asp-for="@Model.ArticlesPicture" />
+    <h3>Offentliggør artikel</h3>
+    <input id="TransferButton" style="background:blue;" class="blog-btn" value="Gem" />
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        //$(document).ready(function () {
+
+        //    $('#editor').wysiwyg();
+        //    $('#editor').html();
+
+        //});
+
+        $("#editor").wysiwyg();
+
+        $(document).ready(function () {
+            $('#TransferButton').click(function () {
+
+                var articleHeader = $("#articleHeaderId").val();
+                var datetime = $("#datetimeId").val();
+                var catagories = $("catagoriesId").val();
+                var author = $("authorId").val();
+                var briefText = $("brieftextId").val();
+                var articleText = $("#editor").cleanHtml();
+
+                var model = {};
+
+                    model.ArticleHeader = articleHeader,
+                    model.DateTime = datetime,
+                    model.Catagories = catagories,
+                    model.Author = author,
+                    model.BriefText = briefText,
+                    model.ArticleText = articleText,
+
+
+                    console.log(model)
+
+                $.ajax({
+                    url: "/Blog/CreateArticle",
+                    method: "POST",
+                    data: {
+                        model: model
+                    },
+                    success: function (result) {
+                        console.log(result)
+                    },
+                    error: function () {
+                        console.log("fail");
+                    }
+                });
+
             });
-        </script>
+        });
+
+    </script>
 
 
-    }
+
+}
 
 
 

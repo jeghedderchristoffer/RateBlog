@@ -13,6 +13,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\lib\bootstrap3-wysihtml5-bower\**" />
+    <Content Remove="wwwroot\lib\bootstrap3-wysihtml5-bower\**" />
+    <EmbeddedResource Remove="wwwroot\lib\bootstrap3-wysihtml5-bower\**" />
+    <None Remove="wwwroot\lib\bootstrap3-wysihtml5-bower\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\EkspertController.cs" />
   </ItemGroup>
 

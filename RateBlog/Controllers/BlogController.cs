@@ -55,36 +55,52 @@ namespace RateBlog.Controllers
       
         public IActionResult CreateArticle()
         {
-            var model = new BlogViewModel(); 
+            var model = new CreateArticlesViewModel(); 
            
             return View(model);
         }
 
 
         [HttpPost]
-        public IActionResult CreateArticle(BlogViewModel model)
+        public JsonResult CreateArticle(CreateArticlesViewModel model)
         {
             if (ModelState.IsValid)
             {
 
-                if (model.ArticlesPicture != null)
+                //if (model.ArticlesPicture != null)
+                //{
+                //    MemoryStream ms = new MemoryStream();
+                //    model.ArticlesPicture.OpenReadStream().CopyTo(ms);
+                //    model.ArticlesPicture = ms.ToArray();
+                //}
+
+                //if (model.IndexPicture != null)
+                //{
+                //    MemoryStream ms = new MemoryStream();
+                //    model.IndexPicture.OpenReadStream().CopyTo(ms);
+                //    model.Blog.IndexPicture = ms.ToArray();
+                //}
+
+
+
+                Blog blog = new Blog()
                 {
-                    MemoryStream ms = new MemoryStream();
-                    model.ArticlesPicture.OpenReadStream().CopyTo(ms);
-                    model.Blog.ArticlePicture = ms.ToArray();
-                }
+                    ArticleHeader = model.ArticleHeader,
+                    DateTime = model.DateTime,
+                    Author = model.Author,
+                    Categories = model.Categories,                  
+                    BriefText = model.BriefText,
+                    ArticleText = model.ArticleText,
+                   
 
-                if (model.IndexPicture != null)
-                {
-                    MemoryStream ms = new MemoryStream();
-                    model.IndexPicture.OpenReadStream().CopyTo(ms);
-                    model.Blog.IndexPicture = ms.ToArray();
-                }
+                };
 
-                _blogRepo.Add(model.Blog);
+                _blogRepo.Add(blog);
 
+                return Json(true);
             }
-            return RedirectToAction("Index");
+
+            return Json(false);
         }
        
 
