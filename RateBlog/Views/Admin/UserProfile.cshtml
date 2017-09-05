@@ -27,12 +27,13 @@
 
 <div class="background-all" style="padding-bottom: 0">
 
-    @Html.Partial("_NavbarPartial", "yolo")
+    @Html.Partial("_NavbarPartial", "UserProfile_" + isInfluencer)
 
     <div class="navbar-allaround" style="position: relative"></div>
 
     <div class="admin-container" style="padding-top: 30px; padding-bottom: 80px; overflow-y: scroll; height: calc(100vh - 70px)">
         <div class="col-md-12">
+
             <div class="col-md-6">
                 <div class="col-md-12 white-box">
                     <h3 style="text-align: center; margin-top: 10px">Personlige oplysninger:</h3>
@@ -68,7 +69,20 @@
                             </tr>
                             <tr>
                                 <td>Type:</td>
-                                <td>@isInfluencer</td>
+                                <td>
+                                    @isInfluencer
+                                    @if (isInfluencer == "Influencer")
+                                    {
+                                        if (Model.InfluencerViewModel.Influencer.IsApproved)
+                                        {
+                                            <span style="color: #fff; background: green; padding: 1px 5px; float: right"> GODKENDT</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color: #fff; background: red; padding: 1px 5px; float: right"> IKKE GODKENDT</span>
+                                        }
+                                    }
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -115,7 +129,7 @@
             </div>
             <div class="col-md-6">
                 <div class="col-md-12 white-box">
-                    <h3 style="text-align: center; margin-top: 10px">@isInfluencer oplysninger:</h3>
+                    <h3 style="text-align: center; margin-top: 10px">@isInfluencer oplysninger: </h3>
                     <hr />
 
                     <img class="center-block" style="height: 150px; width: 150px; margin-bottom: 30px; margin-top: 25px; border-radius: 50%; border: 1px solid #ddd" src="@Url.Action("UsersProfilePic", "Manage", new { id = Model.ApplicationUser.Id })" />
@@ -136,6 +150,30 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="admin-buttons">
+                            @if (Model.InfluencerViewModel.Influencer.IsApproved == false)
+                            {
+                                <div class="col-md-6">
+                                    <form asp-controller="Admin" asp-action="ApproveInfluencer" method="post">
+                                        @Html.HiddenFor(x => x.InfluencerViewModel.Influencer.Id)
+                                        <button type="submit" style="background:#53b80a; border: none;"><b>ACCEPTER INFLUENCER</b></button>
+                                    </form>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <form asp-controller="Admin" asp-action="DisapproveInfluencer" method="post">
+                                        @Html.HiddenFor(x => x.InfluencerViewModel.Influencer.Id)
+                                        <button style="background:#c9302c; border: none;"><b>AFVIS INFLUENCER</b></button>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-12 noPadding">
+                                    <button style="background: #c9302c">AFVIS</button>
+                                </div>
+                            }
+                        </div>
                     }
                     else
                     {
@@ -159,47 +197,70 @@
                 <div class="col-md-12 white-box" style="margin-top: 10px">
                     <h3 style="text-align: center; margin-top: 10px">Rediger @isInfluencer oplysninger</h3>
                     <hr />
+                    <div class="admin-buttons">
+                        <div class="col-md-4">
+                            <a asp-controller="Admin" asp-action="Feedback" asp-route-id="@Model.ApplicationUser.Id" style="background:#089de3;"><b>Feedback</b></a>
+                        </div>
+                        <div class="col-md-4">
+                            <a asp-controller="Admin" asp-action="ChangePassword" asp-route-id="@Model.ApplicationUser.Id" style="background: #000"><b>Skift kodeord</b></a>
+                        </div>
+                        <div class="col-md-4">
+                            <a data-toggle="modal" data-target="#adminDeleteModal" style="background:#c9302c;"><b>Slet</b></a>
+                        </div>
+                    </div>
+                    <div class="col-md-12 noPadding">
+                        <hr />
+                    </div>
 
                     @if (isInfluencer == "Influencer")
                     {
                         var currentBool = "";
 
-                        <div class="edit-user-container" style="padding-top: 0">                          
-                            <p style="margin-top: 5px">Alias</p>
-                            <input type="text" asp-for="@Model.InfluencerViewModel.Influencer.Alias" />
+                        <div class="edit-user-container" style="padding-top: 0">
+                            <form asp-controller="Admin" asp-action="EditInfluencer" method="post">
+                                @Html.HiddenFor(x => x.InfluencerViewModel.Influencer.Id)
 
-                            <p>Dine kategorier</p>
+                                <p style="margin-top: 5px">Alias</p>
+                                <input type="text" asp-for="@Model.InfluencerViewModel.Influencer.Alias" />
 
-                            <div class="choose-category" style="width: 100%">
-                                @foreach (var cat in CategoryRepo.GetAll())
-                                {
-                                    currentBool = (Model.InfluencerViewModel.Influencer.InfluenterKategori.Any(x => x.CategoryId == cat.Id)) ? "checked" : "";
+                                <p>Dine kategorier</p>
 
-                                    <div class="tooltips">
-                                        <div class="cat-check @cat.Name">
-                                            <input @currentBool value="@cat.Id" name="categoriList" type="checkbox" id="@cat.Name" /> <label for="@cat.Name"></label>
+                                <div class="choose-category" style="width: 100%">
+                                    @foreach (var cat in CategoryRepo.GetAll())
+                                    {
+                                        currentBool = (Model.InfluencerViewModel.Influencer.InfluenterKategori.Any(x => x.CategoryId == cat.Id)) ? "checked" : "";
+
+                                        <div class="tooltips">
+                                            <div class="cat-check @cat.Name">
+                                                <input @currentBool value="@cat.Id" name="categoriList" type="checkbox" id="@cat.Name" /> <label for="@cat.Name"></label>
+                                            </div>
+                                            <span style="bottom: 115%; left: 25px" class="tooltiptext">@cat.Name</span>
                                         </div>
-                                        <span style="bottom: 115%; left: 25px" class="tooltiptext">@cat.Name</span>
-                                    </div>
-                                }
+                                    }
+                                </div>
+
+                                <p>Dine sociale medier</p>
+
+                                <input class="icon-input" placeholder="&#xf16d; &nbsp; Instagram navn" type="text" asp-for="@Model.InfluencerViewModel.InstagramLink" />
+                                <input class="icon-input" placeholder="&#xf2ac; &nbsp; Snapchat navn" type="text" asp-for="@Model.InfluencerViewModel.SnapchatLink" />
+                                <input class="icon-input" placeholder="&#xf099; &nbsp; Twitter navn" type="text" asp-for="@Model.InfluencerViewModel.TwitterLink" />
+                                <hr style="margin-top: 5px" />
+                                <input class="icon-input" placeholder="&#xf1e8; &nbsp; Twitch link" type="text" asp-for="@Model.InfluencerViewModel.TwitchLink" />
+                                <input class="icon-input" placeholder="&#xf09a; &nbsp;&nbsp; Facebook link" type="text" asp-for="@Model.InfluencerViewModel.FacebookLink" />
+                                <input class="icon-input" placeholder="&#xf0ac; &nbsp; Hjemmeside/blog link" type="text" asp-for="@Model.InfluencerViewModel.WebsiteLink" />
+                                <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link" type="text" asp-for="@Model.InfluencerViewModel.YoutubeLink" />
+                                <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link 2" type="text" asp-for="@Model.InfluencerViewModel.SecoundYoutubeLink" />
+
+                                <p>Din profiltekst</p>
+                                <textarea rows="10" placeholder="Skriv lidt om dig selv.." asp-for="@Model.InfluencerViewModel.Influencer.ProfileText"></textarea>
+
+                                <button type="submit">Gem oplysninger</button>
+                            </form>
+
+                            <div class="admin-buttons">
+
                             </div>
 
-                            <p>Dine sociale medier</p>
-
-                            <input class="icon-input" placeholder="&#xf16d; &nbsp; Instagram navn" type="text" asp-for="@Model.InfluencerViewModel.InstagramLink" />
-                            <input class="icon-input" placeholder="&#xf2ac; &nbsp; Snapchat navn" type="text" asp-for="@Model.InfluencerViewModel.SnapchatLink" />
-                            <input class="icon-input" placeholder="&#xf099; &nbsp; Twitter navn" type="text" asp-for="@Model.InfluencerViewModel.TwitterLink" />
-                            <hr style="margin-top: 5px" />
-                            <input class="icon-input" placeholder="&#xf1e8; &nbsp; Twitch link" type="text" asp-for="@Model.InfluencerViewModel.TwitchLink" />
-                            <input class="icon-input" placeholder="&#xf09a; &nbsp;&nbsp; Facebook link" type="text" asp-for="@Model.InfluencerViewModel.FacebookLink" />
-                            <input class="icon-input" placeholder="&#xf0ac; &nbsp; Hjemmeside/blog link" type="text" asp-for="@Model.InfluencerViewModel.WebsiteLink" />
-                            <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link" type="text" asp-for="@Model.InfluencerViewModel.YoutubeLink" />
-                            <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link 2" type="text" asp-for="@Model.InfluencerViewModel.SecoundYoutubeLink" />
-
-                            <p>Din profiltekst</p>
-                            <textarea rows="10" placeholder="Skriv lidt om dig selv.." asp-for="@Model.InfluencerViewModel.ProfileText"></textarea>
-
-                            <button type="submit">Gem oplysninger</button>
                         </div>
                     }
 

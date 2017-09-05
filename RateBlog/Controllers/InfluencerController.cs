@@ -29,22 +29,18 @@ namespace RateBlog.Controllers
         private readonly IRepository<Platform> _platformRepo;
         private readonly IRepository<Category> _categoryRepo;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IPlatformCategoryService _platformCategoryService;
         private readonly IFeedbackService _feedbackService;
-        private readonly ISortService _sortService;
+        private readonly IInfluencerService _influencerService;
 
-        public static int Counter { get; set; }
-
-        public InfluencerController(IRepository<Category> categoryRepo, IInfluencerRepository influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IPlatformCategoryService platformCategoryService, IFeedbackService feedbackService, ISortService sortService)
+        public InfluencerController(IInfluencerService influencerService, IRepository<Category> categoryRepo, IInfluencerRepository influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IFeedbackService feedbackService)
         {
             _influencerRepo = influencer;
             _userManager = userManager;
             _feedbackRepo = feedbackRepo;
             _platformRepo = platformRepo;
             _categoryRepo = categoryRepo;
-            _platformCategoryService = platformCategoryService;
             _feedbackService = feedbackService;
-            _sortService = sortService;
+            _influencerService = influencerService;
         }
 
         [HttpGet]
@@ -113,15 +109,13 @@ namespace RateBlog.Controllers
         [Route("/[controller]/Feedback/[action]/{id}")]
         public async Task<IActionResult> Read(string id)
         {
-            var influencer = _influencerRepo.Get(id);
-            var user = await _userManager.FindByIdAsync(influencer.Id);
+            var user = await _userManager.FindByIdAsync(id);
+            var influencer = await _influencerService.GetInfluecerAsync(id); 
 
             var gender = (user.Gender == "male") ? "Mand" : "Kvinde";
 
             var today = DateTime.Today;
-            // Calculate the age.
             var age = today.Year - user.BirthDay.Year;
-            // Go back to the year the person was born in case of a leap year
             if (user.BirthDay > today.AddYears(-age)) age--;
 
             var model = new ReadViewModel()
@@ -184,7 +178,7 @@ namespace RateBlog.Controllers
                         influencer.InfluenterKategori.Add(new InfluencerCategory() { CategoryId = v, InfluencerId = influencer.Id });
                     }
 
-                    var platforms = _platformRepo.GetAll(); 
+                    var platforms = _platformRepo.GetAll();
 
                     UpdatePlatform(model.FacebookLink, "Facebook", influencer, platforms);
                     UpdatePlatform(model.InstagramLink, "Instagram", influencer, platforms);
@@ -252,17 +246,17 @@ namespace RateBlog.Controllers
 
             if (ModelState.IsValid)
             {
-                //var hoursSinceLastRating = _feedbackService.FeedbackCountdown(user.Id, model.Influencer.Id);
-                //if (hoursSinceLastRating == 0)
-                //{
-                //    // Gør ingenting?? :-)
-                //}
-                //else if (hoursSinceLastRating < 24)
-                //{
-                //    var hours = TimeSpan.FromHours(24 - hoursSinceLastRating);
-                //    TempData["Error"] = "Du kan anmelde denne influencer igen om " + hours.ToString(@"hh\:mm") + " minutter";
-                //    return RedirectToAction("Give");
-                //}
+                var hoursSinceLastRating = _feedbackService.FeedbackCountdown(user.Id, model.Influencer.Id);
+                if (hoursSinceLastRating == 0)
+                {
+                    // Gør ingenting?? :-)
+                }
+                else if (hoursSinceLastRating < 24)
+                {
+                    var hours = TimeSpan.FromHours(24 - hoursSinceLastRating);
+                    TempData["Error"] = "Du kan anmelde denne influencer igen om " + hours.ToString(@"hh\:mm") + " minutter";
+                    return RedirectToAction("Give");
+                }
 
                 var boolList = new List<bool>()
                 {
@@ -320,110 +314,124 @@ namespace RateBlog.Controllers
         [HttpGet]
         public JsonResult Sorter(string[] platforme, string[] kategorier, int pageIndex, int pageSize, string search, int sortBy)
         {
+            if (string.IsNullOrEmpty(search)) search = "";
+
             search = WebUtility.HtmlDecode(search);
-            var list = _sortService.SortInfluencer(platforme, kategorier, search, sortBy);
-            list = list.Where(x => _influencerRepo.Get(x.Id).IsApproved == true);
-            var sortList = list.Take(pageSize * pageIndex);
 
-            var resultList = new List<InfluencerData>();
-            foreach (var v in sortList)
+            var list = _influencerService.GetAll(search);
+
+            if (platforme.Count() != 0)
             {
-                var influencerData = new InfluencerData()
+                foreach (var v in platforme)
                 {
-                    Id = v.Id,
-                    Alias = v.Alias,
-                    FeedbackCount = _feedbackService.GetFeedbackCount(v.Id, true),
-                    FeedbackScore = _feedbackService.GetTotalScore(v.Id),
-                };
-
-                foreach (var cat in v.InfluenterKategori)
-                {
-                    if (!cat.Equals(v.InfluenterKategori.Last()))
-                        influencerData.Categories += cat.Category.Name + " | ";
-                    else
-                        influencerData.Categories += cat.Category.Name;
+                    list = list.Where(x => x.InfluenterPlatform.Select(p => p.PlatformId).Contains(v));
                 }
-
-                foreach (var plat in v.InfluenterPlatform)
-                {
-                    if (plat.Platform.Name == "Facebook")
-                        influencerData.Platforms += "<a href='" + plat.Link + "' target='_blank' class='fa fa-search-o fa-facebook fa-facebook-search'></a>";
-                    else if (plat.Platform.Name == "YouTube")
-                        influencerData.Platforms += " <a href='" + plat.Link + "' target='_blank' class='fa fa-search-o fa-youtube fa-youtube-search'></a>";
-                    else if (plat.Platform.Name == "SnapChat")
-                        influencerData.Platforms += " <a href='http://www.snapchat.com/add/" + plat.Link + "' target='_blank' class='fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search'></a>";
-                    else if (plat.Platform.Name == "Instagram")
-                        influencerData.Platforms += " <a href='http://www.instagram.com/" + plat.Link + "' target='_blank' class='fa fa-search-o fa-instagram fa-instagram-search'></a>";
-                    else if (plat.Platform.Name == "Twitter")
-                        influencerData.Platforms += " <a href='http://www.twitter.com/" + plat.Link + "' target='_blank' class='fa fa-search-o fa-twitter fa-twitter-search'></a>";
-                    else if (plat.Platform.Name == "SecondYouTube")
-                        influencerData.Platforms += " <a href='" + plat.Link + "' target='_blank' class='fa fa-search-o fa-youtube fa-youtube-search'></a>";
-                    else if (plat.Platform.Name == "Twitch")
-                        influencerData.Platforms += " <a href='" + plat.Link + "' target='_blank' class='fa fa-search-o fa-twitch fa-twitch-search'></a>";
-                    else if (plat.Platform.Name == "Website")
-                        influencerData.Platforms += " <a href='http://" + plat.Link + "' target='_blank' class='fa fa-search-o fa-globe fa-globe-search'></a>";
-
-                }
-
-                resultList.Add(influencerData);
             }
 
-            return Json(resultList);
+            if (kategorier.Count() != 0)
+            {
+                foreach (var v in kategorier)
+                {
+                    list = list.Where(x => x.InfluenterKategori.Select(p => p.CategoryId).Contains(v));
+                }
+            }
+
+            List<string> orderByList = new List<string> { "Instagram", "YouTube", "SecondYouTube", "Website", "Twitch", "SnapChat", "Facebook", "Twitter" }; 
+
+
+
+            var result = list.Select(x => new InfluencerData()
+            {
+                Alias = x.Alias.ToUpper(),
+                Categories = x.InfluenterKategori.Select(p => p.Category.Name),
+                Platforms = x.InfluenterPlatform.Select(p => p.Platform.Name + "^" + p.Link).OrderBy(item => orderByList.IndexOf(item.Split('^')[0] )),
+                Id = x.Id,
+                FeedbackCount = x.Ratings.Count,
+                FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4)
+            });
+
+            switch (sortBy)
+            {
+                case 1:
+                    result = result.Select(x => new { user = x, sum = x.FeedbackScore.Sum() / x.FeedbackCount }).OrderByDescending(x => x.sum).Select(p => p.user); 
+                    break;
+                case 2:
+                    result = result.Select(x => new { user = x, sum = x.FeedbackScore.Sum() / x.FeedbackCount }).OrderBy(x => x.sum).Select(p => p.user);
+                    break;
+                case 3:
+                    result = result.OrderByDescending(i => i.FeedbackCount);
+                    break;
+                case 4:
+                    result = result.OrderBy(i => i.FeedbackCount);
+                    break;
+                default:
+                    result = result.OrderByDescending(i => i.FeedbackCount);
+                    break;
+            }
+
+            return Json(result.Skip(pageIndex * pageSize).Take(pageSize));
         }
 
         [HttpGet]
         public JsonResult GetNextFromList(int pageIndex, int pageSize, string search, string[] platforme, string[] kategorier, int sortBy)
         {
+            if (string.IsNullOrEmpty(search)) search = "";
+
             search = WebUtility.HtmlDecode(search);
-            var sortList = _sortService.SortInfluencer(platforme, kategorier, search, sortBy);
-            sortList = sortList.Where(x => _influencerRepo.Get(x.Id).IsApproved == true);
-            sortList = sortList.Skip(pageIndex * pageSize).Take(pageSize);
 
-            var resultList = new List<InfluencerData>();
-            foreach (var v in sortList)
+            var list = _influencerService.GetAll(search);
+
+            if (platforme.Count() != 0)
             {
-                var influencerData = new InfluencerData()
+                foreach (var v in platforme)
                 {
-                    Id = v.Id,
-                    Alias = v.Alias,
-                    FeedbackCount = _feedbackService.GetFeedbackCount(v.Id, true),
-                    FeedbackScore = _feedbackService.GetTotalScore(v.Id),
-                };
-
-                foreach (var cat in v.InfluenterKategori)
-                {
-                    if (!cat.Equals(v.InfluenterKategori.Last()))
-                        influencerData.Categories += cat.Category.Name + " | ";
-                    else
-                        influencerData.Categories += cat.Category.Name;
+                    list = list.Where(x => x.InfluenterPlatform.Select(p => p.PlatformId).Contains(v));
                 }
-
-                foreach (var plat in v.InfluenterPlatform)
-                {
-                    if (plat.Platform.Name == "Facebook")
-                        influencerData.Platforms += "<a href='" + plat.Link + "' target='_blank' class='fa fa-search-o fa-facebook fa-facebook-search'></a>";
-                    if (plat.Platform.Name == "YouTube")
-                        influencerData.Platforms += " <a href='" + plat.Link + "' target='_blank' class='fa fa-search-o fa-youtube fa-youtube-search'></a>";
-                    if (plat.Platform.Name == "SnapChat")
-                        influencerData.Platforms += " <a href='http://www.snapchat.com/add/" + plat.Link + "' target='_blank' class='fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search'></a>";
-                    if (plat.Platform.Name == "Instagram")
-                        influencerData.Platforms += " <a href='http://www.instagram.com/" + plat.Link + "' target='_blank' class='fa fa-search-o fa-instagram fa-instagram-search'></a>";
-                    if (plat.Platform.Name == "Twitter")
-                        influencerData.Platforms += " <a href='http://www.twitter.com/" + plat.Link + "' target='_blank' class='fa fa-search-o fa-twitter fa-twitter-search'></a>";
-                    if (plat.Platform.Name == "SecondYouTube")
-                        influencerData.Platforms += " <a href='" + plat.Link + "' target='_blank' class='fa fa-search-o fa-youtube fa-youtube-search'></a>";
-                    if (plat.Platform.Name == "Twitch")
-                        influencerData.Platforms += " <a href='" + plat.Link + "' target='_blank' class='fa fa-search-o fa-twitch fa-twitch-search'></a>";
-                    if (plat.Platform.Name == "Website")
-                        influencerData.Platforms += " <a href='http://" + plat.Link + "' target='_blank' class='fa fa-search-o fa-globe fa-globe-search'></a>";
-
-                }
-
-                resultList.Add(influencerData);
             }
 
-            return Json(resultList);
+            if (kategorier.Count() != 0)
+            {
+                foreach (var v in kategorier)
+                {
+                    list = list.Where(x => x.InfluenterKategori.Select(p => p.CategoryId).Contains(v));
+                }
+            }
+
+            List<string> orderByList = new List<string> { "Instagram", "YouTube", "SecondYouTube", "Website", "Twitch", "SnapChat", "Facebook", "Twitter" };
+
+            var result = list.Select(x => new InfluencerData()
+            {
+                Alias = x.Alias.ToUpper(),
+                Categories = x.InfluenterKategori.Select(p => p.Category.Name),
+                Platforms = x.InfluenterPlatform.Select(p => p.Platform.Name + "^" + p.Link).OrderBy(item => orderByList.IndexOf(item.Split('^')[0])),
+                Id = x.Id,
+                FeedbackCount = x.Ratings.Count,
+                FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4)
+            });
+
+            switch (sortBy)
+            {
+                case 1:
+                    result = result.Select(x => new { user = x, sum = x.FeedbackScore.Sum() / x.FeedbackCount }).OrderByDescending(x => x.sum).Select(p => p.user);
+                    break;
+                case 2:
+                    result = result.Select(x => new { user = x, sum = x.FeedbackScore.Sum() / x.FeedbackCount }).OrderBy(x => x.sum).Select(p => p.user);
+                    break;
+                case 3:
+                    result = result.OrderByDescending(i => i.FeedbackCount);
+                    break;
+                case 4:
+                    result = result.OrderBy(i => i.FeedbackCount);
+                    break;
+                default:
+                    result = result.OrderByDescending(i => i.FeedbackCount);
+                    break;
+            }
+
+            return Json(result.Skip(pageIndex * pageSize).Take(pageSize));
         }
+
+
 
         private void UpdatePlatform(string link, string name, Influencer influencer, IEnumerable<Platform> platforms)
         {

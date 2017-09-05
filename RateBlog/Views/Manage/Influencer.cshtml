@@ -82,7 +82,7 @@
                         <input class="icon-input" placeholder="&#xf09a; &nbsp;&nbsp; Facebook link" type="text" asp-for="@Model.FacebookLink"  />
                         <input class="icon-input" placeholder="&#xf0ac; &nbsp; Hjemmeside/blog link" type="text" asp-for="@Model.WebsiteLink"  />
                         <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link" type="text" asp-for="@Model.YoutubeLink"  />
-                        <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link 2" type="text" asp-for="@Model.SecoundYoutubeLink"  />
+                        <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube 2nd link" type="text" asp-for="@Model.SecoundYoutubeLink"  />
 
                         <p>Din profiltekst</p>
                         <textarea rows="10" placeholder="Skriv lidt om dig selv.." asp-for="@Model.ProfileText"></textarea>
@@ -101,107 +101,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-@*<div class="container" style="padding-bottom: 150px">
-        <h2 style="margin: 25px 0 25px 0;">Influencer oplysninger</h2>
-
-        <div class="col-md-12 influencer-cont noPadding">
-            <form asp-controller="Manage" asp-action="Influencer" method="post">
-                @Html.HiddenFor(x => x.Influencer.Id)
-                @Html.HiddenFor(x => x.ApplicationUser.Id)
-
-                <div class="col-md-6 noPadding">
-                    <h4 style="margin-top:25px">Alias</h4>
-                    <input class="edit-profile-input" asp-for="@Model.Influencer.Alias" />
-                    <span asp-validation-for="@Model.Influencer.Alias" class="text-danger" style="margin-left: 5px;"></span>
-
-                    <h4>Dine kategorier:</h4>
-                    <div class="choose-category" style="width: 100%">
-                        @foreach (var cat in CategoryRepo.GetAll())
-                        {
-                            @if (Model.Influencer == null)
-                            {
-                                currentBool = "";
-                            }
-                            else
-                            {
-                                currentBool = (Model.Influencer.InfluenterKategori.Any(x => x.CategoryId == cat.Id)) ? "checked" : "";
-                            }
-
-                            <div class="tooltips">
-                                <div class="cat-check @cat.Name">
-                                    <input @currentBool value="@cat.Id" name="categoriList" type="checkbox" id="@cat.Name" /> <label for="@cat.Name"></label>
-                                </div>
-                                <span style="bottom: 115%; left: 25px" class="tooltiptext">@cat.Name</span>
-                            </div>
-                        }
-                    </div>
-                </div>
-                <div class="col-md-offset-1 col-md-5 hidden-sm hidden-xs">
-                    <div class="feedback-rating-all-box" style="margin-bottom: 0">
-                        <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                            <h3 class="text-center">Kvalitetsindhold</h3>
-                            <p>Vi ser dig som influencer, hvis du har mindst én profil på sociale medier og/eller en blog, hvor du regelmæssigt ligger indhold op med henblik på at inspirere, underholde, berige eller informere andre. Når du har oprettet dig, kigger vi din profil igennem, inden den bliver offentlig, for at sikre troværdigheden.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 noPadding">
-
-                    <h4>Dine sociale medier:</h4>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-instagram fa-instagram-edit"></a>
-                        <span><input autocomplete="off" id="editInstagram" asp-for="@Model.InstagramLink" type="text" placeholder="Instagram navn" /><span class="margin-left" id="editInstagramText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-snapchat-ghost fa-snapchat-ghost-edit"></a>
-                        <span><input autocomplete="off" id="editSnapchat" asp-for="@Model.SnapchatLink" type="text" placeholder="Snapchat navn" /><span class="margin-left" id="editSnapchatText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-twitter fa-twitter-edit"></a>
-                        <span><input autocomplete="off" id="editTwitter" asp-for="@Model.TwitterLink" type="text" placeholder="Twitter navn" /><span class="margin-left" id="editTwitterText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-facebook fa-facebook-edit"></a>
-                        <span><input autocomplete="off" id="editFacebook" asp-for="@Model.FacebookLink" type="text" placeholder="Facebook link" /><span class="margin-left inside-span" id="editFacebookText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-twitch fa-twitch-edit"></a>
-                        <span><input autocomplete="off" id="editTwitch" asp-for="@Model.TwitchLink" type="text" placeholder="Twitch link" /><span class="margin-left" id="editTwitchText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-globe fa-globe-edit"></a>
-                        <span><input autocomplete="off" id="editWebsite" asp-for="@Model.WebsiteLink" type="text" placeholder="Hjemmeside link" /><span class="margin-left" id="editWebsiteText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
-                        <span><input autocomplete="off" id="editYoutube" asp-for="@Model.YoutubeLink" type="text" placeholder="Youtube link" /><span class="margin-left" id="editYoutubeText"></span></span>
-                    </div>
-
-                    <div class="edit-social-box">
-                        <a class="fa fa-edit fa-youtube fa-youtube-edit"></a>
-                        <span><input autocomplete="off" id="editSecondYoutube" asp-for="@Model.SecoundYoutubeLink" type="text" placeholder="Second Youtube link" /><span class="margin-left" id="editSecondYoutubeText"></span></span>
-                    </div>
-
-                    <h4>Profil tekst</h4>
-                    <textarea class="edit-input-influ" asp-for="@Model.ProfileText" cols="10" rows="10" style="height: 100%" placeholder="Skriv lidt om dig selv"></textarea>
-
-                    <input type="submit" class="edit-button-influ-create" style="margin-top: 50px" value="Gem" />
-
-                </div>
-            </form>
-        </div>
-
-
-
-
-    </div>*@

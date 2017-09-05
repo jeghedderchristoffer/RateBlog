@@ -98,7 +98,6 @@ input[type="password"] {
     background-color: #FFA500;
     color: #fff;
     font-size: 18px;
-    box-shadow: 0px 2px 2px rgba(0,0,0,0.2);
     transition: all 0.3s ease 0s
 }
 
@@ -339,7 +338,8 @@ ul li.drop {
 }
 
     .dropdownContain ul li {
-        font: 13px Verdana, 'Lucida Grande';
+        font-family: 'Oxygen', sans-serif;
+        font-size: 12px;
         cursor: pointer;
         -webkit-transition: padding .05s linear;
         -moz-transition: padding .05s linear;
@@ -381,7 +381,7 @@ ul li.drop {
             text-align: left;
             float: left;
             width: 120px;
-            padding: 20px 20px 20px 20px;
+            padding: 20px 10px 20px 20px;
             margin: 0px 10px;
             color: #777;
             -webkit-border-radius: 4px;
@@ -948,6 +948,66 @@ footer {
 
 /*Influencer*/
 
+
+
+.search-input-influencer {
+    padding: 4px 16px;
+    max-width: 100%;
+    min-width: 0;
+    height: 45px;
+    width: 100% !important;
+    border-radius: 3px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    border: none;
+    background: #fff;
+    box-shadow: none;
+    outline: none;
+}
+
+    .search-input-influencer:focus {
+        outline: none !important;
+        box-shadow: none;
+        border: none;
+    }
+
+.search-button-influencer {
+    height: 45px;
+    border-radius: 3px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border: none;
+    width: 100px;
+    background-color: #FFA500;
+    color: #fff;
+    font-size: 20px;
+    padding-top: 2px;
+    border: 1px solid #FFA500;
+    box-shadow: none;
+}
+
+    .search-button-influencer:hover {
+        color: #fafafa;
+    }
+
+    .search-button-influencer:focus {
+        outline: none;
+    }
+
+@media(max-width: 767px){
+    .search-button-influencer {
+        width: 50px;
+    }
+}
+
+.blur-effect {
+    filter: blur(2px);
+    -moz-filter: blur(2px);
+    -webkit-filter: blur(2px);
+    -o-filter: blur(2px);
+    pointer-events: none;
+}
+
 .sort-box {
     background-color: #fff;
     padding: 20px 15px 20px 15px;
@@ -955,13 +1015,26 @@ footer {
     height: auto;
     overflow: hidden;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
-    margin-top: 53px;
+    margin-top: 20px
 }
 
     .sort-box h4 {
         margin-top: 0;
         margin-bottom: 15px;
         font-size: 16px;
+    }
+
+    .sort-box button {
+        height: 32px;
+        border-radius: 3px;
+        border: none;
+        max-width: none;
+        width: 100%;
+        background-color: #FFA500;
+        color: #fff;
+        font-size: 14px;
+        transition: all 0.3s ease 0s;
+        margin-top: 20px;
     }
 
 .search-string {
@@ -977,7 +1050,11 @@ footer {
     height: 50px;
     margin-bottom: 30px;
     margin-top: 30px;
-    display: none
+    display: none;
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
 }
 
 .search-result {
@@ -989,8 +1066,9 @@ footer {
 }
 
     .search-result h4 {
+        font-family: 'Raleway', sans-serif;
         margin-top: 42px;
-        font-weight: bold;
+        font-weight: bolder;
     }
 
     .search-result img {
@@ -1016,7 +1094,7 @@ footer {
         height: auto;
         overflow: hidden;
         background: #fff;
-        border-radius: 5px;
+        border-radius: 3px;
         margin-bottom: 20px;
     }
 
@@ -1041,9 +1119,10 @@ footer {
 
 .fa-search-o {
     display: block;
-    padding: 10px;
-    font-size: 12px !important;
-    width: 31.9px;
+    padding: 8.5px;
+    font-size: 18px !important;
+    height: 35px;
+    width: 35px;
     text-align: center;
     text-decoration: none;
     margin: 5px 2px;
@@ -1089,7 +1168,11 @@ footer {
 }
 
 .fa-instagram-search {
-    background: #bc2a8d;
+    background: #f09433;
+    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
     color: white;
 }
 
@@ -1113,7 +1196,8 @@ footer {
     border: 1px solid #ddd;
     font-size: 16px;
     padding: 8px 10px 8px 15px;
-    border-radius: 5px;
+    border-radius: 3px;
+    width: 100%
 }
 
     .dropdown-sort:focus {
@@ -1264,7 +1348,11 @@ footer {
 }
 
 .fa-instagram-profile {
-    background: #bc2a8d;
+    background: #f09433;
+    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
     color: white;
 }
 
@@ -1745,7 +1833,7 @@ footer {
     background-color: #53b80a;
     color: #fff;
     padding: 10px 10px 10px 17px;
-    border-radius: 5px;
+    border-radius: 3px;
     margin-top: 10px;
     transition: all .2s ease-out;
     float: right;
@@ -1801,13 +1889,12 @@ footer {
     background-color: #FFA500;
     color: #fff;
     padding: 10px 10px;
-    border-radius: 5px;
+    border-radius: 3px;
     margin-top: 10px;
     text-align: center;
     transition: all .2s ease-out;
     width: 200px;
     letter-spacing: 1px;
-    box-shadow: 0px 2px 2px rgba(0,0,0,0.2);
 }
 
     .btn-create:hover {
@@ -1865,7 +1952,8 @@ footer {
     width: 250px;
     border-radius: 50%;
     margin-bottom: 40px;
-    margin-top: 25px
+    margin-top: 25px;
+    border: 1px solid #ddd;
 }
 
 .profile-follower-ratings img {
@@ -2445,12 +2533,37 @@ footer {
         padding: 20px 20px 20px 15px;
         transition: all 0.3s ease;
         color: white;
-        font-size: 32px;
+        font-size: 28px;
     }
 
         .icon-bar-admin a:hover {
             background-color: #FFA500;
         }
+
+.admin-buttons {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+    .admin-buttons a {
+        display: inline-block;
+        padding: 10px 15px;
+        color: #fff;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+    }
+
+    .admin-buttons button {
+        display: inline-block;
+        padding: 10px 15px;
+        color: #fff;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+        border: 1px solid #fff
+    }
 
 /*Admin End*/
 

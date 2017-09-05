@@ -8,10 +8,16 @@ namespace RateBlog.Services.Interfaces
 {
     public interface IInfluencerService
     {
-        Task<bool> IsUserInfluencerAsync(string id);
+        /// <summary>
+        /// Gets all influencers by search for their Alias. 
+        /// </summary>
+        /// <param name="search"></param>
+        /// <returns></returns>
+        IEnumerable<Influencer> GetAll(string search);
 
-        bool IsInfluencerApproved(string id);
+        Task<Influencer> GetInfluecerAsync(string id);
 
-        List<ApplicationUser> GetInfluencers(IEnumerable<ApplicationUser> users);
+        IEnumerable<Influencer> GetUnApprovedInfluencers();
+
     }
 }

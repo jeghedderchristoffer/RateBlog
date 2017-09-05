@@ -1,0 +1,48 @@
+﻿@model RateBlog.Models.AdminViewModels.StatisticViewModel
+
+
+<div class="background-all" style="padding-bottom: 0">
+
+    @Html.Partial("_NavbarPartial", "UserProfile_")
+
+    <div class="navbar-allaround" style="position: relative"></div>
+
+    <div class="admin-container" style="padding-top: 30px; padding-bottom: 80px; overflow-y: scroll; height: calc(100vh - 70px)">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="col-md-12 white-box">
+                    <h3 style="text-align: center; margin-top: 10px;">Kvantitet:</h3>
+                    <hr />
+                    <table class="table table-striped">
+                        <thead></thead>
+                        <tbody>
+                            <tr>
+                                <td>Antal brugere:</td>
+                                <td>@Model.UserCount</td>
+                            </tr>
+                            <tr>
+                                <td>Verificerede brugere:</td>
+                                <td>@Model.RealUserCount</td>
+                            </tr>
+                            <tr>
+                                <td>Antal følgere:</td>
+                                <td>@(Model.UserCount - @Model.InfluencerCount)</td>
+                            </tr>
+
+                            <tr>
+                                <td>Antal influencere: </td>
+                                <td>@Model.InfluencerCount</td>
+                            </tr>
+
+                            <tr>
+                                <td>Antal feedbacks:</td>
+                                <td>@Model.FeedbackCount</td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

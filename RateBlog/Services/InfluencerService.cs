@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using RateBlog.Data;
 using RateBlog.Models;
 using RateBlog.Repository;
 using RateBlog.Services.Interfaces;
@@ -11,57 +13,83 @@ namespace RateBlog.Services
 {
     public class InfluencerService : IInfluencerService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IInfluencerRepository _influencerRepo;
+        private readonly ApplicationDbContext _dbContext;
 
-        public InfluencerService(UserManager<ApplicationUser> userManger, IInfluencerRepository influencerRepo)
+        public InfluencerService(ApplicationDbContext dbContext)
         {
-            _influencerRepo = influencerRepo;
-            _userManager = userManger; 
+            _dbContext = dbContext;
         }
 
-        public List<ApplicationUser> GetInfluencers(IEnumerable<ApplicationUser> users)
+        public IEnumerable<Influencer> GetAll(string search)
         {
-            var list = new List<ApplicationUser>(); 
-
-            foreach(var v in users)
+            foreach(var v in GetPlatformNames())
             {
-                if(_influencerRepo.Get(v.Id) != null)
+                if (search.ToLower().Equals(v.ToLower()))
                 {
-                    list.Add(v); 
+                    return _dbContext.Influencer.Include(x => x.InfluenterPlatform).ThenInclude(x => x.Platform).Where(x => x.InfluenterPlatform.Any(p => p.Platform.Name == v)) 
+                        .Include(x => x.InfluenterKategori).ThenInclude(x => x.Category)
+                        .Include(x => x.Ratings);
                 }
             }
-            return list; 
-        }
-
-        public bool IsInfluencerApproved(string id)
-        {
-            var influencer = _influencerRepo.Get(id); 
-
-            if(influencer != null)
+            
+            foreach(var v in GetCategoryNames())
             {
-                if (influencer.IsApproved)
+                if (search.ToLower().Equals(v.ToLower()))
                 {
-                    return true; 
+                    return _dbContext.Influencer.Include(x => x.InfluenterKategori).ThenInclude(x => x.Category).Where(x => x.InfluenterKategori.Any(p => p.Category.Name == v))
+                        .Include(x => x.InfluenterPlatform).ThenInclude(x => x.Platform)
+                        .Include(x => x.Ratings);
                 }
             }
-            return false; 
+
+            return _dbContext.Influencer.Where(x => x.Alias.ToLower().Contains(search.ToLower()) && x.IsApproved == true)
+                .Include(x => x.InfluenterKategori).ThenInclude(x => x.Category)
+                .Include(x => x.InfluenterPlatform).ThenInclude(x => x.Platform)
+                .Include(x => x.Ratings);
         }
 
-        public async Task<bool> IsUserInfluencerAsync(string id)
+        public async Task<Influencer> GetInfluecerAsync(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            var influencer = _influencerRepo.Get(id); 
-
-            if (influencer != null)
-            {
-                return true; 
-            }
-            return false; 
+            return await _dbContext.Influencer
+                .Include(x => x.InfluenterKategori).ThenInclude(x => x.Category)
+                .Include(x => x.InfluenterPlatform).ThenInclude(x => x.Platform)
+                .Include(x => x.Ratings)
+                .SingleOrDefaultAsync(x => x.Id == id);
         }
 
+        public IEnumerable<Influencer> GetUnApprovedInfluencers()
+        {
+            return _dbContext.Influencer.Where(x => x.IsApproved == false); 
+        }
 
+        private IEnumerable<string> GetPlatformNames()
+        {
+            return new string[]
+            {
+                "YouTube",
+                "Facebook",
+                "SnapChat",
+                "Twitch",
+                "Website",
+                "Twitter",
+                "Instagram"
+            };
+        }
 
+        private IEnumerable<string> GetCategoryNames()
+        {
+            return new string[]
+            {
+                "Gaming",
+                "Personal",
+                "Interests",
+                "Entertainment",
+                "Fashion",
+                "Lifestyle",
+                "Beauty"
+            };
+        }
 
+        
     }
 }

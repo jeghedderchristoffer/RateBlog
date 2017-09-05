@@ -1,17 +1,19 @@
-﻿@model string
-@inject RateBlog.Repository.IRepository<Feedback> FeedbackRepo 
+﻿@inject RateBlog.Repository.IRepository<Feedback> FeedbackRepo
 @inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
 
 <div class="icon-bar-admin">
     <a asp-controller="Admin" asp-action="Index"><i class="fa fa-home"></i></a>
-    <a href="#"><i class="fa fa-users"></i></a>
+    @*<a href="#"><i class="fa fa-users"></i></a>
     <a href="#"><i class="fa fa-envelope"></i></a>
-    <a href="#"><i class="fa fa-globe"></i></a>
-    @if (!string.IsNullOrEmpty(Model))
+    <a href="#"><i class="fa fa-globe"></i></a>*@
+    <a asp-controller="Admin" asp-action="Statistic"><i class="fa fa-bar-chart"></i></a>
+    @*@if (Model == "UserProfile_Influencer   ")
     {
         <hr style="margin-bottom: 0; margin-top: 0" />
+        <a href="#" data-toggle="modal" data-target="#adminDeleteModal"><i class="fa fa-check"></i></a>
+        <a href="#" data-toggle="modal" data-target="#adminDeleteModal"><i class="fa fa-times"></i></a>
         <a href="#" data-toggle="modal" data-target="#adminDeleteModal"><i class="fa fa-trash"></i></a>
-    }
-    
+    }*@
+
 </div>

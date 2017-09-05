@@ -47,34 +47,26 @@ namespace RateBlog.Controllers
         [HttpGet]
         public IActionResult Index(string search)
         {
-            var listOfUsers = new List<ApplicationUser>();
+            var users = new List<ApplicationUser>();
             if (string.IsNullOrEmpty(search))
             {
                 search = "";
-                listOfUsers = _userManager.Users.Where(x => x.Name.ToLower().Contains(search.ToLower())).Take(100).ToList();
+                users = _userManager.Users.OrderByDescending(x => x.Created).Take(100).ToList();
             }
             else
             {
-                listOfUsers = _userManager.Users.Where(x => x.Name.ToLower().Contains(search.ToLower())).ToList();
+                var ids = _influencerRepo.GetAll().Where(x => x.Alias.ToLower().Contains(search.ToLower())).Select(x => x.Id).ToList();
+                users = _userManager.Users.Where(x => x.Name.ToLower().Contains(search.ToLower()) || ids.Contains(x.Id)).ToList();
             }
 
-
-
-            var notApprovedList = new List<ApplicationUser>();
-
-            foreach (var v in _influencerService.GetInfluencers(listOfUsers))
-            {
-                if (!_influencerService.IsInfluencerApproved(v.Id))
-                {
-                    notApprovedList.Add(v);
-                }
-            }
+            var unApprovedList = _influencerService.GetUnApprovedInfluencers();
 
             var model = new Models.AdminViewModels.IndexViewModel()
             {
-                AllUsers = listOfUsers,
-                InfluencerApprovedList = notApprovedList
+                AllUsers = users,
+                NotApprovedList = unApprovedList
             };
+
 
             return View(model);
         }
@@ -100,7 +92,7 @@ namespace RateBlog.Controllers
             {
                 influencerViewModel = new InfluencerViewModel()
                 {
-                    Influencer = influencer
+                    Influencer = influencer,
                 };
 
                 PopulatePlatforms(influencer.InfluenterPlatform, influencerViewModel);
@@ -108,12 +100,12 @@ namespace RateBlog.Controllers
             else
                 influencerViewModel = null;
 
-                var model = new UserProfileViewModel()
-                {
-                    ApplicationUser = user,
-                    EditProfileViewModel = editProfileViewModel,
-                    InfluencerViewModel = influencerViewModel
-                };
+            var model = new UserProfileViewModel()
+            {
+                ApplicationUser = user,
+                EditProfileViewModel = editProfileViewModel,
+                InfluencerViewModel = influencerViewModel
+            };
 
             return View(model);
         }
@@ -121,7 +113,7 @@ namespace RateBlog.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUser(UserProfileViewModel model, IFormFile profilePic)
         {
-            var user = _userManager.Users.SingleOrDefault(x => x.Id == model.ApplicationUser.Id); 
+            var user = _userManager.Users.SingleOrDefault(x => x.Id == model.ApplicationUser.Id);
 
             user.Email = model.EditProfileViewModel.Email;
             user.UserName = model.EditProfileViewModel.Email;
@@ -142,41 +134,63 @@ namespace RateBlog.Controllers
             return RedirectToAction("UserProfile", new { id = model.ApplicationUser.Id });
         }
 
+        public IActionResult EditInfluencer(UserProfileViewModel model, string[] categoriList)
+        {
+            var influencer = _influencerRepo.Get(model.InfluencerViewModel.Influencer.Id);
 
+            foreach (var v in influencer.InfluenterKategori.ToList())
+            {
+                if (!categoriList.Contains(v.CategoryId))
+                {
+                    influencer.InfluenterKategori.Remove(v);
+                }
+            }
 
+            foreach (var v in categoriList)
+            {
+                if (!influencer.InfluenterKategori.Any(x => x.CategoryId == v))
+                {
+                    influencer.InfluenterKategori.Add(new InfluencerCategory() { CategoryId = v, InfluencerId = influencer.Id });
+                }
+            }
 
+            var platforms = _platformRepo.GetAll();
 
+            UpdatePlatform(model.InfluencerViewModel.FacebookLink, "Facebook", influencer, platforms);
+            UpdatePlatform(model.InfluencerViewModel.InstagramLink, "Instagram", influencer, platforms);
+            UpdatePlatform(model.InfluencerViewModel.YoutubeLink, "YouTube", influencer, platforms);
+            UpdatePlatform(model.InfluencerViewModel.SecoundYoutubeLink, "SecondYouTube", influencer, platforms);
+            UpdatePlatform(model.InfluencerViewModel.TwitterLink, "Twitter", influencer, platforms);
+            UpdatePlatform(model.InfluencerViewModel.TwitchLink, "Twitch", influencer, platforms);
+            UpdatePlatform(model.InfluencerViewModel.WebsiteLink, "Website", influencer, platforms);
+            UpdatePlatform(model.InfluencerViewModel.SnapchatLink, "SnapChat", influencer, platforms);
 
+            influencer.ProfileText = model.InfluencerViewModel.Influencer.ProfileText;
+            influencer.Alias = model.InfluencerViewModel.Influencer.Alias;
 
+            _influencerRepo.SaveChanges();
 
+            return RedirectToAction("UserProfile", new { id = model.InfluencerViewModel.Influencer.Id });
 
-
-
-
-
-
-
-
-
-
+        }
 
 
         [HttpPost]
-        public async Task<IActionResult> ApproveInfluencer(string id)
+        public async Task<IActionResult> ApproveInfluencer(UserProfileViewModel model)
         {
-            var influencer = _influencerRepo.Get(id);
-            var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
+            var influencer = _influencerRepo.Get(model.InfluencerViewModel.Influencer.Id);
+            var user = _userManager.Users.SingleOrDefault(x => x.Id == model.InfluencerViewModel.Influencer.Id);
             influencer.IsApproved = true;
             _influencerRepo.Update(influencer);
             await _emailSender.SendInfluencerApprovedEmailAsync(user.Name, user.Email, influencer.Alias);
-            return RedirectToAction("UserProfile", new { id = id });
+            return RedirectToAction("UserProfile", new { id = model.InfluencerViewModel.Influencer.Id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> DisapproveInfluencer(string id)
+        public async Task<IActionResult> DisapproveInfluencer(UserProfileViewModel model)
         {
-            var influencer = _influencerRepo.Get(id);
-            var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
+            var influencer = _influencerRepo.Get(model.InfluencerViewModel.Influencer.Id);
+            var user = _userManager.Users.SingleOrDefault(x => x.Id == model.InfluencerViewModel.Influencer.Id);
             _influencerRepo.Delete(influencer);
 
             if (user.NormalizedEmail.StartsWith("USERINFLUENCER"))
@@ -186,100 +200,8 @@ namespace RateBlog.Controllers
             }
 
             await _emailSender.SendInfluencerDisapprovedEmailAsync(user.Name, user.Email);
-            return RedirectToAction("UserProfile", new { id = id });
+            return RedirectToAction("UserProfile", new { id = model.InfluencerViewModel.Influencer.Id });
         }
-
-        [HttpGet]
-        public IActionResult EditUser(string id)
-        {
-            var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
-            var influencer = _influencerRepo.Get(id);
-            var model = new EditUserViewModel();
-            if (influencer != null)
-            {
-                model = new EditUserViewModel()
-                {
-                    ApplicationUser = user,
-                    Influencer = influencer,
-                };
-
-                PopulatePlatforms(influencer.InfluenterPlatform, model);
-            }
-            else
-            {
-                model = new EditUserViewModel()
-                {
-                    ApplicationUser = user,
-                    Influencer = influencer,
-                };
-            }
-
-            return View(model);
-        }
-
-        //[HttpPost]
-        //public async Task<IActionResult> EditUser(EditUserViewModel model, IFormFile pic, string[] categoriList)
-        //{
-        //    var user = _userManager.Users.SingleOrDefault(x => x.Id == model.ApplicationUser.Id);
-        //    user.Name = model.ApplicationUser.Name;
-        //    user.BirthDay = model.ApplicationUser.BirthDay;
-        //    user.Email = model.ApplicationUser.Email;
-        //    user.UserName = model.ApplicationUser.Email;
-        //    user.Postnummer = model.ApplicationUser.Postnummer;
-        //    user.Gender = model.ApplicationUser.Gender;
-        //    user.PhoneNumber = model.ApplicationUser.PhoneNumber;
-
-        //    if (pic != null)
-        //    {
-        //        MemoryStream ms = new MemoryStream();
-        //        pic.OpenReadStream().CopyTo(ms);
-        //        user.ProfilePicture = ms.ToArray();
-        //    }
-
-        //    await _userManager.UpdateAsync(user);
-
-        //    if (model.Influencer != null)
-        //    {
-        //        var influencer = _influencerRepo.Get(model.ApplicationUser.Id);
-
-        //        foreach (var v in influencer.InfluenterKategori.ToList())
-        //        {
-        //            if (!categoriList.Contains(v.CategoryId))
-        //            {
-        //                influencer.InfluenterKategori.Remove(v);
-        //            }
-        //        }
-
-
-        //        foreach (var v in categoriList)
-        //        {
-        //            if (!influencer.InfluenterKategori.Any(x => x.CategoryId == v))
-        //            {
-        //                influencer.InfluenterKategori.Add(new InfluencerCategory() { CategoryId = v, InfluencerId = influencer.Id });
-        //            }
-        //        }
-
-        //        var platforms = _platformRepo.GetAll();
-
-        //        UpdatePlatform(model.FacebookLink, "Facebook", influencer, platforms);
-        //        UpdatePlatform(model.InstagramLink, "Instagram", influencer, platforms);
-        //        UpdatePlatform(model.YoutubeLink, "YouTube", influencer, platforms);
-        //        UpdatePlatform(model.SecondYoutubeLink, "SecondYouTube", influencer, platforms);
-        //        UpdatePlatform(model.TwitterLink, "Twitter", influencer, platforms);
-        //        UpdatePlatform(model.TwitchLink, "Twitch", influencer, platforms);
-        //        UpdatePlatform(model.WebsiteLink, "Website", influencer, platforms);
-        //        UpdatePlatform(model.SnapchatLink, "SnapChat", influencer, platforms);
-
-        //        influencer.ProfileText = model.Influencer.ProfileText;
-        //        influencer.Alias = model.Influencer.Alias;
-
-        //        _influencerRepo.SaveChanges();
-
-
-        //    }
-
-        //    return RedirectToAction("UserProfile", new { id = user.Id });
-        //}
 
         [HttpGet]
         public async Task<IActionResult> ChangePassword(string id)
@@ -294,21 +216,21 @@ namespace RateBlog.Controllers
             var user = await _userManager.FindByIdAsync(id);
             user.PasswordHash = _passwordHasher.HashPassword(user, newPassword);
             var result = await _userManager.UpdateAsync(user);
-
-            return RedirectToAction("Index");
+            return RedirectToAction("UserProfile", new { id = user.Id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteUser(string id)
+        public async Task<IActionResult> DeleteUser(UserProfileViewModel model)
         {
-            var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
+            var user = _userManager.Users.SingleOrDefault(x => x.Id == model.ApplicationUser.Id);
             var result = await _userManager.DeleteAsync(user);
 
             if (result.Succeeded)
                 return RedirectToAction("Index", "Admin");
             else
-                return RedirectToAction("UserProfile", "Admin", new { id = id });
+                return RedirectToAction("UserProfile", "Admin", new { id = model.ApplicationUser.Id });
         }
+
 
         [HttpGet]
         public IActionResult Feedback(string id)
@@ -336,6 +258,44 @@ namespace RateBlog.Controllers
             return View(model);
         }
 
+
+        [HttpPost]
+        public IActionResult DeleteFeedback(string id, string userId)
+        {
+            var editFeedback = _feedbackRepo.Get(id);
+            _feedbackRepo.Delete(editFeedback);
+
+            return RedirectToAction("Feedback", new { id = userId });
+        }
+
+        [HttpGet]
+        public IActionResult Statistic()
+        {
+            var users = _userManager.Users;
+
+            var realUsers = users.Where(x => x.NormalizedEmail.StartsWith("USERINFLUENCER") == false).Count();
+
+            var model = new StatisticViewModel()
+            {
+                FeedbackCount = _feedbackRepo.GetAll().Count(),
+                UserCount = users.Count(),
+                InfluencerCount = _influencerRepo.GetAll().Count(),
+                RealUserCount = realUsers
+            };
+            return View(model); 
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         [HttpGet]
         public IActionResult EditFeedback(string id, bool isInfluencer)
         {
@@ -356,14 +316,7 @@ namespace RateBlog.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public IActionResult DeleteFeedback(Feedback feedback)
-        {
-            var editFeedback = _feedbackRepo.Get(feedback.Id);
-            _feedbackRepo.Delete(editFeedback);
-
-            return RedirectToAction("Index");
-        }
+        
 
         [HttpGet]
         public IActionResult InfluenterStatistics(string id)

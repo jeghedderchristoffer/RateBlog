@@ -9,7 +9,7 @@ namespace RateBlog.Models.AdminViewModels
     {
         public List<ApplicationUser> AllUsers { get; set; }
 
-        public List<ApplicationUser> InfluencerApprovedList { get; set; } 
+        public IEnumerable<Influencer> NotApprovedList { get; set; } 
 
     }
 }

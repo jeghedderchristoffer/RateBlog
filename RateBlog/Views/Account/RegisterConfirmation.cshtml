@@ -17,12 +17,12 @@
                         <p>Er du influencer eller følger?</p>
 
                         <div class="col-md-6 col-sm-6 col-xs-12 noPaddingLeft nopaddingmobile">
-                            <input type="radio" name="radio" id="radio1" class="radio" />
+                            <input type="radio" name="isInfluencer" id="radio1" class="radio" value="true" />
                             <label for="radio1">Jeg er influencer</label>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-12 noPaddingRight nopaddingmobile">
-                            <input type="radio" name="radio" id="radio2" class="radio" />
+                            <input type="radio" name="isInfluencer" id="radio2" class="radio" value="false" />
                             <label for="radio2">Jeg er følger</label>
                         </div>
 
@@ -89,3 +89,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

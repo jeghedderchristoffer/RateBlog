@@ -652,9 +652,9 @@ namespace RateBlog.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult UsersProfilePic(string id)
+        public async Task<IActionResult> UsersProfilePic(string id)
         {
-            var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
+            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Id == id); 
 
             byte[] buffer = user.ProfilePicture;
 

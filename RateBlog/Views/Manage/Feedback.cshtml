@@ -169,7 +169,7 @@
                                                     <span class="label" style="font-family: Arial; background: #808080">Intet svar</span>
                                                 }
                                             </p>
-                                            
+
                                         </div>
 
                                         <div class="col-md-4">
@@ -273,10 +273,22 @@
                         }
                         else
                         {
-                            <!--FØLGER DELEN HER-->
+                            <div style="padding: 5px">
+                                <h2 style="text-align: center; margin-bottom: 20px; margin-top: 10px">Feedback</h2>
+                                <p>Efter 24 timer har du muligheden for, at give feedback til den samme influencer igen. Dette gør, at du altid kan sige din mening!</p>
+                            </div>
+                            
                         }
 
                     </div>
+                    @if (Model.Influencer == null)
+                    {
+                        <div class="white-box" style="padding: 20px">
+                            <h2 style="text-align: center; margin-bottom: 20px; margin-top: 10px">Opret influencere</h2>
+                            <p>Kan du ikke finde den influencer du ønsker at give feedback til? Du har mulighed for at oprette influenceren, og derefter give feedback!</p>
+                            <a style="width: 100%; margin-top: 20px" class="btn-create" asp-action="Influencer" asp-controller="Create">Opret influencer</a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

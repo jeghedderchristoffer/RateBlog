@@ -10,8 +10,9 @@ namespace RateBlog.Helper
         public string Id { get; set; }
         public string Alias { get; set; }
         public int FeedbackCount { get; set; }
-        public double FeedbackScore { get; set; }
-        public string Categories { get; set; } 
-        public string Platforms { get; set; }
+        public IEnumerable<double> FeedbackScore { get; set; }
+        public IEnumerable<string> Categories { get; set; } 
+        public IEnumerable<string> Platforms { get; set; }
+        public string ProfileText { get; set; } 
     }
 }

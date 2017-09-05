@@ -7,30 +7,20 @@
 <div class="navbar-allaround"></div>
 
 <div class="background-all">
-
-
-
-    @*<div style="background-color: #fff; height: 188px">
-            <div class="outer">
-                <div class="middle">
-                    <div class="inner">
-                        <h2 style="margin-bottom: 30px; margin-top: 0">Søg på influencere</h2>
-                        <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index" class="form-inline">
-                            <div class="input-group">
-                                <input autocomplete="off" type="text" name="search" id="search" style="border: 1px solid #ddd" class="form-control search-input" list="searchSug" placeholder="F.eks. Anna, Fashion eller YouTube" />
-                                <datalist id="searchSug"></datalist>
-                                <div class="input-group-btn">
-                                    <button class="btn search-button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>*@
     <div class="container" style="padding-top: 20px; padding-left: 0; padding-right: 0;">
         <div class="col-md-12">
             <div class="col-md-3 hidden-sm hidden-xs">
+
+                <span class="hidden-xs">
+                    <select id="sortBy" class="dropdown-sort">
+                        <option value="" disabled selected hidden>Sorter rating</option>
+                        <option value="1">Højeste</option>
+                        <option value="2">Laveste</option>
+                        <option value="3">Fleste</option>
+                        <option value="4">Færreste</option>
+                    </select>
+                </span>
+
                 <div class="sort-box">
                     <div class="col-md-12 noPadding">
                         <h4><b>Kategorier</b></h4>
@@ -49,6 +39,9 @@
                             <label class="checkbox-inline"><input type="checkbox" name="platforme" value="@platform.Value" style="background: #fff" />@platform.Key</label><br />
                         }
                     </div>
+                    <div class="col-md-12 noPadding">
+                        <button id="sortBtn">Filtrer</button>
+                    </div>
 
 
                 </div>
@@ -56,19 +49,15 @@
             </div>
 
             <div class="col-md-9 col-sm-12 nopaddingmobile">
-
-                <h2 class="search-string">
-                    Resultater for @Model.SearchString
-                    <span class="hidden-xs">
-                        <select id="sortBy" class="dropdown-sort">
-                            <option value="" disabled selected hidden>Sorter rating</option>
-                            <option value="1">Højeste</option>
-                            <option value="2">Laveste</option>
-                            <option value="3">Fleste</option>
-                            <option value="4">Færreste</option>
-                        </select>
-                    </span>
-                </h2>
+                <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index" style="margin-bottom: 20px;">
+                    <div class="input-group">
+                        <input autocomplete="off" type="text" name="search" id="search" value="@Model.SearchString" style="border: 1px solid #ddd; height: 40px" class="form-control search-input-influencer" list="searchSug" placeholder="Søg på influencere" />
+                        <datalist id="searchSug"></datalist>
+                        <div class="input-group-btn">
+                            <button class="btn search-button-influencer" type="submit" style="height: 40px; font-size: 16px"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </form>
 
                 @if (!SignInManager.IsSignedIn(User))
                 {
@@ -87,7 +76,7 @@
                 <div class="col-md-12">
                     <div class="loading-box-top" id="sortLoadingBox">
                         <div class="text-center">
-                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                            <i style="color: #089de3" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
@@ -108,20 +97,305 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 text-center" id="loadingBox" style="height: 50px; display: none">
+                <div class="col-md-12 text-center" id="loadingBox" style="height: 50px">
                     <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>
 
 @section Scripts{
     <script>
         var pageSize = 20;
+        var pageIndex = 0;
+        var searchString = '@Model.SearchString';
+        var ajaxDone = 0;
+
+        function FetchData() {
+            var categoriArray = [];
+            var platformArray = [];
+            var sortBy = $("#sortBy").val();
+
+            $("input:checkbox[name=platforme]:checked").each(function () {
+                platformArray.push($(this).val());
+            })
+
+            $("input:checkbox[name=kategorier]:checked").each(function () {
+                categoriArray.push($(this).val());
+            })
+
+            var jsonPlatformArray = {};
+            var jsonKategoriArray = {};
+
+            for (i in categoriArray) {
+                jsonKategoriArray[i] = categoriArray[i];
+            }
+
+            for (i in platformArray) {
+                jsonPlatformArray[i] = platformArray[i];
+            }
+
+
+            $.ajax({
+                url: "/Influencer/GetNextFromList",
+                method: "GET",
+                dataType: 'json',
+                beforeSend: function () {
+                    ajaxDone++;
+                },
+                data: {
+                    pageIndex: pageIndex,
+                    pageSize: pageSize,
+                    search: searchString,
+                    platforme: jsonPlatformArray,
+                    kategorier: jsonKategoriArray,
+                    sortBy: sortBy
+                },
+                success: function (result) {
+
+                    if (result.length < 20) {
+                        $("#loadingBox").css("opacity", "0");
+                        $("#createInfluencer").css("display", "block")
+                    }
+
+                    $.each(result, function (i, item) {
+                        $("#listOfInfluencers").append(LoadHtml(item))
+                    })
+
+                },
+                error: function () {
+                    console.log("fail fetched");
+                },
+                complete: function () {
+                    ajaxDone--;
+                    pageIndex++;
+
+                }
+            });
+        }
+
+        function SortData() {
+            pageIndex = 0;
+            var categoriArray = [];
+            var platformArray = [];
+            var sortBy = $("#sortBy").val();
+
+            $("input:checkbox[name=platforme]:checked").each(function () {
+                platformArray.push($(this).val());
+            });
+
+            $("input:checkbox[name=kategorier]:checked").each(function () {
+                categoriArray.push($(this).val());
+            });
+
+            var jsonPlatformArray = {};
+            var jsonKategoriArray = {};
+
+            for (i in categoriArray) {
+                jsonKategoriArray[i] = categoriArray[i];
+            }
+
+            for (i in platformArray) {
+                jsonPlatformArray[i] = platformArray[i];
+            }
+
+            $.ajax({
+                url: "/Influencer/Sorter",
+                method: "GET",
+                dataType: 'json',
+                beforeSend: function () {
+                    $("#sortLoadingBox").css("display", "block");
+                    $("#listOfInfluencers").addClass("blur-effect");
+                },
+                data: {
+                    pageIndex: pageIndex,
+                    pageSize: pageSize,
+                    search: searchString,
+                    platforme: jsonPlatformArray,
+                    kategorier: jsonKategoriArray,
+                    sortBy: sortBy
+                },
+                success: function (result) {
+
+                    if (result.length < 20) {
+                        $("#loadingBox").css("opacity", "0");
+                        $("#createInfluencer").css("display", "block")
+                    }
+
+                    $("#listOfInfluencers").html(" ");
+                    $.each(result, function (i, item) {
+                        $("#listOfInfluencers").append(LoadHtml(item))
+                    })
+
+                },
+                error: function () {
+                    console.log("fail sorter");
+                },
+                complete: function () {
+                    pageIndex = 0;
+                    pageIndex++;
+                    console.log("PageIndex: " + pageIndex)
+                }
+            });
+        }
+
+        function LoadHtml(item) {
+
+            var categories = "";
+            var platforms = "";
+
+            if (item.categories.length == 0) {
+                categories = "Ingen kategorier"
+            }
+            else {
+                categories = item.categories.join(" | ")
+            }
+
+
+            if (item.platforms.length === 0) {
+                platforms = "Ingen sociale medier"
+            }
+            else {
+                for (var i = 0; i < item.platforms.length; i++) {
+                    var split = item.platforms[i].split("^");
+
+                    switch (split[0]) {
+                        case "Instagram":
+                            platforms += "<a href='http://www.instagram.com/" + split[1] + "' target='_blank' class='fa fa-search-o fa-instagram fa-instagram-search'></a>";
+                            break;
+                        case "Facebook":
+                            platforms += "<a href='" + split[1] + "' target='_blank' class='fa fa-search-o fa-facebook fa-facebook-search'></a>";
+                            break;
+                        case "YouTube":
+                            platforms += "<a href='" + split[1] + "' target='_blank' class='fa fa-search-o fa-youtube-play fa-youtube-search'></a>";
+                            break;
+                        case "SecondYouTube":
+                            platforms += "<a href='" + split[1] + "' target='_blank' class='fa fa-search-o fa-youtube-play fa-youtube-search'></a>";
+                            break;
+                        case "SnapChat":
+                            platforms += "<a href='http://www.snapchat.com/add/" + split[1] + "' target='_blank' class='fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search'></a>";
+                            break;
+                        case "Twitter":
+                            platforms += "<a href='http://www.twitter.com/" + split[1] + "' target='_blank' class='fa fa-search-o fa-twitter fa-twitter-search'></a>";
+                            break;
+                        case "Twitch":
+                            platforms += "<a href='" + split[1] + "' target='_blank' class='fa fa-search-o fa-twitch fa-twitch-search'></a>";
+                            break;
+                        case "Website":
+                            platforms += "<a href='http://" + split[1] + "' target='_blank' class='fa fa-search-o fa-globe fa-globe-search'></a>";
+                            break;
+                    }
+
+                }
+            }
+
+            var total = 0;
+            for (var i = 0; i < item.feedbackScore.length; i++) {
+                total += item.feedbackScore[i];
+            }
+
+            var avg = total / item.feedbackScore.length;
+
+            avg = avg || 0;
+
+            var stars = "";
+            var value = avg;
+            var round = Math.round(value * 2) / 2;
+            var floor = Math.floor(round);
+            var hasDeciaml = (round % 1) != 0;
+
+            for (var i = 0; i <= floor; i++) {
+                if (hasDeciaml) {
+                    if (i === floor) {
+                        stars += '<div class="show-rating-box"><i class="fa fa-star-half" aria-hidden="true"></i></div>'
+                    }
+                    else {
+                        stars += '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>'
+                    }
+                } else {
+                    if (floor <= i) {
+                        break;
+                    }
+                    stars += '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>'
+                }
+            }
+
+            return '<div class="col-md-12 search-result noPaddingLeft">' +
+                '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">' +
+                ' <a href="/Influencer/Profile/' + item.id + '">' +
+                ' <img class="influ-img" src="/Manage/UsersProfilePic/' + item.id + '" />' +
+                '</a>' +
+                '</div>' +
+
+                '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 noPadding">' +
+                '<h4>' + item.alias + '</h4>' +
+                '<p style="margin-top: 15px">' + categories + '</p>' +
+                '<div class="center-social">' +
+                platforms +
+                '</div>' +
+                '</div>' +
+
+                '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding influencer-index">' +
+                '<div class="show-rating" style="margin-top: 15px;">' +
+                '<div class="show-rating-container center-block">' +
+
+                '<div class="show-rating-front">' +
+                stars +
+                '</div>' +
+
+                '<div class="show-rating-back">' +
+                '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<p class="show-score">' + avg.toFixed(2) + ' af ' + item.feedbackCount + ' ratings</p>' +
+
+                '</div>' +
+                '<a href="/Influencer/Feedback/Give/' + item.id + '" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>' +
+                '<a href="/Influencer/Feedback/Read/' + item.id + '" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />' +
+
+                '</div>' +
+                '</div>'
+
+        }
+
+        $(document).ready(function () {
+            FetchData();
+        });
+
+        $(window).scroll(function () {
+            if (ajaxDone === 0) {
+                if ($(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
+                    FetchData();
+                }
+            }
+        });
+
+        $(document).ready(function () {
+
+            $("#sortBtn").click(function () {
+                SortData();
+            });
+
+            $('#sortBy').on('change', function () {
+                SortData();
+            });
+        });
+
+        $(document).ajaxStop(function(){
+            $("#sortLoadingBox").css("display", "none");
+            $("#listOfInfluencers").removeClass("blur-effect");
+        });
+
+
+        @*var pageSize = 20;
         var pageIndex = 0;
         var searchString = "@Model.SearchString";
         var currentUsersArray;
@@ -455,7 +729,7 @@
                 Sort();
             });
 
-        });
+        });*@
 
     </script>
 }

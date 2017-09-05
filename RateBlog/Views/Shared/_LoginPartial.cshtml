@@ -12,7 +12,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <input type="hidden" value="@user.Id" id="applicationUserId"/>
+    <input type="hidden" value="@user.Id" id="applicationUserId" />
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right" id="dropdownPc">
 
@@ -31,14 +31,8 @@
                         <ul>
                             <li><a asp-area="" asp-controller="Manage" asp-action="Profile" class="dropOut-a">Vis profil</a></li>
                             <li><a asp-area="" asp-controller="Manage" asp-action="Edit" class="dropOut-a">Rediger profil</a></li>
-                            @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
-                            {
-                                <li><a asp-area="" asp-controller="Manage" asp-action="Influencer" class="dropOut-a">Influencer</a></li>
-                            }
-                            else
-                            {
-                                <li><a asp-area="" asp-controller="Manage" asp-action="Influencer" class="dropOut-a">Bliv influencer</a></li>
-                            }
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Influencer" class="dropOut-a">Influencer</a></li>
+
                             @*<li><a asp-area="" asp-controller="Manage" asp-action="Password" class="dropOut-a">Indstillinger</a></li>*@
                             <li><a id="logOut" href="#" class="dropOut-a">Log af</a></li>
                         </ul>
@@ -57,14 +51,8 @@
 
             <li><a asp-area="" asp-controller="Manage" asp-action="Profile">Vis profil</a></li>
             <li><a asp-area="" asp-controller="Manage" asp-action="Edit">Rediger profil</a></li>
-            @if (await InfluencerService.IsUserInfluencerAsync(user.Id))
-            {
-                <li><a asp-area="" asp-controller="Manage" asp-action="Influencer">Influencer</a></li>
-            }
-            else
-            {
-                <li><a asp-area="" asp-controller="Manage" asp-action="Influencer">Bliv influencer</a></li>
-            }
+            <li><a asp-area="" asp-controller="Manage" asp-action="Influencer">Influencer</a></li>
+
             @*<li><a asp-area="" asp-controller="Manage" asp-action="Password">Indstillinger</a></li>*@
             <li><a id="logOutMobile" href="#">Log af</a></li>
         </ul>

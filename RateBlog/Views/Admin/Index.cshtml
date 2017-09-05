@@ -2,7 +2,7 @@
 @inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
 @{
     ViewData["Title"] = "Admin";
-    var list = Model.AllUsers.OrderByDescending(x => x.Created).ToList();
+    var list = Model.AllUsers;
 }
 
 
@@ -21,9 +21,9 @@
                         <hr style="margin-top: 5px;" />
                         <div id="approveInfluencers">
                             <ul>
-                                @foreach (var v in Model.InfluencerApprovedList)
+                                @foreach (var v in Model.NotApprovedList)
                                 {
-                                    <li><a asp-controller="Admin" asp-action="UserProfile" asp-route-id="@v.Id">@v.Name</a></li>
+                                    <li><a asp-controller="Admin" asp-action="UserProfile" asp-route-id="@v.Id">@v.Alias</a></li>
                                 }
 
                             </ul>
@@ -34,7 +34,7 @@
                     <div class="white-box scroll" style="height: calc(50vh - 70px)">
                         <h3>Anmeldelser</h3>
                         <hr style="margin-top: 5px;" />
-                        <div id="approveInfluencers">
+                        @*<div id="approveInfluencers">
                             <ul>
                                 @foreach (var v in Model.InfluencerApprovedList)
                                 {
@@ -42,7 +42,7 @@
                                 }
 
                             </ul>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                         <tbody id="table-rows">
                             @for (int i = 0; i < list.Count; i++)
                             {
-                                var isInfluencer = await (InfluencerService.IsUserInfluencerAsync(list[i].Id)) ? "Influencer" : "Bruger";
+                                var isInfluencer = "Not implemented"; 
                                 <tr id="@list[i].Id">
                                     <th scope="row">@i</th>
                                     <td>@list[i].Name</td>
