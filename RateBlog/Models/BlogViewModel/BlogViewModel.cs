@@ -13,7 +13,7 @@ namespace RateBlog.Models.BlogViewModel
         public string SearchString { get; set; }
         public List<Blog> BlogList { get; set; }
         public Blog Blog { get; set; }
-   
+        
 
     }
 }

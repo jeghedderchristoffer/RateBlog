@@ -423,7 +423,7 @@ namespace RateBlog.Controllers
             return View(model);
         }
 
-        [HttpPost] 
+            [HttpPost] 
         [Route("/[controller]/Profile/[action]")]
         public async Task<IActionResult> Edit(EditProfileViewModel model, IFormFile profilePic)
         {

@@ -24,12 +24,12 @@ namespace RateBlog.Controllers
         }
       
       
-         public IActionResult Index(string searchString)
+         public IActionResult Index()
            {
 
             var getAllBlogs = _blogRepo.GetAll();
 
-            var blog= new BlogViewModel()
+            var blog = new BlogViewModel()
             {
 
                 BlogList = getAllBlogs.ToList(),
@@ -52,7 +52,53 @@ namespace RateBlog.Controllers
             return View(model); 
         }
 
-      
+
+        [HttpGet]
+        public IActionResult UploadPictureView(string id)
+        {
+            var getBlog = _blogRepo.Get(id);
+
+            var model = new BlogViewModel()
+            {
+                Blog = getBlog,
+            };
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public IActionResult UploadPictureView(string id, BlogViewModel model)
+        {
+            var blog = _blogRepo.Get(id);
+
+          
+
+            if (ModelState.IsValid)
+            {
+
+           
+            if (model.ArticlesPicture != null)
+            {
+                MemoryStream ms = new MemoryStream();
+                model.ArticlesPicture.OpenReadStream().CopyTo(ms);
+                blog.ArticlePicture = ms.ToArray();
+            }
+
+            if (model.IndexPicture != null)
+            {
+                MemoryStream ms = new MemoryStream();
+                model.IndexPicture.OpenReadStream().CopyTo(ms);
+                blog.IndexPicture = ms.ToArray();
+            }
+
+                _blogRepo.Update(blog);
+            }
+            return RedirectToAction("Index", model);
+            //return View(model);
+
+        }
+
         public IActionResult CreateArticle()
         {
             var model = new CreateArticlesViewModel(); 
@@ -67,20 +113,6 @@ namespace RateBlog.Controllers
             if (ModelState.IsValid)
             {
 
-                //if (model.ArticlesPicture != null)
-                //{
-                //    MemoryStream ms = new MemoryStream();
-                //    model.ArticlesPicture.OpenReadStream().CopyTo(ms);
-                //    model.ArticlesPicture = ms.ToArray();
-                //}
-
-                //if (model.IndexPicture != null)
-                //{
-                //    MemoryStream ms = new MemoryStream();
-                //    model.IndexPicture.OpenReadStream().CopyTo(ms);
-                //    model.Blog.IndexPicture = ms.ToArray();
-                //}
-
 
 
                 Blog blog = new Blog()
@@ -90,10 +122,10 @@ namespace RateBlog.Controllers
                     Author = model.Author,
                     Categories = model.Categories,                  
                     BriefText = model.BriefText,
-                    ArticleText = model.ArticleText,
-                   
-
+                    ArticleText = model.ArticleText,                    
                 };
+
+               
 
                 _blogRepo.Add(blog);
 

@@ -120,11 +120,18 @@
 <div class="container" style="text-align:center">
 
     <h3 style="padding-bottom:15px;">Indsæt index billede</h3>
-    <input form="createBlog" style="background:orange;margin-left:437px;" type="file" value="Indsæt billed" class="blog-btn" asp-for="@Model.IndexPicture" />
+    <input form="createBlog" style="background:orange;margin-left:437px;" type="file" value="Indsæt billed" class="blog-btn" id="indexPictureId" />
     <h3 style="padding-bottom:15px;">Indsæt artikel billede</h3>
-    <input form="createBlog" style="background:orange;margin-left:437px;" type="file" value="Indsæt billed" class="blog-btn" asp-for="@Model.ArticlesPicture" />
+    <input form="createBlog" style="background:orange;margin-left:437px;" type="file" value="Indsæt billed" class="blog-btn" id="articlePictureId"/>
     <h3>Offentliggør artikel</h3>
     <input id="TransferButton" style="background:blue;" class="blog-btn" value="Gem" />
+
+    <p>Gem artikelen før du går videre til at uploade index og artikel billed</p>
+    
+    @*asp-route-id="@Model.id"*@
+    <form asp-action="UploadPictureView" method="get">
+        <input type="submit" />
+    </form>
 
 </div>
 
@@ -137,6 +144,9 @@
 
         //});
 
+
+
+
         $("#editor").wysiwyg();
 
         $(document).ready(function () {
@@ -144,19 +154,22 @@
 
                 var articleHeader = $("#articleHeaderId").val();
                 var datetime = $("#datetimeId").val();
-                var catagories = $("catagoriesId").val();
-                var author = $("authorId").val();
-                var briefText = $("brieftextId").val();
-                var articleText = $("#editor").cleanHtml();
+                var catagories = $("#catagoriesId").val();
+                var author = $("#authorId").val();
+                var briefText = $("#brieftextId").val();
+                var articleText = $("#editor").cleanHtml();              
+                var indexPicture = $("#indexPictureId").val();              
+                var articlePicture = $("#articlePictureId").val();
 
                 var model = {};
 
-                    model.ArticleHeader = articleHeader,
+                model.ArticleHeader = articleHeader,
                     model.DateTime = datetime,
-                    model.Catagories = catagories,
+                    model.Categories = catagories,
                     model.Author = author,
                     model.BriefText = briefText,
-                    model.ArticleText = articleText,
+                    model.ArticleText = articleText,               
+                    model.IndexPicture = indexPicture
 
 
                     console.log(model)
@@ -167,6 +180,7 @@
                     data: {
                         model: model
                     },
+                    mimeType: 'multipart/form-data',
                     success: function (result) {
                         console.log(result)
                     },
