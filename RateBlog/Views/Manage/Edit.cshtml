@@ -16,87 +16,321 @@
     </div>
 </div>
 
-    @if (TempData["Success"] != null)
-    {
-        <div id="editUserSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            @TempData["Success"]
-        </div>
+@if (TempData["Success"] != null)
+{
+    <div id="editUserSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["Success"]
+    </div>
 
         <script>
             window.setTimeout(function () {
                 $("#editUserSuc").fadeOut(1000);
             }, 2000);
         </script>
-    }
-    @if (TempData["Error"] != null)
-    {
-        <div id="editUserErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            @TempData["Error"]
-        </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div id="editUserErr" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["Error"]
+    </div>
 
         <script>
             window.setTimeout(function () {
                 $("#editUserErr").fadeOut(1000);
             }, 2000);
         </script>
-    }
+}
 
-    @Html.Partial("_NavbarAddonPartial")
+@Html.Partial("_NavbarAddonPartial")
 
-    <div class="container" style="padding-bottom: 150px;">
-        <div class="col-md-12 col-xs-12 noPaddingLeft nopaddingmobile">
-            <h2 class="edituserh2">Profil oplysninger</h2>
-        </div>
+<div class="container" style="padding-bottom: 150px;">
+    <div class="col-md-12 col-xs-12 noPaddingLeft nopaddingmobile">
+        <h2 class="edituserh2">Profil oplysninger</h2>
+    </div>
 
-        <div class="col-md-6 noPadding col-xs-12" id="editProfile">
-            <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
+    <div class="col-md-6 noPadding col-xs-12" id="editProfile">
+        <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-left: -40px;"></div>
 
-                <h4 style="margin-top: 15px">Fulde navn:</h4>
-                <input asp-for="@Model.Name" class="edit-profile-input" />
-                <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
+            <h4 style="margin-top: 15px">Fulde navn:</h4>
+            <input asp-for="@Model.Name" class="edit-profile-input" />
+            <span asp-validation-for="@Model.Name" class="text-danger" style="margin-left: 5px;"></span>
 
-                <h4>Email:</h4>
-                <input asp-for="@Model.Email" class="edit-profile-input" />
-                <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
+            <h4>Email:</h4>
+            <input asp-for="@Model.Email" class="edit-profile-input" />
+            <span asp-validation-for="@Model.Email" class="text-danger" style="margin-left: 5px;"></span>
 
-                <h4>Fødselsdag:</h4>
-                <input max="01-01-2017" asp-for="@Model.Birthday" class="edit-profile-input" />
-                <span asp-validation-for="@Model.Birthday" class="text-danger" style="margin-left: 5px;" asp-format="0:dd/mm/yyyy}"></span>
+            <h4>Fødselsdag:</h4>
+            <input max="01-01-2017" asp-for="@Model.Birthday" class="edit-profile-input" />
+            <span asp-validation-for="@Model.Birthday" class="text-danger" style="margin-left: 5px;" asp-format="0:dd/mm/yyyy}"></span>
 
-                <h4>Postnummer:</h4>
-                <input asp-for="@Model.Postnummer" class="edit-profile-input" type="text" />
-                <span asp-validation-for="@Model.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
+            <h4>Postnummer:</h4>
+            <input asp-for="@Model.Postnummer" class="edit-profile-input" type="text" />
+            <span asp-validation-for="@Model.Postnummer" class="text-danger" style="margin-left: 5px;"></span>
 
-                <h4>Profilbillede:</h4>
-                <input type="file" name="profilePic" class="input-files" />
-                <br />
+            <h4>Profilbillede:</h4>
+            <input id="profilePic" name="profilePic" type='file' onchange="readURL(this);" />
+            <br style="display:none" id="break1" />
+            <img id="ViewProfilePic" />
+            <br style="display:none" id="break2" />
+            <input type="hidden" name="EditedProfilePic" id="EditedProfilePic" value="">
+            @*<button name="profilePic" data-toggle="modal" data-target="#myModal" class="input-files" />*@
+            @*<input type="file" name="profilePic" class="input-files" />*@
+            <br />
 
-                <h4>Køn</h4>
-                <label style="font-weight: normal">
-                    <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
-                    Mand
-                </label>
-                <br />
+            <!-- Trigger the modal with a button -->
+            <button id="EditImageButton" style="display:none" type="button" onclick="InitEditing();"  class="input-files"  data-toggle="modal" data-target="#myModal">Redigere Billede</button>
 
-                <label style="font-weight: normal">
-                    <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
-                    Kvinde
-                </label>
-                <br /><br /><br />
+            
 
-                <input type="submit" class="edit-button-influ-create" style="width: 100%" value="Gem" />
-            </form>
-        </div>
-        <div class="col-md-offset-1 col-md-5 hidden-sm hidden-xs">
-            <div class="feedback-rating-all-box">
-                <div class="feedback-rating-all-box-item" style="padding: 20px;">
-                    <h3 class="text-center">Gensidig troværdighed</h3>
-                    <p>Hos Bestfluence går vi op i at alle vores brugere har høj troværdighed. Da din profil og feedback er offentlig, vil vi derfor opfordre dig til at angive korrekte oplysninger, således dine bidrag kan bruges og gøre en forskel for andre.</p>
-                </div>
+            <h4>Køn</h4>
+            <label style="font-weight: normal">
+                <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="male">
+                Mand
+            </label>
+            <br />
+
+            <label style="font-weight: normal">
+                <input asp-for="@Model.Gender" class="w3-radio" type="radio" name="gender" value="female">
+                Kvinde
+            </label>
+            <br /><br /><br />
+
+            <input type="submit" class="edit-button-influ-create" style="width: 100%" value="Gem" />
+        </form>
+    </div>
+    <div class="col-md-offset-1 col-md-5 hidden-sm hidden-xs">
+        <div class="feedback-rating-all-box">
+            <div class="feedback-rating-all-box-item" style="padding: 20px;">
+                <h3 class="text-center">Gensidig troværdighed</h3>
+                <p>Hos Bestfluence går vi op i at alle vores brugere har høj troværdighed. Da din profil og feedback er offentlig, vil vi derfor opfordre dig til at angive korrekte oplysninger, således dine bidrag kan bruges og gøre en forskel for andre.</p>
             </div>
         </div>
     </div>
+</div>
 
+            <!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 1px solid #ddd; background: #fafafa;border-radius:10px;padding-top:0px">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title text-center">Tilpas dit profilbillede</h4>
+            </div>
+            <div class="modal-body">
+                <div class="center-block text-center">
+                    <canvas  style="display:block;margin-left:auto;margin-right: auto" id="panel" width="290" height="290"></canvas>
+
+                    <br />
+                    <p>Zoom ind:</p>
+                    <input id='scaleSlider' type='range' min='0.05' max='3.0' step='0.01' value='1.0' style="display:block;margin-left:auto;margin-right: auto"/>
+                    <br />
+                </div>
+            </div>            
+            <div class="modal-footer">
+                <button class="btn btn-default pull-left" id="cropImgButton" data-dismiss="modal">Behold beskæring</button>
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+<script type="text/javascript">
+
+
+
+    var urlResult;
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#ViewProfilePic')
+                    .attr('src', e.target.result)
+                    .width(250)
+                    .height(250);
+                urlResult = e.target.result;
+                //$('#ProfilePic').val(e.target.result)
+                //console.log(urlResult)
+            };
+            reader.readAsDataURL(input.files[0]);
+            $('#EditImageButton').show();
+            $('#break1').show();
+            $('#break2').show();
+        }
+    }
+
+
+    function InitEditing() { 
+        
+        imageCropper.init();
+        $('#profilePic').val("")
+
+    }
+    
+    var imageCropper = {
+
+                ctx: document.getElementById("panel").getContext("2d"),
+
+                image: new Image(),
+
+                scale: 1,
+
+                click: false,
+
+                baseX: 0,
+
+                baseY: 0,
+
+                lastPointX: 0,
+
+                lastPointY: 0,
+
+                cutoutWidth: 20,
+
+                windowWidth: 250,
+
+
+                init: function () {
+                    console.log(urlResult);
+                    this.image.setAttribute('crossOrigin', 'anonymous');
+                    this.image.src = urlResult;
+                    this.image.onload = this.onImageLoad.bind(this);
+                    document.getElementById("cropImgButton").onclick = this.showCropedImage.bind(this);
+                    document.getElementById("scaleSlider").oninput = this.updateScale.bind(this);
+                },
+
+                /**
+                 * Animation on the canvas depends on three events of mouse. down, up and move
+                 */
+                onImageLoad: function () {
+                    this.drawimage(0, 0);
+                    this.ctx.canvas.onmousedown = this.onMouseDown.bind(this);
+                    this.ctx.canvas.onmousemove = this.onMouseMove.bind(this);
+                    this.ctx.canvas.onmouseup = this.onMouseUp.bind(this);
+                },
+
+  @*/**
+   * Draw image on canvas, after any changes
+   * @param  {[type]} x
+   * @param  {[type]} y
+   * @return {[type]}
+        * /*@
+
+  drawimage: function(x, y) {
+    var w = this.ctx.canvas.width,
+      h = this.ctx.canvas.height;
+    this.ctx.clearRect(0, 0, w, h);
+    this.baseX = this.baseX + (x - this.lastPointX);
+    this.baseY = this.baseY + (y - this.lastPointY);
+    this.lastPointX = x;
+    this.lastPointY = y;
+    this.ctx.drawImage(this.image, this.baseX, this.baseY, Math.floor(this.image.width * this.scale), Math.floor(this.image.height * this.scale));
+    this.drawCutout();
+  },
+
+  @*/**
+   * Responsible to draw the cutout over canvas, clockwise rectangle and anticlock wise rectangle, make sure a cutout.
+   * @return { [type]}
+                */*@
+
+  drawCutout: function() {
+    this.ctx.fillStyle = 'rgba(128, 128, 128, 0.7)';
+    this.ctx.beginPath();
+    this.ctx.rect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    //Draw anti clockwise rectangle, for cutout.
+    this.ctx.moveTo(this.cutoutWidth, this.cutoutWidth);
+    this.ctx.lineTo(this.cutoutWidth, this.windowWidth + this.cutoutWidth);
+    this.ctx.lineTo(this.cutoutWidth + this.windowWidth, this.cutoutWidth + this.windowWidth);
+    this.ctx.lineTo(this.cutoutWidth + this.windowWidth, this.cutoutWidth);
+    this.ctx.closePath();
+    this.ctx.fill();
+  },
+
+  @*/**
+   * Get call on mouse press, make click variable to true, which will be used in mousemove events
+                * It also set the point were mouse click happened.
+   * @param  { [type] } e
+                * @return { [type]}
+                    * /*@
+
+  onMouseDown: function(e) {
+    e.preventDefault();
+    var loc = this.windowToCanvas(e.clientX, e.clientY);
+    this.click = true;
+    this.lastPointX = loc.x;
+    this.lastPointY = loc.y;
+  },
+
+  @*/**
+   * Track the mouse movment and draw the image accordingly, but only when clicked happened.
+   * @param  { [type] } e
+                * @return { [type]}
+                    */*@
+  onMouseMove: function(e) {
+    e.preventDefault();
+    if (this.click) {
+      var loc = this.windowToCanvas(e.clientX, e.clientY);
+      this.drawimage(loc.x, loc.y);
+    }
+  },
+
+  @*/**
+   * make click = false, hence no canvas draw on mousemovment.
+   * @param  { [type] } e
+                * @return { [type]}
+                    */*@
+  onMouseUp: function(e) {
+    e.preventDefault();
+    this.click = false;
+  },
+
+  /**
+   * Translate to HTML coardinates to Canvas coardinates.
+   */
+                    windowToCanvas: function(x, y) {
+                        var canvas = this.ctx.canvas;
+                        var bbox = canvas.getBoundingClientRect();
+                        return {
+                            x: x - bbox.left * (canvas.width / bbox.width),
+                            y: y - bbox.top * (canvas.height / bbox.height)
+                        };
+                    },
+
+            @*/**
+   * Get the canavs, remove cutout, create image elemnet on UI.
+   * @return {[type]}
+   */*@
+            showCropedImage: function() {
+                var temp_ctx, temp_canvas;
+                temp_canvas = document.createElement('canvas');
+                temp_ctx = temp_canvas.getContext('2d');
+                temp_canvas.width = this.windowWidth;
+                temp_canvas.height = this.windowWidth;
+                temp_ctx.drawImage(this.ctx.canvas, this.cutoutWidth, this.cutoutWidth, this.windowWidth, this.windowWidth, 0, 0, this.windowWidth, this.windowWidth);
+                var vData = temp_canvas.toDataURL();
+                document.getElementById('ViewProfilePic').src = vData;
+                $('#EditedProfilePic').val(vData)
+            },
+            @*/**
+   * Update image zoom scale on slider movment.
+   * @param  {[type]} e
+   * @return {[type]}
+   */*@
+            updateScale: function(e) {
+                this.scale = e.target.value;
+                this.drawimage(this.lastPointX, this.lastPointY);
+            }
+};
+
+            /**
+             * Trigger the app.
+             */
+    
+</script>
+}

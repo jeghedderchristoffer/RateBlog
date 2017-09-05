@@ -37,7 +37,7 @@ namespace RateBlog.Models.ManageViewModels
             {
                 if (ProfilePic.ContentType != "image/png" && ProfilePic.ContentType != "image/jpeg")
                 {
-                    yield return new ValidationResult("Billedet skal være af typen JPEG eller PGN.");
+                    yield return new ValidationResult("Billedet skal være af typen JPEG eller PNG.");
                 }
 
                 if (ProfilePic.Length > 1000000)

@@ -415,7 +415,7 @@ namespace RateBlog.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/[controller]/Profile/[action]")]
-        public async Task<IActionResult> Edit(EditProfileViewModel model, IFormFile profilePic)
+        public async Task<IActionResult> Edit(EditProfileViewModel model, IFormFile profilePic, string EditedProfilePic)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -433,6 +433,13 @@ namespace RateBlog.Controllers
                     MemoryStream ms = new MemoryStream();
                     profilePic.OpenReadStream().CopyTo(ms);
                     user.ProfilePicture = ms.ToArray();
+                }
+
+                if (EditedProfilePic != null)
+                {
+                    var TempEditProfilePic = EditedProfilePic.Substring(EditedProfilePic.IndexOf("base64") + 7);
+                    byte[] bytes = Convert.FromBase64String(TempEditProfilePic);
+                    user.ProfilePicture = bytes.ToArray();
                 }
 
                 var result = await _userManager.UpdateAsync(user);
