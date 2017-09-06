@@ -806,6 +806,15 @@ footer {
     background-size: cover;
 }
 
+.footer-img.blog {
+    background: linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),url("../images/guldtuben_billede.jpg") no-repeat center;
+    height: 500px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
 .footer-img h1 {
     font-family: 'Raleway', sans-serif;
     color: #fff;
@@ -948,7 +957,15 @@ footer {
 
 /*Influencer*/
 
+.report-feedback-btn {
+    background: #fff;
+    color: #B33A3A;
+    height: 20px;
+    width: 20px;
+    border: none;
+    display: block;
 
+}
 
 .search-input-influencer {
     padding: 4px 16px;
@@ -994,7 +1011,7 @@ footer {
         outline: none;
     }
 
-@media(max-width: 767px){
+@media(max-width: 767px) {
     .search-button-influencer {
         width: 50px;
     }

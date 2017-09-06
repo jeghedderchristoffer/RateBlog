@@ -31,6 +31,8 @@
     <Content Include="wwwroot\images\Category\Interests 2.png" />
     <Content Include="wwwroot\images\Category\lipstick.png" />
     <Content Include="wwwroot\images\Category\Personal.png" />
+    <Content Include="wwwroot\images\Cecilia.png" />
+    <Content Include="wwwroot\images\CH.png" />
     <Content Include="wwwroot\images\Fav.PNG" />
     <Content Include="wwwroot\images\Footer\About.jpg" />
     <Content Include="wwwroot\images\Footer\FAQ.jpeg" />
@@ -40,6 +42,7 @@
     <Content Include="wwwroot\images\Footer\privacy.jpeg" />
     <Content Include="wwwroot\images\Footer\termsandconditions.jpeg" />
     <Content Include="wwwroot\images\Forside.jpeg" />
+    <Content Include="wwwroot\images\guldtuben_billede.jpg" />
     <Content Include="wwwroot\images\home-img.jpeg" />
     <Content Include="wwwroot\images\home.jpeg" />
     <Content Include="wwwroot\images\Jyllandsposten.png" />
@@ -51,6 +54,7 @@
     <Content Include="wwwroot\images\Kategori\lifestyle.png" />
     <Content Include="wwwroot\images\Kategori\personal.png" />
     <Content Include="wwwroot\images\kommunikation.jpeg" />
+    <Content Include="wwwroot\images\Nikolaj.png" />
     <Content Include="wwwroot\images\programing.jpeg" />
     <Content Include="wwwroot\js\AdminStatisticsFilter.js" />
     <Content Include="wwwroot\js\bestjavascript.js" />

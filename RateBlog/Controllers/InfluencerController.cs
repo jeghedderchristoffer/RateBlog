@@ -31,8 +31,9 @@ namespace RateBlog.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFeedbackService _feedbackService;
         private readonly IInfluencerService _influencerService;
+        private readonly IRepository<FeedbackReport> _feedbackReportRepo;
 
-        public InfluencerController(IInfluencerService influencerService, IRepository<Category> categoryRepo, IInfluencerRepository influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IFeedbackService feedbackService)
+        public InfluencerController(IRepository<FeedbackReport> feedbackReportRepo, IInfluencerService influencerService, IRepository<Category> categoryRepo, IInfluencerRepository influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IFeedbackService feedbackService)
         {
             _influencerRepo = influencer;
             _userManager = userManager;
@@ -41,6 +42,7 @@ namespace RateBlog.Controllers
             _categoryRepo = categoryRepo;
             _feedbackService = feedbackService;
             _influencerService = influencerService;
+            _feedbackReportRepo = feedbackReportRepo;
         }
 
         [HttpGet]
@@ -429,6 +431,29 @@ namespace RateBlog.Controllers
             }
 
             return Json(result.Skip(pageIndex * pageSize).Take(pageSize));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public JsonResult ReportFeedback(string feedbackId, string userId, string reason, string description)
+        {
+            if(string.IsNullOrEmpty(reason) && string.IsNullOrEmpty(description))
+            {
+                return Json("Error");
+            }
+
+            var feedbackReport = new FeedbackReport()
+            {
+                ApplicationUserId  = userId,
+                DateTime = DateTime.Now,
+                Description = description,
+                FeedbackId = feedbackId,
+                Reason = reason
+            };
+
+            _feedbackReportRepo.Add(feedbackReport);
+
+            return Json("Success"); 
         }
 
 

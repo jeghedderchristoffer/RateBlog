@@ -286,38 +286,8 @@ namespace RateBlog.Controllers
         }
 
 
-
-
-
-
-
-
-
-
-
-
-        [HttpGet]
-        public IActionResult EditFeedback(string id, bool isInfluencer)
-        {
-            var feedback = _feedbackRepo.Get(id);
-
-            return View(feedback);
-        }
-
-        [HttpPost]
-        public IActionResult EditFeedback(Feedback feedback)
-        {
-            var editFeedback = _feedbackRepo.Get(feedback.Id);
-            editFeedback.FeedbackGood = feedback.FeedbackGood;
-            editFeedback.FeedbackBetter = feedback.FeedbackBetter;
-            editFeedback.Answer = feedback.Answer;
-            _feedbackRepo.Update(editFeedback);
-
-            return RedirectToAction("Index");
-        }
-
-        
-
+         
+        #region Thomas
         [HttpGet]
         public IActionResult InfluenterStatistics(string id)
         {
@@ -331,7 +301,6 @@ namespace RateBlog.Controllers
             };
             return View(StatisticVm);
         }
-
 
         public PartialViewResult InfluenterStatisticsBfStats(string id)
         {
@@ -375,7 +344,10 @@ namespace RateBlog.Controllers
             };
 
             return Json(ResultData);
-        }
+        } 
+        #endregion
+
+        #region Helpers
 
         private void PopulatePlatforms(ICollection<InfluencerPlatform> list, InfluencerViewModel viewModel)
         {
@@ -432,68 +404,7 @@ namespace RateBlog.Controllers
             }
         }
 
-        private void PopulatePlatforms(ICollection<InfluencerPlatform> list, EditUserViewModel viewModel)
-        {
-            foreach (var v in list)
-            {
-                if (v.Platform.Name == "Facebook")
-                {
-                    viewModel.FacebookLink = v.Link;
-                }
-                else if (v.Platform.Name == "YouTube")
-                {
-                    viewModel.YoutubeLink = v.Link;
-                }
-                else if (v.Platform.Name == "SecondYouTube")
-                {
-                    viewModel.SecondYoutubeLink = v.Link;
-                }
-                else if (v.Platform.Name == "Twitter")
-                {
-                    viewModel.TwitterLink = v.Link;
-                }
-                else if (v.Platform.Name == "Twitch")
-                {
-                    viewModel.TwitchLink = v.Link;
-                }
-                else if (v.Platform.Name == "Website")
-                {
-                    viewModel.WebsiteLink = v.Link;
-                }
-                else if (v.Platform.Name == "Instagram")
-                {
-                    viewModel.InstagramLink = v.Link;
-                }
-                else if (v.Platform.Name == "SnapChat")
-                {
-                    viewModel.SnapchatLink = v.Link;
-                }
-            }
-        }
+        #endregion
 
-
-        private List<InfluenterKategoriViewModel> GetInfluenterKategoriList(string id)
-        {
-            var user = _userManager.Users.SingleOrDefault(x => x.Id == id);
-            var influencer = _influencerRepo.Get(user.Id);
-
-            if (influencer != null)
-            {
-                return new List<InfluenterKategoriViewModel>()
-                    {
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Lifestyle", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id , _platformCategoryService.GetCategoryIdByName("Lifestyle")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Beauty", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Beauty")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Entertainment", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Entertainment"))  },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Fashion", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Fashion")) },
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Interests", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Interests"))},
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Gaming", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Gaming"))},
-                        new InfluenterKategoriViewModel(){ KategoriNavn = "Personal", IsSelected = _platformCategoryService.IsCategorySelected(influencer.Id, _platformCategoryService.GetCategoryIdByName("Personal")) },
-                    };
-            }
-            else
-            {
-                return new List<InfluenterKategoriViewModel>();
-            }
-        }
     }
 }
