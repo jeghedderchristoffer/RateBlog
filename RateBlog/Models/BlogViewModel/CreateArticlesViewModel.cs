@@ -18,7 +18,7 @@ namespace RateBlog.Models.BlogViewModel
         public IFormFile ArticlesPicture { get; set; }
         public IFormFile IndexPicture { get; set; }
 
-     
+        public List<Blog> BlogList { get; set; }
 
     }
 }

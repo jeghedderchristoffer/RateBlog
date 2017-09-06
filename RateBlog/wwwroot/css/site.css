@@ -3714,3 +3714,30 @@ div[data-role="editor-toolbar"] {
 .dropdown-menu a {
     cursor: pointer;
 }
+
+.blog-categories {
+    opacity: 0.6;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+
+.blog-author {
+    opacity: 0.6;
+    padding-bottom: 5px;
+    padding-top: 10px;
+}
+.news-container {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: #f2f1ed;
+    line-height: 180%;
+}
+
+
+@media (max-width: 767px) {
+    .news-container p {
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+}

@@ -28,17 +28,17 @@
         @foreach (var article in Model.BlogList)
         {
             <div>
-                <div style="display:inline-block;padding-top:15px;m">
+                <div style="display:inline-block;padding-top:15px;">
 
-                    <div class="blog-box col-md-10">
+                    <div class="blog-box col-md-10 col-xs-10">
                                                                            
                        
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-xs-2">
                                 <div style="display:inline-block;vertical-align:top;">
                                     <img class="blog-picture" src="@Url.Action("IndexProfilePic", "Blog", new { id = article.Id} )" />
                                 </div>
                             </div>
-                            <div class="col-md-8" style="display:inline-block;align-content:flex-end;margin-left:50px;min-width:875px;">
+                            <div class="col-md-8 col-xs-8" style="display:inline-block;align-content:flex-end;margin-left:50px;min-width:875px;">
 
 
                                     <h1 style="font-size:30px;opacity:0.8;margin-top:-3px;">@article.ArticleHeader</h1>

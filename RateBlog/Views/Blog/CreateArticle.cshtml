@@ -16,8 +16,6 @@
         <br />
     </div>
 
-
-
     <div>
         <input class="blog-input-styling" placeholder="Titel" id="articleHeaderId" />
         <br />
@@ -66,7 +64,7 @@
                 <ul class="dropdown-menu">
                     <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
                     <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
-                    <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+                    <li><a data-edit="FontSize 1"><font size="1">Small</font></a></li>
                 </ul>
             </div>
             <div class="btn-group">
@@ -119,34 +117,19 @@
 
 <div class="container" style="text-align:center">
 
-    <h3 style="padding-bottom:15px;">Indsæt index billede</h3>
-    <input form="createBlog" style="background:orange;margin-left:437px;" type="file" value="Indsæt billed" class="blog-btn" id="indexPictureId" />
-    <h3 style="padding-bottom:15px;">Indsæt artikel billede</h3>
-    <input form="createBlog" style="background:orange;margin-left:437px;" type="file" value="Indsæt billed" class="blog-btn" id="articlePictureId"/>
     <h3>Offentliggør artikel</h3>
     <input id="TransferButton" style="background:blue;" class="blog-btn" value="Gem" />
 
-    <p>Gem artikelen før du går videre til at uploade index og artikel billed</p>
-    
-    @*asp-route-id="@Model.id"*@
-    <form asp-action="UploadPictureView" method="get">
-        <input type="submit" />
-    </form>
+    <h3>Gem artikelen før du går videre til at uploade index og artikel billed</h3>
+     
+    <form asp-action="BlogList" method="get">
+        <input type="submit" style="background:orange;" class="blog-btn" value="Gå til blogList index"/>
+    </form>   
 
 </div>
 
 @section Scripts{
     <script type="text/javascript">
-        //$(document).ready(function () {
-
-        //    $('#editor').wysiwyg();
-        //    $('#editor').html();
-
-        //});
-
-
-
-
         $("#editor").wysiwyg();
 
         $(document).ready(function () {

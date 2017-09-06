@@ -52,6 +52,21 @@ namespace RateBlog.Controllers
             return View(model); 
         }
 
+        [HttpGet]
+        public IActionResult BlogList(string id)
+        {
+            var getAllBlogs = _blogRepo.GetAll();
+
+            var blog = new BlogViewModel()
+            {
+
+                BlogList = getAllBlogs.ToList(),
+
+            };
+
+            return View(blog);
+        }
+
 
         [HttpGet]
         public IActionResult UploadPictureView(string id)
@@ -71,8 +86,7 @@ namespace RateBlog.Controllers
         public IActionResult UploadPictureView(string id, BlogViewModel model)
         {
             var blog = _blogRepo.Get(id);
-
-          
+         
 
             if (ModelState.IsValid)
             {
@@ -95,8 +109,7 @@ namespace RateBlog.Controllers
                 _blogRepo.Update(blog);
             }
             return RedirectToAction("Index", model);
-            //return View(model);
-
+          
         }
 
         public IActionResult CreateArticle()
@@ -106,15 +119,11 @@ namespace RateBlog.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         public JsonResult CreateArticle(CreateArticlesViewModel model)
         {
             if (ModelState.IsValid)
             {
-
-
-
                 Blog blog = new Blog()
                 {
                     ArticleHeader = model.ArticleHeader,
@@ -124,8 +133,6 @@ namespace RateBlog.Controllers
                     BriefText = model.BriefText,
                     ArticleText = model.ArticleText,                    
                 };
-
-               
 
                 _blogRepo.Add(blog);
 

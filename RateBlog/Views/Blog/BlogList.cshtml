@@ -1,0 +1,59 @@
+﻿@model RateBlog.Models.BlogViewModel.BlogViewModel
+
+<div class="navbar-allaround">
+
+</div>
+
+<div class="container">
+
+
+    <table style="margin-top:70px;" class="table table-striped">
+        <thread>
+            <tr>
+                <th>
+                    <p>Artikel navn</p>
+
+                </th>
+                <th>
+                    <p>Dato</p>
+
+                </th>
+
+                <th>
+                    <p>Forfatter</p>
+
+                </th>
+
+                <th>
+                    <p>Upload billeder</p>
+                </th>
+
+
+            </tr>
+        </thread>
+        <tbody>
+
+
+            @foreach (var article in Model.BlogList)
+            {
+                <tr>
+                    <td>
+                        <p>@article.ArticleHeader</p>
+                    </td>
+
+                    <td>
+                        <p>@article.DateTime</p>
+                    </td>
+                    <td>
+                        <p>@article.Author</p>
+                    </td>
+                    <td>
+                        <a asp-controller="Blog" asp-action="UploadPictureView" asp-route-id="@article.Id" style="font-size:20px;color:#089DE3;">Upload Pictures </a>   
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
