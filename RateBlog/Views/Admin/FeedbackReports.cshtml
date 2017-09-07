@@ -1,0 +1,63 @@
+﻿@model RateBlog.Models.AdminViewModels.FeedbackReportViewModel
+
+<div class="background-all" style="padding-bottom: 0">
+
+    @Html.Partial("_NavbarPartial", "")
+
+    <div class="navbar-allaround" style="position: relative"></div>
+
+    <div class="admin-container" style="padding-top: 30px; padding-bottom: 80px; overflow-y: scroll; height: calc(100vh - 70px)">
+
+        <div class="container">
+            <div class="col-md-12" style="padding-top: 30px">
+
+                <div class="col-md-12 white-box">
+                    <div class="col-md-8 noPadding">
+                        <p><b>Feedback til: </b>@Model.Feedback.Influenter.Alias</p>
+                        <p><b>Fra: </b>@Model.Feedback.ApplicationUser.Name</p>
+                        <p><b>Godt: </b>@Model.Feedback.FeedbackGood</p>
+                        <p><b>Dårligt: </b>@Model.Feedback.FeedbackBetter</p>
+                        <p><b>Svar: </b>@Model.Feedback.Answer</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="admin-buttons" style="padding-top: 8px">
+                            <form asp-controller="Admin" asp-action="FeedbackReportsOk">
+                                <input type="hidden" value="@Model.Feedback.Id" name="id"/>
+                                <button type="submit" style="background: green">ACCEPTER</button>
+                            </form>
+                            
+                            <br />
+                            <form asp-controller="Admin" asp-action="FeedbackReportsDelete">
+                                <input type="hidden" value="@Model.Feedback.Id" name="id" />
+                                <button type="submit" style="background: red">SLET</button>
+                            </form>
+                        </div>
+                    </div>
+       
+                </div>
+
+                @foreach (var v in Model.FeedbackReports.OrderBy(x => x.IsRead))
+                {
+                    var isRead = (v.IsRead) ? "JA" : "NEJ";
+
+                    <div class="col-md-12 white-box">
+                        <p><b>Rapportering d. @v.DateTime.ToString("dd-MM-yyyy") fra: </b>@v.ApplicationUser.Name</p>
+                        <p><b>Begrundelse:</b> @v.Reason</p>
+                        <p><b>Beskrivelse: </b>@v.Description</p>
+                        <p>
+                            <b>Godkendt: </b>
+                            @if (v.IsRead)
+                            {
+                                <i class="fa fa-check" style="color: green" aria-hidden="true"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
+                            }
+                        </p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -18,7 +18,10 @@ namespace RateBlog.Models
 
         public string Reason { get; set; } 
 
-        public DateTime DateTime { get; set; } 
+        public DateTime DateTime { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsRead { get; set; } 
 
         [DefaultValue(null)]
         [StringLength(200)]

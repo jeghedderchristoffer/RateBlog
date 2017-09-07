@@ -14,11 +14,11 @@
 <div id="reportModal" class="modal fade" role="dialog">
     <div class="modal-dialog" style="max-width: 350px">
         <div class="modal-content">
-            <div class="modal-header" style="padding: 10px; background: #fafafa; border-top-left-radius: 6px; border-top-right-radius: 6px">
+            <div class="modal-header" style="padding: 10px 15px; background: #fafafa; border-top-left-radius: 6px; border-top-right-radius: 6px">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Rapportér en feedback</h4>
+                <h4 class="modal-title">Rapportér feedback</h4>
             </div>  
-            <div class="modal-body" style="padding: 10px">
+            <div class="modal-body" style="padding: 15px">
                 <label>
                     <input type="checkbox" name="reason"  id="LanguageUse" value="Upassende sprogbrug"> Upassende sprogbrug
                 </label>
@@ -126,11 +126,8 @@
 
                 @foreach (var v in Model.Influenter.Ratings.OrderByDescending(x => x.FeedbackDateTime))
                 {
-                    <div class="col-md-12 noPadding white-box">
+                    <div class="col-md-12 col-sm-12 col-xs-12 noPadding white-box">
                         <div class="profile-follower-ratings">
-
-                            
-
                             <div class="col-md-2 noPadding">
                                 <a asp-controller="Account" asp-action="Profile" asp-route-id="@v.ApplicationUserId">
                                     <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
@@ -185,16 +182,23 @@
                                     <h4>@v.ApplicationUser.Name</h4>
                                     <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
                                 </div>
-
                                 <br />
                             </div>
 
-                            <div class="col-md-offset-2 col-md-10 noPaddingLeft">
-                                <p><b>@v.ApplicationUser.Name synes godt om følgende:</b></p>
-                                <p style="white-space: pre-line">@v.FeedbackGood</p>
-                                <br />
-                                <p><b>@v.ApplicationUser.Name synes følgende kan forbedres:</b></p>
-                                <p style="white-space: pre-line">@v.FeedbackBetter</p>
+                            <div class="col-md-offset-2 col-md-10 noPadding">
+                                @if (!string.IsNullOrEmpty(v.FeedbackGood))
+                                {
+                                    <p><b>@v.ApplicationUser.Name synes godt om følgende:</b></p>
+                                    <p style="white-space: pre-line">@v.FeedbackGood</p>
+                                }
+
+                                @if(!string.IsNullOrEmpty(v.FeedbackBetter) && !string.IsNullOrEmpty(v.FeedbackGood)) { <br /> }
+
+                                @if (!string.IsNullOrEmpty(v.FeedbackBetter))
+                                {
+                                    <p><b>@v.ApplicationUser.Name synes følgende kan forbedres:</b></p>
+                                    <p style="white-space: pre-line">@v.FeedbackBetter</p>
+                                }
                             </div>
 
                             @if (v.Answer != null)
@@ -290,6 +294,7 @@
                             }, 1500);
                         }
 
+                        $("#description").val('');
 
                         $("input[name=reason]:checked").each(function () {
                             $(this).attr('checked', false);

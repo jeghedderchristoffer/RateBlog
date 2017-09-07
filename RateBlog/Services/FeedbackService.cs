@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using RateBlog.Data;
 using RateBlog.Models;
 using RateBlog.Repository;
 using System;
@@ -12,12 +14,14 @@ namespace RateBlog.Services
         private readonly IInfluencerRepository _influencerRepo;
         private readonly IRepository<Feedback> _feedbackRepo;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _dbContext;
 
-        public FeedbackService(IInfluencerRepository influencerRepo, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager)
+        public FeedbackService(IInfluencerRepository influencerRepo, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext)
         {
             _influencerRepo = influencerRepo;
             _feedbackRepo = feedbackRepo;
             _userManager = userManager;
+            _dbContext = dbContext;
         }
 
         public double FeedbackCountdown(string userId, string influencerId)
@@ -150,6 +154,21 @@ namespace RateBlog.Services
                 return influencer.Ratings.Where(x => x.IsRead == false).Count();
             else
                 return _feedbackRepo.GetAll().Where(x => x.IsAnswerRead == false && x.Answer != null && x.ApplicationUserId == id).Count();
+        }
+
+        public IEnumerable<FeedbackReport> GetUnreadFeedbackReports()
+        {
+            return _dbContext.FeedbackReports.Where(x => x.IsRead == false).Include(x => x.Feedback).ThenInclude(x => x.Influenter); 
+        }
+
+        public IEnumerable<FeedbackReport> GetReportForFeedback(string id)
+        {
+            return _dbContext.FeedbackReports.Where(x => x.FeedbackId == id).Include(x => x.ApplicationUser); 
+        }
+
+        public Feedback GetFeedbackInfo(string id)
+        {
+            return _dbContext.Feedback.Include(x => x.ApplicationUser).Include(x => x.Influenter).SingleOrDefault(x => x.Id == id); 
         }
     }
 }

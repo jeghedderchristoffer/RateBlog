@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RateBlog.Helper;
 using RateBlog.Models;
 using RateBlog.Models.AdminViewModels;
 using RateBlog.Models.ManageViewModels;
@@ -23,25 +24,27 @@ namespace RateBlog.Controllers
         private readonly IInfluencerService _influencerService;
         private readonly IInfluencerRepository _influencerRepo;
         private readonly IEmailSender _emailSender;
-        private readonly IPlatformCategoryService _platformCategoryService;
         private readonly IRepository<Platform> _platformRepo;
         private readonly IRepository<Category> _categoryRepo;
         private readonly IRepository<Feedback> _feedbackRepo;
         private readonly IAdminService _adminService;
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IFeedbackService _feedbackService;
+        private readonly IRepository<FeedbackReport> _feedbackReportRepo;
 
-        public AdminController(IPasswordHasher<ApplicationUser> passwordHasher, IAdminService adminService, IRepository<Feedback> feedbackRepo, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IEmailSender emailSender, UserManager<ApplicationUser> userManager, IInfluencerService influencerService, IInfluencerRepository influencerRepo, IPlatformCategoryService platformCategoryService)
+        public AdminController(IRepository<FeedbackReport> feedbackReportRepo, IFeedbackService feedbackService, IPasswordHasher<ApplicationUser> passwordHasher, IAdminService adminService, IRepository<Feedback> feedbackRepo, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IEmailSender emailSender, UserManager<ApplicationUser> userManager, IInfluencerService influencerService, IInfluencerRepository influencerRepo)
         {
             _userManager = userManager;
             _influencerService = influencerService;
             _influencerRepo = influencerRepo;
             _emailSender = emailSender;
-            _platformCategoryService = platformCategoryService;
             _platformRepo = platformRepo;
             _categoryRepo = categoryRepo;
             _feedbackRepo = feedbackRepo;
             _adminService = adminService;
             _passwordHasher = passwordHasher;
+            _feedbackService = feedbackService;
+            _feedbackReportRepo = feedbackReportRepo; 
         }
 
         [HttpGet]
@@ -60,11 +63,27 @@ namespace RateBlog.Controllers
             }
 
             var unApprovedList = _influencerService.GetUnApprovedInfluencers();
+            var feedbackReports = _feedbackService.GetUnreadFeedbackReports();
+
+            var feedbackList = new List<DisplayFeedbackReports>();
+
+            foreach (var v in feedbackReports)
+            {
+                if (!feedbackList.Any(x => x.Feedback == v.Feedback))
+                {
+                    feedbackList.Add(new DisplayFeedbackReports() { Feedback = v.Feedback, Count = 1 });
+                }
+                else
+                {
+                    feedbackList.SingleOrDefault(x => x.Feedback == v.Feedback).Count++;
+                }
+            }
 
             var model = new Models.AdminViewModels.IndexViewModel()
             {
                 AllUsers = users,
-                NotApprovedList = unApprovedList
+                NotApprovedList = unApprovedList, 
+                FeedbackReports = feedbackList
             };
 
 
@@ -231,7 +250,6 @@ namespace RateBlog.Controllers
                 return RedirectToAction("UserProfile", "Admin", new { id = model.ApplicationUser.Id });
         }
 
-
         [HttpGet]
         public IActionResult Feedback(string id)
         {
@@ -257,7 +275,6 @@ namespace RateBlog.Controllers
 
             return View(model);
         }
-
 
         [HttpPost]
         public IActionResult DeleteFeedback(string id, string userId)
@@ -285,8 +302,50 @@ namespace RateBlog.Controllers
             return View(model); 
         }
 
+        [HttpGet]
+        public IActionResult FeedbackReports(string id)
+        {
+            var feedback = _feedbackService.GetFeedbackInfo(id); 
+            var reports = _feedbackService.GetReportForFeedback(feedback.Id); 
 
-         
+            var model = new FeedbackReportViewModel()
+            {
+                Feedback = feedback,
+                FeedbackReports = reports
+            };
+
+            return View(model); 
+        }
+
+        [HttpPost]
+        public IActionResult FeedbackReportsOk(string id)
+        {
+            var reports = _feedbackService.GetReportForFeedback(id); 
+
+            foreach(var v in reports.ToList())
+            {
+                v.IsRead = true;
+                _feedbackReportRepo.Update(v);  
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult FeedbackReportsDelete(string id)
+        {
+            var reports = _feedbackService.GetReportForFeedback(id);
+
+            foreach(var v in reports.ToList())
+            {
+                _feedbackReportRepo.Delete(v); 
+            }
+
+            _feedbackRepo.Delete(_feedbackRepo.Get(id)); 
+
+            return RedirectToAction("Index");
+        }
+
         #region Thomas
         [HttpGet]
         public IActionResult InfluenterStatistics(string id)
