@@ -34,15 +34,15 @@
                     <div class="white-box scroll" style="height: calc(50vh - 70px)">
                         <h3>Anmeldelser</h3>
                         <hr style="margin-top: 5px;" />
-                        @*<div id="approveInfluencers">
+                        <div id="unreadFeedbackReports">
                             <ul>
-                                @foreach (var v in Model.InfluencerApprovedList)
+                                @foreach (var v in Model.FeedbackReports)
                                 {
-                                    <li><a asp-controller="Admin" asp-action="UserProfile" asp-route-id="@v.Id">@v.Name</a></li>
+                                    <li><a asp-controller="Admin" asp-action="FeedbackReports" asp-route-id="@v.Feedback.Id"><b>Feedback til:</b> @v.Feedback.Influenter.Alias <div class="badge" style="color: #fff">@v.Count</div></a></li>
                                 }
 
                             </ul>
-                        </div>*@
+                        </div>
                     </div>
                 </div>
             </div>

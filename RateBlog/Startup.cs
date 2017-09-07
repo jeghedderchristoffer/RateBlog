@@ -74,15 +74,16 @@ namespace RateBlog
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddTransient<IFeedbackService, FeedbackService>();
-            services.AddTransient<IPlatformCategoryService, PlatformCategoryService>();
-            //services.AddScoped(typeof(IRepository<>), typeof(IRepository<>)); VIRKER IKKE
+
+            services.AddTransient<IInfluencerRepository, InfluencerRepository>();
             services.AddTransient<IRepository<Platform>, Repository<Platform>>();
             services.AddTransient<IRepository<Category>, Repository<Category>>();
             services.AddTransient<IRepository<Feedback>, Repository<Feedback>>();
-            services.AddTransient<IInfluencerRepository, InfluencerRepository>();
+            services.AddTransient<IRepository<FeedbackReport>, Repository<FeedbackReport>>();
+
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IFeedbackService, FeedbackService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

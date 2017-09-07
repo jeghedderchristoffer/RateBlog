@@ -44,13 +44,39 @@ namespace RateBlog.Services
         double FeedbackCountdown(string userId, string influencerId);
 
         /// <summary>
-        /// 
+        /// Gets the unread feedbackCount
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         int UnreadFeedbackCount(string id);
 
+        /// <summary>
+        /// Read the feedbacks??
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         int ReadFeedback(string id, string userId);
+
+        /// <summary>
+        /// Gets all the unread feedback reports for users. 
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<FeedbackReport> GetUnreadFeedbackReports();
+
+        /// <summary>
+        /// Gets all the reports for 1 feedback
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        IEnumerable<FeedbackReport> GetReportForFeedback(string id);
+        
+        /// <summary>
+        /// Gets all the feedback Information
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Feedback GetFeedbackInfo(string id); 
 
     }
 }

@@ -111,6 +111,11 @@ namespace RateBlog.Controllers
             return View();
         }
 
+        public IActionResult FeedbackAndAnswers()
+        {
+            return View();
+        }
+
         public PartialViewResult LoginPartial()
         {
             return PartialView("_LoginPartial");

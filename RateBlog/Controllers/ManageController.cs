@@ -40,7 +40,6 @@ namespace RateBlog.Controllers
         private readonly IRepository<Platform> _platformRepo;
         private readonly IRepository<Category> _categoryRepo;
         private readonly IRepository<Feedback> _feedbackRepo;
-        private readonly IPlatformCategoryService _platformCategoryService;
         private readonly IHostingEnvironment _env;
         private readonly IFeedbackService _feedbackService;
 
@@ -55,7 +54,6 @@ namespace RateBlog.Controllers
           IRepository<Platform> platformRepo,
           IRepository<Category> categoryRepo,
           IRepository<Feedback> feedbackRepo,
-          IPlatformCategoryService platformCategoryService,
           IHostingEnvironment env, 
           IFeedbackService feedbackService)
         {
@@ -63,7 +61,6 @@ namespace RateBlog.Controllers
             _platformRepo = platformRepo;
             _categoryRepo = categoryRepo;
             _feedbackRepo = feedbackRepo;
-            _platformCategoryService = platformCategoryService;
             _env = env;
             _userManager = userManager;
             _signInManager = signInManager;

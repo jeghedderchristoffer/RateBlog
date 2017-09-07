@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RateBlog.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,9 @@ namespace RateBlog.Models.AdminViewModels
     {
         public List<ApplicationUser> AllUsers { get; set; }
 
-        public IEnumerable<Influencer> NotApprovedList { get; set; } 
+        public IEnumerable<Influencer> NotApprovedList { get; set; }
+
+        public IEnumerable<DisplayFeedbackReports> FeedbackReports { get; set; } 
 
     }
 }
