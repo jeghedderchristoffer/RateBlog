@@ -1066,7 +1066,6 @@ footer {
 }
 
     .search-result h4 {
-        font-family: 'Raleway', sans-serif;
         margin-top: 42px;
         font-weight: bolder;
     }
@@ -2568,3 +2567,15 @@ footer {
 /*Admin End*/
 
 
+/*Blog*/
+
+.footer-img.blog {
+    background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url("../images/guldtuben_billede.jpg") no-repeat center;
+    height: 500px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+/*Blog End*/

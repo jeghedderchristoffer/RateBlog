@@ -40,6 +40,7 @@
     <Content Include="wwwroot\images\Footer\privacy.jpeg" />
     <Content Include="wwwroot\images\Footer\termsandconditions.jpeg" />
     <Content Include="wwwroot\images\Forside.jpeg" />
+    <Content Include="wwwroot\images\guldtuben_billede.jpg" />
     <Content Include="wwwroot\images\home-img.jpeg" />
     <Content Include="wwwroot\images\home.jpeg" />
     <Content Include="wwwroot\images\Jyllandsposten.png" />
