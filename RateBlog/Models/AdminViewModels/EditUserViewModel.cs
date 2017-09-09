@@ -10,7 +10,6 @@ namespace RateBlog.Models.AdminViewModels
     {
         public ApplicationUser ApplicationUser { get; set; }
         public Influencer Influencer { get; set; }
-        public List<InfluenterKategoriViewModel> IKList { get; set; }
 
         public string FacebookLink { get; set; }
         public string InstagramLink { get; set; }

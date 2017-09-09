@@ -73,13 +73,13 @@ namespace RateBlog
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.AddTransient<IInfluencerRepository, InfluencerRepository>();
             services.AddTransient<IRepository<Platform>, Repository<Platform>>();
             services.AddTransient<IRepository<Category>, Repository<Category>>();
             services.AddTransient<IRepository<Feedback>, Repository<Feedback>>();
             services.AddTransient<IRepository<FeedbackReport>, Repository<FeedbackReport>>();
+            services.AddTransient<IRepository<EmailNotification>, Repository<EmailNotification>>(); 
 
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();

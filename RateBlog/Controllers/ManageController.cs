@@ -30,61 +30,40 @@ namespace RateBlog.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly string _externalCookieScheme;
         private readonly IEmailSender _emailSender;
-        private readonly ISmsSender _smsSender;
-        private readonly ILogger _logger;
-
-
         private readonly IInfluencerRepository _influencerRepo;
         private readonly IRepository<Platform> _platformRepo;
-        private readonly IRepository<Category> _categoryRepo;
         private readonly IRepository<Feedback> _feedbackRepo;
         private readonly IHostingEnvironment _env;
         private readonly IFeedbackService _feedbackService;
+        private readonly IRepository<EmailNotification> _emailNotification;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
-          IOptions<IdentityCookieOptions> identityCookieOptions,
           IEmailSender emailSender,
-          ISmsSender smsSender,
-          ILoggerFactory loggerFactory,
           IInfluencerRepository influencerRepo,
           IRepository<Platform> platformRepo,
           IRepository<Category> categoryRepo,
           IRepository<Feedback> feedbackRepo,
-          IHostingEnvironment env, 
-          IFeedbackService feedbackService)
+          IHostingEnvironment env,
+          IFeedbackService feedbackService,
+          IRepository<EmailNotification> emailNotification)
         {
             _influencerRepo = influencerRepo;
             _platformRepo = platformRepo;
-            _categoryRepo = categoryRepo;
             _feedbackRepo = feedbackRepo;
             _env = env;
             _userManager = userManager;
             _signInManager = signInManager;
-            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
-            _smsSender = smsSender;
-            _logger = loggerFactory.CreateLogger<ManageController>();
             _feedbackService = feedbackService;
+            _emailNotification = emailNotification;
         }
 
-        //
-        // GET: /Manage/Index
         [HttpGet]
-        public async Task<IActionResult> Profile(ManageMessageId? message = null)
+        public async Task<IActionResult> Profile()
         {
-            ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : "";
-
             var user = await GetCurrentUserAsync();
             if (user == null)
             {
@@ -99,295 +78,13 @@ namespace RateBlog.Controllers
             // Go back to the year the person was born in case of a leap year
             if (user.BirthDay > today.AddYears(-age)) age--;
 
-            var model = new IndexViewModel
+            var model = new ProfileViewModel
             {
-                //HasPassword = await _userManager.HasPasswordAsync(user),
-                //PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
-                //TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
-                //Logins = await _userManager.GetLoginsAsync(user),
-                //BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
                 ApplicationUser = user,
                 Age = age,
                 Gender = gender,
             };
             return View(model);
-        }
-
-        //
-        // POST: /Manage/RemoveLogin
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel account)
-        //{
-        //    ManageMessageId? message = ManageMessageId.Error;
-        //    var user = await GetCurrentUserAsync();
-        //    if (user != null)
-        //    {
-        //        var result = await _userManager.RemoveLoginAsync(user, account.LoginProvider, account.ProviderKey);
-        //        if (result.Succeeded)
-        //        {
-        //            await _signInManager.SignInAsync(user, isPersistent: false);
-        //            message = ManageMessageId.RemoveLoginSuccess;
-        //        }
-        //    }
-        //    return RedirectToAction(nameof(ManageLogins), new { Message = message });
-        //}
-
-        //
-        // GET: /Manage/AddPhoneNumber
-        //public IActionResult AddPhoneNumber()
-        //{
-        //    return View();
-        //}
-
-        ////
-        //// POST: /Manage/AddPhoneNumber
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-        //    // Generate the token and send it
-        //    var user = await GetCurrentUserAsync();
-        //    if (user == null)
-        //    {
-        //        return View("Error");
-        //    }
-        //    var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, model.PhoneNumber);
-        //    await _smsSender.SendSmsAsync(model.PhoneNumber, "Your security code is: " + code);
-        //    return RedirectToAction(nameof(VerifyPhoneNumber), new { PhoneNumber = model.PhoneNumber });
-        //}
-
-        //
-        // POST: /Manage/EnableTwoFactorAuthentication
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> EnableTwoFactorAuthentication()
-        //{
-        //    var user = await GetCurrentUserAsync();
-        //    if (user != null)
-        //    {
-        //        await _userManager.SetTwoFactorEnabledAsync(user, true);
-        //        await _signInManager.SignInAsync(user, isPersistent: false);
-        //        _logger.LogInformation(1, "User enabled two-factor authentication.");
-        //    }
-        //    return RedirectToAction(nameof(Index), "Manage");
-        //}
-
-        //
-        // POST: /Manage/DisableTwoFactorAuthentication
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DisableTwoFactorAuthentication()
-        //{
-        //    var user = await GetCurrentUserAsync();
-        //    if (user != null)
-        //    {
-        //        await _userManager.SetTwoFactorEnabledAsync(user, false);
-        //        await _signInManager.SignInAsync(user, isPersistent: false);
-        //        _logger.LogInformation(2, "User disabled two-factor authentication.");
-        //    }
-        //    return RedirectToAction(nameof(Index), "Manage");
-        //}
-
-        //
-        // GET: /Manage/VerifyPhoneNumber
-        //[HttpGet]
-        //public async Task<IActionResult> VerifyPhoneNumber(string phoneNumber)
-        //{
-        //    var user = await GetCurrentUserAsync();
-        //    if (user == null)
-        //    {
-        //        return View("Error");
-        //    }
-        //    var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
-        //    // Send an SMS to verify the phone number
-        //    return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
-        //}
-
-        //
-        // POST: /Manage/VerifyPhoneNumber
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-        //    var user = await GetCurrentUserAsync();
-        //    if (user != null)
-        //    {
-        //        var result = await _userManager.ChangePhoneNumberAsync(user, model.PhoneNumber, model.Code);
-        //        if (result.Succeeded)
-        //        {
-        //            await _signInManager.SignInAsync(user, isPersistent: false);
-        //            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.AddPhoneSuccess });
-        //        }
-        //    }
-        //    // If we got this far, something failed, redisplay the form
-        //    ModelState.AddModelError(string.Empty, "Failed to verify phone number");
-        //    return View(model);
-        //}
-
-        //
-        // POST: /Manage/RemovePhoneNumber
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> RemovePhoneNumber()
-        //{
-        //    var user = await GetCurrentUserAsync();
-        //    if (user != null)
-        //    {
-        //        var result = await _userManager.SetPhoneNumberAsync(user, null);
-        //        if (result.Succeeded)
-        //        {
-        //            await _signInManager.SignInAsync(user, isPersistent: false);
-        //            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.RemovePhoneSuccess });
-        //        }
-        //    }
-        //    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
-        //}
-
-        //
-        // GET: /Manage/ChangePassword
-
-        [HttpGet]
-        [Route("/[controller]/Change/[action]")]
-        public IActionResult Password()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/ChangePassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("/[controller]/Change/[action]")]
-        public async Task<IActionResult> Password(ChangePasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User changed their password successfully.");
-                    TempData["Success"] = "Du har skiftet dit kodeord!";
-                    return RedirectToAction(nameof(Profile), new { Message = ManageMessageId.ChangePasswordSuccess });
-                }
-                AddErrors(result);
-                return View(model);
-            }
-            return RedirectToAction(nameof(Profile), new { Message = ManageMessageId.Error });
-        }
-
-        //
-        // GET: /Manage/SetPassword
-        //[HttpGet]
-        //public IActionResult SetPassword()
-        //{
-        //    return View();
-        //}
-
-        //
-        // POST: /Manage/SetPassword
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-
-        //    var user = await GetCurrentUserAsync();
-        //    if (user != null)
-        //    {
-        //        var result = await _userManager.AddPasswordAsync(user, model.NewPassword);
-        //        if (result.Succeeded)
-        //        {
-        //            await _signInManager.SignInAsync(user, isPersistent: false);
-        //            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.SetPasswordSuccess });
-        //        }
-        //        AddErrors(result);
-        //        return View(model);
-        //    }
-        //    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
-        //}
-
-        //GET: /Manage/ManageLogins
-
-        [HttpGet]
-        public async Task<IActionResult> ManageLogins(ManageMessageId? message = null)
-        {
-            ViewData["StatusMessage"] =
-                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.AddLoginSuccess ? "The external login was added."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
-            var user = await GetCurrentUserAsync();
-            if (user == null)
-            {
-                return View("Error");
-            }
-            var userLogins = await _userManager.GetLoginsAsync(user);
-            var otherLogins = _signInManager.GetExternalAuthenticationSchemes().Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
-            ViewData["ShowRemoveButton"] = user.PasswordHash != null || userLogins.Count > 1;
-            return View(new ManageLoginsViewModel
-            {
-                CurrentLogins = userLogins,
-                OtherLogins = otherLogins
-            });
-        }
-
-        //
-        // POST: /Manage/LinkLogin
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LinkLogin(string provider)
-        {
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
-
-            // Request a redirect to the external login provider to link a login for the current user
-            var redirectUrl = Url.Action(nameof(LinkLoginCallback), "Manage");
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
-            return Challenge(properties, provider);
-        }
-
-        //
-        // GET: /Manage/LinkLoginCallback
-        [HttpGet]
-        public async Task<ActionResult> LinkLoginCallback()
-        {
-            var user = await GetCurrentUserAsync();
-            if (user == null)
-            {
-                return View("Error");
-            }
-            var info = await _signInManager.GetExternalLoginInfoAsync(await _userManager.GetUserIdAsync(user));
-            if (info == null)
-            {
-                return RedirectToAction(nameof(ManageLogins), new { Message = ManageMessageId.Error });
-            }
-            var result = await _userManager.AddLoginAsync(user, info);
-            var message = ManageMessageId.Error;
-            if (result.Succeeded)
-            {
-                message = ManageMessageId.AddLoginSuccess;
-                // Clear the existing external cookie to ensure a clean login process
-                await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
-            }
-            return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
         [HttpGet]
@@ -397,7 +94,7 @@ namespace RateBlog.Controllers
             var user = await _userManager.GetUserAsync(User);
             var influencer = _influencerRepo.Get(user.Id);
 
-            var model = new EditProfileViewModel
+            var model = new EditViewModel
             {
                 Name = user.Name,
                 Email = user.Email,
@@ -412,7 +109,7 @@ namespace RateBlog.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/[controller]/Profile/[action]")]
-        public async Task<IActionResult> Edit(EditProfileViewModel model, IFormFile profilePic)
+        public async Task<IActionResult> Edit(EditViewModel model, IFormFile profilePic)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -479,7 +176,6 @@ namespace RateBlog.Controllers
 
             return View(model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -554,11 +250,11 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> Feedback()
         {
             var user = await GetCurrentUserAsync();
-            var influencer = _influencerRepo.Get(user.Id); 
+            var influencer = _influencerRepo.Get(user.Id);
 
             var model = new FeedbackViewModel()
             {
-                ApplicationUser = user, 
+                ApplicationUser = user,
                 Influencer = influencer
             };
 
@@ -572,7 +268,7 @@ namespace RateBlog.Controllers
             var rating = _feedbackRepo.Get(id);
             rating.ApplicationUser = _userManager.Users.SingleOrDefault(x => x.Id == rating.ApplicationUserId);
 
-            var model = new FeedbackResponseViewModel()
+            var model = new AnswerViewModel()
             {
                 Rating = rating
             };
@@ -582,7 +278,7 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AnswerFeedback(FeedbackResponseViewModel model)
+        public IActionResult AnswerFeedback(AnswerViewModel model)
         {
             var rating = _feedbackRepo.Get(model.Rating.Id);
             rating.Answer = model.Rating.Answer;
@@ -596,6 +292,13 @@ namespace RateBlog.Controllers
             }
             else
             {
+                var user = _userManager.Users.SingleOrDefault(x => x.Id == rating.ApplicationUserId);
+                var influencer = _influencerRepo.Get(rating.InfluenterId);
+
+                // Send email notification 
+                if (_emailNotification.Get(user.Id).FeedbackUpdate == true)
+                    _emailSender.SendUserFeedbackUpdateEmailAsync(influencer.Alias, user.Email, user.Name);
+
                 TempData["Success"] = "Du har sendt dit svar!";
             }
 
@@ -607,9 +310,9 @@ namespace RateBlog.Controllers
         public IActionResult Read(string id)
         {
             var rating = _feedbackRepo.Get(id);
-            rating.Influenter = _influencerRepo.Get(rating.InfluenterId); 
+            rating.Influenter = _influencerRepo.Get(rating.InfluenterId);
 
-            var model = new MinAnmeldelseViewModel()
+            var model = new ReadViewModel()
             {
                 Rating = rating
             };
@@ -620,14 +323,14 @@ namespace RateBlog.Controllers
         [HttpGet]
         public JsonResult GetUnreadFeedback(string id)
         {
-            return Json(_feedbackService.UnreadFeedbackCount(id)); 
+            return Json(_feedbackService.UnreadFeedbackCount(id));
         }
 
         [HttpPost]
         public async Task<JsonResult> ReadFeedback(string id)
         {
             var user = await GetCurrentUserAsync();
-            return Json(_feedbackService.ReadFeedback(id, user.Id)); 
+            return Json(_feedbackService.ReadFeedback(id, user.Id));
         }
 
         [HttpGet]
@@ -651,7 +354,7 @@ namespace RateBlog.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> UsersProfilePic(string id)
         {
-            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Id == id); 
+            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Id == id);
 
             byte[] buffer = user.ProfilePicture;
 
@@ -665,6 +368,70 @@ namespace RateBlog.Controllers
             return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ProfilePicture));
         }
 
+        #region Indstillinger
+
+        [HttpGet]
+        public async Task<IActionResult> Notifications()
+        {
+            var user = await GetCurrentUserAsync();
+            var notification = _emailNotification.Get(user.Id);
+
+            var model = new NotificationsViewModel()
+            {
+                FeedbackUpdate = notification.FeedbackUpdate,
+                NewsLetter = notification.NewsLetter
+            }; 
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Notifications(NotificationsViewModel model)
+        {
+            var user = await GetCurrentUserAsync(); 
+            var emailNotificationSettings = _emailNotification.Get(user.Id);
+            emailNotificationSettings.FeedbackUpdate = model.FeedbackUpdate;
+            emailNotificationSettings.NewsLetter = model.NewsLetter;
+            _emailNotification.Update(emailNotificationSettings);
+
+            TempData["Success"] = "Du har ændret dine notifikations indstillinger"; 
+            return RedirectToAction(nameof(Notifications)); 
+        }
+
+        [HttpGet]
+        [Route("/[controller]/Change/[action]")]
+        public IActionResult Password()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("/[controller]/Change/[action]")]
+        public async Task<IActionResult> Password(PasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await GetCurrentUserAsync();
+            if (user != null)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    TempData["Success"] = "Du har skiftet dit kodeord!";
+                    return View();
+                }
+                AddErrors(result);
+                return View(model);
+            }
+            return RedirectToAction(nameof(Profile));
+        }
+
+        #endregion
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -673,18 +440,6 @@ namespace RateBlog.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
-        }
-
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            AddLoginSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error,
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync()
@@ -748,6 +503,5 @@ namespace RateBlog.Controllers
         }
 
         #endregion
-
     }
 }

@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Models.ManageViewModels
 {
-    public class MinAnmeldelseViewModel
+    public class AnswerViewModel
     {
-        public Feedback Rating { get; set; }
+        public Feedback Rating { get; set; } 
+
     }
 }

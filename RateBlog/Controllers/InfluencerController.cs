@@ -32,8 +32,21 @@ namespace RateBlog.Controllers
         private readonly IFeedbackService _feedbackService;
         private readonly IInfluencerService _influencerService;
         private readonly IRepository<FeedbackReport> _feedbackReportRepo;
+        private readonly IEmailSender _emailSender;
+        private readonly IRepository<EmailNotification> _emailNotification;
 
-        public InfluencerController(IRepository<FeedbackReport> feedbackReportRepo, IInfluencerService influencerService, IRepository<Category> categoryRepo, IInfluencerRepository influencer, IRepository<Feedback> feedbackRepo, UserManager<ApplicationUser> userManager, IRepository<Platform> platformRepo, IFeedbackService feedbackService)
+
+        public InfluencerController(
+            IRepository<FeedbackReport> feedbackReportRepo,
+            IInfluencerService influencerService,
+            IRepository<Category> categoryRepo,
+            IInfluencerRepository influencer,
+            IRepository<Feedback> feedbackRepo,
+            UserManager<ApplicationUser> userManager,
+            IRepository<Platform> platformRepo,
+            IFeedbackService feedbackService,
+            IEmailSender emailSender,
+            IRepository<EmailNotification> emailNotification)
         {
             _influencerRepo = influencer;
             _userManager = userManager;
@@ -43,6 +56,8 @@ namespace RateBlog.Controllers
             _feedbackService = feedbackService;
             _influencerService = influencerService;
             _feedbackReportRepo = feedbackReportRepo;
+            _emailSender = emailSender;
+            _emailNotification = emailNotification;
         }
 
         [HttpGet]
@@ -112,7 +127,7 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> Read(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            var influencer = await _influencerService.GetInfluecerAsync(id); 
+            var influencer = await _influencerService.GetInfluecerAsync(id);
 
             var gender = (user.Gender == "male") ? "Mand" : "Kvinde";
 
@@ -120,7 +135,7 @@ namespace RateBlog.Controllers
             var age = today.Year - user.BirthDay.Year;
             if (user.BirthDay > today.AddYears(-age)) age--;
 
-            var model = new ReadViewModel()
+            var model = new Models.InfluenterViewModels.ReadViewModel()
             {
                 ApplicationUser = user,
                 Influenter = influencer,
@@ -303,8 +318,15 @@ namespace RateBlog.Controllers
                     BasedOnTwitter = model.BasedOnTwitter,
                     BasedOnWebsite = model.BasedOnWebsite,
                 };
+
                 _feedbackRepo.Add(feedback);
                 TempData["Success"] = "Du har givet din feedback til " + model.Influencer.Alias;
+
+                // Send en mail til influenceren!
+                var notificationSettings = _emailNotification.Get(model.Influencer.Id); 
+                if (notificationSettings.FeedbackUpdate)
+                    await _emailSender.SendInfluencerFeedbackUpdateEmailAsync(model.Influencer.Alias, _userManager.Users.SingleOrDefault(x => x.Id == model.Influencer.Id).Email, user.Name);
+
                 return RedirectToAction("Profile", "Influencer", new { Id = model.Influencer.Id });
             }
 
@@ -338,7 +360,7 @@ namespace RateBlog.Controllers
                 }
             }
 
-            List<string> orderByList = new List<string> { "Instagram", "YouTube", "SecondYouTube", "Website", "Twitch", "SnapChat", "Facebook", "Twitter" }; 
+            List<string> orderByList = new List<string> { "Instagram", "YouTube", "SecondYouTube", "Website", "Twitch", "SnapChat", "Facebook", "Twitter" };
 
 
 
@@ -346,7 +368,7 @@ namespace RateBlog.Controllers
             {
                 Alias = x.Alias.ToUpper(),
                 Categories = x.InfluenterKategori.Select(p => p.Category.Name),
-                Platforms = x.InfluenterPlatform.Select(p => p.Platform.Name + "^" + p.Link).OrderBy(item => orderByList.IndexOf(item.Split('^')[0] )),
+                Platforms = x.InfluenterPlatform.Select(p => p.Platform.Name + "^" + p.Link).OrderBy(item => orderByList.IndexOf(item.Split('^')[0])),
                 Id = x.Id,
                 FeedbackCount = x.Ratings.Count,
                 FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4)
@@ -355,7 +377,7 @@ namespace RateBlog.Controllers
             switch (sortBy)
             {
                 case 1:
-                    result = result.Select(x => new { user = x, sum = x.FeedbackScore.Sum() / x.FeedbackCount }).OrderByDescending(x => x.sum).Select(p => p.user); 
+                    result = result.Select(x => new { user = x, sum = x.FeedbackScore.Sum() / x.FeedbackCount }).OrderByDescending(x => x.sum).Select(p => p.user);
                     break;
                 case 2:
                     result = result.Select(x => new { user = x, sum = x.FeedbackScore.Sum() / x.FeedbackCount }).OrderBy(x => x.sum).Select(p => p.user);
@@ -437,14 +459,14 @@ namespace RateBlog.Controllers
         [Authorize]
         public JsonResult ReportFeedback(string feedbackId, string userId, string reason, string description)
         {
-            if(string.IsNullOrEmpty(reason) && string.IsNullOrEmpty(description))
+            if (string.IsNullOrEmpty(reason) && string.IsNullOrEmpty(description))
             {
                 return Json("Error");
             }
 
             var feedbackReport = new FeedbackReport()
             {
-                ApplicationUserId  = userId,
+                ApplicationUserId = userId,
                 DateTime = DateTime.Now,
                 Description = description,
                 FeedbackId = feedbackId,
@@ -453,7 +475,7 @@ namespace RateBlog.Controllers
 
             _feedbackReportRepo.Add(feedbackReport);
 
-            return Json("Success"); 
+            return Json("Success");
         }
 
 

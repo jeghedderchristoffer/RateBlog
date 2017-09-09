@@ -10,7 +10,7 @@ namespace RateBlog.Services
     // This class is used by the application to send Email and SMS
     // when you turn on two-factor authentication in ASP.NET Identity.
     // For more details see this link https://go.microsoft.com/fwlink/?LinkID=532713
-    public class AuthMessageSender : IEmailSender, ISmsSender
+    public class AuthMessageSender : IEmailSender
     {
         public async Task SendEmailAsync(string name, string email, string subject, string message)
         {
@@ -50,12 +50,6 @@ namespace RateBlog.Services
             var response = await client.SendEmailAsync(msg);
         }
 
-        public Task SendSmsAsync(string number, string message)
-        {
-            // Plug in your SMS service here to send a text message.
-            return Task.FromResult(0);
-        }
-
         public async Task SendInfluencerApprovedEmailAsync(string name, string email, string alias)
         {
             var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
@@ -93,6 +87,52 @@ namespace RateBlog.Services
                 "Du er desværre ikke blevet godkendt som influencer, da du ikke lever op til vores retningslinjer. <br><br>" +
                 "Du kan læse mere om vores retningslinjer <a>her</a>, og du er altid velkommen til at ansøge igen!" +
                 "<br><br>Med venlig hilsen <br> <strong>Bestfluence</strong><br><br>"
+            };
+
+            msg.AddTo(new EmailAddress(email, name));
+            var response = await client.SendEmailAsync(msg);
+        }
+
+        public async Task SendInfluencerFeedbackUpdateEmailAsync(string nameInfluencer, string email, string name)
+        {
+            var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
+            var client = new SendGridClient(apiKey);
+
+            var msg = new SendGridMessage()
+            {
+                From = new EmailAddress("noreply@bestfluence.com", "Bestfluence"),
+                Subject = "Du har fået feedback!",
+                HtmlContent =
+                "<p><b>Hej " + nameInfluencer + ",</b></p>" +
+                "<p>Du har modtaget ny feedback fra " + name + " som du finder under <a href=" + " https://goo.gl/V6hDLu" + ">Min feedback</a>.</p>" +
+                "<p>Tak fordi du støtter op om et trygt online fællesskab!</p>" +
+                "<p>Med venlig hilsen<p>" +
+                "<p><b>Bestfluence</b><br>" +
+                "<b><a href=" + "https://goo.gl/YSp8uj" + ">bestfluence.dk</a></b></p>" +
+                "<p style='font-size: 10px'>Du kan ændre dine email indstillinger ved at klikke <a href= " + "https://goo.gl/Pgbfz7" + ">her</a></p>"
+            };
+
+            msg.AddTo(new EmailAddress(email, name));
+            var response = await client.SendEmailAsync(msg);
+        }
+
+        public async Task SendUserFeedbackUpdateEmailAsync(string alias, string email, string name)
+        {
+            var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
+            var client = new SendGridClient(apiKey);
+
+            var msg = new SendGridMessage()
+            {
+                From = new EmailAddress("noreply@bestfluence.com", "Bestfluence"),
+                Subject = "Du har fået svar på din feedback!",
+                HtmlContent =
+                "<p><b>Hej " + name + ",</b></p>" +
+                "<p>Du har modtaget svar på din feedback til " + alias + " som du finder under <a href=" + "https://goo.gl/vGWztJ" + ">Min feedback</a></b>.</p>" +
+                "<p>Tak fordi du støtter op om et trygt online fællesskab!</p>" +
+                "<p>Med venlig hilsen<p>" +
+                "<p><b>Bestfluence</b><br>" +
+                "<b><a href=" + "https://goo.gl/YSp8uj" + ">bestfluence.dk</a></b></p>" +
+                "<p style='font-size: 10px'>Du kan ændre dine email indstillinger ved at klikke <a href= " + "https://goo.gl/Pgbfz7" + ">her</a></p>"
             };
 
             msg.AddTo(new EmailAddress(email, name));

@@ -274,7 +274,7 @@
                         else
                         {
                             <div style="padding: 5px">
-                                <h2 style="text-align: center; margin-bottom: 20px; margin-top: 10px">Feedback</h2>
+                                <h2 style="text-align: center; margin-bottom: 20px; margin-top: 10px; font-size: 25px">Feedback</h2>
                                 <p>Efter 24 timer har du muligheden for, at give feedback til den samme influencer igen. Dette gør, at du altid kan sige din mening!</p>
                             </div>
                             
@@ -284,9 +284,9 @@
                     @if (Model.Influencer == null)
                     {
                         <div class="white-box" style="padding: 20px">
-                            <h2 style="text-align: center; margin-bottom: 20px; margin-top: 10px">Opret influencere</h2>
+                            <h2 style="text-align: center; margin-bottom: 20px; margin-top: 10px; font-size: 25px">Opret influencere</h2>
                             <p>Kan du ikke finde den influencer du ønsker at give feedback til? Du har mulighed for at oprette influenceren, og derefter give feedback!</p>
-                            <a style="width: 100%; margin-top: 20px" class="btn-create" asp-action="Influencer" asp-controller="Create">Opret influencer</a>
+                            <a style="width: 100%; margin-top: 20px" class="btn-create" asp-action="Create" asp-controller="Influencer">Opret influencer</a>
                         </div>
                     }
                 </div>

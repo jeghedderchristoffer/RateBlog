@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Models.ManageViewModels
 {
-    public class FeedbackResponseViewModel
-    {
-        public Feedback Rating { get; set; } 
-
+    public class NotificationsViewModel
+    { 
+        public bool NewsLetter { get; set; }
+        public bool FeedbackUpdate { get; set; } 
     }
 }

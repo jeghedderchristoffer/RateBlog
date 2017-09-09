@@ -204,7 +204,7 @@
                 </div>
                 <div class="modal-body" style="padding-top: 30px; padding-bottom: 30px;">
 
-                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post">
+                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                         <button name="provider" value="Facebook" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
                             <span class="fa fa-facebook"></span> Tilmeld via Facebook
                         </button>
@@ -226,6 +226,7 @@
                             <div style="margin-top: 20px;"></div>
                             <input name="registerName" type="text" class="text-input" placeholder="Navn" />
                             <input name="registerEmail" type="email" class="text-input" placeholder="Email" />
+                            <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
                             <input type="submit" class="login-button" id="opretBtn" value="Fortsæt" />
                         </form>
                     </div>

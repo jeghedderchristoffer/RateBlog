@@ -19,5 +19,7 @@ namespace RateBlog.Services.Interfaces
 
         IEnumerable<Influencer> GetUnApprovedInfluencers();
 
+        bool IsInfluencer(string id); 
+
     }
 }
