@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Models.ManageViewModels
 {
-    public class EditProfileViewModel : IValidatableObject
+    public class EditViewModel : IValidatableObject
     {
         [Required(ErrorMessage = "Du skal udfylde dit navn.")]
         public string Name { get; set; }

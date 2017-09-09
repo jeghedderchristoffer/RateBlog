@@ -9,7 +9,7 @@ namespace RateBlog.Models.AdminViewModels
     public class UserProfileViewModel
     {
         public ApplicationUser ApplicationUser { get; set; }
-        public EditProfileViewModel EditProfileViewModel { get; set; }
+        public EditViewModel EditProfileViewModel { get; set; }
         public InfluencerViewModel InfluencerViewModel { get; set; } 
     }
 }

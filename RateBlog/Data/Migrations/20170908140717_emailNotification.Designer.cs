@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170908140717_emailNotification")]
+    partial class emailNotification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -203,7 +204,8 @@ namespace RateBlog.Migrations
 
             modelBuilder.Entity("RateBlog.Models.EmailNotification", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<bool>("FeedbackUpdate");
 
@@ -387,14 +389,6 @@ namespace RateBlog.Migrations
                     b.HasOne("RateBlog.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RateBlog.Models.EmailNotification", b =>
-                {
-                    b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
-                        .WithOne("EmailNotification")
-                        .HasForeignKey("RateBlog.Models.EmailNotification", "Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

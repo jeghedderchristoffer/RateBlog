@@ -62,6 +62,11 @@ namespace RateBlog.Services
             return _dbContext.Influencer.Where(x => x.IsApproved == false); 
         }
 
+        public bool IsInfluencer(string id)
+        {
+            return _dbContext.Influencer.Any(x => x.Id == id); 
+        }
+
         private IEnumerable<string> GetPlatformNames()
         {
             return new string[]
@@ -75,7 +80,6 @@ namespace RateBlog.Services
                 "Instagram"
             };
         }
-
         private IEnumerable<string> GetCategoryNames()
         {
             return new string[]
@@ -89,7 +93,5 @@ namespace RateBlog.Services
                 "Beauty"
             };
         }
-
-        
     }
 }

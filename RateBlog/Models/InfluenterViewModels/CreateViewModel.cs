@@ -20,8 +20,6 @@ namespace RateBlog.Models.InfluenterViewModels
 
         public IFormFile ProfilePic { get; set; }
 
-        public List<InfluenterKategoriViewModel> IKList { get; set; }
-
         public Influencer Influenter { get; set; }
 
         public string ProfileText { get; set; }

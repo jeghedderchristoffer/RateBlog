@@ -5,13 +5,12 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject RateBlog.Services.IFeedbackService FeedbackService
 @inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
-@{
-    var user = await UserManager.GetUserAsync(User);
-}
-
 
 @if (SignInManager.IsSignedIn(User))
 {
+    var user = await UserManager.GetUserAsync(User);
+    var isInfluencer = (InfluencerService.IsInfluencer(user.Id)) ? "Rediger influencer" : "Bliv influencer";
+
     <input type="hidden" value="@user.Id" id="applicationUserId" />
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right" id="dropdownPc">
@@ -31,9 +30,8 @@
                         <ul>
                             <li><a asp-area="" asp-controller="Manage" asp-action="Profile" class="dropOut-a">Vis profil</a></li>
                             <li><a asp-area="" asp-controller="Manage" asp-action="Edit" class="dropOut-a">Rediger profil</a></li>
-                            <li><a asp-area="" asp-controller="Manage" asp-action="Influencer" class="dropOut-a">Influencer</a></li>
-
-                            @*<li><a asp-area="" asp-controller="Manage" asp-action="Password" class="dropOut-a">Indstillinger</a></li>*@
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Influencer" class="dropOut-a">@isInfluencer</a></li>
+                            <li><a asp-area="" asp-controller="Manage" asp-action="Notifications" class="dropOut-a">Indstillinger</a></li>
                             <li><a id="logOut" href="#" class="dropOut-a">Log af</a></li>
                         </ul>
                     </div>
@@ -51,9 +49,8 @@
 
             <li><a asp-area="" asp-controller="Manage" asp-action="Profile">Vis profil</a></li>
             <li><a asp-area="" asp-controller="Manage" asp-action="Edit">Rediger profil</a></li>
-            <li><a asp-area="" asp-controller="Manage" asp-action="Influencer">Influencer</a></li>
-
-            @*<li><a asp-area="" asp-controller="Manage" asp-action="Password">Indstillinger</a></li>*@
+            <li><a asp-area="" asp-controller="Manage" asp-action="Influencer">@isInfluencer</a></li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="Notifications">Indstillinger</a></li>
             <li><a id="logOutMobile" href="#">Log af</a></li>
         </ul>
     </form>

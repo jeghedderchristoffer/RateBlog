@@ -96,7 +96,7 @@ namespace RateBlog.Controllers
             var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
             var influencer = _influencerRepo.Get(id);
 
-            var editProfileViewModel = new EditProfileViewModel()
+            var editProfileViewModel = new EditViewModel()
             {
                 Name = user.Name,
                 Email = user.Email,

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Models.ManageViewModels
 {
-    public class ChangePasswordViewModel
+    public class PasswordViewModel
     {
         [Required(ErrorMessage = "Du skal udfylde dit gamle kodeord.")]
         [DataType(DataType.Password)]

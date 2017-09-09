@@ -15,6 +15,7 @@ using RateBlog.Services;
 using Microsoft.AspNetCore.Http;
 using RateBlog.Models.ManageViewModels;
 using System.Net.Http;
+using RateBlog.Repository;
 
 namespace RateBlog.Controllers
 {
@@ -24,10 +25,10 @@ namespace RateBlog.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
-        private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IRepository<EmailNotification> _emailNotification;
 
 
         public AccountController(
@@ -35,17 +36,17 @@ namespace RateBlog.Controllers
             SignInManager<ApplicationUser> signInManager,
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
-            ISmsSender smsSender,
             ILoggerFactory loggerFactory,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IRepository<EmailNotification> emailNotification)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
-            _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _httpContextAccessor = httpContextAccessor;
+            _emailNotification = emailNotification; 
         }
 
         //
@@ -157,8 +158,9 @@ namespace RateBlog.Controllers
        
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult RegisterConfirmation(string registerName, string registerEmail)
+        public IActionResult RegisterConfirmation(string registerName, string registerEmail, string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl; 
             return View(new RegisterConfirmationViewModel() { Name = registerName, Email = registerEmail });
         }
 
@@ -172,10 +174,13 @@ namespace RateBlog.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, BirthDay = model.Birthday.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, TermsAndConditions = DateTime.Now, NewsLetter = model.NewLetter };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, BirthDay = model.Birthday.Value, Postnummer = model.Postnummer.Value, Gender = model.Gender, Created = DateTime.Now, TermsAndConditions = DateTime.Now };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // Add notification
+                    _emailNotification.Add(new EmailNotification() { Id = user.Id, NewsLetter = model.NewLetter, FeedbackUpdate = true }); 
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     // Send velkomst mail
                     await _emailSender.SendWelcomeMailAsync(user.Name, user.Email); 
@@ -187,8 +192,8 @@ namespace RateBlog.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Edit", "Manage");
-                    }               
+                        return RedirectToLocal(returnUrl);
+                    }
                 }
                 ModelState.AddModelError("", "Der findes allerede en bruger med denne email");
             }
@@ -308,6 +313,9 @@ namespace RateBlog.Controllers
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
+                        // Add notification
+                        _emailNotification.Add(new EmailNotification() { Id = user.Id, NewsLetter = model.NewLetter, FeedbackUpdate = true });
+
                         await _signInManager.SignInAsync(user, isPersistent: false);
 
                         await _emailSender.SendWelcomeMailAsync(user.Name, user.Email);
@@ -324,7 +332,7 @@ namespace RateBlog.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Edit", "Manage");
+                            return RedirectToLocal(returnUrl);
                         }                   
                     }
                 }
@@ -464,41 +472,41 @@ namespace RateBlog.Controllers
 
         //
         // POST: /Account/SendCode
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SendCode(SendCodeViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> SendCode(SendCodeViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View();
+        //    }
 
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                return View("Error");
-            }
+        //    var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        //    if (user == null)
+        //    {
+        //        return View("Error");
+        //    }
 
-            // Generate the token and send it
-            var code = await _userManager.GenerateTwoFactorTokenAsync(user, model.SelectedProvider);
-            if (string.IsNullOrWhiteSpace(code))
-            {
-                return View("Error");
-            }
+        //    // Generate the token and send it
+        //    var code = await _userManager.GenerateTwoFactorTokenAsync(user, model.SelectedProvider);
+        //    if (string.IsNullOrWhiteSpace(code))
+        //    {
+        //        return View("Error");
+        //    }
 
-            var message = "Your security code is: " + code;
-            if (model.SelectedProvider == "Email")
-            {
-                await _emailSender.SendEmailAsync("", await _userManager.GetEmailAsync(user), "Security Code", message);
-            }
-            else if (model.SelectedProvider == "Phone")
-            {
-                await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
-            }
+        //    var message = "Your security code is: " + code;
+        //    if (model.SelectedProvider == "Email")
+        //    {
+        //        await _emailSender.SendEmailAsync("", await _userManager.GetEmailAsync(user), "Security Code", message);
+        //    }
+        //    else if (model.SelectedProvider == "Phone")
+        //    {
+        //        await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
+        //    }
 
-            return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
-        }
+        //    return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+        //}
 
         //
         // GET: /Account/VerifyCode
@@ -571,7 +579,7 @@ namespace RateBlog.Controllers
             // Go back to the year the person was born in case of a leap year
             if (user.BirthDay > today.AddYears(-age)) age--;
 
-            var model = new ProfileViewModel()
+            var model = new Models.AccountViewModels.ProfileViewModel()
             {
                 ApplicationUser = user,
                 Gender = gender,

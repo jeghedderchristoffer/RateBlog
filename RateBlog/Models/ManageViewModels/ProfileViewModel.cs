@@ -6,18 +6,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace RateBlog.Models.ManageViewModels
 {
-    public class IndexViewModel
+    public class ProfileViewModel
     {
-        public bool HasPassword { get; set; }
-
-        public IList<UserLoginInfo> Logins { get; set; }
-
-        public string PhoneNumber { get; set; }
-
-        public bool TwoFactor { get; set; }
-
-        public bool BrowserRemembered { get; set; }
-
         public ApplicationUser ApplicationUser { get; set; } 
 
         public int Age { get; set; } 

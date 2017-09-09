@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace RateBlog.Models.ManageViewModels
 {
-    public class FactorViewModel
+    public class ReadViewModel
     {
-        public string Purpose { get; set; }
+        public Feedback Rating { get; set; }
     }
 }

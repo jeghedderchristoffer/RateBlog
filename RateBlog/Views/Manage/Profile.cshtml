@@ -1,4 +1,4 @@
-﻿@model IndexViewModel
+﻿@model RateBlog.Models.ManageViewModels.ProfileViewModel
 @inject RateBlog.Services.IFeedbackService FeedbackService
 @inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
 @{
@@ -9,20 +9,6 @@
 
 <div class="background-all">
     <div class="navbar-allaround"></div>
-
-    @if (TempData["Success"] != null)
-    {
-        <div id="passSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            @TempData["Success"]
-        </div>
-
-        <script>
-            window.setTimeout(function () {
-                $("#passSuc").fadeOut(1000);
-            }, 2000);
-        </script>
-    }
 
     <div class="container" style="padding-top: 40px;">
         @if (influencer == null)

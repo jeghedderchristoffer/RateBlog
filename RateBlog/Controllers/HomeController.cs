@@ -11,25 +11,16 @@ using RateBlog.Models;
 using RateBlog.Helper;
 using RateBlog.Services;
 using RateBlog.Models.FooterViewModels;
+using RateBlog.Data;
 
 namespace RateBlog.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IRepository<Category> _categoryRepo;
-        private readonly IRepository<Platform> _platformRepo;
-        private readonly IInfluencerRepository _influencerRepo; 
-        private readonly UserManager<ApplicationUser> _userManger;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _mailSender;
 
-        public HomeController(IEmailSender mailSender, SignInManager<ApplicationUser> signInManager, IRepository<Platform> platformRepo, IRepository<Category> categoryRepo, IInfluencerRepository influencerRepo, UserManager<ApplicationUser> userManger)
+        public HomeController(IEmailSender mailSender)
         {
-            _platformRepo = platformRepo;
-            _categoryRepo = categoryRepo;
-            _influencerRepo = influencerRepo;
-            _userManger = userManger;
-            _signInManager = signInManager;
             _mailSender = mailSender;
         }
 
@@ -120,38 +111,6 @@ namespace RateBlog.Controllers
         {
             return PartialView("_LoginPartial");
         }
-
-
-        public PartialViewResult SearchHelp(string search)
-        {
-            var model = new SearchHelpModel();
-            model.InfluencerList = new List<Influencer>();
-            model.KategoriList = new List<Category>();
-            model.PlatformList = new List<Platform>();
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                foreach (var kategori in _categoryRepo.GetAll())
-                {
-                    if (kategori.Name.ToLower().StartsWith(search.ToLower()))
-                    {
-                        model.KategoriList.Add(kategori); 
-                    }
-                }
-
-                foreach (var platform in _platformRepo.GetAll())
-                {
-                    if (platform.Name.ToLower().StartsWith(search.ToLower()))
-                    {
-                        model.PlatformList.Add(platform); 
-                    }
-                }
-
-                model.InfluencerList = _influencerRepo.GetAll().Where(x => x.Alias.ToLower().StartsWith(search.ToLower())).Take(5).ToList();
-            }
-
-            return PartialView("_SearchHelpPartial", model);
-        }      
 
         public IActionResult Error()
         {

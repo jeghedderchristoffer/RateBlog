@@ -1,4 +1,4 @@
-﻿@model EditProfileViewModel
+﻿@model EditViewModel
 @{
     ViewData["Title"] = "Rediger din profil";
 }
@@ -38,7 +38,7 @@
         <div class="edit-user-container">
             <div class="col-md-6">
                 <div class="white-box">
-                    <h2 style="text-align: center">Bruger oplysninger</h2>
+                    <h2 style="text-align: center">Profil oplysninger</h2>
                     <form enctype="multipart/form-data" asp-area="" asp-controller="Manage" asp-action="Edit">
                         <p style="margin-top: 5px">Navn</p>
                         <input type="text" asp-for="@Model.Name" />
@@ -83,3 +83,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

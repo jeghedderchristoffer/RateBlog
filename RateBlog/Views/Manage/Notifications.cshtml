@@ -1,0 +1,80 @@
+﻿@model NotificationsViewModel
+@{
+    ViewData["Title"] = "Indstillinger";
+}
+
+<div class="background-all">
+    <div class="navbar-allaround"></div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div id="notSucc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5000; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Success"]
+        </div>
+
+        <script>
+            window.setTimeout(function () {
+                $("#notSucc").fadeOut(1000);
+            }, 2000);
+        </script>
+    }
+
+    <div class="container" style="padding-top: 40px">
+
+
+        <div class="col-md-12 settings-container nopaddingmobile">
+            <div class="col-md-4 nopaddingmobile">
+                <div class="white-box" style="padding-left: 0; padding-right: 0">
+                    <h4>Indstillinger</h4>
+                    <ul>
+                        <li><a asp-controller="Manage" asp-action="Notifications"><i class="fa fa-bell-o active" aria-hidden="true"></i> Notifikationer</a></li>
+                        <li><a asp-controller="Manage" asp-action="Password"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Skift kodeord</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-8 nopaddingmobile">
+                <div class="white-box">
+
+                    <h3>Notifikationer</h3>
+                    <hr />
+
+                    <form asp-controller="Manage" asp-action="Notifications" method="post">
+                        <p>Modtag Bestfluence nyhedsbrev</p>
+                        <div class="control-group">
+                            <label class="control control-radio">
+                                Ja
+                                <input type="radio" asp-for="@Model.NewsLetter" value="true" />
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label class="control control-radio">
+                                Nej
+                                <input type="radio" asp-for="@Model.NewsLetter" value="false" />
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+
+                        <p>Modtag email når jeg har modtaget feedback/svar</p>
+
+                        <div class="control-group">
+                            <label class="control control-radio">
+                                Ja
+                                <input type="radio" asp-for="@Model.FeedbackUpdate" value="true" />
+                                <div class="control_indicator"></div>
+                            </label>
+                            <label class="control control-radio">
+                                Nej
+                                <input type="radio" asp-for="@Model.FeedbackUpdate" value="false" />
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+
+                        <button type="submit">GEM OPLYSNINGER</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -27,7 +27,9 @@ namespace RateBlog.Models
 
         public DateTime TermsAndConditions { get; set; }
 
-        public bool NewsLetter { get; set; } 
+        public bool NewsLetter { get; set; }
+
+        public virtual EmailNotification EmailNotification { get; set; } 
 
 
     }

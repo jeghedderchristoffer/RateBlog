@@ -8,6 +8,7 @@ namespace RateBlog.Helper
     public static class RandomString
     {
         private static Random random = new Random();
+
         public static string GetString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
