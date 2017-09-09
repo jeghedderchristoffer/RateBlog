@@ -142,6 +142,7 @@ namespace RateBlog
 
 
 
+
             app.UseGoogleAuthentication(new GoogleOptions()
             {
                 //ClientId = System.Environment.GetEnvironmentVariable("Authentication:Google:ClientId"),
@@ -152,8 +153,11 @@ namespace RateBlog
                 {
                     "https://www.googleapis.com/auth/plus.login"
                 },
-                SaveTokens = true              
+                SaveTokens = true
             });
+
+
+
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 

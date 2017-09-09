@@ -290,6 +290,7 @@ namespace RateBlog.Controllers
             return RedirectToAction("Index");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult InfluenterStatistics(string id)
         {
@@ -304,7 +305,8 @@ namespace RateBlog.Controllers
             return View(StatisticVm);
         }
 
-
+        
+        [AllowAnonymous]
         public PartialViewResult InfluenterStatisticsBfStats(string id)
         {
             var getTheInfluenter = _userManager.Users.FirstOrDefault(x => x.Id == id);
@@ -318,6 +320,7 @@ namespace RateBlog.Controllers
             return PartialView("/Views/Admin/_BfStatisticsPartial.cshtml", StatisticVm);
         }
 
+        [AllowAnonymous]
         public PartialViewResult InfluenterStatisticsTwitterStats(string id)
         {
             var getTheInfluenter = _userManager.Users.FirstOrDefault(x => x.Id == id);
@@ -431,13 +434,6 @@ namespace RateBlog.Controllers
 
 
         [AllowAnonymous]
-        public IActionResult ReportTest()
-        {
-            
-            return View();
-        }
-
-        [AllowAnonymous]
         [HttpPost]
         public IActionResult ReportTest(ReportFeedback newFeedback)
         {
@@ -524,7 +520,17 @@ namespace RateBlog.Controllers
             return RedirectToAction("Index");
         }
 
+        [AllowAnonymous]
+        public JsonResult InstagramAPITest()
+        {
+            return Json("");
+        }
 
+        [AllowAnonymous]
+        public IActionResult Test(string access_token)
+        {
+            return View(access_token);
+        }
 
 
     }

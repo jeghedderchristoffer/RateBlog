@@ -14,8 +14,7 @@ namespace RateBlog.Services
     {
         public async Task SendEmailAsync(string name, string email, string subject, string message)
         {
-       //     var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
-            var apiKey = "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";
+            var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
@@ -30,8 +29,7 @@ namespace RateBlog.Services
       
         public async Task SendWelcomeMailAsync(string name, string email)
         {
-            //            var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
-            var apiKey = "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";
+           var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
@@ -69,8 +67,7 @@ namespace RateBlog.Services
 
         public async Task SendInfluencerApprovedEmailAsync(string name, string email, string alias)
         {
-            //var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
-            var apiKey = "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";
+            var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
@@ -93,8 +90,7 @@ namespace RateBlog.Services
 
         public async Task SendInfluencerDisapprovedEmailAsync(string name, string email)
         {
-            //var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
-            var apiKey = "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";
+            var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
@@ -118,7 +114,7 @@ namespace RateBlog.Services
 
         public async Task SendInfluencerFeedbackUpdateEmailAsync(string nameInfluencer, string email, string name)
         {
-            var apiKey = "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";
+            var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
@@ -142,7 +138,7 @@ namespace RateBlog.Services
 
         public async Task SendUserFeedbackUpdateEmailAsync(string alias, string email, string name)
         {
-            var apiKey = "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";
+            var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()

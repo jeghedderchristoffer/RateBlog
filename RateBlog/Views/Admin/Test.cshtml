@@ -1,0 +1,53 @@
+﻿@model string
+
+<div class="navbar-allaround"></div>
+
+<a href="https://api.instagram.com/oauth/authorize/?client_id=cdf5066870274be5945c3795b5fdb9b4&redirect_uri=http://localhost:54069/Admin/Test&response_type=token&scope=public_content&likes&follower_list
+">Steal my shit plz! (GetUsersToken)</a>
+
+<p>@Model</p>
+
+<div id="Token"></div>
+
+@section Scripts{
+<script>
+
+    var x = location.hash;
+    x = x.substring(14, x.length)
+    $('#Token').text(x)
+
+        //var data = new{
+        //    client_id="client_id=cdf5066870274be5945c3795b5fdb9b4",
+        //    redirect_uri="http://localhost:54069/Admin/Test",
+        //    response_type="token",
+        //    scope="public_content & likes & follower_list"        
+        //};
+
+    var ApiCallMedia = "https://api.instagram.com/v1/users/self/media/recent/";
+    var ApiCallUserNameAndPic = "https://api.instagram.com/v1/users/self/";
+
+        var data = {
+            access_token:x
+        };
+
+        console.log(data);
+        $.ajax({
+            url: ApiCallMedia,
+        type: "GET",
+        dataType: 'JSONP',
+        data: data,
+        success: function (newObject) {
+            console.log(newObject)
+        }
+    });
+
+
+    
+</script>
+}
+
+@*@section Scripts{
+<script>
+
+</script>
+    }*@
