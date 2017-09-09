@@ -14,16 +14,16 @@
                     <h2>Du er næsten klar...</h2>
 
                     <form asp-controller="Account" asp-action="RegisterConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                        <p>Er du influencer eller følger?</p>
+                        <p>Profiltype</p>
 
                         <div class="col-md-6 col-sm-6 col-xs-12 noPaddingLeft nopaddingmobile">
                             <input type="radio" name="isInfluencer" id="radio1" class="radio" value="true" />
-                            <label for="radio1">Jeg er influencer</label>
+                            <label for="radio1">Influencer</label>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-12 noPaddingRight nopaddingmobile">
                             <input type="radio" name="isInfluencer" id="radio2" class="radio" value="false" />
-                            <label for="radio2">Jeg er følger</label>
+                            <label for="radio2">Følger</label>
                         </div>
 
 
@@ -33,25 +33,25 @@
                             </div>
 
 
-                            <p>Hvad hedder du?</p>
-                            <input asp-for="@Model.Name" placeholder="Hvad er dit navn?" />
+                            <p>Navn</p>
+                            <input asp-for="@Model.Name" placeholder="Hvad hedder du?" />
 
-                            <p>Hvad er din email?</p>
-                            <input asp-for="@Model.Email" placeholder="Hvad er din email?" type="text" />
+                            <p>Email</p>
+                            <input asp-for="@Model.Email" placeholder="Hvor kan vi kontakte dig?" type="text" />
 
-                            <p>Hvornår har du fødselsdag?</p>
-                            <input asp-for="@Model.Birthday" placeholder="Hvornår har du fødselsdag?" type="text" />
+                            <p>Fødselsdato?</p>
+                            <input asp-for="@Model.Birthday" placeholder="DD-MM-YYYY" type="text" />
 
-                            <p>Hvad er dit postnummer?</p>
-                            <input asp-for="@Model.Postnummer" placeholder="I hvilket postnummer bor du?" type="text" />
+                            <p>Postnummer</p>
+                            <input asp-for="@Model.Postnummer" placeholder="Hvilken by bor du i?" type="text" />
 
-                            <p>Hvad skal dit kodeord være?</p>
-                            <input asp-for="@Model.Password" placeholder="Mindst 6. tegn" />
+                            <p>Adgangskode</p>
+                            <input asp-for="@Model.Password" placeholder="Minimum 6 tegn" />
 
-                            <p>Gentag dit kodeord</p>
+                            <p>Gentag adgangskode</p>
                             <input asp-for="@Model.ConfirmPassword" />
 
-                            <p>Er du en mand eller kvinde?</p>
+                            <p>Køn</p>
                             <div class="control-group">
                                 <label class="control control-radio">
                                     Mand
@@ -65,14 +65,14 @@
                                 </label>
                             </div>
 
-                            <p>Godkender du vores betingelser?</p>
+                            <p>Betingelser</p>
                             <label class="control control-radio">
                                 Jeg godkender Bestfluences <a asp-controller="Home" asp-action="TermsAndConditions" target="_blank">Vilkår & Betingelser</a> og <a asp-controller="Home" asp-action="Privacy" target="_blank">Persondatapolitik</a>.
                                 <input type="checkbox" name="accept" asp-for="@Model.AcceptTermsAndConditions" value="true" />
                                 <div class="control_indicator" style="border-radius: unset"></div>
                             </label>
                             <label class="control control-radio">
-                                Modtag vores nyhedsbrev
+                                Tilmeld nyhedsbrev og bliv inspireret (kan afmeldes med et klik)
                                 <input type="checkbox" name="accept" asp-for="@Model.NewLetter" />
                                 <div class="control_indicator" style="border-radius: unset"></div>
                             </label>
