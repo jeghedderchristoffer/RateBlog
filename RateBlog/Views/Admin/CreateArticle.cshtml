@@ -1,0 +1,138 @@
+﻿@model RateBlog.Models.AdminViewModels.CreateArticlesViewModel
+
+@{
+    ViewData["Title"] = "Opret en artikel";
+}
+
+<div class="background-all" style="padding-bottom: 0">
+
+    @Html.Partial("_NavbarPartial", "")
+
+    <div class="navbar-allaround" style="position: relative"></div>
+
+    <div class="admin-container" style="padding-top: 30px; padding-bottom: 80px; overflow-y: scroll; height: calc(100vh - 70px)">
+
+        <div class="container" style="padding-top: 40px;">
+            <div class="col-md-12 white-box">
+
+                <h2 style="text-align: center; margin-bottom: 35px">Skriv ny artikel</h2>
+
+                <div class="edit-user-container" style="padding: 0">
+                    <form enctype="multipart/form-data" asp-controller="Admin" asp-action="CreateArticle" method="post" id="blogForm">
+                        <p>Overskrift:</p>
+                        <input asp-for="@Model.Title" type="text" />
+
+                        <p>Dato:</p>
+                        <input asp-for="@Model.DateTime" type="text" id="createDate" />
+
+                        <p>Kategorier:</p>
+                        <input type="text" asp-for="@Model.Categories" />
+
+                        <p>Forfatter:</p>
+                        <input type="text" asp-for="@Model.Author" />
+
+                        <p>Kort beskrivelse:</p>
+                        <input type="text" asp-for="@Model.Description" />
+
+                        <p>Indexbillede <b style="font-family: 'Segoe UI'">(247.5 x 150)</b></p>
+                        <input type="file" asp-for="@Model.IndexPicture" />
+
+                        <p>Baggrundsbillede <b style="font-family: 'Segoe UI'">(1140 x 400)</b></p>
+                        <input type="file" asp-for="@Model.ArticlePicture" />
+
+                        <br /><br />
+
+                        <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+                          
+                            <div class="btn-group">
+                                <a class="btn btn-primary" data-toggle="dropdown" title="" data-original-title="Font Size"><i class="glyphicon glyphicon-text-height"></i>&nbsp;<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+                                    <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+                                    <li><a data-edit="FontSize 1"><font size="1">Small</font></a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-primary" data-edit="bold" title="Bold "><i class="glyphicon glyphicon-bold"></i></a>
+                                <a class="btn btn-primary" data-edit="italic" title="Italic"><i class="glyphicon glyphicon-italic"></i></a>
+                                <a class="btn btn-primary" data-edit="underline" title="Underline"><i class="glyphicon glyphicon-text-width"></i></a>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-primary" data-edit="insertunorderedlist" title="Bullet list"><i class="glyphicon glyphicon-list"></i></a>
+                                <a class="btn btn-primary" data-edit="insertorderedlist" title="Number list"><i class="glyphicon glyphicon-list-alt"></i></a>
+                                <a class="btn btn-primary" data-edit="outdent" title="Reduce indent "><i class="glyphicon glyphicon-indent-left"></i></a>
+                                <a class="btn btn-primary" data-edit="indent" title="Indent"><i class="glyphicon glyphicon-indent-right"></i></a>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-primary" data-edit="justifyleft" title="Align Left"><i class="glyphicon glyphicon-align-left"></i></a>
+                                <a class="btn btn-primary" data-edit="justifycenter" title="Center"><i class="glyphicon glyphicon-align-center"></i></a>
+                                <a class="btn btn-primary" data-edit="justifyright" title="Align Right"><i class="glyphicon glyphicon-align-right"></i></a>
+                                <a class="btn btn-primary" data-edit="justifyfull" title="Justify"><i class="glyphicon glyphicon-align-justify"></i></a>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-primary" data-toggle="dropdown" title="Hyperlink"><i class="glyphicon glyphicon-link"></i></a>
+                                <div class="dropdown-menu input-append">
+                                    <input class="span2" placeholder="URL" type="text" data-edit="createLink">
+                                    <button class="btn" type="button">Add</button>
+                                </div>
+                                <a class="btn btn-primary" data-edit="unlink" title="Remove Hyperlink"><i class="glyphicon glyphicon-remove"></i></a>
+
+                            </div>
+
+                            <div class="btn-group">
+                                <a class="btn btn-primary" id="pictureBtn" title="Insert picture (or just drag &amp; drop)"><i class="glyphicon glyphicon-picture"></i></a>
+                                <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" style="opacity: 0; position: absolute; top: 0px; left: 0px; width: 37px; height: 30px;">
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-primary" data-edit="undo" title="Undo"><i class="glyphicon glyphicon-backward"></i></a>
+                                <a class="btn btn-primary" data-edit="redo" title="Redo"><i class="glyphicon glyphicon-forward"></i></a>
+                            </div>
+                        </div>
+
+                        <div id="editor">
+                        </div>
+
+                        <input type="hidden" id="blogText" asp-for="@Model.ArticleText" />
+                        <button id="saveBtn">GEM</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $("#editor").wysiwyg();
+
+        $("#createDate").datepicker({
+            dateFormat: "dd-mm-yy",
+            minDate: new Date(1910, 0, 1),
+            maxDate: new Date(2020, 0, 1),
+            yearRange: '1910:2020',
+            changeYear: true,
+            changeMonth: true,
+            changeTime: true,
+            defaultDate: new Date()
+
+        });
+
+        $(document).ready(function () {
+
+            $("#editor").keyup(function () {
+                console.log($("#editor").html());
+            });
+
+            $("#saveBtn").click(function () {
+                var text = $("#editor").cleanHtml();
+                $("#blogText").val(text);
+                $("#blogForm").submit(); 
+            });
+        });
+
+    </script>
+}
+
+
+
+

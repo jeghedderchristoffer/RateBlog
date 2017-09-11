@@ -1,0 +1,77 @@
+﻿@model RateBlog.Models.AdminViewModels.BlogArticlesViewModel
+
+<div class="background-all" style="padding-bottom: 0">
+
+    @Html.Partial("_NavbarPartial", "")
+
+    <div class="navbar-allaround" style="position: relative"></div>
+
+    <div class="admin-container" style="padding-top: 30px; padding-bottom: 80px; overflow-y: scroll; height: calc(100vh - 70px)">
+
+        <div class="container">
+            <div class="col-md-12" style="padding-top: 40px;">
+                <div class="white-box">
+                    <h2 style="text-align: center; margin-bottom: 35px">Alle blog artikler <span class="pull-right" style="padding-right: 10px"><a style="color: green" asp-controller="Admin" asp-action="CreateArticle"><i class="fa fa-plus" aria-hidden="true"></i></a></span></h2>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Titel
+                                </th>
+                                <th>
+                                    Dato
+                                </th>
+                                <th>
+                                    Forfatter
+                                </th>
+                                <th>
+                                    Published
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var article in Model.Articles.OrderByDescending(x => x.DateTime))
+                            {
+                                <tr>
+                                    <td>
+                                        @article.Title
+                                    </td>
+
+                                    <td>
+                                        @article.DateTime
+                                    </td>
+                                    <td>
+                                        @article.Author
+                                    </td>
+                                    <td>
+                                        @if (article.Publish)
+                                        {
+                                            <form asp-controller="Admin" asp-action="PublishArticle" method="post">
+                                                <input type="hidden" value="@article.Id" name="id" />
+                                                <button style="background: transparent; border: none" type="submit">Offentlig</button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form asp-controller="Admin" asp-action="PublishArticle" method="post">
+                                                <input type="hidden" value="@article.Id" name="id" />
+                                                <button style="background: transparent; border: none" type="submit">Ikke offentlig</button>
+                                            </form>
+                                        }
+
+                                    </td>
+                                    <td align="right">
+                                        <a asp-controller="Admin" asp-action="EditArticle" asp-route-id="@article.Id">Rediger</a> | 
+                                        <a asp-controller="Admin" asp-action="ArticlePreview" asp-route-id="@article.Id">Preview</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

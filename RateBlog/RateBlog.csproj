@@ -14,6 +14,10 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\EkspertController.cs" />
+    <Compile Remove="Models\SeedEmailNotificationData.cs" />
+    <Compile Remove="Models\SeedKategoriData.cs" />
+    <Compile Remove="Models\SeedPlatformData.cs" />
+    <Compile Remove="Models\SeedRoleData.cs" />
   </ItemGroup>
 
   <ItemGroup>

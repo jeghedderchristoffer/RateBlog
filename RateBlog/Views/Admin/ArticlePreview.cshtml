@@ -1,0 +1,41 @@
+﻿@model RateBlog.Models.BlogArticle
+
+
+
+<div class="background-all">
+    <div class="navbar-allaround"></div>
+
+    <div class="container" style="padding-top: 40px;">
+        <div class="col-md-12 white-box">
+            <div class="blog-index-container">
+                <div class="col-md-3">
+                    <img class="center-block" src="@Url.Action("GetBlogPicture", "Blog", new { id = Model.Id, indexPic = true} )" />
+                </div>
+                <div class="col-md-9">
+                    <h3>@Model.Title</h3>
+                    <h5><span style="color: #a8a8a8">@Model.DateTime.ToString("dd/MM/yyyy") | @Model.Categories</span></h5>
+                    <p>@Model.Description</p>
+                    <a>Læs mere her</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding-top: 40px">
+        <div class="blog-article-container">
+            <div class="white-box">
+                <img src="@Url.Action("GetBlogPicture", "Blog", new { id = Model.Id, indexPic = false} )" />
+                <div class="blog-body">
+                    <div class="text-center">
+                        <h1>@Model.Title</h1>
+                        <h5><span style="color: #a8a8a8">@Model.DateTime.ToString("dd/MM/yyyy") | @Model.Categories</span></h5>
+                    </div>
+                    <br />
+                    <div style="line-height: 180%;">
+                        @Html.Raw(Model.ArticleText)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

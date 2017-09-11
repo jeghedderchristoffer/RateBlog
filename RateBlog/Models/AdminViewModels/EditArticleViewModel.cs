@@ -1,14 +1,15 @@
-﻿using RateBlog.Data;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Models
+namespace RateBlog.Models.AdminViewModels
 {
-    public class BlogArticle : BaseEntity
+    public class EditArticleViewModel
     {
+        public string Id { get; set; } 
+
         public string Title { get; set; }
 
         public DateTime DateTime { get; set; }
@@ -17,15 +18,12 @@ namespace RateBlog.Models
 
         public string Description { get; set; }
 
-        public string ArticleText { get; set; } 
+        public string ArticleText { get; set; }
 
         public string Categories { get; set; }
 
-        public Byte[] ArticlePicture { get; set; }
+        public IFormFile ArticlePicture { get; set; }
 
-        public Byte[] IndexPicture { get; set; }
-
-        [DefaultValue(false)]
-        public bool Publish { get; set; } 
+        public IFormFile IndexPicture { get; set; }
     }
 }

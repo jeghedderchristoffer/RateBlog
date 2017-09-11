@@ -1,0 +1,28 @@
+﻿@model RateBlog.Models.BlogArticle
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="background-all">
+    <div class="navbar-allaround"></div>
+
+    <div class="container" style="padding-top: 40px">
+        <div class="blog-article-container">
+            <div class="white-box">
+                <img src="@Url.Action("GetBlogPicture", "Blog", new { id = Model.Id, indexPic = false} )" />
+                <div class="blog-body">
+                    <div class="text-center">
+                        <h1>@Model.Title</h1>
+                        <h5><span style="color: #a8a8a8">@Model.DateTime.ToString("dd/MM/yyyy") | @Model.Categories</span></h5>
+                    </div>                 
+                    <br />
+                    <div style="line-height: 180%;">
+                        @Html.Raw(Model.ArticleText)
+                    </div>
+                </div>             
+            </div>
+        </div>     
+    </div>
+</div>
+
+@Html.Partial("_FooterPartial")

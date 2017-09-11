@@ -31,8 +31,20 @@ namespace RateBlog.Controllers
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
         private readonly IFeedbackService _feedbackService;
         private readonly IRepository<FeedbackReport> _feedbackReportRepo;
+        private readonly IRepository<BlogArticle> _blogRepo;
 
-        public AdminController(IRepository<FeedbackReport> feedbackReportRepo, IFeedbackService feedbackService, IPasswordHasher<ApplicationUser> passwordHasher, IAdminService adminService, IRepository<Feedback> feedbackRepo, IRepository<Category> categoryRepo, IRepository<Platform> platformRepo, IEmailSender emailSender, UserManager<ApplicationUser> userManager, IInfluencerService influencerService, IInfluencerRepository influencerRepo)
+        public AdminController(IRepository<FeedbackReport> feedbackReportRepo,
+            IFeedbackService feedbackService,
+            IPasswordHasher<ApplicationUser> passwordHasher,
+            IAdminService adminService,
+            IRepository<Feedback> feedbackRepo,
+            IRepository<Category> categoryRepo,
+            IRepository<Platform> platformRepo,
+            IEmailSender emailSender,
+            UserManager<ApplicationUser> userManager,
+            IInfluencerService influencerService,
+            IInfluencerRepository influencerRepo,
+            IRepository<BlogArticle> blogRepo)
         {
             _userManager = userManager;
             _influencerService = influencerService;
@@ -44,7 +56,8 @@ namespace RateBlog.Controllers
             _adminService = adminService;
             _passwordHasher = passwordHasher;
             _feedbackService = feedbackService;
-            _feedbackReportRepo = feedbackReportRepo; 
+            _feedbackReportRepo = feedbackReportRepo;
+            _blogRepo = blogRepo;
         }
 
         [HttpGet]
@@ -82,7 +95,7 @@ namespace RateBlog.Controllers
             var model = new Models.AdminViewModels.IndexViewModel()
             {
                 AllUsers = users,
-                NotApprovedList = unApprovedList, 
+                NotApprovedList = unApprovedList,
                 FeedbackReports = feedbackList
             };
 
@@ -153,6 +166,7 @@ namespace RateBlog.Controllers
             return RedirectToAction("UserProfile", new { id = model.ApplicationUser.Id });
         }
 
+        [HttpPost]
         public IActionResult EditInfluencer(UserProfileViewModel model, string[] categoriList)
         {
             var influencer = _influencerRepo.Get(model.InfluencerViewModel.Influencer.Id);
@@ -192,7 +206,6 @@ namespace RateBlog.Controllers
             return RedirectToAction("UserProfile", new { id = model.InfluencerViewModel.Influencer.Id });
 
         }
-
 
         [HttpPost]
         public async Task<IActionResult> ApproveInfluencer(UserProfileViewModel model)
@@ -299,14 +312,14 @@ namespace RateBlog.Controllers
                 InfluencerCount = _influencerRepo.GetAll().Count(),
                 RealUserCount = realUsers
             };
-            return View(model); 
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult FeedbackReports(string id)
         {
-            var feedback = _feedbackService.GetFeedbackInfo(id); 
-            var reports = _feedbackService.GetReportForFeedback(feedback.Id); 
+            var feedback = _feedbackService.GetFeedbackInfo(id);
+            var reports = _feedbackService.GetReportForFeedback(feedback.Id);
 
             var model = new FeedbackReportViewModel()
             {
@@ -314,18 +327,18 @@ namespace RateBlog.Controllers
                 FeedbackReports = reports
             };
 
-            return View(model); 
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult FeedbackReportsOk(string id)
         {
-            var reports = _feedbackService.GetReportForFeedback(id); 
+            var reports = _feedbackService.GetReportForFeedback(id);
 
-            foreach(var v in reports.ToList())
+            foreach (var v in reports.ToList())
             {
                 v.IsRead = true;
-                _feedbackReportRepo.Update(v);  
+                _feedbackReportRepo.Update(v);
             }
 
             return RedirectToAction("Index");
@@ -336,15 +349,155 @@ namespace RateBlog.Controllers
         {
             var reports = _feedbackService.GetReportForFeedback(id);
 
-            foreach(var v in reports.ToList())
+            foreach (var v in reports.ToList())
             {
-                _feedbackReportRepo.Delete(v); 
+                _feedbackReportRepo.Delete(v);
             }
 
-            _feedbackRepo.Delete(_feedbackRepo.Get(id)); 
+            _feedbackRepo.Delete(_feedbackRepo.Get(id));
 
             return RedirectToAction("Index");
         }
+
+        #region Blog
+
+        [HttpGet]
+        public IActionResult BlogArticles()
+        {
+            var articles = _blogRepo.GetAll();
+            var model = new BlogArticlesViewModel()
+            {
+                Articles = articles
+            };
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateArticle()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var model = new CreateArticlesViewModel()
+            {
+                Author = user.Name
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult CreateArticle(CreateArticlesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                BlogArticle blog = new BlogArticle()
+                {
+                    Title = model.Title,
+                    DateTime = model.DateTime,
+                    Author = model.Author,
+                    Categories = model.Categories,
+                    Description = model.Description,
+                    ArticleText = model.ArticleText
+                };
+
+                if (model.IndexPicture != null)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    model.IndexPicture.OpenReadStream().CopyTo(ms);
+                    blog.IndexPicture = ms.ToArray();
+                }
+
+                if (model.ArticlePicture != null)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    model.ArticlePicture.OpenReadStream().CopyTo(ms);
+                    blog.ArticlePicture = ms.ToArray();
+                }
+                _blogRepo.Add(blog);
+                return RedirectToAction("BlogArticles");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult EditArticle(string id)
+        {
+            var article = _blogRepo.Get(id);
+            var model = new EditArticleViewModel()
+            {
+                Id = article.Id,
+                ArticleText = article.ArticleText,
+                Author = article.Author,
+                Categories = article.Categories,
+                DateTime = article.DateTime,
+                Description = article.Description,
+                Title = article.Title
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditArticle(EditArticleViewModel model)
+        {
+            var article = _blogRepo.Get(model.Id);
+            article.Title = model.Title;
+            article.DateTime = model.DateTime;
+            article.Description = model.Description;
+            article.Categories = model.Categories;
+            article.Author = model.Author;
+            article.ArticleText = model.ArticleText;
+
+            if (model.IndexPicture != null)
+            {
+                MemoryStream ms = new MemoryStream();
+                model.IndexPicture.OpenReadStream().CopyTo(ms);
+                article.IndexPicture = ms.ToArray();
+            }
+
+            if (model.ArticlePicture != null)
+            {
+                MemoryStream ms = new MemoryStream();
+                model.ArticlePicture.OpenReadStream().CopyTo(ms);
+                article.ArticlePicture = ms.ToArray();
+            }
+
+            _blogRepo.Update(article);
+
+            return RedirectToAction("BlogArticles");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteArticle(string id)
+        {
+            var article = _blogRepo.Get(id);
+            _blogRepo.Delete(article);
+            return RedirectToAction("BlogArticles");
+        }
+
+        [HttpPost]
+        public IActionResult PublishArticle(string id)
+        {
+            var article = _blogRepo.Get(id);
+            if (article.Publish)
+            {
+                article.Publish = false;
+            }
+            else
+            {
+                article.Publish = true; 
+            }
+            _blogRepo.Update(article);
+
+            return RedirectToAction("BlogArticles");
+        }
+
+        [HttpGet]
+        public IActionResult ArticlePreview(string id)
+        {
+            var article = _blogRepo.Get(id);
+            return View(article); 
+        }
+
+        #endregion
 
         #region Thomas
         [HttpGet]
@@ -403,7 +556,7 @@ namespace RateBlog.Controllers
             };
 
             return Json(ResultData);
-        } 
+        }
         #endregion
 
         #region Helpers

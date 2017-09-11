@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170909110238_blogAdded")]
+    partial class blogAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -194,23 +195,21 @@ namespace RateBlog.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ArticleHeader");
+
                     b.Property<byte[]>("ArticlePicture");
 
                     b.Property<string>("ArticleText");
 
                     b.Property<string>("Author");
 
+                    b.Property<string>("BriefText");
+
                     b.Property<string>("Categories");
 
-                    b.Property<DateTime>("DateTime");
-
-                    b.Property<string>("Description");
+                    b.Property<string>("DateTime");
 
                     b.Property<byte[]>("IndexPicture");
-
-                    b.Property<bool>("Publish");
-
-                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 

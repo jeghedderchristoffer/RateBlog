@@ -79,7 +79,8 @@ namespace RateBlog
             services.AddTransient<IRepository<Category>, Repository<Category>>();
             services.AddTransient<IRepository<Feedback>, Repository<Feedback>>();
             services.AddTransient<IRepository<FeedbackReport>, Repository<FeedbackReport>>();
-            services.AddTransient<IRepository<EmailNotification>, Repository<EmailNotification>>(); 
+            services.AddTransient<IRepository<EmailNotification>, Repository<EmailNotification>>();
+            services.AddTransient<IRepository<BlogArticle>, Repository<BlogArticle>>(); 
 
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();
@@ -160,11 +161,6 @@ namespace RateBlog
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-
-            SeedPlatformData.Initialize(app.ApplicationServices);
-            SeedKategoriData.Initialize(app.ApplicationServices);
-            SeedRoleData.Initialize(app.ApplicationServices);
 
         }
 

@@ -8,6 +8,7 @@
     "jquery-validation-unobtrusive": "3.2.6",
     "ihover": "1.0.0",
     "jquery-ui": "jquery.ui#1.12.1",
-    "jquery-scrollto": "v1.4.6"
+    "jquery-scrollto": "v1.4.6",
+    "bootstrap-wysiwyg": "*"
   }
 }

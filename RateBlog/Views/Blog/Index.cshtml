@@ -1,0 +1,34 @@
+﻿@model RateBlog.Models.BlogViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Blog";
+}
+
+<div class="background-all">
+    <div class="navbar-allaround"></div>
+
+    <div class="container" style="padding-top: 40px;">
+
+        @foreach(var v in Model.ArticleList.OrderByDescending(x => x.DateTime))
+        {
+            <div class="col-md-12 white-box">
+                <div class="blog-index-container">
+                    <div class="col-md-3">
+                        <img class="center-block" src="@Url.Action("GetBlogPicture", "Blog", new { id = v.Id, indexPic = true} )" />
+                    </div>
+                    <div class="col-md-9">
+                        <h3>@v.Title</h3>
+                        <h5><span style="color: #a8a8a8">@v.DateTime.ToString("dd/MM/yyyy") | @v.Categories</span></h5>
+                        <p>@v.Description</p>
+                        <a asp-controller="Blog" asp-action="Article" asp-route-id="@v.Id">Læs mere her</a>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    </div>
+
+</div>
+
+@Html.Partial("_FooterPartial")
