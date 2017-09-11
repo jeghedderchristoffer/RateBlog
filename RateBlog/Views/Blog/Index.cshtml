@@ -11,47 +11,31 @@
 
     <div class="container">
         <h1 class="blog-title">Blog</h1>
-        <hr style="color="black" />
+        
+@foreach (var article in Model.BlogList)
+{
+    <div class="news-container">
 
-         @*  Ikke nødvendig med søge function endnu, den er der i tilfælde det skulle blive relevant.    *@
-        @*<div style="align-content:center;padding-left:300px;padding-bottom:30px;">
-
-
-            <form method="get" asp-area="" asp-controller="Admin" asp-action="Index">
-                <input type="text" name="searchString" id="searchString" class="blog-search-input" style="border: solid 1px;" placeholder="Søg" />
-                <input class="blog-search-button" type="submit" value="Søg" />
-                <span>
-                </span>
-            </form>
-        </div>*@
-
-        @foreach (var article in Model.BlogList)
-        {
-            <div>
-                <div style="display:inline-block;padding-top:15px;">
-
-                    <div class="blog-box col-md-10 col-xs-10">
-                                                                           
-                       
-                            <div class="col-md-2 col-xs-2">
-                                <div style="display:inline-block;vertical-align:top;">
-                                    <img class="blog-picture" src="@Url.Action("IndexProfilePic", "Blog", new { id = article.Id} )" />
-                                </div>
-                            </div>
-                            <div class="col-md-8 col-xs-8" style="display:inline-block;align-content:flex-end;margin-left:50px;min-width:875px;">
-
-
-                                    <h1 style="font-size:30px;opacity:0.8;margin-top:-3px;">@article.ArticleHeader</h1>
-                                    <h4 style="opacity:0.5;padding-bottom:3px;padding-top:3px;">@article.DateTime af @article.Author | @article.Categories</h4>
-                                    <h4 style="padding-bottom:20px;padding-top:10px;">@article.BriefText</h4>
-                                    <a asp-controller="Blog" asp-action="NewsPage" asp-route-id="@article.Id" style="font-size:20px;color:#089DE3;">Læs mere </a>
-                           
-                            </div>
-                    
-                       
+            
+        <div class="container">
+            <div class="col-md-12 blog-index-pre">
+                <div class="col-md-2 col-sm-2">
+                    <div style="display:inline-block;vertical-align:top;">
+                        <img class="blog-picture img-responsive img-thumbnail" src="@Url.Action("IndexProfilePic", "Blog", new { id = article.Id })" />
                     </div>
                 </div>
+                <div class="col-md-10 col-sm-10 blog-index-padding"> 
+                    <h1 class="blog-index-articleheader">@article.ArticleHeader</h1>
+                    <h4 class="blog-index-date">@article.DateTime af @article.Author | @article.Categories</h4>
+                    <h4 class="blog-index-brieftext">@article.BriefText</h4>
+                    <a asp-controller="Blog" asp-action="NewsPage" asp-route-id="@article.Id" class="blog-index-watchmore" >Læs mere </a>
+                </div>
+
             </div>
-        }
+        </div>
+    </div>
+}
+
+
     </div>
 </div>

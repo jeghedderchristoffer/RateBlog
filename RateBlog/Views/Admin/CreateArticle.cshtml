@@ -1,4 +1,4 @@
-﻿@model RateBlog.Models.BlogViewModel.CreateArticlesViewModel
+﻿@model RateBlog.Models.AdminViewModels.CreateArticlesViewModel
 
 @{
     ViewData["Title"] = "Opret en artikel";
@@ -158,7 +158,7 @@
                     console.log(model)
 
                 $.ajax({
-                    url: "/Blog/CreateArticle",
+                    url: "/Admin/CreateArticle",
                     method: "POST",
                     data: {
                         model: model

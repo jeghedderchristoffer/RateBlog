@@ -8,47 +8,36 @@
 
 </div>
 
-    <div class="news-container">
 
 
-        <div class="container">
+<div style="background:#f2f1ed;min-height:4000px;">
+   
+    <div class="container">
 
-            <div id="top">
-                <div style="align-content:space-around;" class="col-md-8 blog-box col-xs-2">
+        <div id="top" style="background-color:gray">
 
-                    <div class="blog-page-img" style="display:inline-block;">
-                        <img class="img-responsive img-thumbnail" style="align-content:center" src="@Url.Action("BlogProfilePic", "Blog", new { id = Model.Blog.Id} )" />
-                    </div>
-
-                    <div style="min-width:1000px;padding-right:100px;display:inline-block">
-                        <h1 style="padding-top:10px;font-size:60px;">@Model.Blog.ArticleHeader</h1>
-
-                        <div style="padding-top:10px;">
-
-                            <h4 class="blog-author">@Model.Blog.DateTime af @Model.Blog.Author</h4>
-                            <h4 class="blog-categories">@Model.Blog.Categories</h4>
-
-                            <div style="min-height:700px;padding-top:10px;">
-                                @Html.Raw(Model.Blog.ArticleText)
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-
-
+            <div class="jumbotron" style="background-color:white">
+                <div class="blog-page-img" style="display:inline-block;">
+                    <img class="img-responsive img-thumbnail" style="align-content:center" src="@Url.Action("BlogProfilePic", "Blog", new { id = Model.Blog.Id} )" />
                 </div>
 
                 <div>
+                    <h1>@Model.Blog.ArticleHeader</h1>
+                </div>
+                <div>
+                    <h4 class="blog-author">@Model.Blog.DateTime af @Model.Blog.Author</h4>
+                    <h4 class="blog-categories">@Model.Blog.Categories</h4>
+                </div>
 
-
-
-
+                <div>
+                    @Html.Raw(Model.Blog.ArticleText)
                 </div>
 
             </div>
-     
+
+        </div>
+
+
     </div>
+
 </div>

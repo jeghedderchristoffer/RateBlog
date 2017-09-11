@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace RateBlog.Models.BlogViewModel
+namespace RateBlog.Models.AdminViewModels
 {
     public class CreateArticlesViewModel
     {

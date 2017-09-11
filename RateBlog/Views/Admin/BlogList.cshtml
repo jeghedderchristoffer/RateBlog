@@ -1,4 +1,4 @@
-﻿@model RateBlog.Models.BlogViewModel.BlogViewModel
+﻿@model RateBlog.Models.AdminViewModels.BlogListViewModel
 
 <div class="navbar-allaround">
 
@@ -48,7 +48,7 @@
                         <p>@article.Author</p>
                     </td>
                     <td>
-                        <a asp-controller="Blog" asp-action="UploadPictureView" asp-route-id="@article.Id" style="font-size:20px;color:#089DE3;">Upload Pictures </a>   
+                        <a asp-controller="Admin" asp-action="UploadPictureView" asp-route-id="@article.Id" style="font-size:20px;color:#089DE3;">Upload Pictures </a>   
 
                     </td>
                 </tr>

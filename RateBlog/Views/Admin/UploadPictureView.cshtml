@@ -1,19 +1,15 @@
-﻿@model RateBlog.Models.BlogViewModel.BlogViewModel
+﻿@model RateBlog.Models.AdminViewModels.UploadPictureViewMidel
 @{
     ViewData["Title"] = "Artikel navn";
 
 }
-
-
-
-
 
 <div class="navbar-allaround">
 
 </div>
 <div style="background:#f2f1ed;min-height:2000px;">
     <div class="container" style="text-align:center">         
-        <form enctype="multipart/form-data" asp-area="" asp-controller="Blog" asp-action="UploadPictureView">
+        <form enctype="multipart/form-data" asp-area="" asp-controller="Admin" asp-action="index">
                  <h3 style="padding-bottom:15px;">Indsæt artikel billede</h3>
                 <input  style="background:orange;margin-left:437px;" type="file" class="blog-btn" name="ArticlesPicture" />           
                 <h3 style="padding-bottom:15px;">Indsæt artikel billede</h3>               
