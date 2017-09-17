@@ -13,6 +13,7 @@ namespace RateBlog.Helper
         public IEnumerable<double> FeedbackScore { get; set; }
         public IEnumerable<string> Categories { get; set; } 
         public IEnumerable<string> Platforms { get; set; }
-        public string ProfileText { get; set; } 
+        public string ProfileText { get; set; }
+        public bool InfluencerVote { get; set; } 
     }
 }

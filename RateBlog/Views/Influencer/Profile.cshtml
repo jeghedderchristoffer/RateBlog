@@ -1,9 +1,12 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.ShowViewModel
 @inject RateBlog.Services.IFeedbackService FeedbackService
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = Model.Influenter.Alias + "'s profil";
     var isUserCreated = (Model.ApplicationUser.NormalizedEmail.StartsWith("USERINFLUENCER")) ? true : false;
     var totalScore = FeedbackService.GetTotalScore(Model.Influenter.Id);
+    var index = 0;
+    var colors = new string[] { "#ffa500", "#53b80a", "#ea4335", "#089de3", "#FDD01C" };
 }
 
 <div class="navbar-allaround"></div>
@@ -29,9 +32,9 @@
             <div class="col-md-4 nopaddingmobile">
                 <div class="white-box">
 
-                    <img class="profile-img-big center-block" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
+                    <img class="profile-img-big center-block" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.Influenter.Id})" />
                     <hr />
-                    <h3>
+                    <h3 style=" font-family: 'Oxygen', sans-serif; ">
                         @Model.Influenter.Alias
                         @if (!isUserCreated)
                         {
@@ -55,8 +58,9 @@
                 </div>
             </div>
             <div class="col-md-8 nopaddingmobile">
+
                 <div class="white-box">
-                    <h3 class="text-center" style="margin-bottom: 20px;"><b>SAMLET SCORE</b></h3>
+                    <h3 class="text-center" style="margin-bottom: 20px; margin-top: 10px;"><b>BESTSCORE</b></h3>
                     <div class="show-rating-medium" style="margin-top: 20px;">
                         <div class="show-rating-container-medium center-block">
                             <div class="show-rating-front-medium">
@@ -95,11 +99,82 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center" style="margin-top: 20px; margin-bottom: 20px; font-size: 16px">@totalScore.ToString("0.00") af @Model.Influenter.Ratings.Count ratings</p>
+                    <p class="text-center" style="margin-top: 20px; margin-bottom: 10px; font-size: 16px">@totalScore.ToString("0.00") af @Model.Influenter.Ratings.Count ratings</p>
                 </div>
 
+                <!--Vote-->
+
+                @if (Model.Afstemning != null)
+                {
+                    <input type="hidden" id="voteId" value="@Model.Afstemning.Id" />
+
+                    if (SignInManager.IsSignedIn(User))
+                    {
+                        if (Model.HasVoted.Value)
+                        {
+                            <div class="white-box vote-box">
+                                <h3 class="text-center" style="margin-top: 10px ;margin-bottom: 20px"><b>SPØRGESKEMA</b></h3>
+                                <h4>@Model.Afstemning.Title</h4>
+
+                                <div class="vote-box-body" id="voteBox">
+                                    @foreach (var v in Model.Afstemning.VoteQuestions)
+                                    {
+                                        <div class="vote-progress-container">
+                                            <span>@v.Question</span>
+                                            <div class="vote-progress">
+                                                <div class="vote-progress-bar">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="white-box vote-box">
+                                <h3 class="text-center" style="margin-top: 10px ;margin-bottom: 20px"><b>SPØRGESKEMA</b></h3>
+                                <h4>@Model.Afstemning.Title</h4>
+
+                                <div class="vote-box-body" id="voteBox">
+                                    @foreach (var v in Model.Afstemning.VoteQuestions)
+                                    {
+                                        <input type="radio" value="@v.Id" id="@v.Id" name="voteAnswers" />
+                                        <label for="@v.Id" style="border-left: 3px solid @colors[index]">
+                                            @v.Question
+                                        </label>
+                                        index++;
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div style="position: relative; display: block">
+                            <h4 style="position: absolute; z-index: 100; top: 50%; left: 50%; transform: translate(-50%, -50%);">Log ind for at svare</h4>
+                            <div class="white-box vote-box blur-effect">
+                                <h3 class="text-center" style="margin-top: 10px ;margin-bottom: 20px"><b>SPØRGESKEMA</b></h3>
+                                <h4>@Model.Afstemning.Title</h4>
+
+                                <div class="vote-box-body" id="voteBox">
+                                    @foreach (var v in Model.Afstemning.VoteQuestions)
+                                    {
+                                        <input type="radio" value="@v.Id" id="@v.Id" name="voteAnswers" />
+                                        <label for="@v.Id" style="border-left: 3px solid @colors[index]">
+                                            @v.Question
+                                        </label>
+                                        index++;
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
                 <div class="white-box">
-                    <h3 class="text-center" style="margin-bottom: 20px;"><b>KATEGORIER</b></h3>
+                    <h3 class="text-center" style="margin-bottom: 20px; margin-top: 10px;"><b>KATEGORIER</b></h3>
                     <div class="center-icons">
                         @foreach (var v in Model.Influenter.InfluenterKategori)
                         {
@@ -112,8 +187,8 @@
                     </div>
                 </div>
 
-                <div class="white-box" style="padding-top: 20px; padding-bottom: 20px">
-                    <h3 class="text-center" style="margin-bottom: 20px;"><b>SOCIALE MEDIER</b></h3>
+                <div class="white-box">
+                    <h3 class="text-center" style="margin-bottom: 20px; margin-top: 10px;"><b>SOCIALE MEDIER</b></h3>
                     <div class="social-box" style="text-align: center">
 
                         @foreach (var v in Model.Influenter.InfluenterPlatform)
@@ -153,7 +228,80 @@
                         }
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+        var colors = ["#ffa500", "#53b80a", "#ea4335", "#089de3", "#FDD01C"];
+        var hasVoted = '@Model.HasVoted';
+
+        $(document).ready(function () {
+            getData();
+        });
+
+        $("input[name=voteAnswers]").click(function () {
+            $.ajax({
+                url: "/Influencer/Vote",
+                method: "POST",
+                dataType: 'json',
+                data: {
+                    id: $("#applicationUserId").val(),
+                    questionId: $("input[name=voteAnswers]:checked").val(),
+                    voteId: $("#voteId").val()
+                },
+                success: function (result) {
+                    if (result) {
+                        hasVoted = 'True';
+                        getData();
+                    }
+                },
+                error: function (response) {
+                    console.log(response);
+                },
+            });
+        });
+
+        function getData() {
+            console.log(hasVoted)
+            if (hasVoted === 'True') {
+                console.log("RUN")
+                $.ajax({
+                    url: "/Influencer/GetVoteResult",
+                    method: "GET",
+                    dataType: 'json',
+                    data: {
+                        voteId: $("#voteId").val()
+                    },
+                    success: function (result) {
+                        var voteBox = $("#voteBox");
+                        var totalSum = result.totalSum;
+                        voteBox.html("");
+
+                        for (var i = 0; i < result.data.length; i++) {
+                            voteBox.append('<div class="vote-progress-container"><span>' + result.data[i].title + '</span><div class="vote-progress"><div class="vote-progress-bar" id="voteBar' + i + '" style="width: 0%; background: ' + colors[i] + '"></div></div></div>');
+                        }
+
+                        for (var i = 0; i < result.data.length; i++) {
+                            (function (i) {
+                                setTimeout(function () {
+                                    var width = (result.data[i].count / totalSum) * 100 + "%";
+                                    $("#voteBar" + i).css("width", width);
+                                }, 1)
+                            })(i);
+                        }
+                    },
+                    error: function () {
+                        console.log("fail vote");
+                    },
+                });
+            }
+        }
+
+
+
+    </script>
+}

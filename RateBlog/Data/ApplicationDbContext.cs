@@ -25,7 +25,12 @@ namespace RateBlog.Data
         public DbSet<InfluencerCategory> InfluencerCategory { get; set; }
         public DbSet<FeedbackReport> FeedbackReports { get; set; }
         public DbSet<EmailNotification> EmailNotifications { get; set; }
-        public DbSet<BlogArticle> BlogArticles { get; set; } 
+        public DbSet<BlogArticle> BlogArticles { get; set; }
+
+        // Vote
+        public DbSet<Vote> Votes { get; set; }
+        public DbSet<VoteQuestion> VoteQuestions { get; set; }
+        public DbSet<VoteAnswer> VoteAnswers { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -108,8 +108,8 @@
 
     <nav class="navbar navbar-default navbar-static-top">
         <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand" style="padding-left: 0">
-            <img id="navbarLogo" src="~/images/bestfluence-logo.svg" style="height: 100%; width: 70px; max-height: 70px; position: absolute;" />
-            <span style="margin-left: 70px;">
+            <img id="navbarLogo" src="~/images/bestfluence-logo.svg"/>
+            <span class="navbar-logo">
                 Bestfluence
             </span>
         </a>
@@ -266,6 +266,7 @@
 
     <script src="~/js/bestjavascript.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap-wysiwyg/bootstrap-wysiwyg.js"></script>
+    <script src="~/lib/progressbar.js/dist/progressbar.min.js"></script>
 
     @RenderSection("Scripts", required: false)
     @RenderSection("SearchStar", required: false)

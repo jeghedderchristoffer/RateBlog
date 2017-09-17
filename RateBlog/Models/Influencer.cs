@@ -20,7 +20,9 @@ namespace RateBlog.Models
         public string ProfileText { get; set; }
 
         [DefaultValue(false)]
-        public bool IsApproved { get; set; } 
+        public bool IsApproved { get; set; }
+
+        public string Url { get; set; } 
 
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual ICollection<Feedback> Ratings { get; set; } 

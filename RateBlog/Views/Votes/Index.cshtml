@@ -1,0 +1,91 @@
+﻿@model RateBlog.Models.VoteViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "Spørgeskemaer";
+}
+
+<div class="background-all">
+
+    <div class="navbar-allaround"></div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div id="voteSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Success"]
+        </div>
+
+        <script>
+            window.setTimeout(function () {
+                $("#voteSuc").fadeOut(1000);
+            }, 5000);
+        </script>
+    }
+
+    <div class="container nopaddingmobile">
+        <div class="col-md-12 nopaddingmobile">
+            <div class="col-md-7">
+                <div class="votes-container">
+                    <h2>Spørgeskemaer</h2>
+                </div>
+
+                <div class="white-box hidden-md hidden-lg">
+                    <a asp-controller="Votes" asp-action="Create" class="votes-create-btn"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; OPRET NY SPØRGESKEMA</a>
+                </div>
+                
+
+                @if (Model.Votes.Count() == 0)
+                {
+                    <p>Du har ikke lavet nogle spørgeskemaer</p>
+                }
+                else
+                {
+                    <div class="votes-container">
+                        <div class="votes-container">
+                            <div class="white-box" style="margin-bottom: 20px;">
+                                <h4 style="margin-bottom: 20px; margin-top: 0">Link til dit spørgeskema</h4>
+                                <input type="text" value="http://www.bestfluence.dk/Influencer/Profile/@Model.InfluencerId" />
+                            </div>
+                        </div>
+                    </div>
+                    @foreach (var v in Model.Votes.OrderByDescending(x => x.DateTime).OrderByDescending(x => x.Active))
+                    {
+                        var activeColor = (v.Active) ? "#53b80a" : "#d9534f";
+                        var active = (v.Active) ? "Aktiv" : "Inaktiv";
+
+
+                        <div class="votes-container">
+                            <a asp-action="Vote" asp-controller="Votes" asp-route-id="@v.Id" style="color: #000">
+                                <div class="white-box hover">
+                                    @*<div class="countBox">@v.VoteQuestions.Select(x => x.VoteAnswers.Count).Sum() </div>*@
+                                    <p><i>@v.VoteQuestions.Select(x => x.VoteAnswers.Count).Sum()</i> @v.Title <span style="color: @activeColor">@active</span></p>
+                                </div>
+                            </a>
+                        </div>
+
+                    }
+                }
+            </div>
+
+            <div class="col-md-5 hidden-xs hidden-sm" style="padding-top: 73px;">
+                <div class="white-box">
+                    <a asp-controller="Votes" asp-action="Create" class="votes-create-btn"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; OPRET NY SPØRGESKEMA</a>
+                </div>
+                <div class="white-box">
+                    <div style="padding: 5px">
+                        <h2 style="text-align: center; margin-bottom: 20px; margin-top: 10px; font-size: 25px; font-family: 'Raleway', sans-serif; font-weight: bold">Inddrag dine følgere</h2>
+                        <p class="normal-text">Husker du at inddrage dine følgere omkring dit indhold og er du klar over hvad de savner fra dig? Med Bestfluence spørgeskema kan du nemt og simpelt oprette spørgeskemaer og dele dem med dine følgere på tværs af dine sociale medier. Dine følgere kan nemt give deres mening til kende og du kan udvikle kvalitetsindhold som de vil elske dig for.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $("input[type='text']").on("click", function () {
+            $(this).select();
+        });
+    </script>
+}

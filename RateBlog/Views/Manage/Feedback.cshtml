@@ -60,7 +60,7 @@
                         @foreach (var v in Model.Influencer.Ratings.OrderByDescending(x => x.FeedbackDateTime))
                         {
                             <a asp-controller="Manage" asp-action="Answer" asp-route-id="@v.Id" style="color: #000; text-decoration: none;">
-                                <div class="white-box col-md-12 col-sm-12">
+                                <div class="white-box hover col-md-12 col-sm-12">
                                     <div class="col-md-2 col-sm-2">
                                         <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
                                     </div>
@@ -146,7 +146,7 @@
                             @foreach (var v in list)
                             {
                                 <a class="feedback-link" asp-controller="Manage" asp-action="Read" asp-route-id="@v.Id" style="color: #000; text-decoration: none;">
-                                    <div class="white-box col-md-12 col-sm-12">
+                                    <div class="white-box hover col-md-12 col-sm-12">
                                         <div class="col-md-2 col-sm-2">
                                             <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.InfluenterId })" />
                                         </div>
@@ -230,7 +230,7 @@
 
                         @if (Model.Influencer != null)
                         {
-                            <h2 style="text-align: center;">SAMLET SCORE</h2>
+                            <h2 style="text-align: center;"><b>BESTSCORE</b></h2>
                             <div class="show-rating-medium" style="margin-top: 20px;">
                                 <div class="show-rating-container-medium center-block">
                                     <div class="show-rating-front-medium">

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using RateBlog.Data;
 using RateBlog.Helper;
 using RateBlog.Models;
@@ -34,6 +35,7 @@ namespace RateBlog.Controllers
         private readonly IRepository<FeedbackReport> _feedbackReportRepo;
         private readonly IEmailSender _emailSender;
         private readonly IRepository<EmailNotification> _emailNotification;
+        private readonly ApplicationDbContext _dbContext;
 
 
         public InfluencerController(
@@ -46,7 +48,8 @@ namespace RateBlog.Controllers
             IRepository<Platform> platformRepo,
             IFeedbackService feedbackService,
             IEmailSender emailSender,
-            IRepository<EmailNotification> emailNotification)
+            IRepository<EmailNotification> emailNotification,
+            ApplicationDbContext dbContext)
         {
             _influencerRepo = influencer;
             _userManager = userManager;
@@ -58,6 +61,7 @@ namespace RateBlog.Controllers
             _feedbackReportRepo = feedbackReportRepo;
             _emailSender = emailSender;
             _emailNotification = emailNotification;
+            _dbContext = dbContext;
         }
 
         [HttpGet]
@@ -100,26 +104,62 @@ namespace RateBlog.Controllers
         {
             var influencer = _influencerRepo.Get(id);
 
+            if (_dbContext.Influencer.Any(x => x.Url.ToLower() == id.ToLower()))
+                influencer = await _dbContext.Influencer.SingleOrDefaultAsync(x => x.Url.ToLower() == id.ToLower()); 
+
             //Burde kun kunne få den pågældene user, da Index() metoden KUN returnere Users som er influenter...
-            var user = await _userManager.FindByIdAsync(id);
+            var userInfluencer = await _userManager.FindByIdAsync(influencer.Id);
 
-            var gender = (user.Gender == "male") ? "Mand" : "Kvinde";
-
+            var gender = (userInfluencer.Gender == "male") ? "Mand" : "Kvinde";
             var today = DateTime.Today;
-            // Calculate the age.
-            var age = today.Year - user.BirthDay.Year;
-            // Go back to the year the person was born in case of a leap year
-            if (user.BirthDay > today.AddYears(-age)) age--;
+            var age = today.Year - userInfluencer.BirthDay.Year;
+            if (userInfluencer.BirthDay > today.AddYears(-age)) age--;
+
+            // Vote
+            var vote = _dbContext.Votes.Include(x => x.VoteQuestions).ThenInclude(x => x.VoteAnswers).SingleOrDefault(x => x.InfluencerId == influencer.Id && x.Active);
+            var currentUser = await _userManager.GetUserAsync(User);
+            bool? hasVoted = null;
+
+            if (vote != null && currentUser != null)
+                hasVoted = vote.VoteQuestions.Select(x => x.VoteAnswers.Any(p => p.ApplicationUserId == currentUser.Id)).Any(x => x == true);
 
             var model = new ShowViewModel()
             {
-                ApplicationUser = user,
+                ApplicationUser = userInfluencer,
                 Influenter = influencer,
                 Gender = gender,
-                Age = age
+                Age = age,
+                Afstemning = vote,
+                HasVoted = hasVoted
             };
 
             return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<JsonResult> Vote(string id, string questionId)
+        {
+            await _dbContext.VoteAnswers.AddAsync(new VoteAnswer() { VoteQuestionId = questionId, ApplicationUserId = id });
+            await _dbContext.SaveChangesAsync();
+
+            return Json(true);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetVoteResult(string voteId)
+        {
+            var vote = await _dbContext.Votes.Include(x => x.VoteQuestions).ThenInclude(x => x.VoteAnswers).SingleOrDefaultAsync(x => x.Id == voteId);
+            var data = vote.VoteQuestions.Select(x => new VoteData()
+            {
+                Title = x.Question,
+                Count = x.VoteAnswers.Where(p => p.VoteQuestionId == x.Id).Count()
+            });
+
+            var sum = data.Select(x => x.Count).Sum();
+            var totalVotes = data.Select(x => x.Count).Count();
+
+            return Json(new { data = data, totalSum = sum, totalCount = totalVotes });
         }
 
         [HttpGet]
@@ -323,7 +363,7 @@ namespace RateBlog.Controllers
                 TempData["Success"] = "Du har givet din feedback til " + model.Influencer.Alias;
 
                 // Send en mail til influenceren!
-                var notificationSettings = _emailNotification.Get(model.Influencer.Id); 
+                var notificationSettings = _emailNotification.Get(model.Influencer.Id);
                 if (notificationSettings.FeedbackUpdate)
                     await _emailSender.SendInfluencerFeedbackUpdateEmailAsync(model.Influencer.Alias, _userManager.Users.SingleOrDefault(x => x.Id == model.Influencer.Id).Email, user.Name);
 
@@ -362,8 +402,6 @@ namespace RateBlog.Controllers
 
             List<string> orderByList = new List<string> { "Instagram", "YouTube", "SecondYouTube", "Website", "Twitch", "SnapChat", "Facebook", "Twitter" };
 
-
-
             var result = list.Select(x => new InfluencerData()
             {
                 Alias = x.Alias.ToUpper(),
@@ -371,7 +409,8 @@ namespace RateBlog.Controllers
                 Platforms = x.InfluenterPlatform.Select(p => p.Platform.Name + "^" + p.Link).OrderBy(item => orderByList.IndexOf(item.Split('^')[0])),
                 Id = x.Id,
                 FeedbackCount = x.Ratings.Count,
-                FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4)
+                FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4),
+                InfluencerVote = _dbContext.Votes.Any(p => p.InfluencerId == x.Id && p.Active == true)
             });
 
             switch (sortBy)
@@ -430,7 +469,8 @@ namespace RateBlog.Controllers
                 Platforms = x.InfluenterPlatform.Select(p => p.Platform.Name + "^" + p.Link).OrderBy(item => orderByList.IndexOf(item.Split('^')[0])),
                 Id = x.Id,
                 FeedbackCount = x.Ratings.Count,
-                FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4)
+                FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4),
+                InfluencerVote = _dbContext.Votes.Any(p => p.InfluencerId == x.Id && p.Active == true)
             });
 
             switch (sortBy)

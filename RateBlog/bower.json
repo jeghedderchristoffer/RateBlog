@@ -9,6 +9,7 @@
     "ihover": "1.0.0",
     "jquery-ui": "jquery.ui#1.12.1",
     "jquery-scrollto": "v1.4.6",
-    "bootstrap-wysiwyg": "*"
+    "bootstrap-wysiwyg": "*",
+    "progressbar.js": "1.0.1"
   }
 }

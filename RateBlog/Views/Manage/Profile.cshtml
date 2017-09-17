@@ -29,7 +29,7 @@
                 <div class="white-box">
                     <img class="profile-img-big center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("ProfilePic", "Manage")" />
                     <hr />
-                    <h3>@influencer.Alias <i class="fa fa-check-circle" aria-hidden="true" style="color: #089de3;" title="Verificeret"></i></h3>
+                    <h3 style="font-family: 'Oxygen', sans-serif;">@influencer.Alias <i class="fa fa-check-circle" aria-hidden="true" style="color: #089de3;" title="Verificeret"></i></h3>
                     <h5>@Model.Age år</h5>
                     <h5>@Model.Gender</h5>
                     <br />
@@ -40,7 +40,7 @@
             var totalScore = FeedbackService.GetTotalScore(influencer.Id);
             <div class="col-md-8 noPaddingRight nopaddingmobile">
                 <div class="white-box">
-                    <h3 class="text-center" style="margin-bottom: 20px;"><b>SAMLET SCORE</b></h3>
+                    <h3 class="text-center" style="margin-bottom: 20px; margin-top: 10px;"><b>BESTSCORE</b></h3>
                     <div class="show-rating-medium" style="margin-top: 20px;">
                         <div class="show-rating-container-medium center-block">
                             <div class="show-rating-front-medium">
@@ -79,11 +79,11 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center" style="margin-top: 20px; margin-bottom: 20px; font-size: 16px">@totalScore.ToString("0.00") af @influencer.Ratings.Count ratings</p>
+                    <p class="text-center" style="margin-top: 20px; margin-bottom: 10px; font-size: 16px">@totalScore.ToString("0.00") af @influencer.Ratings.Count ratings</p>
                 </div>
 
                 <div class="white-box">
-                    <h3 class="text-center" style="margin-bottom: 20px;"><b>KATEGORIER</b></h3>
+                    <h3 class="text-center" style="margin-bottom: 20px; margin-top: 10px"><b>KATEGORIER</b></h3>
                     <div class="center-icons">
                         @foreach (var v in influencer.InfluenterKategori)
                         {
@@ -96,8 +96,8 @@
                     </div>
                 </div>
 
-                <div class="white-box" style="padding-top: 20px; padding-bottom: 20px">
-                    <h3 class="text-center" style="margin-bottom: 20px;"><b>SOCIALE MEDIER</b></h3>
+                <div class="white-box">
+                    <h3 class="text-center" style="margin-bottom: 20px; margin-top: 10px"><b>SOCIALE MEDIER</b></h3>
                     <div class="social-box" style="text-align: center">
 
                         @foreach (var v in influencer.InfluenterPlatform)

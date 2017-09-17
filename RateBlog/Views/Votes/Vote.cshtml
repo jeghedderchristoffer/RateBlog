@@ -1,0 +1,258 @@
+﻿@model Vote
+@{
+    ViewData["Title"] = "Spørgeskema statistik";
+}
+
+<div class="background-all">
+    <div class="navbar-allaround"></div>
+
+    <div class="container" style="padding-top: 40px;">
+        <div class="col-md-offset-2 col-md-8 nopaddingmobile">
+            <div class="vote-statistic-container">
+                <div class="white-box col-md-12 col-sm-12">
+                    <h3>@Model.Title</h3>
+                    <hr />
+                    <div class="col-md-12 col-sm-12 box">
+                        <h4>Resultater <span id="resultCount"></span></h4>
+                        <div class="vote-box-body" id="voteBox">
+                            @foreach (var v in Model.VoteQuestions)
+                            {
+                                <div class="vote-progress-container">
+                                    <span>@v.Question</span>
+                                    <div class="vote-progress">
+                                        <div class="vote-progress-bar">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 box">
+                        <div class="col-md-6 col-sm-6">
+                            <h4>Mænd</h4>
+                            <div class="circle" id="maleCircle"></div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="visible-xs"><br /><br /></div>
+                            
+                            <h4>Kvinder</h4>
+                            <div class="circle" id="femaleCircle"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 box">
+                        <br class="hidden-xs" />
+                        <h4>Aldersgrupper</h4>
+                        <div class="vote-box-body" id="voteBox">
+
+                            <div class="vote-progress-container">
+                                <span>Under 13 år</span>
+                                <div class="vote-progress">
+                                    <div class="vote-progress-bar" style="width: 0%; background: #0AA699" id="13underBar">
+                                        <div class="procent" id="13underText"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="vote-progress-container">
+                                <span>13 - 17 år</span>
+                                <div class="vote-progress">
+                                    <div class="vote-progress-bar" style="width: 0%; background: #0AA699" id="13to17Bar">
+                                        <div class="procent" id="13to17Text"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="vote-progress-container">
+                                <span>18 - 24 år</span>
+                                <div class="vote-progress">
+                                    <div class="vote-progress-bar" style="width: 0%; background: #0AA699" id="18to24Bar">
+                                        <div class="procent" id="18to24Text"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="vote-progress-container">
+                                <span>25 - 34 år</span>
+                                <div class="vote-progress">
+                                    <div class="vote-progress-bar" style="width: 0%; background: #0AA699" id="25to34Bar">
+                                        <div class="procent" id="25to34Text"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="vote-progress-container">
+                                <span>Over 34 år</span>
+                                <div class="vote-progress">
+                                    <div class="vote-progress-bar" style="width: 0%; background: #0AA699" id="34overBar">
+                                        <div class="procent" id="34overText"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 vote-box-body">
+                        @if (Model.Active == false)
+                        {
+                            <form asp-controller="Votes" asp-action="ActivateVote">
+                                @Html.HiddenFor(x => x.Id)
+                                <button type="submit" style="background: #53b80a">Aktivér</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Votes" asp-action="DeactivateVote">
+                                @Html.HiddenFor(x => x.Id)
+                                <button type="submit" style="background: #ea4335">Deaktivér</button>
+                            </form>
+                        }
+
+                    </div>
+
+                   
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var colors = ["#ffa500", "#53b80a", "#ea4335", "#089de3", "#FDD01C"];
+
+        $.ajax({
+            url: "/Votes/GetVoteData",
+            method: "GET",
+            dataType: 'json',
+            data: {
+                id: '@Model.Id'
+            },
+            success: function (result) {
+                console.log(result);
+
+                $("#resultCount").text("(" + result.answerSum + " svar) ");
+
+                // Males and females...
+
+                var genderSum = result.males + result.females;
+                var male = result.males / genderSum * 100;
+                var females = result.females / genderSum * 100;
+                male = male || 0;
+                females = females || 0;
+
+                var barMale = new ProgressBar.Circle(maleCircle, {
+                    color: '#777',
+                    // This has to be the same size as the maximum width to
+                    // prevent clipping
+                    strokeWidth: 4,
+                    trailWidth: 1,
+                    easing: 'easeInOut',
+                    duration: 1400,
+                    text: {
+                        autoStyleContainer: false
+                    },
+                    from: { color: '#089de3', width: 3 },
+                    to: { color: '#089de3', width: 4 },
+                    // Set default step function for all animate calls
+                    step: function (state, circle) {
+                        circle.path.setAttribute('stroke', state.color);
+                        circle.path.setAttribute('stroke-width', state.width);
+
+                        var value = Math.round(circle.value() * 100);
+                        if (value === 0) {
+                            circle.setText('0 %');
+                        } else {
+                            circle.setText(value + "%");
+                        }
+                    }
+                });
+                barMale.animate(male / 100);
+
+                var barFemale = new ProgressBar.Circle(femaleCircle, {
+                    color: '#777',
+                    // This has to be the same size as the maximum width to
+                    // prevent clipping
+                    strokeWidth: 4,
+                    trailWidth: 1,
+                    easing: 'easeInOut',
+                    duration: 1400,
+                    text: {
+                        autoStyleContainer: false
+                    },
+                    from: { color: 'rgb(234, 67, 53)', width: 3 },
+                    to: { color: 'rgb(234, 67, 53)', width: 4 },
+                    // Set default step function for all animate calls
+                    step: function (state, circle) {
+                        circle.path.setAttribute('stroke', state.color);
+                        circle.path.setAttribute('stroke-width', state.width);
+
+                        var value = Math.round(circle.value() * 100);
+                        if (value === 0) {
+                            circle.setText('0 %');
+                        } else {
+                            circle.setText(value + "%");
+                        }
+                    }
+                });
+                barFemale.animate(females / 100);
+
+                var voteBox = $("#voteBox");
+                var totalSum = result.answerSum;
+                voteBox.html("");
+
+                for (var i = 0; i < result.answerData.length; i++) {
+                    voteBox.append('<div class="vote-progress-container"><span>' + result.answerData[i].title + ' &nbsp;(' + result.answerData[i].count + ')' + '</span><div class="vote-progress"><div class="vote-progress-bar" id="voteBar' + i + '" style="width: 0%; background: ' + colors[i] + '"></div></div></div>');
+                }
+
+                for (var i = 0; i < result.answerData.length; i++) {
+                    (function (i) {
+                        setTimeout(function () {
+                            var width = (result.answerData[i].count / totalSum) * 100 + "%";
+                            $("#voteBar" + i).css("width", width);
+                        }, 1)
+                    })(i);
+                }
+
+
+                $("#maleBar").css("width", male + "%");
+                $("#maleText").text(male.toFixed(1) + "%");
+                $("#femaleBar").css("width", females + "%");
+                $("#femaleText").text(females.toFixed(1) + "%");
+
+                var ageSum = 0;
+                for (var i in result.ageGroup) { ageSum += result.ageGroup[i]; }
+
+
+                setTimeout(function () {
+                    $("#13underBar").css("width", result.ageGroup[0] / ageSum * 100 + "%")
+                    $("#13underText").text((result.ageGroup[0] / ageSum * 100).toFixed(1) + "%");
+
+                    $("#13to17Bar").css("width", result.ageGroup[1] / ageSum * 100 + "%")
+                    $("#13to17Text").text((result.ageGroup[1] / ageSum * 100).toFixed(1) + "%");
+
+                    $("#18to24Bar").css("width", result.ageGroup[2] / ageSum * 100 + "%")
+                    $("#18to24Text").text((result.ageGroup[2] / ageSum * 100).toFixed(1) + "%");
+
+                    $("#25to34Bar").css("width", result.ageGroup[3] / ageSum * 100 + "%")
+                    $("#25to34Text").text((result.ageGroup[3] / ageSum * 100).toFixed(1) + "%");
+
+                    $("#34overBar").css("width", result.ageGroup[4] / ageSum * 100 + "%")
+                    $("#34overText").text((result.ageGroup[4] / ageSum * 100).toFixed(1) + "%");
+                }, 1)
+               
+
+
+            },
+            error: function () {
+                console.log("fail");
+            }
+        });
+
+
+    </script>
+}

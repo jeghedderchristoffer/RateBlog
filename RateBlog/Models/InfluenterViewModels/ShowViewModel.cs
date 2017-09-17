@@ -11,6 +11,8 @@ namespace RateBlog.Models.InfluenterViewModels
         public ApplicationUser ApplicationUser { get; set; }
         public List<ApplicationUser> InfluentList { get; set; }
         public int Age { get; set; }
-        public string Gender { get; set; }  
+        public string Gender { get; set; }
+        public Vote Afstemning { get; set; }
+        public bool? HasVoted { get; set; } 
     }
 }

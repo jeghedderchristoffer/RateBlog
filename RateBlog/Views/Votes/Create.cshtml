@@ -1,0 +1,49 @@
+﻿@model RateBlog.Models.VoteViewModels.CreateViewModel
+@{ 
+    ViewData["Title"] = "Opret spørgeskema"; 
+}
+
+<div class="background-all">
+    <div class="navbar-allaround"></div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div id="afstemningError" class="alert fade in alert-danger alert-dismissable alert-mobile" style="margin-top: 11px; position: absolute; z-index: 5; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Error"]
+        </div>
+
+            <script>
+                window.setTimeout(function () {
+                    $("#afstemningError").fadeOut(1000);
+                }, 5000);
+            </script>
+    }
+
+    <div class="container" style="padding-top: 40px;">
+
+        <div class="col-md-offset-2 col-md-8 nopaddingmobile">
+            <div class="votes-create-container">
+                <div class="white-box">
+                    <h2>Opret spørgeskema</h2>
+                    <hr />
+                    <form asp-controller="Votes" asp-action="Create" method="post">
+                        <p>Dit spørgsmål:</p>
+                        <input type="text" placeholder="F.eks. Hvilket produkt skal jeg anmelde næste gang?" asp-for="@Model.Question" />
+
+                        <p>Følgernes svarmuligheder:</p>
+
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <input type="text" placeholder="@(i+1)" asp-for="@Model.FollowerQuestions[i]" name="FollowerQuestions" />
+                            <br /><br />
+                        }
+
+                        <button type="submit">Opret</button>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

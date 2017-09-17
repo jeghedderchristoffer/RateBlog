@@ -336,6 +336,8 @@ namespace RateBlog.Migrations
 
                     b.Property<string>("ProfileText");
 
+                    b.Property<string>("Url");
+
                     b.HasKey("Id");
 
                     b.ToTable("Influencer");
@@ -379,6 +381,66 @@ namespace RateBlog.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Platform");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.Vote", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Active");
+
+                    b.Property<DateTime>("DateTime");
+
+                    b.Property<string>("InfluencerId")
+                        .IsRequired();
+
+                    b.Property<string>("Title")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InfluencerId");
+
+                    b.ToTable("Votes");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.VoteAnswer", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired();
+
+                    b.Property<string>("VoteQuestionId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("VoteQuestionId");
+
+                    b.ToTable("VoteAnswers");
+                });
+
+            modelBuilder.Entity("RateBlog.Models.VoteQuestion", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Question")
+                        .IsRequired();
+
+                    b.Property<string>("VoteId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VoteId");
+
+                    b.ToTable("VoteQuestions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -480,6 +542,35 @@ namespace RateBlog.Migrations
                     b.HasOne("RateBlog.Models.Platform", "Platform")
                         .WithMany("InfluenterPlatform")
                         .HasForeignKey("PlatformId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("RateBlog.Models.Vote", b =>
+                {
+                    b.HasOne("RateBlog.Models.Influencer", "Influencer")
+                        .WithMany()
+                        .HasForeignKey("InfluencerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("RateBlog.Models.VoteAnswer", b =>
+                {
+                    b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RateBlog.Models.VoteQuestion", "VoteQuestion")
+                        .WithMany("VoteAnswers")
+                        .HasForeignKey("VoteQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("RateBlog.Models.VoteQuestion", b =>
+                {
+                    b.HasOne("RateBlog.Models.Vote", "Vote")
+                        .WithMany("VoteQuestions")
+                        .HasForeignKey("VoteId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

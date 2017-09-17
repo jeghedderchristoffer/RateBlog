@@ -80,7 +80,7 @@ namespace RateBlog
             services.AddTransient<IRepository<Feedback>, Repository<Feedback>>();
             services.AddTransient<IRepository<FeedbackReport>, Repository<FeedbackReport>>();
             services.AddTransient<IRepository<EmailNotification>, Repository<EmailNotification>>();
-            services.AddTransient<IRepository<BlogArticle>, Repository<BlogArticle>>(); 
+            services.AddTransient<IRepository<BlogArticle>, Repository<BlogArticle>>();
 
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();
@@ -128,7 +128,7 @@ namespace RateBlog
                     //"user_birthday",
                     "public_profile"
                 },
-                Fields = 
+                Fields =
                 {
                     "birthday", //User's DOB  
                     "picture", //User Profile Image  
@@ -150,7 +150,7 @@ namespace RateBlog
                 {
                     "https://www.googleapis.com/auth/plus.login"
                 },
-                SaveTokens = true              
+                SaveTokens = true
             });
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
@@ -160,6 +160,11 @@ namespace RateBlog
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                   name: "root",
+                   template: "{id}",
+                   defaults: new { controller = "Influencer", action = "Profile" });
             });
 
         }

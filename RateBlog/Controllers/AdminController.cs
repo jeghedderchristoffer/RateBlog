@@ -214,6 +214,9 @@ namespace RateBlog.Controllers
             var user = _userManager.Users.SingleOrDefault(x => x.Id == model.InfluencerViewModel.Influencer.Id);
             influencer.IsApproved = true;
             _influencerRepo.Update(influencer);
+
+            await _userManager.AddToRoleAsync(user, "Influencer");
+
             await _emailSender.SendInfluencerApprovedEmailAsync(user.Name, user.Email, influencer.Alias);
             return RedirectToAction("UserProfile", new { id = model.InfluencerViewModel.Influencer.Id });
         }

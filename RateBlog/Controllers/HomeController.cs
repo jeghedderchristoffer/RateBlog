@@ -18,10 +18,12 @@ namespace RateBlog.Controllers
     public class HomeController : Controller
     {
         private readonly IEmailSender _mailSender;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(IEmailSender mailSender)
+        public HomeController(IEmailSender mailSender, ApplicationDbContext context)
         {
             _mailSender = mailSender;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -115,6 +117,11 @@ namespace RateBlog.Controllers
         public IActionResult Error()
         {
             return View();
+        }
+
+        public IActionResult Test()
+        {
+            return View(); 
         }
     }
 }
