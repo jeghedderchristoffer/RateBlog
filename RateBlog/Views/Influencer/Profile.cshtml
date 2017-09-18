@@ -113,8 +113,8 @@
                         if (Model.HasVoted.Value)
                         {
                             <div class="white-box vote-box">
-                                <h3 class="text-center" style="margin-top: 10px ;margin-bottom: 20px"><b>SPØRGESKEMA</b></h3>
-                                <h4>@Model.Afstemning.Title</h4>
+                                <h3 class="text-center" style="margin-top: 10px ;margin-bottom: 20px"><b>AFSTEMNING</b></h3>
+                                <h4 style="word-break: break-word">@Model.Afstemning.Title</h4>
 
                                 <div class="vote-box-body" id="voteBox">
                                     @foreach (var v in Model.Afstemning.VoteQuestions)
@@ -134,8 +134,8 @@
                         else
                         {
                             <div class="white-box vote-box">
-                                <h3 class="text-center" style="margin-top: 10px ;margin-bottom: 20px"><b>SPØRGESKEMA</b></h3>
-                                <h4>@Model.Afstemning.Title</h4>
+                                <h3 class="text-center" style="margin-top: 10px ;margin-bottom: 20px"><b>AFSTEMNING</b></h3>
+                                <h4 style="word-break: break-word">@Model.Afstemning.Title</h4>
 
                                 <div class="vote-box-body" id="voteBox">
                                     @foreach (var v in Model.Afstemning.VoteQuestions)
@@ -152,11 +152,17 @@
                     }
                     else
                     {
-                        <div style="position: relative; display: block">
-                            <h4 style="position: absolute; z-index: 100; top: 50%; left: 50%; transform: translate(-50%, -50%);">Log ind for at svare</h4>
+                        <div style="position: relative">
+                            <div style="position: absolute; z-index: 100; top:50%; left: 50%; transform: translate(-50%, -50%)">
+                                <h4 style="">Du skal have en profil for at svare</h4>
+                                <button class="vote-opret-btn" data-toggle="modal" data-target="#opretModal">OPRET PROFIL</button>
+                            </div>
+                           
+
                             <div class="white-box vote-box blur-effect">
-                                <h3 class="text-center" style="margin-top: 10px ;margin-bottom: 20px"><b>SPØRGESKEMA</b></h3>
-                                <h4>@Model.Afstemning.Title</h4>
+                                <h3 class="text-center" style="margin-top: 10px ;margin-bottom: 20px"><b>AFSTEMNING</b></h3>
+                                <h4 style="word-break: break-word">@Model.Afstemning.Title</h4>
+
 
                                 <div class="vote-box-body" id="voteBox">
                                     @foreach (var v in Model.Afstemning.VoteQuestions)
@@ -170,6 +176,7 @@
                                 </div>
                             </div>
                         </div>
+
                     }
                 }
 
@@ -241,6 +248,15 @@
 
         $(document).ready(function () {
             getData();
+
+            $(".vote-box-body label").each(function () {
+                console.log($(this).height())
+                if ($(this).height() > 40) {
+                    $(this).css("line-height", "unset");
+                }
+
+            });
+
         });
 
         $("input[name=voteAnswers]").click(function () {
@@ -266,9 +282,7 @@
         });
 
         function getData() {
-            console.log(hasVoted)
             if (hasVoted === 'True') {
-                console.log("RUN")
                 $.ajax({
                     url: "/Influencer/GetVoteResult",
                     method: "GET",

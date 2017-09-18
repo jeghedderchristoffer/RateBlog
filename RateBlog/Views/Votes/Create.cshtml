@@ -1,6 +1,6 @@
 ﻿@model RateBlog.Models.VoteViewModels.CreateViewModel
 @{ 
-    ViewData["Title"] = "Opret spørgeskema"; 
+    ViewData["Title"] = "Opret afstemning"; 
 }
 
 <div class="background-all">
@@ -25,7 +25,7 @@
         <div class="col-md-offset-2 col-md-8 nopaddingmobile">
             <div class="votes-create-container">
                 <div class="white-box">
-                    <h2>Opret spørgeskema</h2>
+                    <h2>Opret afstemning</h2>
                     <hr />
                     <form asp-controller="Votes" asp-action="Create" method="post">
                         <p>Dit spørgsmål:</p>
@@ -39,7 +39,7 @@
                             <br /><br />
                         }
 
-                        <button type="submit">Opret</button>
+                        <button type="submit">OPRET</button>
                     </form>
                     
                 </div>

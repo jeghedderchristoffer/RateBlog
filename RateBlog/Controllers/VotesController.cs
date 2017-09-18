@@ -147,7 +147,7 @@ namespace RateBlog.Controllers
             vote.Active = false;
             _dbContext.Votes.Update(vote);
             await _dbContext.SaveChangesAsync();
-            TempData["Success"] = "Du har deaktiveret din spørgeskema"; 
+            TempData["Success"] = "Du har deaktiveret din survey!"; 
             return RedirectToAction("Index"); 
         }
 
@@ -168,7 +168,7 @@ namespace RateBlog.Controllers
             }
 
             await _dbContext.SaveChangesAsync();
-            TempData["Success"] = "Du har aktiveret dit spørgeskema";
+            TempData["Success"] = "Du har aktiveret dit survey!";
             return RedirectToAction("Index");
         }
 

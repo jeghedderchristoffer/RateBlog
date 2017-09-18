@@ -1,6 +1,6 @@
 ﻿@model RateBlog.Models.VoteViewModels.IndexViewModel
 @{
-    ViewData["Title"] = "Spørgeskemaer";
+    ViewData["Title"] = "Afstemninger";
 }
 
 <div class="background-all">
@@ -25,24 +25,24 @@
         <div class="col-md-12 nopaddingmobile">
             <div class="col-md-7">
                 <div class="votes-container">
-                    <h2>Spørgeskemaer</h2>
+                    <h2>Afstemninger</h2>
                 </div>
 
                 <div class="white-box hidden-md hidden-lg">
-                    <a asp-controller="Votes" asp-action="Create" class="votes-create-btn"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; OPRET NY SPØRGESKEMA</a>
+                    <a asp-controller="Votes" asp-action="Create" class="votes-create-btn"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; OPRET NY AFSTEMNING</a>
                 </div>
                 
 
                 @if (Model.Votes.Count() == 0)
                 {
-                    <p>Du har ikke lavet nogle spørgeskemaer</p>
+                    <p>Du har ikke lavet nogle afstemninger</p>
                 }
                 else
                 {
                     <div class="votes-container">
                         <div class="votes-container">
                             <div class="white-box" style="margin-bottom: 20px;">
-                                <h4 style="margin-bottom: 20px; margin-top: 0">Link til dit spørgeskema</h4>
+                                <h4 style="margin-bottom: 20px; margin-top: 0">Link til din afstemning</h4>
                                 <input type="text" value="http://www.bestfluence.dk/Influencer/Profile/@Model.InfluencerId" />
                             </div>
                         </div>
@@ -68,12 +68,12 @@
 
             <div class="col-md-5 hidden-xs hidden-sm" style="padding-top: 73px;">
                 <div class="white-box">
-                    <a asp-controller="Votes" asp-action="Create" class="votes-create-btn"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; OPRET NY SPØRGESKEMA</a>
+                    <a asp-controller="Votes" asp-action="Create" class="votes-create-btn"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; OPRET NY AFSTEMNING</a>
                 </div>
                 <div class="white-box">
                     <div style="padding: 5px">
                         <h2 style="text-align: center; margin-bottom: 20px; margin-top: 10px; font-size: 25px; font-family: 'Raleway', sans-serif; font-weight: bold">Inddrag dine følgere</h2>
-                        <p class="normal-text">Husker du at inddrage dine følgere omkring dit indhold og er du klar over hvad de savner fra dig? Med Bestfluence spørgeskema kan du nemt og simpelt oprette spørgeskemaer og dele dem med dine følgere på tværs af dine sociale medier. Dine følgere kan nemt give deres mening til kende og du kan udvikle kvalitetsindhold som de vil elske dig for.</p>
+                        <p class="normal-text">Husker du at inddrage dine følgere omkring dit indhold og er du klar over hvad de savner fra dig? Med Bestfluence afsteming kan du nemt og simpelt oprette afstemninger og dele dem med dine følgere på tværs af dine sociale medier. Dine følgere kan nemt give deres mening til kende og du kan udvikle kvalitetsindhold som de vil elske dig for.</p>
                     </div>
                 </div>
             </div>

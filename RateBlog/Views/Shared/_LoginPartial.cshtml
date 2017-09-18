@@ -17,7 +17,7 @@
             @if (isInfluencer == "Influencer" && await UserManager.IsInRoleAsync(user, "Influencer"))
             {
                 <li>
-                    <a asp-controller="Votes" asp-action="Index" class="navLinks">Spørgeskemaer</a>
+                    <a asp-controller="Votes" asp-action="Index" class="navLinks">Afstemninger</a>
                 </li>
             }
 
@@ -49,7 +49,7 @@
             @if (isInfluencer == "Influencer" && await UserManager.IsInRoleAsync(user, "Influencer"))
             {
                 <li>
-                    <a asp-controller="Votes" asp-action="Index" class="navLinks">Spørgeskemaer</a>
+                    <a asp-controller="Votes" asp-action="Index" class="navLinks">Afstemninger</a>
                 </li>
             }
 

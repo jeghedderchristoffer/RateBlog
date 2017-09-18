@@ -158,10 +158,10 @@ namespace RateBlog.Controllers
        
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult RegisterConfirmation(string registerName, string registerEmail, string returnUrl = null)
+        public IActionResult RegisterConfirmation(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl; 
-            return View(new RegisterConfirmationViewModel() { Name = registerName, Email = registerEmail });
+            return View();
         }
 
         //
@@ -268,13 +268,14 @@ namespace RateBlog.Controllers
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
                 var name = info.Principal.FindFirstValue(ClaimTypes.Name);
                 var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);
-                //var birthDay = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth);
-                //var zipCode = info.Principal.FindFirstValue(ClaimTypes.PostalCode); 
-                //var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);               
+                var birthDay = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth);
+                DateTime dateTime = new DateTime(); 
+                var dateTimeParsed = DateTime.TryParse(birthDay, out dateTime); 
+
+                //var zipCode = info.Principal.FindFirstValue(ClaimTypes.PostalCode);               
                 //var acessToken = info.AuthenticationTokens.Single(x => x.Name == "access_token").Value;
 
-
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email, Name = name, Gender = gender });
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email, Name = name, Gender = gender, Birthday = dateTime });
             }
         }
 

@@ -17,6 +17,8 @@ using RateBlog.Repository;
 using System.Globalization;
 using RateBlog.Services.Interfaces;
 using RateBlog.Helper;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using System.Security.Claims;
 
 namespace RateBlog
 {
@@ -148,7 +150,22 @@ namespace RateBlog
                 ClientSecret = Configuration["Authentication:Google:ClientSecret"],
                 Scope =
                 {
-                    "https://www.googleapis.com/auth/plus.login"
+                    "https://www.googleapis.com/auth/plus.login",
+                    "https://www.googleapis.com/auth/plus.me"
+                },
+                Events = new OAuthEvents
+                {
+                    OnCreatingTicket = context => {
+                        // Extract the "language" property from the JSON payload returned by
+                        // the user profile endpoint and add a new "urn:language" claim.
+                        var gender = context.User.Value<string>("gender");
+                        var birthday = context.User.Value<string>("birthday"); 
+
+                        context.Identity.AddClaim(new Claim(ClaimTypes.Gender, gender));
+                        context.Identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, birthday)); 
+
+                        return Task.FromResult(0);
+                    }
                 },
                 SaveTokens = true
             });
