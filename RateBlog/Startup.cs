@@ -120,15 +120,16 @@ namespace RateBlog
 
             app.UseFacebookAuthentication(new FacebookOptions()
             {
-                //AppId = System.Environment.GetEnvironmentVariable("Authentication:Facebook:AppId"),
-                //AppSecret = System.Environment.GetEnvironmentVariable("Authentication:Facebook:AppSecret"),
                 AppId = Configuration["Authentication:Facebook:AppId"],
                 AppSecret = Configuration["Authentication:Facebook:AppSecret"],
+                //AppId = "175669099670909", Facebook Test 
+                //AppSecret = "803adc0f1857df807529b191cb51ce23", Facebook Test
                 SaveTokens = true,
                 Scope =
                 {
-                    //"user_birthday",
-                    "public_profile"
+                    "user_birthday",
+                    "public_profile",
+                    "user_location"
                 },
                 Fields =
                 {
@@ -137,15 +138,14 @@ namespace RateBlog
                     "name", //User Full Name  
                     "email", //User Email  
                     "gender", //user's Gender  
-                }
+                    "location"
+                },
             });
 
 
 
             app.UseGoogleAuthentication(new GoogleOptions()
             {
-                //ClientId = System.Environment.GetEnvironmentVariable("Authentication:Google:ClientId"),
-                //ClientSecret = System.Environment.GetEnvironmentVariable("Authentication:Google:ClientSecret"),
                 ClientId = Configuration["Authentication:Google:ClientId"],
                 ClientSecret = Configuration["Authentication:Google:ClientSecret"],
                 Scope =
@@ -155,15 +155,22 @@ namespace RateBlog
                 },
                 Events = new OAuthEvents
                 {
-                    OnCreatingTicket = context => {
+                    OnCreatingTicket = context =>
+                    {
                         // Extract the "language" property from the JSON payload returned by
                         // the user profile endpoint and add a new "urn:language" claim.
                         var gender = context.User.Value<string>("gender");
-                        var birthday = context.User.Value<string>("birthday"); 
+                        var birthday = context.User.Value<string>("birthday");
 
-                        context.Identity.AddClaim(new Claim(ClaimTypes.Gender, gender));
-                        context.Identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, birthday)); 
-
+                        if (!string.IsNullOrEmpty(gender))
+                        {
+                            context.Identity.AddClaim(new Claim(ClaimTypes.Gender, gender));
+                        }
+                        if (!string.IsNullOrEmpty(birthday))
+                        {
+                            context.Identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, birthday));
+                        }
+                        
                         return Task.FromResult(0);
                     }
                 },

@@ -3,7 +3,10 @@
 @using Microsoft.AspNetCore.Http.Authentication
 @model LoginViewModel
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Log ind";
+}
+@section metatags{
+    <meta name="description" content="Log ind eller opret en bruger på Bestfluence for at få det fulde udbytte af vores hjemmeside.">
 }
 
 <div class="background-all">
@@ -34,14 +37,14 @@
                 <div class="divider">
                     <h4><span>ELLER</span></h4>
                 </div>
-                <span id="errorMsgTop1" style="color: red"></span>
-                @Html.AntiForgeryToken()
-                <input id="email1" type="email" class="text-input" placeholder="Email" />
-                <span id="errorMsgBot1" style="color: red"></span>
-                <input id="password1" class="text-input" placeholder="Kodeord" type="password" />
-                <input type="submit" class="login-button" id="loginBtn1" value="Log på" />
-
-
+                <form asp-action="Login" asp-controller="Account" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
+                    <div class="no-list-style">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                    </div>
+                    <input asp-for="Email" type="email" class="text-input" placeholder="Email" />
+                    <input asp-for="Password" class="text-input" placeholder="Kodeord" type="password" />
+                    <input type="submit" class="login-button" id="loginBtn1" value="Log på" />
+                </form>
 
                 <a id="signup2" data-toggle="modal" href="#opretModal" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Ny på Bestfluence? Opret en profil</p></a>
                 <a href="/Account/ForgotPassword" class="text-center" style="cursor: pointer;"><p style="margin-top: 20px; color: #000">Har du glemt kodeord?</p></a>

@@ -25,7 +25,11 @@ namespace RateBlog.Data
         public DbSet<InfluencerCategory> InfluencerCategory { get; set; }
         public DbSet<FeedbackReport> FeedbackReports { get; set; }
         public DbSet<EmailNotification> EmailNotifications { get; set; }
+
+        // Blog
         public DbSet<BlogArticle> BlogArticles { get; set; }
+        public DbSet<BlogRating> BlogRatings { get; set; }
+        public DbSet<BlogComment> BlogComments { get; set; } 
 
         // Vote
         public DbSet<Vote> Votes { get; set; }

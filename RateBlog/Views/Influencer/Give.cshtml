@@ -1,8 +1,13 @@
 ﻿@model RateBlog.Models.InfluenterViewModels.GiveViewModel
 @inject RateBlog.Services.IFeedbackService FeedbackService
 @{
-    ViewData["Title"] = "Feedback til " + Model.Influencer.Alias;
+    ViewData["Title"] = "Giv feedback til " + Model.Influencer.Alias + " - Del din mening ";
 }
+@section metatags{
+    <meta name="description" content="Del din mening og giv feedback til @Model.Influencer.Alias, så hjælper du andre med at udvikle og finde kvalitetsindhold">
+}
+
+
 <div class="background-all" style="min-height: 100.1vh">
     <div class="navbar-allaround"></div>
 
@@ -20,10 +25,7 @@
         </script>
     }
 
-
-
     <div class="container" style="padding-top: 50px; padding-bottom: 45vh;" id="fbContainer">
-
 
         <h1 class="feedback-title">Feedback til @Model.Influencer.Alias</h1>
 

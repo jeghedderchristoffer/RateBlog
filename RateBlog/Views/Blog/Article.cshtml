@@ -1,6 +1,11 @@
-﻿@model RateBlog.Models.BlogArticle
+﻿@model RateBlog.Models.BlogViewModels.ArticleViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject RateBlog.Services.IFeedbackService FeedbackService
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Article.Title;
+}
+@section metatags{
+    <meta name="description" content="@Model.Article.Description">
 }
 
 <div class="background-all">
@@ -9,49 +14,193 @@
     <div class="container" style="padding-top: 40px">
         <div class="blog-article-container">
             <div class="white-box">
-                <img class="img" src="@Url.Action("GetBlogPicture", "Blog", new { id = Model.Id, indexPic = false} )" />
+                <img class="img" src="@Url.Action("GetBlogPicture", "Blog", new { id = Model.Article.Id, indexPic = false} )" />
                 <div class="blog-body">
                     <div class="text-center">
-                        <h1>@Model.Title</h1>
-                        <h5><span style="color: #a8a8a8">@Model.DateTime.ToString("dd/MM/yyyy") | @Model.Categories</span></h5>
-                    </div>                 
+                        <h1>@Model.Article.Title</h1>
+                        <h5><span style="color: #a8a8a8">@Model.Article.DateTime.ToString("dd/MM/yyyy") | @Model.Article.Categories</span></h5>
+                    </div>
                     <br />
                     <div style="line-height: 180%;">
-                        @Html.Raw(Model.ArticleText)
+                        @Html.Raw(Model.Article.ArticleText)
                     </div>
-                </div>             
+                </div>
             </div>
-        </div>   
-        @*<div class="white-box">
-            <h3 style="text-align: center; margin-top: 5px;">Hvad synes du om denne artikel?</h3>
-
-            <div class="center-block">
-                <fieldset class="rating" id="troværdighedBtn">
-                    <input type="radio" id="field1_star1" name="troværdighed" value="1" /><label class="full" for="field1_star1"></label>
-                    <input type="radio" id="field1_star2" name="troværdighed" value="2" /><label class="full" for="field1_star2"></label>
-                    <input type="radio" id="field1_star3" name="troværdighed" value="3" /><label class="full" for="field1_star3"></label>
-                    <input type="radio" id="field1_star4" name="troværdighed" value="4" /><label class="full" for="field1_star4"></label>
-                    <input type="radio" id="field1_star5" name="troværdighed" value="5" /><label class="full" for="field1_star5"></label>
-                </fieldset>
-            </div>
-
         </div>
 
-        <div class="col-md-8 noPaddingLeft">
-            <div class="white-box">
+        @if (!SignInManager.IsSignedIn(User))
+        {
+            ViewData["ReturnUrl"] = Context.Request.Path;
+            <div class="white-box" id="rateArticleDiv">
+                <h3 style="text-align: center; margin-top: 5px;">Hvad synes du om denne artikel?</h3>
+                <div class="center-block">
+                    <fieldset class="rating">
+                        <input type="radio" id="field1_star1" data-toggle="modal" data-target="#opretModal" /><label class="full" for="field1_star1"></label>
+                        <input type="radio" id="field1_star2" data-toggle="modal" data-target="#opretModal" /><label class="full" for="field1_star2"></label>
+                        <input type="radio" id="field1_star3" data-toggle="modal" data-target="#opretModal" /><label class="full" for="field1_star3"></label>
+                        <input type="radio" id="field1_star4" data-toggle="modal" data-target="#opretModal" /><label class="full" for="field1_star4"></label>
+                        <input type="radio" id="field1_star5" data-toggle="modal" data-target="#opretModal" /><label class="full" for="field1_star5"></label>
+                    </fieldset>
+                </div>
+            </div>
+        }
+        else
+        {
+            if (!Model.HasVoted)
+            {
+                <div class="white-box" id="rateArticleDiv">
+                    <h3 style="text-align: center; margin-top: 5px;">Hvad synes du om denne artikel?</h3>
+                    <input type="hidden" id="articleId" value="@Model.Article.Id" />
+                    <div class="center-block">
+                        <form id="rateArticle" asp-controller="Blog" asp-action="RateArticle" method="post">
+                            <input type="hidden" value="@Model.Article.Id" name="id" />
+                            <fieldset class="rating">
+                                <input type="radio" id="field2_star1" name="rating" value="1" /><label class="full" for="field2_star1"></label>
+                                <input type="radio" id="field2_star2" name="rating" value="2" /><label class="full" for="field2_star2"></label>
+                                <input type="radio" id="field2_star3" name="rating" value="3" /><label class="full" for="field2_star3"></label>
+                                <input type="radio" id="field2_star4" name="rating" value="4" /><label class="full" for="field2_star4"></label>
+                                <input type="radio" id="field2_star5" name="rating" value="5" /><label class="full" for="field2_star5"></label>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                var totalScore = Model.Article.BlogRatings.Select(x => x.Rate).Average();
+                <div class="white-box blograting">
+                    <p style="text-align: center; margin-top: 5px; font-family: 'Raleway', sans-serif; font-size: 30px;"><b>SAMLET SCORE</b></p>
+                    <div class="show-rating-medium" style="margin-top: 20px;">
+                        <div class="show-rating-container-medium center-block">
+                            <div class="show-rating-front-medium">
+                                @foreach (var v in FeedbackService.GetStars(totalScore))
+                                {
+                                    if (v)
+                                    {
+                                        <div class="show-rating-box-medium">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="show-rating-box">
+                                            <i class="fa fa-star-half" aria-hidden="true"></i>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <div class="show-rating-back-medium">
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="show-rating-box-medium">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 20px; font-size: 16px; margin-bottom: 5px;">@totalScore.ToString("0.00") ud af @Model.Article.BlogRatings.Count ratings</p>
+                </div>
+            }
+        }
+
+        <div class="col-md-4 col-sm-6 noPaddingLeft nopaddingmobile">
+            <div class="white-box blog-create-comment">
+                <h4 style="text-align: center; margin-top: 5px;">Skriv kommentar</h4>
+                <hr />
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form asp-action="CreateComment" asp-controller="Blog" method="post">
+                        <input type="hidden" name="id" value="@Model.Article.Id" />
+                        <textarea rows="5" placeholder="Din kommentar..." name="comment"></textarea>
+                        <button type="submit">SKRIV KOMMENTAR</button>
+                    </form>
+                }
+                else
+                {
+                    <textarea rows="5" placeholder="Din kommentar..." name="comment"></textarea>
+                    <button data-toggle="modal" data-target="#opretModal">SKRIV KOMMENTAR</button>
+                }
+
+            </div>
+        </div>
+
+        <div class="col-md-8 col-sm-6 noPaddingRight nopaddingmobile">
+            <div class="white-box col-md-12 blog-comment-container">
                 <h4 style="text-align: center; margin-top: 5px;">Kommentarer</h4>
                 <hr />
+
+                @if (Model.Article.BlogComments.Count == 0)
+                {
+                    <p>Der er ingen kommentarer</p>
+                }
+
+                @foreach (var v in Model.Article.BlogComments.OrderByDescending(x => x.DateTime))
+                {
+
+                    <div class="col-md-12 noPadding">
+                        <div class="col-md-2">
+                            <img class="center-block" src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId} )" />
+                        </div>
+                        <div class="col-md-10">
+                            <p style="margin-bottom: 3px">@v.ApplicationUser.Name</p>
+                            <p style="color: #a4a4a4">@v.DateTime.ToString("dd/MM/yyyy")</p>
+                            <p>@v.Comment</p>
+
+                        </div>
+
+                        @if (v != Model.Article.BlogComments.OrderByDescending(x => x.DateTime).Last())
+                        {
+                            <div class="col-md-12 noPadding">
+                                <hr style="margin-top: 7px" />
+                            </div>
+                        }
+                    </div>
+                }
             </div>
         </div>
-
-        <div class="col-md-4 noPadding">
-            <div class="white-box">
-                <h4 style="text-align: center; margin-top: 5px;">Skriv kommentar</h4>
-            </div>
-        </div>*@
-        
-
     </div>
 </div>
 
 @Html.Partial("_FooterPartial")
+
+
+@section Scripts{
+    <script>
+        $(".rating input").one("click", function () {
+            $("#rateArticle").submit();
+        });
+
+        var signedIn = '@SignInManager.IsSignedIn(User)';
+
+        if (signedIn === "False") {
+            $(document).ready(function () {
+                $(".rating label").click(function () {
+                    $(this).parent().find("label").css({ "color": "#ddd" });
+                    $(this).css({ "color": "#ddd" });
+                    $(this).nextAll().css({ "color": "#ddd" });
+                });
+            });
+        }
+
+        $(document).ready(function () {
+            var scroll = '@Model.ElementToScroll';
+            if (scroll !== "") {
+                $('html, body').animate({
+                    scrollTop: $("." + scroll).offset().top
+                }, 500);
+            }
+        });
+
+
+    </script>
+}

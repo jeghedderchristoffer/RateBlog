@@ -2,9 +2,11 @@
 @inject RateBlog.Services.IFeedbackService FeedbackService
 @inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
 @{
-    ViewData["Title"] = "Vis profil";
+    ViewData["Title"] = "Se din profil";
     var influencer = InfluencerRepo.Get(Model.ApplicationUser.Id);
-
+}
+@section metatags{
+    <meta name="description" content="Se din profil på Bestfluence og find ud af hvilke informationer andre kan se om dig.">
 }
 
 <div class="background-all">

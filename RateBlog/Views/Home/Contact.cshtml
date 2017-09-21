@@ -1,6 +1,9 @@
 ﻿@model RateBlog.Models.FooterViewModels.ContactViewModel
 @{
-    ViewData["Title"] = "Kontakt";
+    ViewData["Title"] = "Kontakt os";
+}
+@section metatags{
+    <meta name="description" content="Har du spørgsmål, kommentarer eller feedback til os, er du altid velkommen til at kontakte os.">
 }
 
 @if (TempData["Success"] != null)
@@ -26,9 +29,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 <div class="container">
     <div class="col-md-12 footer-text">

@@ -8,9 +8,10 @@ using RateBlog.Data;
 namespace RateBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170919134333_blogCommentsRate")]
+    partial class blogCommentsRate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -229,8 +230,6 @@ namespace RateBlog.Migrations
                         .IsRequired();
 
                     b.Property<string>("Comment");
-
-                    b.Property<DateTime>("DateTime");
 
                     b.HasKey("Id");
 

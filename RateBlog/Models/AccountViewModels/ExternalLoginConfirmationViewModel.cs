@@ -26,6 +26,8 @@ namespace RateBlog.Models.AccountViewModels
         [Range(1000, 9999, ErrorMessage = "Du skal vælge et gyldigt postnummer")]
         public int? Postnummer { get; set; }
 
+        public string City { get; set; } 
+
         [Required (ErrorMessage = "Du skal vælge dit køn")]
         [Display(Name = "Køn")]
         public string Gender { get; set; }

@@ -3,11 +3,13 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 @{
-    ViewData["Title"] = Model.Influenter.Alias + "'s ratings";
+    ViewData["Title"] = "Anmeldelser af "+ Model.Influenter.Alias +" - Læs følgernes feedback";
     var isUserCreated = (Model.ApplicationUser.NormalizedEmail.StartsWith("USERINFLUENCER")) ? true : false;
     var totalScore = FeedbackService.GetTotalScore(Model.Influenter.Id);
 }
-
+@section metatags{
+    <meta name="description" content="Læs følgernes feedback og anmeldelser af @Model.Influenter.Alias og få et overblik over indholdet.">
+}
  
 <!--Report modal-->
 
@@ -49,11 +51,11 @@
     </div>
 </div>
 
-<div class="navbar-allaround"></div>
+<div class="background-all">
 
-<div class="background-all" style="padding-top: 40px;">
+    <div class="navbar-allaround"></div>
 
-    <div class="container" >
+    <div class="container"  style="padding-top: 40px;" >
         <div class="col-md-12 noPadding">
             <div class="col-md-4 nopaddingmobile">
                 <div class="white-box">
@@ -185,7 +187,7 @@
                                 <br />
                             </div>
 
-                            <div class="col-md-offset-2 col-md-10 noPadding">
+                            <div class="col-md-offset-2 col-md-10 noPaddingRight">
                                 @if (!string.IsNullOrEmpty(v.FeedbackGood))
                                 {
                                     <p><b>@v.ApplicationUser.Name synes godt om følgende:</b></p>
@@ -212,7 +214,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="col-md-10 noPadding">
+                                    <div class="col-md-10 noPaddingRight">
                                         <div class="hidden-xs">
                                             <h4>@Model.Influenter.Alias</h4>
                                             <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.AnswerDateTime)</p>
@@ -234,7 +236,7 @@
                             }
                             else
                             {
-                                <button class="report-feedback-btn" value="@v.Id" data-toggle="modal" data-target="#loginModal"><i class="fa fa-exclamation" aria-hidden="true"></i></button>
+                                <button class="report-feedback-btn" value="@v.Id" data-toggle="modal" data-target="#opretModal"><i class="fa fa-exclamation" aria-hidden="true"></i></button>
                             }
                         </div>
                     </div>

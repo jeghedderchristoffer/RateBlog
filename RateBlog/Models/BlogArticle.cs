@@ -26,6 +26,10 @@ namespace RateBlog.Models
         public Byte[] IndexPicture { get; set; }
 
         [DefaultValue(false)]
-        public bool Publish { get; set; } 
+        public bool Publish { get; set; }
+
+        public ICollection<BlogRating> BlogRatings { get; set; }
+
+        public ICollection<BlogComment> BlogComments { get; set; } 
     }
 }

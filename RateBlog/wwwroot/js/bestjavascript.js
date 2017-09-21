@@ -122,7 +122,7 @@ function loginFunction() {
     }
 
     $.ajax({
-        url: "/Account/Login",
+        url: "/Account/LoginAjax",
         method: "POST",
         data: {
             model: data,

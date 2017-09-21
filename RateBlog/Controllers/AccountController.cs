@@ -16,6 +16,10 @@ using Microsoft.AspNetCore.Http;
 using RateBlog.Models.ManageViewModels;
 using System.Net.Http;
 using RateBlog.Repository;
+using System.Globalization;
+using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
 
 namespace RateBlog.Controllers
 {
@@ -69,7 +73,7 @@ namespace RateBlog.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<JsonResult> LoginAjax(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -106,8 +110,8 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logiffn(LoginViewModel model, string returnUrl = null)
+        [ValidateAntiForgeryToken] 
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -135,15 +139,13 @@ namespace RateBlog.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Forkert email eller kodeord.");
                     return View(model);
                 }
             }
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
-
 
         //
         // GET: /Account/Register
@@ -269,13 +271,60 @@ namespace RateBlog.Controllers
                 var name = info.Principal.FindFirstValue(ClaimTypes.Name);
                 var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);
                 var birthDay = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth);
-                DateTime dateTime = new DateTime(); 
-                var dateTimeParsed = DateTime.TryParse(birthDay, out dateTime); 
+                DateTime tempDateTime;
+                DateTime? dateTime; 
+                var isParsed = DateTime.TryParse(birthDay, out tempDateTime);
 
-                //var zipCode = info.Principal.FindFirstValue(ClaimTypes.PostalCode);               
-                //var acessToken = info.AuthenticationTokens.Single(x => x.Name == "access_token").Value;
+                if (!isParsed)
+                {
+                    var isParsed2 = DateTime.TryParseExact(birthDay, "MM/dd/yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out tempDateTime);
+                    if (!isParsed2)
+                        dateTime = null;
+                    else
+                    {
+                        dateTime = tempDateTime; 
+                    }
+                }
+                else
+                {
+                    dateTime = tempDateTime;
+                }
 
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email, Name = name, Gender = gender, Birthday = dateTime });
+                var city = info.Principal.FindFirstValue("urn:facebook:location");
+                int zipCode = 0; 
+
+                if (!string.IsNullOrEmpty(city))
+                {
+                    city = "(" + city + ")";
+
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri("https://maps.googleapis.com");
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                        HttpResponseMessage response = await client.GetAsync("/maps/api/geocode/json?address=" + city + "&sensor=true&key=AIzaSyD_-vtJ8fxSgSc77A-ZT4aVRj9jmYX1LXI");
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var postCode = await response.Content.ReadAsStringAsync();
+
+                            string pattern = @"\d{4}";
+                            Regex r = new Regex(pattern);
+
+                            int startPos = postCode.LastIndexOf("formatted_address") + "formatted_address".Length + 1;
+                            int length = postCode.IndexOf("geometry") - startPos;
+                            string sub = postCode.Substring(startPos, length);
+
+                            int.TryParse(r.Match(sub).ToString(), out zipCode);  
+                        }
+
+                    }
+                }
+               
+                //var acessToken = info.AuthenticationTokens.Single(x => x.Name == "access_token").Value; 
+
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email, Name = name, Gender = gender, Birthday = dateTime, Postnummer = zipCode, City = city });
             }
         }
 

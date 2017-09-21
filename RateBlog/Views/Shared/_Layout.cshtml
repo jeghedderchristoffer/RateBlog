@@ -5,7 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
     <link rel="icon" type="image/png" href="~/images/Fav.png" />
-    <title>@ViewData["Title"] - Bestfluence</title>
+    <title>@ViewData["Title"] | Bestfluence</title>
+    @RenderSection("metatags", false)
 
     @*<style>
             .async-hide {
@@ -200,9 +201,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h3 class="modal-title text-center">Opret en profil idag</h3>
+                    <h3 class="modal-title text-center">Opret din profil</h3>
                 </div>
-                <div class="modal-body" style="padding-top: 30px; padding-bottom: 30px;">
+                <div class="modal-body" style="padding-top: 30px; padding-bottom: 15px;">
 
                     <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                         <button name="provider" value="Facebook" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
@@ -218,6 +219,10 @@
                     </div>
 
                     <a asp-controller="Account" asp-action="RegisterConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-block btn-social btn-google btn-lg" style="background: #FFA500"><span class="fa fa-envelope fa"></span> Tilmeld via Email</a>
+
+                    <div style="width: 100%; margin-top: 15px" class="text-center">
+                        <a asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top: 20px; color: #000; text-decoration: none;">Har du en profil? Log in her</a>
+                    </div>
 
                 </div>
             </div>
@@ -258,13 +263,6 @@
 
     @RenderSection("Scripts", required: false)
     @RenderSection("SearchStar", required: false)
-
-    <script>
-        $(document).ready(function () {
-            console.log('@ViewData["ReturnUrl"]');
-        });
-
-    </script>
 
 </body>
 </html>
