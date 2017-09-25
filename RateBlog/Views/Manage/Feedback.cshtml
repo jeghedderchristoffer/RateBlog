@@ -59,7 +59,7 @@
 
                         @foreach (var v in Model.Influencer.Ratings.OrderByDescending(x => x.FeedbackDateTime))
                         {
-                            <a asp-controller="Manage" asp-action="Answer" asp-route-id="@v.Id" style="color: #000; text-decoration: none;">
+                            <a asp-controller="manage" asp-action="answer" asp-route-id="@v.Id" style="color: #000; text-decoration: none;">
                                 <div class="white-box hover col-md-12 col-sm-12">
                                     <div class="col-md-2 col-sm-2">
                                         <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
@@ -145,7 +145,7 @@
                         {
                             @foreach (var v in list)
                             {
-                                <a class="feedback-link" asp-controller="Manage" asp-action="Read" asp-route-id="@v.Id" style="color: #000; text-decoration: none;">
+                                <a class="feedback-link" asp-controller="manage" asp-action="read" asp-route-id="@v.Id" style="color: #000; text-decoration: none;">
                                     <div class="white-box hover col-md-12 col-sm-12">
                                         <div class="col-md-2 col-sm-2">
                                             <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.InfluenterId })" />
@@ -286,7 +286,7 @@
                         <div class="white-box" style="padding: 20px">
                             <h2 style="text-align: center; margin-bottom: 20px; margin-top: 10px; font-size: 25px">Opret influencere</h2>
                             <p>Kan du ikke finde den influencer du ønsker at give feedback til? Du har mulighed for at oprette influenceren, og derefter give feedback!</p>
-                            <a style="width: 100%; margin-top: 20px" class="btn-create" asp-action="Create" asp-controller="Influencer">Opret influencer</a>
+                            <a style="width: 100%; margin-top: 20px" class="btn-create" asp-action="create" asp-controller="influencer">Opret influencer</a>
                         </div>
                     }
                 </div>

@@ -15,7 +15,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 white-box create-container">
                     <h2>Du er næsten klar...</h2>
 
-                    <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <form asp-controller="Account" asp-action="externalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                         <p>Er du influencer eller følger?</p>
 
                         <div class="col-md-6 col-sm-6 col-xs-12 noPaddingLeft nopaddingmobile">
@@ -63,7 +63,7 @@
 
                             <p>Godkender du vores betingelser?</p>
                             <label class="control control-radio">
-                                Jeg godkender Bestfluences <a asp-controller="Home" asp-action="TermsAndConditions" target="_blank">Vilkår & Betingelser</a> og <a asp-controller="Home" asp-action="Privacy" target="_blank">Persondatapolitik</a>.
+                                Jeg godkender Bestfluences <a asp-controller="Home" asp-action="termsAndConditions" target="_blank">Vilkår & Betingelser</a> og <a asp-controller="Home" asp-action="privacy" target="_blank">Persondatapolitik</a>.
                                 <input type="checkbox" name="accept" asp-for="@Model.AcceptTermsAndConditions" value="true" />
                                 <div class="control_indicator" style="border-radius: unset"></div>
                             </label>

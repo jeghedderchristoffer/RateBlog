@@ -21,13 +21,13 @@
                     </div>
                     <div class="col-md-4">
                         <div class="admin-buttons" style="padding-top: 8px">
-                            <form asp-controller="Admin" asp-action="FeedbackReportsOk">
+                            <form asp-controller="admin" asp-action="feedbackReportsOk">
                                 <input type="hidden" value="@Model.Feedback.Id" name="id"/>
                                 <button type="submit" style="background: green">ACCEPTER</button>
                             </form>
                             
                             <br />
-                            <form asp-controller="Admin" asp-action="FeedbackReportsDelete">
+                            <form asp-controller="admin" asp-action="feedbackReportsDelete">
                                 <input type="hidden" value="@Model.Feedback.Id" name="id" />
                                 <button type="submit" style="background: red">SLET</button>
                             </form>

@@ -26,7 +26,7 @@
                     <h2 class="text-center" style="font-family: 'Raleway', sans-serif; margin-bottom: 30px;">Log ind</h2>
                 }
                 <hr />
-                <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                <form asp-controller="account" asp-action="externalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                     <button name="provider" value="Facebook" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
                         <span class="fa fa-facebook"></span> Log ind via Facebook
                     </button>
@@ -37,7 +37,7 @@
                 <div class="divider">
                     <h4><span>ELLER</span></h4>
                 </div>
-                <form asp-action="Login" asp-controller="Account" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
+                <form asp-action="login" asp-controller="account" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
                     <div class="no-list-style">
                         <div asp-validation-summary="All" class="text-danger"></div>
                     </div>

@@ -25,11 +25,11 @@
                         <p>@v.Description</p>
                         @if (string.IsNullOrEmpty(v.Url))
                         {
-                            <a asp-controller="Blog" asp-action="Article" asp-route-id="@v.Id">Læs mere her</a>
+                            <a asp-controller="blog" asp-action="article" asp-route-id="@v.Id">Læs mere her</a>
                         }
                         else
                         {
-                            <a href="/Blog/@v.Url">Læs mere her</a>
+                            <a href="/blog/@v.Url">Læs mere her</a>
                         }
 
                     </div>

@@ -18,7 +18,7 @@
                 <h2 style="text-align: center; margin-bottom: 35px">Skriv ny artikel</h2>
 
                 <div class="edit-user-container" style="padding: 0">
-                    <form enctype="multipart/form-data" asp-controller="Admin" asp-action="CreateArticle" method="post" id="blogForm">
+                    <form enctype="multipart/form-data" asp-controller="admin" asp-action="createArticle" method="post" id="blogForm">
                         <p>Overskrift:</p>
                         <input asp-for="@Model.Title" type="text" />
 

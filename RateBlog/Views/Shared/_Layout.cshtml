@@ -108,7 +108,7 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <nav class="navbar navbar-default navbar-static-top">
-        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand" style="padding-left: 0">
+        <a asp-area="" asp-controller="home" asp-action="index" class="navbar-brand" style="padding-left: 0">
             <img id="navbarLogo" src="~/images/bestfluence-logo.svg" />
             <span class="navbar-logo">
                 Bestfluence
@@ -126,7 +126,7 @@
         </div>
         <div class="navbar-collapse collapse navbar-margin-right">
             <ul class="nav navbar-nav">
-                <li><a asp-area="" asp-controller="Influencer" asp-action="Index" class="navLinks">Alle influencere</a></li>
+                <li><a asp-area="" asp-controller="influencer" asp-action="index" class="navLinks">Alle influencere</a></li>
             </ul>
             @await Html.PartialAsync("_LoginPartial")
         </div>
@@ -136,7 +136,7 @@
     <!--Change color of links-->
 
     <script type="text/javascript">
-        if (location.pathname == "/" || window.location.href.indexOf("Home") > -1) {
+        if (location.pathname == "/" || window.location.href.indexOf("home") > -1) {
             var elements = document.getElementsByClassName("navLinks");
             for (i = 0; i < elements.length; i++) {
                 elements[i].style.color = "#fff";
@@ -158,7 +158,7 @@
                 </div>
                 <div class="modal-body" style="padding-top: 30px;">
 
-                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <form asp-controller="account" asp-action="externalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                         <button name="provider" value="Facebook" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
                             <span class="fa fa-facebook"></span> Log ind via Facebook
                         </button>
@@ -186,7 +186,7 @@
                     </div>
 
                     <div style="width: 100%; margin-top: 15px" class="text-center">
-                        <a asp-controller="Account" asp-action="ForgotPassword" style="margin-top: 20px; color: #000; text-decoration: none;">Har du glemt kodeord?</a>
+                        <a asp-controller="account" asp-action="forgotPassword" style="margin-top: 20px; color: #000; text-decoration: none;">Har du glemt kodeord?</a>
                     </div>
 
 
@@ -205,7 +205,7 @@
                 </div>
                 <div class="modal-body" style="padding-top: 30px; padding-bottom: 15px;">
 
-                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <form asp-controller="account" asp-action="externalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                         <button name="provider" value="Facebook" type="submit" class="btn btn-block btn-social btn-facebook btn-lg">
                             <span class="fa fa-facebook"></span> Tilmeld via Facebook
                         </button>
@@ -218,7 +218,7 @@
                         <h4><span>ELLER</span></h4>
                     </div>
 
-                    <a asp-controller="Account" asp-action="RegisterConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-block btn-social btn-google btn-lg" style="background: #FFA500"><span class="fa fa-envelope fa"></span> Tilmeld via Email</a>
+                    <a asp-controller="account" asp-action="registerConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-block btn-social btn-google btn-lg" style="background: #FFA500"><span class="fa fa-envelope fa"></span> Tilmeld via Email</a>
 
                     <div style="width: 100%; margin-top: 15px" class="text-center">
                         <a asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top: 20px; color: #000; text-decoration: none;">Har du en profil? Log in her</a>

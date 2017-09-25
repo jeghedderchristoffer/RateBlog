@@ -63,6 +63,8 @@
     <Content Include="wwwroot\js\AdminStatisticsFilter.js" />
     <Content Include="wwwroot\js\bestjavascript.js" />
     <Content Include="wwwroot\js\GoogleChartLoader.js" />
+    <Content Include="wwwroot\robots.txt" />
+    <Content Include="wwwroot\sitemap.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.4.337" />

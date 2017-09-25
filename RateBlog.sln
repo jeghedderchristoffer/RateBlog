@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bestfluence", "RateBlog\Bestfluence.csproj", "{348FC785-5FC0-4650-9F99-7625122BD5C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BestfluenceBusiness", "BestfluenceBusiness\BestfluenceBusiness.csproj", "{B9BBB585-3BF1-46D6-9C6D-A574E934FD4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{348FC785-5FC0-4650-9F99-7625122BD5C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{348FC785-5FC0-4650-9F99-7625122BD5C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{348FC785-5FC0-4650-9F99-7625122BD5C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BBB585-3BF1-46D6-9C6D-A574E934FD4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BBB585-3BF1-46D6-9C6D-A574E934FD4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BBB585-3BF1-46D6-9C6D-A574E934FD4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BBB585-3BF1-46D6-9C6D-A574E934FD4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

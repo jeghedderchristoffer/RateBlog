@@ -28,8 +28,8 @@
                 <div class="white-box" style="padding-left: 0; padding-right: 0">
                     <h4>Indstillinger</h4>
                     <ul>
-                        <li><a asp-controller="Manage" asp-action="Notifications"><i class="fa fa-bell-o active" aria-hidden="true"></i> Notifikationer</a></li>
-                        <li><a asp-controller="Manage" asp-action="Password"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Skift kodeord</a></li>
+                        <li><a asp-controller="manage" asp-action="notifications"><i class="fa fa-bell-o active" aria-hidden="true"></i> Notifikationer</a></li>
+                        <li><a asp-controller="manage" asp-action="password"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Skift kodeord</a></li>
                     </ul>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                     <h3>Notifikationer</h3>
                     <hr />
 
-                    <form asp-controller="Manage" asp-action="Notifications" method="post">
+                    <form asp-controller="manage" asp-action="notifications" method="post">
                         <p>Modtag Bestfluence nyhedsbrev</p>
                         <div class="control-group">
                             <label class="control control-radio">

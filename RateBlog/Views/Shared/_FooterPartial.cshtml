@@ -7,27 +7,27 @@
             <div class="col-md-3 col-sm-3">
                 <p><b>OM BESTFLUENCE</b></p>
                 <ul>
-                    <li><a asp-controller="Home" asp-action="About">Om Bestfluence</a></li>
-                    <li><a asp-controller="Home" asp-action="Parents">Forældre</a></li>
-                    <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
-                    <li><a asp-controller="Home" asp-action="Contact">Kontakt os</a></li>
+                    <li><a asp-controller="home" asp-action="about">Om Bestfluence</a></li>
+                    <li><a asp-controller="home" asp-action="parents">Forældre</a></li>
+                    <li><a asp-controller="blog" asp-action="index">Blog</a></li>
+                    <li><a asp-controller="home" asp-action="contact">Kontakt os</a></li>
                 </ul>
             </div>
 
             <div class="col-md-3 col-sm-3">
                 <p><b>FØLGERE & INFLUENCERE</b></p>
                 <ul>
-                    <li><a asp-controller="Home" asp-action="FAQ">FAQ</a></li>
-                    <li><a asp-controller="Home" asp-action="FeedbackAndAnswers">Feedback & Svar</a></li>
+                    <li><a asp-controller="home" asp-action="faq">FAQ</a></li>
+                    <li><a asp-controller="home" asp-action="feedbackAndAnswers">Feedback & Svar</a></li>
                 </ul>
             </div>
 
             <div class="col-md-3 col-sm-3">
                 <p><b>ANDET</b></p>
                 <ul>
-                    <li><a asp-controller="Home" asp-action="TermsAndConditions">Vilkår og betingelser</a></li>
-                    <li><a asp-controller="Home" asp-action="Privacy">Persondatapolitik</a></li>
-                    <li><a asp-controller="Home" asp-action="UserGuidelines">Retningslinjer for brugere</a></li>
+                    <li><a asp-controller="home" asp-action="termsAndConditions">Vilkår og betingelser</a></li>
+                    <li><a asp-controller="home" asp-action="privacy">Persondatapolitik</a></li>
+                    <li><a asp-controller="home" asp-action="userGuidelines">Retningslinjer for brugere</a></li>
                 </ul>
             </div>
 
@@ -38,11 +38,11 @@
                     {
                         @if (string.IsNullOrEmpty(v.Url))
                         {
-                            <li><a asp-controller="Blog" asp-action="Article" asp-route-id="@v.Id">@v.Title</a></li>
+                            <li><a asp-controller="blog" asp-action="article" asp-route-id="@v.Id">@v.Title</a></li>
                         }
                         else
                         {
-                            <li><a href="/Blog/@v.Url">@v.Title</a></li>
+                            <li><a href="/blog/@v.Url">@v.Title</a></li>
                         }
                     }
                 </ul>

@@ -24,7 +24,7 @@
                             <ul>
                                 @foreach (var v in Model.NotApprovedList)
                                 {
-                                    <li><a asp-controller="Admin" asp-action="UserProfile" asp-route-id="@v.Id">@v.Alias</a></li>
+                                    <li><a asp-controller="admin" asp-action="userProfile" asp-route-id="@v.Id">@v.Alias</a></li>
                                 }
 
                             </ul>
@@ -39,7 +39,7 @@
                             <ul>
                                 @foreach (var v in Model.FeedbackReports)
                                 {
-                                    <li><a asp-controller="Admin" asp-action="FeedbackReports" asp-route-id="@v.Feedback.Id"><b>Feedback til:</b> @v.Feedback.Influenter.Alias <div class="badge" style="color: #fff">@v.Count</div></a></li>
+                                    <li><a asp-controller="admin" asp-action="feedbackReports" asp-route-id="@v.Feedback.Id"><b>Feedback til:</b> @v.Feedback.Influenter.Alias <div class="badge" style="color: #fff">@v.Count</div></a></li>
                                 }
                             </ul>
                         </div>
@@ -50,7 +50,7 @@
                 <div class="white-box scroll" style="height: calc(100vh - 150px)">
                     <h3>100 nyeste brugere</h3>
                     <hr style="margin-top: 5px;" />
-                    <form method="get" asp-area="" asp-controller="Admin" asp-action="Index" class="form-inline center-block">
+                    <form method="get" asp-area="" asp-controller="admin" asp-action="index" class="form-inline center-block">
                         <div class="input-group" style="width: 100%;">
                             <input autocomplete="off" type="text" name="search" id="search" style="border: 1px solid #ddd" class="form-control admin-search-input" placeholder="Søg på influencers eller brugere" />
                             <div class="input-group-btn" style="width: 1px;">

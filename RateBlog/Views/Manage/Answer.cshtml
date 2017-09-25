@@ -172,7 +172,7 @@
                     <div class="col-md-12">
                         <hr />
                         <p>Hvad har du at sige om denne feedback?</p>
-                        <form asp-area="" asp-controller="Manage" asp-action="AnswerFeedback">
+                        <form asp-area="" asp-controller="manage" asp-action="answerFeedback">
                             @Html.HiddenFor(x => x.Rating.Id)
                             <div class="textarea-container nopaddingmobile">
                                 <textarea asp-for="@Model.Rating.Answer" placeholder=""></textarea>

@@ -163,7 +163,7 @@ namespace Bestfluence.Controllers
         }
 
         [HttpGet]
-        [Route("/[controller]/Feedback/[action]/{id}")]
+        [Route("/[controller]/feedback/[action]/{id}")]
         public async Task<IActionResult> Read(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -266,7 +266,7 @@ namespace Bestfluence.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("/[controller]/Feedback/[action]/{id}")]
+        [Route("/[controller]/feedback/[action]/{id}")]
         public async Task<IActionResult> Give(string id)
         {
             var influenter = _influencerRepo.Get(id);
@@ -281,7 +281,7 @@ namespace Bestfluence.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("/[controller]/Feedback/[action]/{id}")]
+        [Route("/[controller]/feedback/[action]/{id}")]
         public async Task<IActionResult> Give(GiveViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);

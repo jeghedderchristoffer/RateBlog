@@ -91,7 +91,7 @@ namespace Bestfluence.Controllers
         }
 
         [HttpGet]
-        [Route("/[controller]/Profile/[action]")]
+        [Route("/[controller]/profile/[action]")]
         public async Task<IActionResult> Edit()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -111,7 +111,7 @@ namespace Bestfluence.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("/[controller]/Profile/[action]")]
+        [Route("/[controller]/profile/[action]")]
         public async Task<IActionResult> Edit(EditViewModel model, IFormFile profilePic)
         {
             var user = await _userManager.GetUserAsync(User);

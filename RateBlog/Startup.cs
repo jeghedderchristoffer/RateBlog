@@ -71,6 +71,8 @@ namespace Bestfluence
                 .AddDefaultTokenProviders();
 
 
+            services.AddRouting(options => options.LowercaseUrls = true); 
+
             services.AddMemoryCache();
             services.AddSession();
             services.AddMvc();

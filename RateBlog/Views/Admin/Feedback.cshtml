@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="admin-buttons">
-                                    <form asp-controller="admin" asp-action="DeleteFeedback">
+                                    <form asp-controller="admin" asp-action="deleteFeedback">
                                         <input value="@v.Id" name="id" type="hidden" />
                                         <input value="@Model.ApplicationUser.Id" name="userId" type="hidden" />
                                         <button type="submit" style="background: red; margin-top: 10px; margin-bottom: 20px;">SLET</button>

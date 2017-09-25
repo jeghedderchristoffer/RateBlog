@@ -48,14 +48,14 @@
                                     <td>
                                         @if (article.Publish)
                                         {
-                                            <form asp-controller="Admin" asp-action="PublishArticle" method="post">
+                                            <form asp-controller="admin" asp-action="publishArticle" method="post">
                                                 <input type="hidden" value="@article.Id" name="id" />
                                                 <button style="background: transparent; border: none" type="submit">Offentlig</button>
                                             </form>
                                         }
                                         else
                                         {
-                                            <form asp-controller="Admin" asp-action="PublishArticle" method="post">
+                                            <form asp-controller="admin" asp-action="publishArticle" method="post">
                                                 <input type="hidden" value="@article.Id" name="id" />
                                                 <button style="background: transparent; border: none" type="submit">Ikke offentlig</button>
                                             </form>
@@ -63,8 +63,8 @@
 
                                     </td>
                                     <td align="right">
-                                        <a asp-controller="Admin" asp-action="EditArticle" asp-route-id="@article.Id">Rediger</a> | 
-                                        <a asp-controller="Admin" asp-action="ArticlePreview" asp-route-id="@article.Id">Preview</a>
+                                        <a asp-controller="admin" asp-action="editArticle" asp-route-id="@article.Id">Rediger</a> | 
+                                        <a asp-controller="admin" asp-action="articlePreview" asp-route-id="@article.Id">Preview</a>
                                     </td>
                                 </tr>
                             }

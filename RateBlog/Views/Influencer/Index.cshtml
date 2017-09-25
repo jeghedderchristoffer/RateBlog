@@ -53,7 +53,7 @@
             </div>
 
             <div class="col-md-9 col-sm-12 nopaddingmobile">
-                <form method="get" asp-area="" asp-controller="Influencer" asp-action="Index" style="margin-bottom: 30px;">
+                <form method="get" asp-area="" asp-controller="influencer" asp-action="index" style="margin-bottom: 30px;">
                     <div class="input-group">
                         <input autocomplete="off" type="text" name="search" id="search" value="@Model.SearchString" style="border: 1px solid #ddd; height: 40px" class="form-control search-input-influencer" list="searchSug" placeholder="Søg på influencere" />
                         <datalist id="searchSug"></datalist>
@@ -95,7 +95,7 @@
                         <div class="middle">
                             <div class="inner">
                                 <h4 style="margin-top: 0; margin-bottom: 15px">Mangler vi din influencer?</h4>
-                                <a asp-controller="Influencer" asp-action="Create" class="btn-create center-block">Opret din influencer</a>
+                                <a asp-controller="influencer" asp-action="create" class="btn-create center-block">Opret din influencer</a>
                             </div>
                         </div>
                     </div>
@@ -335,7 +335,7 @@
                 vote = ' <span class="vote-label">AFSTEMNING</<span>';
             }
 
-            var hrefUrl = "/Influencer/Profile/" + item.id;
+            var hrefUrl = "/influencer/profile/" + item.id;
 
             if (item.url) {
                 hrefUrl = "/" + item.url; 

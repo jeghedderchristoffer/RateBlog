@@ -617,7 +617,7 @@ namespace Bestfluence.Controllers
         
         [HttpGet]
         [AllowAnonymous]
-        [Route("/[controller]/Show/[action]/{id}")]
+        [Route("/[controller]/show/[action]/{id}")]
         public IActionResult Profile(string id)
         {
             var user = _userManager.Users.SingleOrDefault(x => x.Id == id);

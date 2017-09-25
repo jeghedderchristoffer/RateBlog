@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="white-box hidden-md hidden-lg">
-                    <a asp-controller="Votes" asp-action="Create" class="votes-create-btn"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; OPRET NY AFSTEMNING</a>
+                    <a asp-controller="votes" asp-action="create" class="votes-create-btn"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; OPRET NY AFSTEMNING</a>
                 </div>
                 
 
@@ -63,7 +63,7 @@
 
 
                         <div class="votes-container">
-                            <a asp-action="Vote" asp-controller="Votes" asp-route-id="@v.Id" style="color: #000">
+                            <a asp-action="vote" asp-controller="votes" asp-route-id="@v.Id" style="color: #000">
                                 <div class="white-box hover">
                                     @*<div class="countBox">@v.VoteQuestions.Select(x => x.VoteAnswers.Count).Sum() </div>*@
                                     <p><i>@v.VoteQuestions.Select(x => x.VoteAnswers.Count).Sum()</i> @v.Title <span style="color: @activeColor">@active</span></p>
@@ -77,7 +77,7 @@
 
             <div class="col-md-5 hidden-xs hidden-sm" style="padding-top: 73px;">
                 <div class="white-box">
-                    <a asp-controller="Votes" asp-action="Create" class="votes-create-btn"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; OPRET NY AFSTEMNING</a>
+                    <a asp-controller="votes" asp-action="create" class="votes-create-btn"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; OPRET NY AFSTEMNING</a>
                 </div>
                 <div class="white-box">
                     <div style="padding: 5px">

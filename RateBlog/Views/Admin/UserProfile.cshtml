@@ -15,7 +15,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left">Fortryd</button>
-                <form asp-controller="Admin" asp-action="DeleteUser" method="post">
+                <form asp-controller="admin" asp-action="deleteUser" method="post">
                     @Html.HiddenFor(x => x.ApplicationUser.Id)
                     <button type="submit" style="float: right" class="btn btn-danger"><b>Slet</b></button>
                 </form>
@@ -92,7 +92,7 @@
                         <h3 style="text-align: center; margin-top: 10px">Rediger personlige oplysninger:</h3>
                         <hr />
 
-                        <form asp-controller="Admin" asp-action="EditUser" method="post" enctype="multipart/form-data">
+                        <form asp-controller="admin" asp-action="editUser" method="post" enctype="multipart/form-data">
                             @Html.HiddenFor(x => x.ApplicationUser.Id)
                             <p style="margin-top: 5px">Navn</p>
                             <input type="text" asp-for="@Model.EditProfileViewModel.Name" />
@@ -154,14 +154,14 @@
                             @if (Model.InfluencerViewModel.Influencer.IsApproved == false)
                             {
                                 <div class="col-md-6">
-                                    <form asp-controller="Admin" asp-action="ApproveInfluencer" method="post">
+                                    <form asp-controller="admin" asp-action="approveInfluencer" method="post">
                                         @Html.HiddenFor(x => x.InfluencerViewModel.Influencer.Id)
                                         <button type="submit" style="background:#53b80a; border: none;"><b>ACCEPTER INFLUENCER</b></button>
                                     </form>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <form asp-controller="Admin" asp-action="DisapproveInfluencer" method="post">
+                                    <form asp-controller="admin" asp-action="disapproveInfluencer" method="post">
                                         @Html.HiddenFor(x => x.InfluencerViewModel.Influencer.Id)
                                         <button style="background:#c9302c; border: none;"><b>AFVIS INFLUENCER</b></button>
                                     </form>
@@ -199,10 +199,10 @@
                     <hr />
                     <div class="admin-buttons">
                         <div class="col-md-4">
-                            <a asp-controller="Admin" asp-action="Feedback" asp-route-id="@Model.ApplicationUser.Id" style="background:#089de3;"><b>Feedback</b></a>
+                            <a asp-controller="admin" asp-action="feedback" asp-route-id="@Model.ApplicationUser.Id" style="background:#089de3;"><b>Feedback</b></a>
                         </div>
                         <div class="col-md-4">
-                            <a asp-controller="Admin" asp-action="ChangePassword" asp-route-id="@Model.ApplicationUser.Id" style="background: #000"><b>Skift kodeord</b></a>
+                            <a asp-controller="admin" asp-action="changePassword" asp-route-id="@Model.ApplicationUser.Id" style="background: #000"><b>Skift kodeord</b></a>
                         </div>
                         <div class="col-md-4">
                             <a data-toggle="modal" data-target="#adminDeleteModal" style="background:#c9302c;"><b>Slet</b></a>
@@ -217,7 +217,7 @@
                         var currentBool = "";
 
                         <div class="edit-user-container" style="padding-top: 0">
-                            <form asp-controller="Admin" asp-action="EditInfluencer" method="post">
+                            <form asp-controller="admin" asp-action="editInfluencer" method="post">
                                 @Html.HiddenFor(x => x.InfluencerViewModel.Influencer.Id)
 
                                 <p style="margin-top: 5px">Alias</p>

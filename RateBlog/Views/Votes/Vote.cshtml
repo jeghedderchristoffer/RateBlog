@@ -101,14 +101,14 @@
                     <div class="col-md-12 col-sm-12 vote-box-body">
                         @if (Model.Active == false)
                         {
-                            <form asp-controller="Votes" asp-action="ActivateVote">
+                            <form asp-controller="votes" asp-action="activateVote">
                                 @Html.HiddenFor(x => x.Id)
                                 <button type="submit" style="background: #53b80a">Aktivér</button>
                             </form>
                         }
                         else
                         {
-                            <form asp-controller="Votes" asp-action="DeactivateVote">
+                            <form asp-controller="votes" asp-action="deactivateVote">
                                 @Html.HiddenFor(x => x.Id)
                                 <button type="submit" style="background: #ea4335">Deaktivér</button>
                             </form>
