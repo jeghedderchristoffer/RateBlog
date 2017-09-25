@@ -5,15 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
-using RateBlog.Repository;
+using Bestfluence.Repository;
 using Microsoft.AspNetCore.Identity;
-using RateBlog.Models;
-using RateBlog.Helper;
-using RateBlog.Services;
-using RateBlog.Models.FooterViewModels;
-using RateBlog.Data;
+using Bestfluence.Models;
+using Bestfluence.Helper;
+using Bestfluence.Services;
+using Bestfluence.Models.FooterViewModels;
+using Bestfluence.Data;
+using Bestfluence.Services.Interfaces;
 
-namespace RateBlog.Controllers
+namespace Bestfluence.Controllers
 {
     public class HomeController : Controller
     {

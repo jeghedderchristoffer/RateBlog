@@ -1,5 +1,5 @@
-﻿@model RateBlog.Models.InfluenterViewModels.ReadViewModel
-@inject RateBlog.Services.IFeedbackService FeedbackService
+﻿@model Bestfluence.Models.InfluenterViewModels.ReadViewModel
+@inject Bestfluence.Services.Interfaces.IFeedbackService FeedbackService
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 @{
@@ -59,11 +59,21 @@
         <div class="col-md-12 noPadding">
             <div class="col-md-4 nopaddingmobile">
                 <div class="white-box">
-                    <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@Model.Influenter.Id">
-                        <img class="profile-img-big center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
-                    </a>
+                    @if (string.IsNullOrEmpty(Model.Influenter.Url))
+                    {
+                        <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@Model.Influenter.Id">
+                            <img class="profile-img-big center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="/@Model.Influenter.Url">
+                            <img class="profile-img-big center-block" style="margin-bottom: 40px; margin-top: 25px" src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
+                        </a>
+                    }
+
                     <hr />
-                    <h3>
+                    <h3 style=" font-family: 'Oxygen', sans-serif; ">
                         @Model.Influenter.Alias
                         @if (!isUserCreated)
                         {
@@ -135,7 +145,7 @@
                                     <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.ApplicationUserId })" />
                                 </a>
                             </div>
-                            <div class="col-md-10 noPaddingRight">
+                            <div class="col-md-10">
                                 <div class="visible-xs text-center">
                                     <h4>@v.ApplicationUser.Name</h4>
                                     <p style="color: #a4a4a4; font-size: 14px; margin-bottom: 0">@String.Format("{0:dd/MM/yyyy}", v.FeedbackDateTime)</p>
@@ -187,7 +197,7 @@
                                 <br />
                             </div>
 
-                            <div class="col-md-offset-2 col-md-10 noPaddingRight">
+                            <div class="col-md-offset-2 col-md-10">
                                 @if (!string.IsNullOrEmpty(v.FeedbackGood))
                                 {
                                     <p><b>@v.ApplicationUser.Name synes godt om følgende:</b></p>
@@ -209,9 +219,20 @@
                                     <hr />
 
                                     <div class="col-md-2 noPadding">
-                                        <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@v.InfluenterId">
-                                            <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.InfluenterId })" />
-                                        </a>
+
+                                        @if (string.IsNullOrEmpty(Model.Influenter.Url))
+                                        {
+                                            <a asp-controller="Influencer" asp-action="Profile" asp-route-id="@v.InfluenterId">
+                                                <img src="@Url.Action("UsersProfilePic", "Manage", new { id = v.InfluenterId })" />
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/@Model.Influenter.Url">
+                                                <img src="@Url.Action("UsersProfilePic", "Manage", new { Id = Model.ApplicationUser.Id})" />
+                                            </a>
+                                        }
+
                                     </div>
 
                                     <div class="col-md-10 noPaddingRight">

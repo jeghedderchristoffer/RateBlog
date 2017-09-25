@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
-using RateBlog.Data;
-using RateBlog.Helper;
-using RateBlog.Models;
-using RateBlog.Models.InfluenterViewModels;
-using RateBlog.Models.ManageViewModels;
-using RateBlog.Repository;
-using RateBlog.Services;
-using RateBlog.Services.Interfaces;
+using Bestfluence.Data;
+using Bestfluence.Helper;
+using Bestfluence.Models;
+using Bestfluence.Models.InfluenterViewModels;
+using Bestfluence.Models.ManageViewModels;
+using Bestfluence.Repository;
+using Bestfluence.Services;
+using Bestfluence.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +21,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace RateBlog.Controllers
+namespace Bestfluence.Controllers
 {
     public class InfluencerController : Controller
     {
@@ -410,7 +410,8 @@ namespace RateBlog.Controllers
                 Id = x.Id,
                 FeedbackCount = x.Ratings.Count,
                 FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4),
-                InfluencerVote = _dbContext.Votes.Any(p => p.InfluencerId == x.Id && p.Active == true)
+                InfluencerVote = _dbContext.Votes.Any(p => p.InfluencerId == x.Id && p.Active == true),
+                Url = x.Url
             });
 
             switch (sortBy)
@@ -470,7 +471,8 @@ namespace RateBlog.Controllers
                 Id = x.Id,
                 FeedbackCount = x.Ratings.Count,
                 FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4),
-                InfluencerVote = _dbContext.Votes.Any(p => p.InfluencerId == x.Id && p.Active == true)
+                InfluencerVote = _dbContext.Votes.Any(p => p.InfluencerId == x.Id && p.Active == true),
+                Url = x.Url
             });
 
             switch (sortBy)

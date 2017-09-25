@@ -1,4 +1,4 @@
-﻿using RateBlog.Data;
+﻿using Bestfluence.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Models
+namespace Bestfluence.Models
 {
     public class Influencer : BaseEntity
     {
@@ -22,6 +22,7 @@ namespace RateBlog.Models
         [DefaultValue(false)]
         public bool IsApproved { get; set; }
 
+        [MaxLength(30, ErrorMessage = "Din URL må være op til 30 karaktere langt.")]
         public string Url { get; set; } 
 
         public virtual ApplicationUser ApplicationUser { get; set; }

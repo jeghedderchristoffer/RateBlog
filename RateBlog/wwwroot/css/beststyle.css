@@ -65,7 +65,7 @@ input[type="password"] {
 }
 
 
-/*#region Navbar */ 
+/*#region Navbar */
 
 .login-links {
     cursor: pointer;
@@ -500,6 +500,13 @@ ul li:hover .dropOut {
     text-align: center;
 }
 
+@media(min-width: 767px){
+    .inner-influencer {
+        padding: 0;
+    }
+}
+
+
 .banner-container {
     padding-top: 50px;
     padding-bottom: 50px;
@@ -698,16 +705,46 @@ ul li:hover .dropOut {
 /*#region Footer */
 
 footer {
-    min-height: 240px;
-    padding: 40px;
-    background: #555;
+    padding: 50px 40px 40px 40px;
+    background: #444;
     color: #fff;
     height: auto;
     overflow: hidden
 }
 
-    footer h4 {
+    footer .social-footer {
+        margin-left: 10px;
+        float: right;
+    }
+
+    footer .small-footer-text {
+        font-size: 11px;
+        margin-top: 10px;
+    }
+
+    footer a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+        footer a i {
+            font-size: 30px !important;
+        }
+
+        footer a:hover {
+            color: #fff;
+            opacity: .9;
+            text-decoration: none;
+        }
+
+        footer a:focus {
+            color: #fff;
+            text-decoration: none;
+        }
+
+    footer p {
         margin-bottom: 20px;
+        font-size: 16px;
     }
 
     footer li {
@@ -718,66 +755,47 @@ footer {
 
     footer ul {
         padding: 0;
+        margin-bottom: 0;
     }
 
         footer ul li a {
             color: #fff;
             text-decoration: none;
             outline: none;
+            font-size: 14px;
         }
 
             footer ul li a:hover, footer ul li a:focus {
                 color: #fff;
-                text-decoration: none;
+                text-decoration: underline;
                 outline: none;
             }
 
-.fa-footer {
-    display: block;
-    padding: 10px;
-    font-size: 24px !important;
-    width: 47px;
-    text-align: center;
-    text-decoration: none;
-    margin-right: 10px;
-    margin-top: 5px;
-    border: 3px solid #fff;
-}
-
-    .fa-footer:hover {
-        text-decoration: none;
-        color: #fff;
+@media(max-width: 767px) {
+    footer {
+        padding: 0;
     }
 
-    .fa-footer:focus {
-        text-decoration: none;
-        color: #fff;
-    }
+        footer .small-footer-text {
+           margin-bottom: 50px;
+        }
 
-.fa-facebook-footer {
-    background: transparent;
-    color: #fff;
-}
 
-.fa-twitter-footer {
-    background: transparent;
-    color: #fff;
-}
+        footer span {
+            display: block;
+        }
 
-.fa-youtube-footer {
-    background: transparent;
-    color: #fff;
-}
+        footer p {
+            margin-top: 50px;
+        }
 
-.fa-instagram-footer {
-    background: transparent;
-    color: #fff;
-}
-
-@media screen and (max-width: 991px) {
-    .footer-area {
-        height: 230px;
-    }
+        footer .social-footer {
+            float: unset;
+            display: inline-block;
+            margin-left: 0;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
 }
 
 .footer-img.about {
@@ -2105,7 +2123,6 @@ footer {
 
 @media(max-width: 767px) {
     .feedback-container img {
-       
         margin-bottom: 20px;
     }
 
@@ -2159,7 +2176,7 @@ footer {
 
 /*#endregion */
 
-/*#region CreateUser */ 
+/*#region CreateUser */
 
 .create-container h2 {
     font-family: 'Raleway', sans-serif;
@@ -2738,7 +2755,7 @@ footer {
 
 /*#endregion */
 
-/*#region Blog */ 
+/*#region Blog */
 
 
 #editor {
@@ -2817,7 +2834,7 @@ footer {
     margin-top: 12px;
 }
 
-.blog-comment-container img{
+.blog-comment-container img {
     height: 50px;
     width: 50px;
     border-radius: 50%;

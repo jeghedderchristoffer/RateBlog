@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Models.AccountViewModels
+namespace Bestfluence.Models.AccountViewModels
 {
     public class RegisterConfirmationViewModel
     {

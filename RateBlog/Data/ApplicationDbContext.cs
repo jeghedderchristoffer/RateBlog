@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using RateBlog.Models;
+using Bestfluence.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace RateBlog.Data
+namespace Bestfluence.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -25,6 +25,8 @@ namespace RateBlog.Data
         public DbSet<InfluencerCategory> InfluencerCategory { get; set; }
         public DbSet<FeedbackReport> FeedbackReports { get; set; }
         public DbSet<EmailNotification> EmailNotifications { get; set; }
+        //public DbSet<FollowerRank> FollowerRanks { get; set; }
+        //public DbSet<FollowerStatus> FollowerStatus { get; set; } 
 
         // Blog
         public DbSet<BlogArticle> BlogArticles { get; set; }

@@ -1,6 +1,6 @@
-﻿@model RateBlog.Models.ManageViewModels.ProfileViewModel
-@inject RateBlog.Services.IFeedbackService FeedbackService
-@inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
+﻿@model Bestfluence.Models.ManageViewModels.ProfileViewModel
+@inject Bestfluence.Services.Interfaces.IFeedbackService FeedbackService
+@inject Bestfluence.Repository.IInfluencerRepository InfluencerRepo
 @{
     ViewData["Title"] = "Se din profil";
     var influencer = InfluencerRepo.Get(Model.ApplicationUser.Id);

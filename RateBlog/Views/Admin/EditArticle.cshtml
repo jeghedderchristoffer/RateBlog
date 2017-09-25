@@ -1,4 +1,4 @@
-﻿@model RateBlog.Models.AdminViewModels.EditArticleViewModel
+﻿@model Bestfluence.Models.AdminViewModels.EditArticleViewModel
 
 <div class="background-all" style="padding-bottom: 0">
 
@@ -40,6 +40,9 @@
 
                         <p>Kort beskrivelse:</p>
                         <input type="text" asp-for="@Model.Description" />
+
+                        <p>URL:</p>
+                        <input asp-for="@Model.Url" placeholder="www.bestfluence.dk/Blog/url-her" type="text" />
 
                         <p>Indexbillede <b style="font-family: 'Segoe UI'">(247.5 x 150)</b></p>
                         <input type="file" asp-for="@Model.IndexPicture" />

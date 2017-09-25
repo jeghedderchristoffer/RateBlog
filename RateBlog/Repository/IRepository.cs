@@ -1,10 +1,10 @@
-﻿using RateBlog.Data;
+﻿using Bestfluence.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Repository
+namespace Bestfluence.Repository
 {
     public interface IRepository <T> where T : BaseEntity
     {

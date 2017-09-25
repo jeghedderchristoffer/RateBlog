@@ -9,19 +9,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RateBlog.Models;
-using RateBlog.Models.AccountViewModels;
-using RateBlog.Services;
+using Bestfluence.Models;
+using Bestfluence.Models.AccountViewModels;
+using Bestfluence.Services;
 using Microsoft.AspNetCore.Http;
-using RateBlog.Models.ManageViewModels;
+using Bestfluence.Models.ManageViewModels;
 using System.Net.Http;
-using RateBlog.Repository;
+using Bestfluence.Repository;
 using System.Globalization;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
+using Bestfluence.Services.Interfaces;
 
-namespace RateBlog.Controllers
+namespace Bestfluence.Controllers
 {
     [Authorize]
     public class AccountController : Controller
@@ -118,7 +119,7 @@ namespace RateBlog.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");

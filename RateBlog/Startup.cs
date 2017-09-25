@@ -9,18 +9,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using RateBlog.Data;
-using RateBlog.Models;
-using RateBlog.Services;
+using Bestfluence.Data;
+using Bestfluence.Models;
+using Bestfluence.Services;
 using Microsoft.AspNetCore.Http;
-using RateBlog.Repository;
+using Bestfluence.Repository;
 using System.Globalization;
-using RateBlog.Services.Interfaces;
-using RateBlog.Helper;
+using Bestfluence.Services.Interfaces;
+using Bestfluence.Helper;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Security.Claims;
+using Bestfluence.Services.Interfaces;
+using Bestfluence.Services;
 
-namespace RateBlog
+namespace Bestfluence
 {
     public class Startup
     {
@@ -87,6 +89,7 @@ namespace RateBlog
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
+            services.AddTransient<IBlogService, BlogService>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -189,6 +192,11 @@ namespace RateBlog
                    name: "root",
                    template: "{id}",
                    defaults: new { controller = "Influencer", action = "Profile" });
+
+                routes.MapRoute(
+                   name: "blog",
+                   template: "Blog/{id}",
+                   defaults: new { controller = "Blog", action = "Article" });
             });
 
         }

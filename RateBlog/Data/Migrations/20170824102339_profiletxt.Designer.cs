@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using RateBlog.Data;
+using Bestfluence.Data;
 
-namespace RateBlog.Migrations
+namespace Bestfluence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20170824102339_profiletxt")]
@@ -124,7 +124,7 @@ namespace RateBlog.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Bestfluence.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -192,7 +192,7 @@ namespace RateBlog.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.Category", b =>
+            modelBuilder.Entity("Bestfluence.Models.Category", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -204,7 +204,7 @@ namespace RateBlog.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.Feedback", b =>
+            modelBuilder.Entity("Bestfluence.Models.Feedback", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -260,7 +260,7 @@ namespace RateBlog.Migrations
                     b.ToTable("Feedback");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.Influencer", b =>
+            modelBuilder.Entity("Bestfluence.Models.Influencer", b =>
                 {
                     b.Property<string>("Id");
 
@@ -276,7 +276,7 @@ namespace RateBlog.Migrations
                     b.ToTable("Influencer");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.InfluencerCategory", b =>
+            modelBuilder.Entity("Bestfluence.Models.InfluencerCategory", b =>
                 {
                     b.Property<string>("InfluencerId");
 
@@ -289,7 +289,7 @@ namespace RateBlog.Migrations
                     b.ToTable("InfluencerCategory");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.InfluencerPlatform", b =>
+            modelBuilder.Entity("Bestfluence.Models.InfluencerPlatform", b =>
                 {
                     b.Property<string>("InfluencerId");
 
@@ -304,7 +304,7 @@ namespace RateBlog.Migrations
                     b.ToTable("InfluencerPlatform");
                 });
 
-            modelBuilder.Entity("RateBlog.Models.Platform", b =>
+            modelBuilder.Entity("Bestfluence.Models.Platform", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -326,7 +326,7 @@ namespace RateBlog.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("RateBlog.Models.ApplicationUser")
+                    b.HasOne("Bestfluence.Models.ApplicationUser")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -334,7 +334,7 @@ namespace RateBlog.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("RateBlog.Models.ApplicationUser")
+                    b.HasOne("Bestfluence.Models.ApplicationUser")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -347,53 +347,53 @@ namespace RateBlog.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("RateBlog.Models.ApplicationUser")
+                    b.HasOne("Bestfluence.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RateBlog.Models.Feedback", b =>
+            modelBuilder.Entity("Bestfluence.Models.Feedback", b =>
                 {
-                    b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Bestfluence.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Ratings")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("RateBlog.Models.Influencer", "Influenter")
+                    b.HasOne("Bestfluence.Models.Influencer", "Influenter")
                         .WithMany("Ratings")
                         .HasForeignKey("InfluenterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RateBlog.Models.Influencer", b =>
+            modelBuilder.Entity("Bestfluence.Models.Influencer", b =>
                 {
-                    b.HasOne("RateBlog.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Bestfluence.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RateBlog.Models.InfluencerCategory", b =>
+            modelBuilder.Entity("Bestfluence.Models.InfluencerCategory", b =>
                 {
-                    b.HasOne("RateBlog.Models.Category", "Category")
+                    b.HasOne("Bestfluence.Models.Category", "Category")
                         .WithMany("InfluenterKategori")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("RateBlog.Models.Influencer", "Influencer")
+                    b.HasOne("Bestfluence.Models.Influencer", "Influencer")
                         .WithMany("InfluenterKategori")
                         .HasForeignKey("InfluencerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RateBlog.Models.InfluencerPlatform", b =>
+            modelBuilder.Entity("Bestfluence.Models.InfluencerPlatform", b =>
                 {
-                    b.HasOne("RateBlog.Models.Influencer", "Influencer")
+                    b.HasOne("Bestfluence.Models.Influencer", "Influencer")
                         .WithMany("InfluenterPlatform")
                         .HasForeignKey("InfluencerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("RateBlog.Models.Platform", "Platform")
+                    b.HasOne("Bestfluence.Models.Platform", "Platform")
                         .WithMany("InfluenterPlatform")
                         .HasForeignKey("PlatformId")
                         .OnDelete(DeleteBehavior.Cascade);

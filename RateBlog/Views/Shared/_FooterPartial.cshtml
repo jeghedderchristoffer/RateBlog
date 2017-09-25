@@ -1,51 +1,63 @@
-﻿<footer>
-    <div class="col-md-12 col-sm-12">
-        <div class="col-md-3 col-sm-3 footer-area">
-            <h4><b>OM BESTFLUENCE</b></h4>
-            <ul>
-                <li><a asp-controller="Home" asp-action="About">Om Bestfluence</a></li>
-                <li><a asp-controller="Home" asp-action="Parents">Forældre</a></li>
-                <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
-                <li><a asp-controller="Home" asp-action="Contact">Kontakt os</a></li>
-            </ul>
-        </div>
+﻿@inject Bestfluence.Services.Interfaces.IBlogService BlogService
 
-        @*<div class="col-md-3 col-sm-3 footer-area">
-                <h4><b>VIRKSOMHEDER</b></h4>
+<footer>
+    <div class="container">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <div class="col-md-3 col-sm-3">
+                <p><b>OM BESTFLUENCE</b></p>
                 <ul>
-                    <li><a href="#">Markedføring</a></li>
-                    <li><a href="#">Find en influenter</a></li>
-                    <li><a href="#">Ambasadør</a></li>
+                    <li><a asp-controller="Home" asp-action="About">Om Bestfluence</a></li>
+                    <li><a asp-controller="Home" asp-action="Parents">Forældre</a></li>
+                    <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact">Kontakt os</a></li>
                 </ul>
-            </div>*@
+            </div>
 
-        <div class="col-md-3 col-sm-3 footer-area">
-            <h4><b>FØLGERE & INFLUENCERE</b></h4>
-            <ul>
-                <li><a asp-controller="Home" asp-action="FAQ">FAQ</a></li>
-                <li><a asp-controller="Home" asp-action="FeedbackAndAnswers">Feedback & Svar</a></li>
-            </ul>
+            <div class="col-md-3 col-sm-3">
+                <p><b>FØLGERE & INFLUENCERE</b></p>
+                <ul>
+                    <li><a asp-controller="Home" asp-action="FAQ">FAQ</a></li>
+                    <li><a asp-controller="Home" asp-action="FeedbackAndAnswers">Feedback & Svar</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-3 col-sm-3">
+                <p><b>ANDET</b></p>
+                <ul>
+                    <li><a asp-controller="Home" asp-action="TermsAndConditions">Vilkår og betingelser</a></li>
+                    <li><a asp-controller="Home" asp-action="Privacy">Persondatapolitik</a></li>
+                    <li><a asp-controller="Home" asp-action="UserGuidelines">Retningslinjer for brugere</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-3 col-sm-3">
+                <p><b>NYESTE ARTIKLER</b></p>
+                <ul>
+                    @foreach (var v in BlogService.GetLast4BlogArticle())
+                    {
+                        @if (string.IsNullOrEmpty(v.Url))
+                        {
+                            <li><a asp-controller="Blog" asp-action="Article" asp-route-id="@v.Id">@v.Title</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="/Blog/@v.Url">@v.Title</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <hr style="border-color: #666666" />
+                <span>&#169; Bestfluence | @DateTime.Now.Year</span>
+                <a class="social-footer" href="https://www.linkedin.com/company/bestfluence" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+                <a class="social-footer" href="https://www.facebook.com/Bestfluence/" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
+                <a class="social-footer" href="https://www.instagram.com/bestfluence" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                <br />
+                <span class="small-footer-text">Icons made by <a href="http://www.roundicons.com" style="color: #fff; text-decoration: none">Roundicons</a> from <a href="http://www.flaticon.com" style="color: #fff; text-decoration: none">www.flaticon.com</a></span>
+            </div>
+
+
         </div>
-
-        <div class="col-md-3 col-sm-3 footer-area">
-            <h4><b>ANDET</b></h4>
-            <ul>
-                <li><a asp-controller="Home" asp-action="TermsAndConditions">Vilkår og betingelser</a></li>
-                <li><a asp-controller="Home" asp-action="Privacy">Persondatapolitik</a></li>
-                <li><a asp-controller="Home" asp-action="UserGuidelines">Retningslinjer for brugere</a></li>
-            </ul>
-        </div>
-
-        <div class="col-md-3 col-sm-3 footer-area">
-            <h4><b>FØLG OS PÅ</b></h4>
-            <a href="https://www.facebook.com/Bestfluence/?fref=ts" target="_blank" class="fa fa-footer fa-facebook fa-facebook-footer"></a>
-            <a href="https://www.instagram.com/bestfluence/?hl=da" target="_blank" class="fa fa-footer fa-instagram fa-instagram-footer"></a>
-            <a href="http://www.youtube.com/channel/UCQN7zow-WSbvbihW8yht2sw" target="_blank" class="fa fa-footer fa-youtube fa-youtube-footer"></a>
-            <br /><br />
-            <p>&#169; @DateTime.Now.Year Bestfluence</p>
-            <p style="font-size: 12px">Icons made by <a href="http://www.roundicons.com" style="color: #fff; text-decoration: none">Roundicons</a> from <a href="http://www.flaticon.com" style="color: #fff; text-decoration: none">www.flaticon.com</a></p>
-
-        </div>
-
     </div>
 </footer>

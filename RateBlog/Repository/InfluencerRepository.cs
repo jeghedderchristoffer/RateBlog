@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RateBlog.Models;
-using RateBlog.Data;
+using Bestfluence.Models;
+using Bestfluence.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace RateBlog.Repository
+namespace Bestfluence.Repository
 {
     public class InfluencerRepository : IInfluencerRepository
     {

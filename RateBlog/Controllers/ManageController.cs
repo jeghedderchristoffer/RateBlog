@@ -7,23 +7,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RateBlog.Models;
-using RateBlog.Models.ManageViewModels;
-using RateBlog.Services;
-using RateBlog.Repository;
-using RateBlog.Data;
+using Bestfluence.Models;
+using Bestfluence.Models.ManageViewModels;
+using Bestfluence.Services;
+using Bestfluence.Repository;
+using Bestfluence.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Hosting;
-using RateBlog.Services.Interfaces;
+using Bestfluence.Services.Interfaces;
 using System.Net;
 using System.Net.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace RateBlog.Controllers
+namespace Bestfluence.Controllers
 {
     [Authorize]
     public class ManageController : Controller
@@ -37,6 +37,7 @@ namespace RateBlog.Controllers
         private readonly IHostingEnvironment _env;
         private readonly IFeedbackService _feedbackService;
         private readonly IRepository<EmailNotification> _emailNotification;
+        private readonly ApplicationDbContext _dbContext;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
@@ -48,7 +49,8 @@ namespace RateBlog.Controllers
           IRepository<Feedback> feedbackRepo,
           IHostingEnvironment env,
           IFeedbackService feedbackService,
-          IRepository<EmailNotification> emailNotification)
+          IRepository<EmailNotification> emailNotification,
+          ApplicationDbContext dbContext)
         {
             _influencerRepo = influencerRepo;
             _platformRepo = platformRepo;
@@ -59,6 +61,7 @@ namespace RateBlog.Controllers
             _emailSender = emailSender;
             _feedbackService = feedbackService;
             _emailNotification = emailNotification;
+            _dbContext = dbContext;
         }
 
         [HttpGet]
@@ -152,26 +155,18 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> Influencer()
         {
             var user = await GetCurrentUserAsync();
-            var influencer = _influencerRepo.Get(user.Id);
-            InfluencerViewModel model;
+            var influencer = await _dbContext.Influencer.Include(x => x.InfluenterKategori).Include(x => x.InfluenterPlatform).ThenInclude(x => x.Platform).SingleOrDefaultAsync(x => x.Id == user.Id);
+            var model = new InfluencerViewModel();
+
             if (influencer != null)
             {
-                model = new InfluencerViewModel()
-                {
-                    ApplicationUser = user,
-                    Influencer = influencer,
-                    ProfileText = influencer.ProfileText,
-                };
+                model.Alias = influencer.Alias;
+                model.Url = influencer.Url;
+                model.ProfileText = influencer.ProfileText;
+                model.InfluencerCategories = influencer.InfluenterKategori;
 
+                // PlatformLinks
                 PopulatePlatforms(influencer.InfluenterPlatform, model);
-            }
-            else
-            {
-                model = new InfluencerViewModel()
-                {
-                    ApplicationUser = user,
-                    Influencer = null
-                };
             }
 
             return View(model);
@@ -179,72 +174,125 @@ namespace RateBlog.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Influencer(InfluencerViewModel model, string[] categoriList, string[] link)
+        public async Task<IActionResult> Influencer(InfluencerViewModel model, string[] selectedCategories)
         {
-            if (string.IsNullOrEmpty(model.Influencer.Alias))
+            var user = await GetCurrentUserAsync();
+            var aInfluencer = await _dbContext.Influencer.Include(x => x.InfluenterKategori).Include(x => x.InfluenterPlatform).SingleOrDefaultAsync(x => x.Id == user.Id);
+
+            if (ModelState.IsValid)
             {
-                TempData["Error"] = "Du skal udfylde dit Alias";
+                // Add Influencer if null! 
+                if (aInfluencer == null)
+                {
+                    var newInfluencer = new Influencer()
+                    {
+                        Id = user.Id,
+                        Alias = model.Alias,
+                    };
+                    await _dbContext.Influencer.AddAsync(newInfluencer);
+                    await _dbContext.SaveChangesAsync();
+                }
+
+                var influencer = await _dbContext.Influencer.Include(x => x.InfluenterKategori).Include(x => x.InfluenterPlatform).SingleOrDefaultAsync(x => x.Id == user.Id);
+
+                // Update Categories
+
+                foreach (var v in influencer.InfluenterKategori.ToList())
+                {
+                    if (!selectedCategories.Contains(v.CategoryId))
+                    {
+                        influencer.InfluenterKategori.Remove(v);
+                    }
+                }
+
+                foreach (var v in selectedCategories)
+                {
+                    if (!influencer.InfluenterKategori.Any(x => x.CategoryId == v))
+                    {
+                        influencer.InfluenterKategori.Add(new InfluencerCategory() { CategoryId = v, InfluencerId = influencer.Id });
+                    }
+                }
+
+                // Update Platforms
+
+                var platforms = _platformRepo.GetAll();
+
+                UpdatePlatform(model.FacebookLink, "Facebook", influencer, platforms);
+                UpdatePlatform(model.InstagramLink, "Instagram", influencer, platforms);
+                UpdatePlatform(model.YoutubeLink, "YouTube", influencer, platforms);
+                UpdatePlatform(model.SecondYoutubeLink, "SecondYouTube", influencer, platforms);
+                UpdatePlatform(model.TwitterLink, "Twitter", influencer, platforms);
+                UpdatePlatform(model.TwitchLink, "Twitch", influencer, platforms);
+                UpdatePlatform(model.WebsiteLink, "Website", influencer, platforms);
+                UpdatePlatform(model.SnapchatLink, "SnapChat", influencer, platforms);
+
+                influencer.ProfileText = model.ProfileText;
+                influencer.Alias = model.Alias;
+
+                // Godkend URL, Er den unik?
+                if (!string.IsNullOrEmpty(model.Url))
+                {
+                    if (string.IsNullOrEmpty(influencer.Url))
+                    {
+                        if (await _dbContext.Influencer.AnyAsync(x => x.Url.ToLower() == model.Url.ToLower()))
+                        {
+                            TempData["Error"] = "Der findes allerede en influencer med denne URL";
+                            if (influencer != null) { model.InfluencerCategories = influencer.InfluenterKategori; }
+                            return View(model);
+                        }
+                    }
+                    else if (model.Url.ToLower() != influencer.Url.ToLower())
+                    {
+                        if (await _dbContext.Influencer.AnyAsync(x => x.Url.ToLower() == model.Url.ToLower()))
+                        {
+                            TempData["Error"] = "Der findes allerede en influencer med denne URL";
+                            if (influencer != null) { model.InfluencerCategories = influencer.InfluenterKategori; }
+                            return View(model);
+                        }
+                    }
+
+                    // URL må ikke indeholde en url vi bruger
+                    if (model.Url.ToLower().StartsWith("home") ||
+                        model.Url.ToLower().StartsWith("influencer") ||
+                        model.Url.ToLower().StartsWith("admin") ||
+                        model.Url.ToLower().StartsWith("account") ||
+                        model.Url.ToLower().StartsWith("blog") ||
+                        model.Url.ToLower().StartsWith("manage") ||
+                        model.Url.ToLower().StartsWith("votes"))
+                    {
+                        TempData["Error"] = "Denne URL kan ikke bruges. Prøv en anden";
+                        if (influencer != null) { model.InfluencerCategories = influencer.InfluenterKategori; }
+                        return View(model);
+                    }
+
+                }
+
+                influencer.Url = model.Url;
+
+                _influencerRepo.SaveChanges();
+
+                if (influencer.IsApproved)
+                {
+                    TempData["Success"] = "Din influencer profil er blevet opdateret!";
+                }
+                else
+                {
+                    TempData["Success"] = "Din influencer profil er blevet opdateret. Der kan gå op til 24 timer før den bliver godkendt!";
+                }
+
                 return RedirectToAction("Influencer");
             }
 
-            if (model.Influencer.Id == null)
-            {
-                var newInfluencer = new Influencer();
-                newInfluencer.Id = model.ApplicationUser.Id;
-                newInfluencer.Alias = model.Influencer.Alias;
-                _influencerRepo.Add(newInfluencer);
-            }
+            if (aInfluencer != null) { model.InfluencerCategories = aInfluencer.InfluenterKategori; }
 
-            var influencer = _influencerRepo.Get(model.ApplicationUser.Id);
+            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+            var message = allErrors.First();
+            TempData["Error"] = message.ErrorMessage;
 
-            // Adding to categories
-
-            foreach (var v in influencer.InfluenterKategori.ToList())
-            {
-                if (!categoriList.Contains(v.CategoryId))
-                {
-                    influencer.InfluenterKategori.Remove(v);
-                }
-            }
-
-
-            foreach (var v in categoriList)
-            {
-                if (!influencer.InfluenterKategori.Any(x => x.CategoryId == v))
-                {
-                    influencer.InfluenterKategori.Add(new InfluencerCategory() { CategoryId = v, InfluencerId = influencer.Id });
-                }
-            }
-
-            var platforms = _platformRepo.GetAll();
-
-            UpdatePlatform(model.FacebookLink, "Facebook", influencer, platforms);
-            UpdatePlatform(model.InstagramLink, "Instagram", influencer, platforms);
-            UpdatePlatform(model.YoutubeLink, "YouTube", influencer, platforms);
-            UpdatePlatform(model.SecoundYoutubeLink, "SecondYouTube", influencer, platforms);
-            UpdatePlatform(model.TwitterLink, "Twitter", influencer, platforms);
-            UpdatePlatform(model.TwitchLink, "Twitch", influencer, platforms);
-            UpdatePlatform(model.WebsiteLink, "Website", influencer, platforms);
-            UpdatePlatform(model.SnapchatLink, "SnapChat", influencer, platforms);
-
-            influencer.ProfileText = model.ProfileText;
-            influencer.Alias = model.Influencer.Alias;
-
-            _influencerRepo.SaveChanges();
-
-            if (influencer.IsApproved)
-            {
-                TempData["Success"] = "Din influencer profil er blevet opdateret!";
-            }
-            else
-            {
-                TempData["Success"] = "Din influencer profil er blevet opdateret. Der kan gå op til 24 timer før den bliver godkendt!";
-            }
-
-            return RedirectToAction("Influencer");
-
+            return View(model);
         }
 
+        #region Feedback 
         [HttpGet]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Feedback()
@@ -332,7 +380,9 @@ namespace RateBlog.Controllers
             var user = await GetCurrentUserAsync();
             return Json(_feedbackService.ReadFeedback(id, user.Id));
         }
+        #endregion
 
+        #region ProfilePics 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ProfilePic()
@@ -367,6 +417,7 @@ namespace RateBlog.Controllers
 
             return File(buffer, "image/jpg", string.Format("{0}.jpg", user.ProfilePicture));
         }
+        #endregion
 
         #region Indstillinger
 
@@ -380,7 +431,7 @@ namespace RateBlog.Controllers
             {
                 FeedbackUpdate = notification.FeedbackUpdate,
                 NewsLetter = notification.NewsLetter
-            }; 
+            };
 
             return View(model);
         }
@@ -388,14 +439,14 @@ namespace RateBlog.Controllers
         [HttpPost]
         public async Task<IActionResult> Notifications(NotificationsViewModel model)
         {
-            var user = await GetCurrentUserAsync(); 
+            var user = await GetCurrentUserAsync();
             var emailNotificationSettings = _emailNotification.Get(user.Id);
             emailNotificationSettings.FeedbackUpdate = model.FeedbackUpdate;
             emailNotificationSettings.NewsLetter = model.NewsLetter;
             _emailNotification.Update(emailNotificationSettings);
 
-            TempData["Success"] = "Du har ændret dine notifikations indstillinger"; 
-            return RedirectToAction(nameof(Notifications)); 
+            TempData["Success"] = "Du har ændret dine notifikations indstillinger";
+            return RedirectToAction(nameof(Notifications));
         }
 
         [HttpGet]
@@ -461,7 +512,7 @@ namespace RateBlog.Controllers
                 }
                 else if (v.Platform.Name == "SecondYouTube")
                 {
-                    viewModel.SecoundYoutubeLink = v.Link;
+                    viewModel.SecondYoutubeLink = v.Link;
                 }
                 else if (v.Platform.Name == "Twitter")
                 {

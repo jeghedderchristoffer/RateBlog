@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Models.InfluenterViewModels
+namespace Bestfluence.Models.InfluenterViewModels
 {
     public class GiveViewModel
     {

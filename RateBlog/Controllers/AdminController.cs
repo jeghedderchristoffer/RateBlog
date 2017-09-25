@@ -2,20 +2,20 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RateBlog.Helper;
-using RateBlog.Models;
-using RateBlog.Models.AdminViewModels;
-using RateBlog.Models.ManageViewModels;
-using RateBlog.Repository;
-using RateBlog.Services;
-using RateBlog.Services.Interfaces;
+using Bestfluence.Helper;
+using Bestfluence.Models;
+using Bestfluence.Models.AdminViewModels;
+using Bestfluence.Models.ManageViewModels;
+using Bestfluence.Repository;
+using Bestfluence.Services;
+using Bestfluence.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Controllers
+namespace Bestfluence.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
@@ -118,11 +118,11 @@ namespace RateBlog.Controllers
                 Postnummer = user.Postnummer
             };
 
-            var influencerViewModel = new InfluencerViewModel();
+            var influencerViewModel = new Models.AdminViewModels.InfluencerViewModel();
 
             if (influencer != null)
             {
-                influencerViewModel = new InfluencerViewModel()
+                influencerViewModel = new Models.AdminViewModels.InfluencerViewModel()
                 {
                     Influencer = influencer,
                 };
@@ -192,7 +192,7 @@ namespace RateBlog.Controllers
             UpdatePlatform(model.InfluencerViewModel.FacebookLink, "Facebook", influencer, platforms);
             UpdatePlatform(model.InfluencerViewModel.InstagramLink, "Instagram", influencer, platforms);
             UpdatePlatform(model.InfluencerViewModel.YoutubeLink, "YouTube", influencer, platforms);
-            UpdatePlatform(model.InfluencerViewModel.SecoundYoutubeLink, "SecondYouTube", influencer, platforms);
+            UpdatePlatform(model.InfluencerViewModel.SecondYoutubeLink, "SecondYouTube", influencer, platforms);
             UpdatePlatform(model.InfluencerViewModel.TwitterLink, "Twitter", influencer, platforms);
             UpdatePlatform(model.InfluencerViewModel.TwitchLink, "Twitch", influencer, platforms);
             UpdatePlatform(model.InfluencerViewModel.WebsiteLink, "Website", influencer, platforms);
@@ -399,7 +399,8 @@ namespace RateBlog.Controllers
                     Author = model.Author,
                     Categories = model.Categories,
                     Description = model.Description,
-                    ArticleText = model.ArticleText
+                    ArticleText = model.ArticleText,
+                    Url = model.Url
                 };
 
                 if (model.IndexPicture != null)
@@ -433,7 +434,8 @@ namespace RateBlog.Controllers
                 Categories = article.Categories,
                 DateTime = article.DateTime,
                 Description = article.Description,
-                Title = article.Title
+                Title = article.Title,
+                Url = article.Url
             };
             return View(model);
         }
@@ -448,6 +450,7 @@ namespace RateBlog.Controllers
             article.Categories = model.Categories;
             article.Author = model.Author;
             article.ArticleText = model.ArticleText;
+            article.Url = model.Url;
 
             if (model.IndexPicture != null)
             {
@@ -564,7 +567,7 @@ namespace RateBlog.Controllers
 
         #region Helpers
 
-        private void PopulatePlatforms(ICollection<InfluencerPlatform> list, InfluencerViewModel viewModel)
+        private void PopulatePlatforms(ICollection<InfluencerPlatform> list, Models.AdminViewModels.InfluencerViewModel viewModel)
         {
             foreach (var v in list)
             {
@@ -578,7 +581,7 @@ namespace RateBlog.Controllers
                 }
                 else if (v.Platform.Name == "SecondYouTube")
                 {
-                    viewModel.SecoundYoutubeLink = v.Link;
+                    viewModel.SecondYoutubeLink = v.Link;
                 }
                 else if (v.Platform.Name == "Twitter")
                 {

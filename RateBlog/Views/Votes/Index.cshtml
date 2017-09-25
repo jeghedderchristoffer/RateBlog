@@ -1,4 +1,4 @@
-﻿@model RateBlog.Models.VoteViewModels.IndexViewModel
+﻿@model Bestfluence.Models.VoteViewModels.IndexViewModel
 @{
     ViewData["Title"] = "Afstemninger";
 }
@@ -43,7 +43,16 @@
                         <div class="votes-container">
                             <div class="white-box" style="margin-bottom: 20px;">
                                 <h4 style="margin-bottom: 20px; margin-top: 0">Link til din afstemning</h4>
-                                <input type="text" value="http://www.bestfluence.dk/Influencer/Profile/@Model.InfluencerId" />
+
+                                @if (string.IsNullOrEmpty(Model.Influencer.Url))
+                                {
+                                    <input type="text" value="http://www.bestfluence.dk/Influencer/Profile/@Model.Influencer.Id" />
+                                }
+                                else
+                                {
+                                    <input type="text" value="http://www.bestfluence.dk/@Model.Influencer.Url" />
+                                }
+
                             </div>
                         </div>
                     </div>

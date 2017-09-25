@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using RateBlog.Models;
-using RateBlog.Repository;
-using RateBlog.Services.Interfaces;
+using Bestfluence.Models;
+using Bestfluence.Repository;
+using Bestfluence.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Services
+namespace Bestfluence.Services
 {
     public class AdminService : IAdminService
     {

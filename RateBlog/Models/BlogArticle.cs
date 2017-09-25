@@ -1,11 +1,11 @@
-﻿using RateBlog.Data;
+﻿using Bestfluence.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Models
+namespace Bestfluence.Models
 {
     public class BlogArticle : BaseEntity
     {
@@ -20,6 +20,8 @@ namespace RateBlog.Models
         public string ArticleText { get; set; } 
 
         public string Categories { get; set; }
+
+        public string Url { get; set; } 
 
         public Byte[] ArticlePicture { get; set; }
 

@@ -1,4 +1,4 @@
-﻿@model RateBlog.Models.BlogViewModels.IndexViewModel
+﻿@model Bestfluence.Models.BlogViewModels.IndexViewModel
 
 @{
     ViewData["Title"] = "Blog – Alt indenfor influencerbranchen";
@@ -23,7 +23,15 @@
                         <h3>@v.Title</h3>
                         <h5><span style="color: #a8a8a8">@v.DateTime.ToString("dd/MM/yyyy") | @v.Categories</span></h5>
                         <p>@v.Description</p>
-                        <a asp-controller="Blog" asp-action="Article" asp-route-id="@v.Id">Læs mere her</a>
+                        @if (string.IsNullOrEmpty(v.Url))
+                        {
+                            <a asp-controller="Blog" asp-action="Article" asp-route-id="@v.Id">Læs mere her</a>
+                        }
+                        else
+                        {
+                            <a href="/Blog/@v.Url">Læs mere her</a>
+                        }
+
                     </div>
                 </div>
             </div>
@@ -33,5 +41,3 @@
     </div>
 
 </div>
-
-@Html.Partial("_FooterPartial")

@@ -1,7 +1,7 @@
-﻿@model RateBlog.Models.AdminViewModels.InfluenterStatisticsViewModel
-@inject RateBlog.Services.IFeedbackService FeedbackService
-@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
-@inject RateBlog.Services.Interfaces.IAdminService AdminFeedbackService
+﻿@model Bestfluence.Models.AdminViewModels.InfluenterStatisticsViewModel
+@inject Bestfluence.Services.IFeedbackService FeedbackService
+@inject Bestfluence.Services.Interfaces.IInfluencerService InfluencerService
+@inject Bestfluence.Services.Interfaces.IAdminService AdminFeedbackService
 @{
     var isInfluencer = await InfluencerService.IsUserInfluencerAsync(Model.Influenter.Id);
 }

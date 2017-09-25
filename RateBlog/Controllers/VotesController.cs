@@ -3,17 +3,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using RateBlog.Data;
-using RateBlog.Helper;
-using RateBlog.Models;
-using RateBlog.Models.VoteViewModels;
-using RateBlog.Repository;
+using Bestfluence.Data;
+using Bestfluence.Helper;
+using Bestfluence.Models;
+using Bestfluence.Models.VoteViewModels;
+using Bestfluence.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Controllers
+namespace Bestfluence.Controllers
 {
     [Authorize(Roles = "Influencer")]
     public class VotesController : Controller
@@ -31,12 +31,13 @@ namespace RateBlog.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
+            var influencer = await _dbContext.Influencer.SingleOrDefaultAsync(x => x.Id == user.Id); 
             var votes = _dbContext.Votes.Where(x => x.InfluencerId == user.Id).Include(x => x.VoteQuestions).ThenInclude(x => x.VoteAnswers);
 
             var model = new IndexViewModel()
             {
                 Votes = votes,
-                InfluencerId = user.Id
+                Influencer = influencer
             };
 
             return View(model);

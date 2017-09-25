@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace RateBlog.Models.AccountViewModels
+namespace Bestfluence.Models.AccountViewModels
 {
     public class SendCodeViewModel
     {

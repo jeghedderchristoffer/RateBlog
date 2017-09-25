@@ -1,6 +1,6 @@
-﻿@model RateBlog.Models.BlogViewModels.ArticleViewModel
+﻿@model Bestfluence.Models.BlogViewModels.ArticleViewModel
 @inject SignInManager<ApplicationUser> SignInManager
-@inject RateBlog.Services.IFeedbackService FeedbackService
+@inject Bestfluence.Services.Interfaces.IFeedbackService FeedbackService
 @{
     ViewData["Title"] = Model.Article.Title;
 }
@@ -170,9 +170,6 @@
         </div>
     </div>
 </div>
-
-@Html.Partial("_FooterPartial")
-
 
 @section Scripts{
     <script>

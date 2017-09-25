@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Helper
+namespace Bestfluence.Helper
 {
     public class VoteStatisticData
     {

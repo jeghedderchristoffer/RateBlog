@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RateBlog.Data;
-using RateBlog.Models;
-using RateBlog.Repository;
+using Bestfluence.Data;
+using Bestfluence.Models;
+using Bestfluence.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bestfluence.Services.Interfaces;
 
-namespace RateBlog.Services
+namespace Bestfluence.Services
 {
     public class FeedbackService : IFeedbackService
     {

@@ -1,10 +1,10 @@
-﻿using RateBlog.Models;
+﻿using Bestfluence.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Repository
+namespace Bestfluence.Repository
 {
     public interface IInfluencerRepository
     {

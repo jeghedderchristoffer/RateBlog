@@ -1,8 +1,8 @@
 ﻿@model FeedbackViewModel
-@inject RateBlog.Services.IFeedbackService FeedbackService
+@inject Bestfluence.Services.Interfaces.IFeedbackService FeedbackService
 @inject UserManager<ApplicationUser> UserManager
-@inject RateBlog.Repository.IRepository<Feedback> FeedbackRepo
-@inject RateBlog.Repository.IInfluencerRepository InfluencerRepo
+@inject Bestfluence.Repository.IRepository<Feedback> FeedbackRepo
+@inject Bestfluence.Repository.IInfluencerRepository InfluencerRepo
 @{
     ViewData["Title"] = "Feedback";
     var totalScore = 0.0;

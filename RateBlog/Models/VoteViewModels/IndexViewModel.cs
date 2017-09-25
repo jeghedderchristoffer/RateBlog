@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Models.VoteViewModels
+namespace Bestfluence.Models.VoteViewModels
 {
     public class IndexViewModel
     {
         public IEnumerable<Vote> Votes { get; set; }
-        public string InfluencerId { get; set; } 
+        public Influencer Influencer { get; set; }  
     }
 }

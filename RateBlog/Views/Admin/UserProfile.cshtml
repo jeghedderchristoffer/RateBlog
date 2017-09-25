@@ -1,7 +1,7 @@
-﻿@model RateBlog.Models.AdminViewModels.UserProfileViewModel
-@inject RateBlog.Services.IFeedbackService FeedbackService
-@inject RateBlog.Repository.IRepository<Feedback> FeedbackRepo
-@inject RateBlog.Repository.IRepository<Category> CategoryRepo
+﻿@model Bestfluence.Models.AdminViewModels.UserProfileViewModel
+@inject Bestfluence.Services.Interfaces.IFeedbackService FeedbackService
+@inject Bestfluence.Repository.IRepository<Feedback> FeedbackRepo
+@inject Bestfluence.Repository.IRepository<Category> CategoryRepo
 @{
     var isInfluencer = (Model.InfluencerViewModel == null) ? "Følger" : "Influencer";
 }
@@ -249,7 +249,7 @@
                                 <input class="icon-input" placeholder="&#xf09a; &nbsp;&nbsp; Facebook link" type="text" asp-for="@Model.InfluencerViewModel.FacebookLink" />
                                 <input class="icon-input" placeholder="&#xf0ac; &nbsp; Hjemmeside/blog link" type="text" asp-for="@Model.InfluencerViewModel.WebsiteLink" />
                                 <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link" type="text" asp-for="@Model.InfluencerViewModel.YoutubeLink" />
-                                <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link 2" type="text" asp-for="@Model.InfluencerViewModel.SecoundYoutubeLink" />
+                                <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link 2" type="text" asp-for="@Model.InfluencerViewModel.SecondYoutubeLink    " />
 
                                 <p>Din profiltekst</p>
                                 <textarea rows="10" placeholder="Skriv lidt om dig selv.." asp-for="@Model.InfluencerViewModel.Influencer.ProfileText"></textarea>

@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Models.AdminViewModels
+namespace Bestfluence.Models.AdminViewModels
 {
     public class EditArticleViewModel
     {
         public string Id { get; set; } 
 
         public string Title { get; set; }
+
+        public string Url { get; set; } 
 
         public DateTime DateTime { get; set; }
 

@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "RateBlog": {
+    "Bestfluence": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

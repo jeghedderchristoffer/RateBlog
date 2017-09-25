@@ -1,5 +1,5 @@
-﻿@model RateBlog.Models.InfluenterViewModels.ShowViewModel
-@inject RateBlog.Services.IFeedbackService FeedbackService
+﻿@model Bestfluence.Models.InfluenterViewModels.ShowViewModel
+@inject Bestfluence.Services.Interfaces.IFeedbackService FeedbackService
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = Model.Influenter.Alias + " - Profil & sociale medier";
@@ -158,6 +158,7 @@
                     }
                     else
                     {
+                        ViewData["ReturnUrl"] = Context.Request.Path;
                         <div style="position: relative">
                             <div style="position: absolute; z-index: 100; top:50%; left: 50%; transform: translate(-50%, -50%)">
                                 <h4 style="">Du skal have en profil for at svare</h4>

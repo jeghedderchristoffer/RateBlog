@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace RateBlog.Models.ManageViewModels
+namespace Bestfluence.Models.ManageViewModels
 {
     public class ProfileViewModel
     {

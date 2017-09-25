@@ -1,4 +1,4 @@
-﻿@model RateBlog.Models.InfluenterViewModels.IndexViewModel
+﻿@model Bestfluence.Models.InfluenterViewModels.IndexViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Find influencere – Kategorier & sociale medier";
@@ -165,7 +165,9 @@
                     }
 
                     $.each(result, function (i, item) {
-                        $("#listOfInfluencers").append(LoadHtml(item))
+                        var newItem = $(LoadHtml(item)).hide(); 
+                        $("#listOfInfluencers").append(newItem);
+                        newItem.fadeIn("slow");
                     })
 
                 },
@@ -230,7 +232,9 @@
 
                     $("#listOfInfluencers").html(" ");
                     $.each(result, function (i, item) {
-                        $("#listOfInfluencers").append(LoadHtml(item))
+                        var newItem = $(LoadHtml(item)).hide();
+                        $("#listOfInfluencers").append(newItem);
+                        newItem.fadeIn("slow");
                     })
 
                 },
@@ -328,19 +332,25 @@
 
             var vote = ""; 
             if (item.influencerVote) {
-                vote = '<a class="search-result-link" href="/Influencer/Profile/' + item.id + '"> <span class="vote-label">AFSTEMNING</<span></a>';
+                vote = ' <span class="vote-label">AFSTEMNING</<span>';
+            }
+
+            var hrefUrl = "/Influencer/Profile/" + item.id;
+
+            if (item.url) {
+                hrefUrl = "/" + item.url; 
             }
 
             return '<div class="col-md-12 search-result noPaddingLeft">' +
                 '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">' +
-                ' <a href="/Influencer/Profile/' + item.id + '">' +
+                ' <a href="' + hrefUrl + '">' +
                 ' <img class="influ-img" src="/Manage/UsersProfilePic/' + item.id + '" />' +
                 '</a>' +
                 '</div>' +
 
                 '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 noPadding search-body">' +
-                '<div class="outer"><div class="middle"><div class="inner" style="text-align: left">' +
-                '<h4><a class="search-result-link" href="/Influencer/Profile/' + item.id + '">' + item.alias +  vote +' </a></h4>' +
+                '<div class="outer"><div class="middle"><div class="inner inner-influencer" style="text-align: left;">' +
+                '<h4><a class="search-result-link" href="' + hrefUrl + '">' + item.alias +  vote +' </a></h4>' +
                 '<p style="margin-top: 12px">' + categories + '</p>' +
                 '<div class="center-social">' +
                 platforms +
@@ -383,8 +393,15 @@
 
         $(window).scroll(function () {
             if (ajaxDone === 0) {
-                if ($(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
-                    FetchData();
+
+                if (window.innerWidth < 767) {
+                    if ($(window).scrollTop() + $(window).height() + 1000 > $(document).height()) {
+                        FetchData();
+                    }
+                } else {
+                    if ($(window).scrollTop() + $(window).height() + 500 > $(document).height()) {
+                        FetchData();
+                    }
                 }
             }
         });

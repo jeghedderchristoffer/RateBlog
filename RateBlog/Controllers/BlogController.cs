@@ -2,16 +2,16 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RateBlog.Data;
-using RateBlog.Models;
-using RateBlog.Models.BlogViewModels;
-using RateBlog.Repository;
+using Bestfluence.Data;
+using Bestfluence.Models;
+using Bestfluence.Models.BlogViewModels;
+using Bestfluence.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Controllers
+namespace Bestfluence.Controllers
 {
     public class BlogController : Controller
     {
@@ -40,7 +40,16 @@ namespace RateBlog.Controllers
         [HttpGet]
         public async Task<IActionResult> Article(string id, string elementToScroll)
         {
-            var article = await _dbContext.BlogArticles.Include(x => x.BlogRatings).Include(x => x.BlogComments).ThenInclude(x => x.ApplicationUser).SingleOrDefaultAsync(x => x.Id == id);
+            BlogArticle article; 
+            if(_dbContext.BlogArticles.Any(x => x.Url == id))
+            {
+                article = await _dbContext.BlogArticles.Include(x => x.BlogRatings).Include(x => x.BlogComments).ThenInclude(x => x.ApplicationUser).SingleOrDefaultAsync(x => x.Url == id);
+            }
+            else
+            {
+                article = await _dbContext.BlogArticles.Include(x => x.BlogRatings).Include(x => x.BlogComments).ThenInclude(x => x.ApplicationUser).SingleOrDefaultAsync(x => x.Id == id);
+            }
+
             var user = await _userManager.GetUserAsync(User);
 
             var model = new ArticleViewModel();
@@ -65,13 +74,24 @@ namespace RateBlog.Controllers
         [Authorize]
         public async Task<IActionResult> CreateComment(string comment, string id)
         {
+            var article = await _dbContext.BlogArticles.Include(x => x.BlogComments).SingleOrDefaultAsync(x => x.Id == id); 
+
             if (!string.IsNullOrEmpty(comment))
             {
                 var user = await _userManager.GetUserAsync(User);
-                await _dbContext.BlogComments.AddAsync(new BlogComment() { ApplicationUserId = user.Id, DateTime = DateTime.Now, BlogArticleId = id, Comment = comment });
+
+                article.BlogComments.Add(new BlogComment() { ApplicationUserId = user.Id, DateTime = DateTime.Now, BlogArticleId = id, Comment = comment });
                 await _dbContext.SaveChangesAsync();
             }
-            return RedirectToAction("Article", new { id = id, elementToScroll = "blog-comment-container" }); 
+
+            if (string.IsNullOrEmpty(article.Url))
+            {
+                return RedirectToAction("Article", new { id = id, elementToScroll = "blog-comment-container" });
+            }
+            else
+            {
+                return RedirectToRoute("blog", new { id = article.Url, elementToScroll = "blog-comment-container" });
+            }
         }
 
         [HttpPost]
@@ -81,9 +101,16 @@ namespace RateBlog.Controllers
             var article = await _dbContext.BlogArticles.Include(x => x.BlogRatings).SingleOrDefaultAsync(x => x.Id == id);
             var user = await _userManager.GetUserAsync(User);
             article.BlogRatings.Add(new BlogRating() { BlogArticleId = article.Id, ApplicationUserId = user.Id, Rate = rating });
-            _dbContext.Update(article);
             await _dbContext.SaveChangesAsync();
-            return RedirectToAction("Article", new { id = id, elementToScroll = "blograting" }); 
+
+            if (string.IsNullOrEmpty(article.Url))
+            {
+                return RedirectToAction("Article", new { id = id, elementToScroll = "blograting" });
+            }
+            else
+            {
+                return RedirectToRoute("blog", new { id = article.Url, elementToScroll = "blograting" });
+            }
         }
 
         [HttpGet]

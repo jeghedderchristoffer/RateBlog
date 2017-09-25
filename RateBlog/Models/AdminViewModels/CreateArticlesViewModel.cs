@@ -4,13 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace RateBlog.Models.AdminViewModels
+namespace Bestfluence.Models.AdminViewModels
 {
     public class CreateArticlesViewModel
     {
         public string Title { get; set; }
 
         public DateTime DateTime { get; set; }
+
+        public string Url { get; set; } 
 
         public string Author { get; set; }
 

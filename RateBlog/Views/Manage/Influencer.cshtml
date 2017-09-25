@@ -1,9 +1,8 @@
 ﻿@model InfluencerViewModel
-@inject RateBlog.Repository.IRepository<Category> CategoryRepo
-@inject RateBlog.Repository.IRepository<Platform> PlatformRepo
+@inject Bestfluence.Repository.IRepository<Category> CategoryRepo
+@inject Bestfluence.Repository.IRepository<Platform> PlatformRepo
 @{
     ViewData["Title"] = "Influencer";
-    string currentBool = "";
 }
 
 <div class="background-all">
@@ -32,7 +31,7 @@
         <script>
             window.setTimeout(function () {
                 $("#influEditErr").fadeOut(1000);
-            }, 2000);
+            }, 4000);
         </script>
     }
 
@@ -43,29 +42,28 @@
                     <h2 style="text-align:center">Influencer oplysninger</h2>
 
                     <form asp-controller="Manage" asp-action="Influencer" method="post">
-                        @Html.HiddenFor(x => x.Influencer.Id)
-                        @Html.HiddenFor(x => x.ApplicationUser.Id)
 
                         <p style="margin-top: 5px">Alias</p>
-                        <input type="text" asp-for="@Model.Influencer.Alias" />
+                        <input type="text" asp-for="@Model.Alias" />
+
+                        <p>Bestfluence URL</p>
+                        <input type="text" placeholder="www.bestfluence.dk/din-profil-url-her" asp-for="@Model.Url" />
 
                         <p>Dine kategorier</p>
 
                         <div class="choose-category" style="width: 100%">
+
                             @foreach (var cat in CategoryRepo.GetAll())
                             {
-                                @if (Model.Influencer == null)
+                                var isSelected = ""; 
+                                if (Model.InfluencerCategories != null)
                                 {
-                                    currentBool = "";
-                                }
-                                else
-                                {
-                                    currentBool = (Model.Influencer.InfluenterKategori.Any(x => x.CategoryId == cat.Id)) ? "checked" : "";
+                                    isSelected = (Model.InfluencerCategories.Any(x => x.CategoryId == cat.Id)) ? "checked" : "" ?? "";
                                 }
 
                                 <div class="tooltips">
                                     <div class="cat-check @cat.Name">
-                                        <input @currentBool value="@cat.Id" name="categoriList" type="checkbox" id="@cat.Name" /> <label for="@cat.Name"></label>
+                                        <input @isSelected type="checkbox" name="selectedCategories" id="@cat.Id" value="@cat.Id" /> <label for="@cat.Id"></label>
                                     </div>
                                     <span style="bottom: 115%; left: 25px" class="tooltiptext">@cat.Name</span>
                                 </div>
@@ -82,7 +80,7 @@
                         <input class="icon-input" placeholder="&#xf09a; &nbsp;&nbsp; Facebook link" type="text" asp-for="@Model.FacebookLink"  />
                         <input class="icon-input" placeholder="&#xf0ac; &nbsp; Hjemmeside/blog link" type="text" asp-for="@Model.WebsiteLink"  />
                         <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube link" type="text" asp-for="@Model.YoutubeLink"  />
-                        <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube 2nd link" type="text" asp-for="@Model.SecoundYoutubeLink"  />
+                        <input class="icon-input" placeholder="&#xf167; &nbsp; Youtube 2nd link" type="text" asp-for="@Model.SecondYoutubeLink"  />
 
                         <p>Din profiltekst</p>
                         <textarea rows="10" placeholder="Skriv lidt om dig selv.." asp-for="@Model.ProfileText"></textarea>
@@ -102,6 +100,3 @@
     </div>
 </div>
 
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}

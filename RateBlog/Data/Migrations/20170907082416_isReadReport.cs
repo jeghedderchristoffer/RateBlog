@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace RateBlog.Migrations
+namespace Bestfluence.Migrations
 {
     public partial class isReadReport : Migration
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Helper
+namespace Bestfluence.Helper
 {
     public class InfluencerData
     {
@@ -14,6 +14,7 @@ namespace RateBlog.Helper
         public IEnumerable<string> Categories { get; set; } 
         public IEnumerable<string> Platforms { get; set; }
         public string ProfileText { get; set; }
-        public bool InfluencerVote { get; set; } 
+        public bool InfluencerVote { get; set; }
+        public string Url { get; set; } 
     }
 }

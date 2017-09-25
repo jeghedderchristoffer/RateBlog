@@ -1,8 +1,9 @@
-﻿@model RateBlog.Models.AdminViewModels.IndexViewModel
-@inject RateBlog.Services.Interfaces.IInfluencerService InfluencerService
+﻿@model Bestfluence.Models.AdminViewModels.IndexViewModel
+@inject Bestfluence.Services.Interfaces.IInfluencerService InfluencerService
 @{
     ViewData["Title"] = "Admin";
     var list = Model.AllUsers;
+
 }
 
 
@@ -40,7 +41,6 @@
                                 {
                                     <li><a asp-controller="Admin" asp-action="FeedbackReports" asp-route-id="@v.Feedback.Id"><b>Feedback til:</b> @v.Feedback.Influenter.Alias <div class="badge" style="color: #fff">@v.Count</div></a></li>
                                 }
-
                             </ul>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         <tbody id="table-rows">
                             @for (int i = 0; i < list.Count; i++)
                             {
-                                var isInfluencer = "Not implemented"; 
+                                var isInfluencer = (InfluencerService.IsInfluencer(list[i].Id)) ? "Influencer" : "Følger"; 
                                 <tr id="@list[i].Id">
                                     <th scope="row">@i</th>
                                     <td>@list[i].Name</td>

@@ -224,3 +224,9 @@ $(document).ready(function () {
         });
     }
 });
+
+$(document).ready(function () {
+    if (location.pathname == "/Admin" || window.location.href.indexOf("Admin") > -1 || location.pathname == "/admin" || window.location.href.indexOf("admin") > -1 ) {
+        $("footer").css("display", "none");
+    };
+});

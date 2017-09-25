@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RateBlog.Data;
+using Bestfluence.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RateBlog.Repository
+namespace Bestfluence.Repository
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
