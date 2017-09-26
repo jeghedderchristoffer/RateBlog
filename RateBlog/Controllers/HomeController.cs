@@ -119,10 +119,22 @@ namespace Bestfluence.Controllers
         {
             return View();
         }
-
+        
         public IActionResult Test()
         {
-            return View(); 
+            return View();
         }
+
+        [HttpPost]
+        public string Test()
+        {
+            
+        }
+
+        //[HttpGet]
+        //public JsonResult Test(string model)
+        //{
+        //    return Json(model); 
+        //}
     }
 }

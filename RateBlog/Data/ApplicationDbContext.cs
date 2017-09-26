@@ -36,7 +36,13 @@ namespace Bestfluence.Data
         // Vote
         public DbSet<Vote> Votes { get; set; }
         public DbSet<VoteQuestion> VoteQuestions { get; set; }
-        public DbSet<VoteAnswer> VoteAnswers { get; set; } 
+        public DbSet<VoteAnswer> VoteAnswers { get; set; }
+
+        //Youtube
+        public DbSet<YoutubeData> YoutubeData { get; set; }
+        public DbSet<Country> Country { get; set; }
+        public DbSet<YoutubeAgeGroup> YoutubeAgeGroup { get; set; }
+        public DbSet<YoutubeCountry> YoutubeCountry { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

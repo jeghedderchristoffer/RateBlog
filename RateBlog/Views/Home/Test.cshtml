@@ -37,7 +37,7 @@
         <p>Views4: <span id="views4"></span></p>
         <p>Views5: <span id="views5"></span></p>
         <p>Views6: <span id="views6"></span></p>
-       
+
         <hr />
 
         <p>Most watches from <span id="top1Name"></span> <span id="top1"></span></p>
@@ -48,7 +48,7 @@
         <p>Most watches from <span id="top6Name"></span> <span id="top6"></span></p>
         <p>Most watches from <span id="top7Name"></span> <span id="top7"></span></p>
     </div>
- 
+
 
 </div>
 
@@ -56,6 +56,11 @@
 
 @section Scripts{
     <script>
+        var likes;
+        var Subcription;
+        var Country;
+        var Gender;
+
         var GoogleAuth;
         var SCOPE = 'https://www.googleapis.com/auth/yt-analytics.readonly';
         function handleClientLoad() {
@@ -126,6 +131,10 @@
                 getDislikesAndLikes();
                 getTop7Countrys();
 
+                likes = getLikes();
+                gender = getGenderViewsPercentage();
+
+                saveData(likes, subscription);
             } else {
                 $('#sign-in-or-out-button').html('Sign In/Authorize');
                 $('#revoke-access-button').css('display', 'none');
@@ -149,6 +158,9 @@
                 console.log(response);
                 $("#malePercent").html(response.rows[1][1] + "%")
                 $("#femalePercent").html(response.rows[0][1] + "%")
+
+                return response[0][1];
+                return response[1][1];
             });
         }
         function getTop7Countrys() {
@@ -180,17 +192,47 @@
 
                 $("#top7").html(response.rows[6][1])
                 $("#top7Name").html(response.rows[6][0])
+
+                return response[0][1];
             });
         }
 
+        function getLikes() {
+            var request = gapi.client.request({
+                'method': 'GET',
+                'path': '/youtube/analytics/v1/reports',
+                'params': {
+                    'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'views', 'dimensions': 'day'
+                }
+            });
+
+            // Execute the API request.
+            request.execute(function (response) {
+                console.log(response);
+                $("#views0").html(response.rows[0][1])
+                $("#views").html(response.rows[1][1])
+                $("#views2").html(response.rows[2][1])
+                $("#views3").html(response.rows[3][1])
+                $("#views4").html(response.rows[4][1])
+                $("#views5").html(response.rows[5][1])
+                $("#views6").html(response.rows[6][1])
+
+                return response[0][1];
+
+            });
+
+
+        }
 
         function getDislikesAndLikes() {
             var request = gapi.client.request({
                 'method': 'GET',
                 'path': '/youtube/analytics/v1/reports',
                 'params': {
-                    'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'views', 'dimensions': 'day' }
+                    'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'views', 'dimensions': 'day'
+                }
             });
+
             // Execute the API request.
             request.execute(function (response) {
                 console.log(response);
@@ -204,8 +246,8 @@
             });
         }
 
-      
-     
+
+
 
         function getWhereViewsOriginate() {
             var request = gapi.client.request({
@@ -217,7 +259,7 @@
             request.execute(function (response) {
                 console.log(response);
                 $("#secondContry").html(response.rows[0][1] + "%")
-                $("#firstContry").html(response.rows[1][1] + "%")       
+                $("#firstContry").html(response.rows[1][1] + "%")
                 $("#ageGroup3").html(response.rows[2][1] + "%")
                 $("#ageGroup4").html(response.rows[3][1] + "%")
                 $("#ageGroup5").html(response.rows[4][1] + "%")
@@ -226,6 +268,28 @@
             });
         }
 
+        function saveData(likes, subscription, gender, country) {
+
+            var model = {}; 
+            model.likes = likes;
+            model.subscription = subscription; 
+
+
+            $.ajax({
+                url: "/home/test",
+                method: "POST",
+                data: {
+                    model: model
+                },
+                mimeType: 'multipart/form-data',
+                success: function (result) {
+                    console.log(result)
+                },
+                error: function () {
+                    console.log("fail");
+                }
+            });
+        }
     </script>
 
 

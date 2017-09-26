@@ -75,6 +75,8 @@ namespace Bestfluence
             services.AddSession();
             services.AddMvc();
 
+            var you = new YoutubeData();
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
 

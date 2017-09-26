@@ -23,8 +23,9 @@ namespace Bestfluence.Models
         public bool IsApproved { get; set; }
 
         [MaxLength(30, ErrorMessage = "Din URL må være op til 30 karaktere langt.")]
-        public string Url { get; set; } 
+        public string Url { get; set; }
 
+        public virtual YoutubeData YoutubeData { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual ICollection<Feedback> Ratings { get; set; } 
         public virtual ICollection<InfluencerPlatform> InfluenterPlatform { get; set; }
