@@ -19,8 +19,7 @@ using Bestfluence.Services.Interfaces;
 using Bestfluence.Helper;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Security.Claims;
-using Bestfluence.Services.Interfaces;
-using Bestfluence.Services;
+using RateBlog;
 
 namespace Bestfluence
 {
@@ -70,6 +69,7 @@ namespace Bestfluence
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<AppKeyConfig>(Configuration.GetSection("Authentication:Facebook"));
 
             services.AddRouting(options => options.LowercaseUrls = true); 
 

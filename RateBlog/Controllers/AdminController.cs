@@ -14,6 +14,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using RateBlog;
+using Microsoft.Extensions.Options;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace Bestfluence.Controllers
 {
@@ -32,6 +37,7 @@ namespace Bestfluence.Controllers
         private readonly IFeedbackService _feedbackService;
         private readonly IRepository<FeedbackReport> _feedbackReportRepo;
         private readonly IRepository<BlogArticle> _blogRepo;
+        public AppKeyConfig AppConfigs { get; }
 
         public AdminController(IRepository<FeedbackReport> feedbackReportRepo,
             IFeedbackService feedbackService,
@@ -44,7 +50,8 @@ namespace Bestfluence.Controllers
             UserManager<ApplicationUser> userManager,
             IInfluencerService influencerService,
             IInfluencerRepository influencerRepo,
-            IRepository<BlogArticle> blogRepo)
+            IRepository<BlogArticle> blogRepo, 
+            IOptions<AppKeyConfig> appkeys)
         {
             _userManager = userManager;
             _influencerService = influencerService;
@@ -58,6 +65,7 @@ namespace Bestfluence.Controllers
             _feedbackService = feedbackService;
             _feedbackReportRepo = feedbackReportRepo;
             _blogRepo = blogRepo;
+            AppConfigs = appkeys.Value;
         }
 
         [HttpGet]
@@ -511,39 +519,69 @@ namespace Bestfluence.Controllers
         {
             var getTheInfluenter = _userManager.Users.FirstOrDefault(x => x.Id == id);
             var listOfRatingsByTheInfluenter = _feedbackRepo.GetAll().Where(x => x.InfluenterId == getTheInfluenter.Id).ToList();
+            var GetTheInfuenterAsInfluenter = _influencerRepo.GetAll().FirstOrDefault(x => x.Id == getTheInfluenter.Id);
 
             var StatisticVm = new InfluenterStatisticsViewModel()
             {
-                Influenter = getTheInfluenter,
-                InfluentersFeedbacks = listOfRatingsByTheInfluenter
+                InfluenterUserInfo = getTheInfluenter,
+                InfluentersFeedbacks = listOfRatingsByTheInfluenter,
+                Influenter = GetTheInfuenterAsInfluenter,
             };
+
             return View(StatisticVm);
         }
 
-        public PartialViewResult InfluenterStatisticsBfStats(string id)
+        [AllowAnonymous]
+        public IActionResult StatisticsInstagramAccounts(string code)
         {
-            var getTheInfluenter = _userManager.Users.FirstOrDefault(x => x.Id == id);
-            var listOfRatingsByTheInfluenter = _feedbackRepo.GetAll().Where(x => x.InfluenterId == getTheInfluenter.Id).ToList();
+            string FBAppClientId = AppConfigs.AppId;
+            string FBAppSecret = AppConfigs.AppSecret;
 
-            var StatisticVm = new InfluenterStatisticsViewModel()
+            string Access_Token = "";
+            string InstagramBusinessId = "";
+            if (!(code == null))
             {
-                Influenter = getTheInfluenter,
-                InfluentersFeedbacks = listOfRatingsByTheInfluenter
-            };
-            return PartialView("/Views/Admin/_BfStatisticsPartial.cshtml", StatisticVm);
-        }
 
-        public PartialViewResult InfluenterStatisticsTwitterStats(string id)
-        {
-            var getTheInfluenter = _userManager.Users.FirstOrDefault(x => x.Id == id);
-            var listOfRatingsByTheInfluenter = _feedbackRepo.GetAll().Where(x => x.InfluenterId == getTheInfluenter.Id).ToList();
+                //fb user Access Token
+                using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
+                {
+                    client.BaseAddress = new Uri("https://graph.facebook.com/oauth/");
+                    HttpResponseMessage response = client.GetAsync("access_token?client_id=" + FBAppClientId + "&client_secret=" + FBAppSecret + "&code=" + code + "&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts").Result;
+                    response.EnsureSuccessStatusCode();
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    dynamic data = JObject.Parse(result);
+                    Access_Token = data.access_token;
+                }
 
-            var StatisticVm = new InfluenterStatisticsViewModel()
-            {
-                Influenter = getTheInfluenter,
-                InfluentersFeedbacks = listOfRatingsByTheInfluenter
-            };
-            return PartialView("/Views/Admin/_TwitterStatisticsPartial.cshtml", StatisticVm);
+                //Get Businesses account assosiated with
+                using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
+                {
+                    client.BaseAddress = new Uri("https://graph.facebook.com/v2.10/");
+                    HttpResponseMessage response = client.GetAsync("me/accounts?fields=instagram_business_account&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts&access_token=" + Access_Token).Result;
+                    response.EnsureSuccessStatusCode();
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    dynamic data = JObject.Parse(result);
+                    foreach (var i in data.data)
+                    {
+                        if (i.instagram_business_account != null)
+                        {
+                            if (InstagramBusinessId != "")
+                            {
+                                //then he/she has a secondacc so redirect back to page and ask which it is
+                            }
+                            InstagramBusinessId = (string)i.instagram_business_account.id;
+                        }
+                    }
+                }
+
+
+                Console.WriteLine(InstagramBusinessId);
+
+
+
+            }
+
+            return RedirectToAction("Index");
         }
 
         public JsonResult PostFilter(AdminAjaxFilterViewMode data)
