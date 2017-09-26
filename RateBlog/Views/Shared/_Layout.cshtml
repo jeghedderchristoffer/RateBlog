@@ -262,6 +262,10 @@
     <script src="~/js/bestjavascript.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap-wysiwyg/bootstrap-wysiwyg.js"></script>
     <script src="~/lib/progressbar.js/dist/progressbar.min.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+            onload="this.onload=function(){};handleClientLoad()"
+            onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
 
     @RenderSection("Scripts", required: false)
     @RenderSection("SearchStar", required: false)

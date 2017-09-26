@@ -1,9 +1,6 @@
 ﻿@model Bestfluence.Models.AdminViewModels.InfluenterStatisticsViewModel
-@inject Bestfluence.Services.IFeedbackService FeedbackService
 @inject Bestfluence.Services.Interfaces.IInfluencerService InfluencerService
 @inject Bestfluence.Services.Interfaces.IAdminService AdminFeedbackService
-@{
-    var isInfluencer = await InfluencerService.IsUserInfluencerAsync(Model.Influenter.Id);
-}
+
 
 Twitter Stats Not Implementted Yet

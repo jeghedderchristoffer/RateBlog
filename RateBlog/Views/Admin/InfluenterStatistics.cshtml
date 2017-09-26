@@ -1,4 +1,4 @@
-﻿@model Bestfluence.Models.AdminViewModels.InfluenterStatisticsViewModel
+﻿@*@model Bestfluence.Models.AdminViewModels.InfluenterStatisticsViewModel
 @inject Bestfluence.Services.IFeedbackService FeedbackService
 @inject Bestfluence.Services.Interfaces.IInfluencerService InfluencerService
 @inject Bestfluence.Services.Interfaces.IAdminService AdminFeedbackService
@@ -14,7 +14,7 @@
             <div class="col-md-2 col-xs-2 noPadding addon-box">
                 <div class="addon-img-container">
                     @*<img src="@Url.Action("ProfilePic", "Manage")" />*@
-                </div>
+                @*</div>
             </div>
             <div class="col-md-5 col-xs-9 addon-box">
                 <div class="addon-number" style="text-align: left">
@@ -70,7 +70,7 @@
                 </ul>
             </div>*@
 
-        </div>
+      @*  </div>
 
         <div id="BfStatView"></div>
         <div id="TwitterView"></div>
@@ -99,7 +99,7 @@
 
 
     </div>
-</div>
+</div>*@
 
 
 

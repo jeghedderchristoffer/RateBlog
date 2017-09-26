@@ -1,1 +1,233 @@
 ﻿
+<div class="background-all">
+    <div class="navbar-allaround"></div>
+
+    <div class="container">
+        <button id="sign-in-or-out-button"
+                style="margin-left: 25px">
+            Sign In/Authorize
+        </button>
+        <button id="revoke-access-button"
+                style="display: none; margin-left: 25px">
+            Revoke access
+        </button>
+
+        <div id="auth-status" style="display: inline; padding-left: 25px"></div><hr>
+
+
+
+
+        <p>Mænd: <span id="malePercent"></span></p>
+        <p>Kvinder: <span id="femalePercent"></span></p>
+
+        <hr />
+        <p>13-17: <span id="secondContry"></span></p>
+        <p>18-24: <span id="firstContry"></span></p>
+        <p>25-34: <span id="ageGroup3"></span></p>
+        <p>35-44: <span id="ageGroup4"></span></p>
+        <p>45-54: <span id="ageGroup5"></span></p>
+        <p>55-64: <span id="ageGroup6"></span></p>
+        <p>65-: <span id="ageGroup7"></span></p>
+
+        <hr />
+        <p>Views: <span id="views0"></span></p>
+        <p>Views: <span id="views"></span></p>
+        <p>Views2: <span id="views2"></span></p>
+        <p>Views3: <span id="views3"></span></p>
+        <p>Views4: <span id="views4"></span></p>
+        <p>Views5: <span id="views5"></span></p>
+        <p>Views6: <span id="views6"></span></p>
+       
+        <hr />
+
+        <p>Most watches from <span id="top1Name"></span> <span id="top1"></span></p>
+        <p>Most watches from <span id="top2Name"></span> <span id="top2"></span></p>
+        <p>Most watches from <span id="top3Name"></span> <span id="top3"></span></p>
+        <p>Most watches from <span id="top4Name"></span> <span id="top4"></span></p>
+        <p>Most watches from <span id="top5Name"></span> <span id="top5"></span></p>
+        <p>Most watches from <span id="top6Name"></span> <span id="top6"></span></p>
+        <p>Most watches from <span id="top7Name"></span> <span id="top7"></span></p>
+    </div>
+ 
+
+</div>
+
+
+
+@section Scripts{
+    <script>
+        var GoogleAuth;
+        var SCOPE = 'https://www.googleapis.com/auth/yt-analytics.readonly';
+        function handleClientLoad() {
+            // Load the API's client and auth2 modules.
+            // Call the initClient function after the modules load.
+            gapi.load('client:auth2', initClient);
+        }
+
+        function initClient() {
+            // Retrieve the discovery document for version 1 of YouTube Analytics API.
+            // In practice, your app can retrieve one or more discovery documents.
+            var discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/youtubeAnalytics/v1/rest';
+
+            // Initialize the gapi.client object, which app uses to make API requests.
+            // Get API key and client ID from API Console.
+            // 'scope' field specifies space-delimited list of access scopes.
+            gapi.client.init({
+                'apiKey': 'AIzaSyCUFkDi91adc2kBH7MahqOywtCyWAv_JbI',
+                'discoveryDocs': [discoveryUrl],
+                'clientId': '247140138460-h9q523k9j6qd5rdjdb9rbavukg3lacim.apps.googleusercontent.com',
+                'scope': SCOPE
+            }).then(function () {
+                GoogleAuth = gapi.auth2.getAuthInstance();
+
+                // Listen for sign-in state changes.
+                GoogleAuth.isSignedIn.listen(updateSigninStatus);
+
+                // Handle initial sign-in state. (Determine if user is already signed in.)
+                var user = GoogleAuth.currentUser.get();
+                setSigninStatus();
+
+                // Call handleAuthClick function when user clicks on
+                //      "Sign In/Authorize" button.
+                $('#sign-in-or-out-button').click(function () {
+                    handleAuthClick();
+                });
+                $('#revoke-access-button').click(function () {
+                    revokeAccess();
+                });
+            });
+        }
+
+        function handleAuthClick() {
+            if (GoogleAuth.isSignedIn.get()) {
+                // User is authorized and has clicked 'Sign out' button.
+                GoogleAuth.signOut();
+            } else {
+                // User is not signed in. Start Google auth flow.
+                GoogleAuth.signIn();
+            }
+        }
+
+        function revokeAccess() {
+            GoogleAuth.disconnect();
+        }
+
+        function setSigninStatus(isSignedIn) {
+            var user = GoogleAuth.currentUser.get();
+            var isAuthorized = user.hasGrantedScopes(SCOPE);
+            if (isAuthorized) {
+                $('#sign-in-or-out-button').html('Sign out');
+                $('#revoke-access-button').css('display', 'inline-block');
+                $('#auth-status').html('You are currently signed in and have granted ' +
+                    'access to this app.');
+
+                getGenderViewsPercentage();
+                getWhereViewsOriginate();
+                getDislikesAndLikes();
+                getTop7Countrys();
+
+            } else {
+                $('#sign-in-or-out-button').html('Sign In/Authorize');
+                $('#revoke-access-button').css('display', 'none');
+                $('#auth-status').html('You have not authorized this app or you are ' +
+                    'signed out.');
+            }
+        }
+
+        function updateSigninStatus(isSignedIn) {
+            setSigninStatus();
+        }
+
+        function getGenderViewsPercentage() {
+            var request = gapi.client.request({
+                'method': 'GET',
+                'path': '/youtube/analytics/v1/reports',
+                'params': { 'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'viewerPercentage', 'dimensions': 'gender' }
+            });
+            // Execute the API request.
+            request.execute(function (response) {
+                console.log(response);
+                $("#malePercent").html(response.rows[1][1] + "%")
+                $("#femalePercent").html(response.rows[0][1] + "%")
+            });
+        }
+        function getTop7Countrys() {
+            var request = gapi.client.request({
+                'method': 'GET',
+                'path': '/youtube/analytics/v1/reports',
+                'params': { 'ids': 'channel==MINE', 'start-date': '2012-05-01', 'end-date': '2017-09-01', 'metrics': 'views', 'dimensions': 'country', 'max-results': '7', 'sort': '-views' }
+            });
+            // Execute the API request.
+            request.execute(function (response) {
+                console.log(response);
+                $("#top1").html(response.rows[0][1])
+                $("#top1Name").html(response.rows[0][0])
+
+                $("#top2").html(response.rows[1][1])
+                $("#top2Name").html(response.rows[1][0])
+
+                $("#top3").html(response.rows[2][1])
+                $("#top3Name").html(response.rows[2][0])
+
+                $("#top4").html(response.rows[3][1])
+                $("#top4Name").html(response.rows[3][0])
+
+                $("#top5").html(response.rows[4][1])
+                $("#top5Name").html(response.rows[4][0])
+
+                $("#top6").html(response.rows[5][1])
+                $("#top6Name").html(response.rows[5][0])
+
+                $("#top7").html(response.rows[6][1])
+                $("#top7Name").html(response.rows[6][0])
+            });
+        }
+
+
+        function getDislikesAndLikes() {
+            var request = gapi.client.request({
+                'method': 'GET',
+                'path': '/youtube/analytics/v1/reports',
+                'params': {
+                    'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'views', 'dimensions': 'day' }
+            });
+            // Execute the API request.
+            request.execute(function (response) {
+                console.log(response);
+                $("#views0").html(response.rows[0][1])
+                $("#views").html(response.rows[1][1])
+                $("#views2").html(response.rows[2][1])
+                $("#views3").html(response.rows[3][1])
+                $("#views4").html(response.rows[4][1])
+                $("#views5").html(response.rows[5][1])
+                $("#views6").html(response.rows[6][1])
+            });
+        }
+
+      
+     
+
+        function getWhereViewsOriginate() {
+            var request = gapi.client.request({
+                'method': 'GET',
+                'path': '/youtube/analytics/v1/reports',
+                'params': { 'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'viewerPercentage', 'dimensions': 'ageGroup' }
+            });
+
+            request.execute(function (response) {
+                console.log(response);
+                $("#secondContry").html(response.rows[0][1] + "%")
+                $("#firstContry").html(response.rows[1][1] + "%")       
+                $("#ageGroup3").html(response.rows[2][1] + "%")
+                $("#ageGroup4").html(response.rows[3][1] + "%")
+                $("#ageGroup5").html(response.rows[4][1] + "%")
+                $("#ageGroup6").html(response.rows[5][1] + "%")
+                $("#ageGroup7").html(response.rows[6][1] + "%")
+            });
+        }
+
+    </script>
+
+
+
+}
