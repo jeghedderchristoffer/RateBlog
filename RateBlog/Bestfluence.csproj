@@ -27,6 +27,7 @@
   <ItemGroup>
     <Content Include="wwwroot\css\beststyle.css" />
     <Content Include="wwwroot\css\social-buttons.css" />
+    <Content Include="wwwroot\css\thomas.css" />
     <Content Include="wwwroot\images\bestfluence-logo-white.svg" />
     <Content Include="wwwroot\images\bestfluence-logo.svg" />
     <Content Include="wwwroot\images\bfprofilepic.png" />
@@ -63,6 +64,7 @@
     <Content Include="wwwroot\js\AdminStatisticsFilter.js" />
     <Content Include="wwwroot\js\bestjavascript.js" />
     <Content Include="wwwroot\js\GoogleChartLoader.js" />
+    <Content Include="wwwroot\js\StatisticsCharts.js" />
     <Content Include="wwwroot\robots.txt" />
     <Content Include="wwwroot\sitemap.xml" />
   </ItemGroup>

@@ -8,9 +8,10 @@ using Bestfluence.Data;
 namespace Bestfluence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170927204753_instastuff")]
+    partial class instastuff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -446,8 +447,7 @@ namespace Bestfluence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InfluencerId")
-                        .IsUnique();
+                    b.HasIndex("InfluencerId");
 
                     b.ToTable("InstagramData");
                 });
@@ -754,8 +754,8 @@ namespace Bestfluence.Migrations
             modelBuilder.Entity("Bestfluence.Models.InstagramData", b =>
                 {
                     b.HasOne("Bestfluence.Models.Influencer", "Influencer")
-                        .WithOne("InstagramData")
-                        .HasForeignKey("Bestfluence.Models.InstagramData", "InfluencerId");
+                        .WithMany()
+                        .HasForeignKey("InfluencerId");
                 });
 
             modelBuilder.Entity("Bestfluence.Models.Vote", b =>

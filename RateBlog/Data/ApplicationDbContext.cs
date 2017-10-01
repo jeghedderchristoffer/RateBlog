@@ -25,6 +25,14 @@ namespace Bestfluence.Data
         public DbSet<InfluencerCategory> InfluencerCategory { get; set; }
         public DbSet<FeedbackReport> FeedbackReports { get; set; }
         public DbSet<EmailNotification> EmailNotifications { get; set; }
+        public DbSet<City> City { get; set; }
+        public DbSet<Country> Country { get; set; }
+        public DbSet<InstagramCity> InstagramCity { get; set; }
+        public DbSet<InstagramCountry> InstagramCountry { get; set; }
+        public DbSet<InstagramAgeGroup> InstagramAgeGroup { get; set; }
+        public DbSet<InstagramData> InstagramData { get; set; }
+
+
         //public DbSet<FollowerRank> FollowerRanks { get; set; }
         //public DbSet<FollowerStatus> FollowerStatus { get; set; } 
 

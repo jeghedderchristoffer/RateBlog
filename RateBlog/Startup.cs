@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Security.Claims;
 using RateBlog;
 
+
 namespace Bestfluence
 {
     public class Startup
@@ -87,11 +88,18 @@ namespace Bestfluence
             services.AddTransient<IRepository<FeedbackReport>, Repository<FeedbackReport>>();
             services.AddTransient<IRepository<EmailNotification>, Repository<EmailNotification>>();
             services.AddTransient<IRepository<BlogArticle>, Repository<BlogArticle>>();
+            services.AddTransient<IRepository<InstagramData>, Repository<InstagramData>>();
+            services.AddTransient<IRepository<City>, Repository<City>>();
+            services.AddTransient<IRepository<Country>, Repository<Country>>();
+            services.AddTransient<IRepository<InstagramCountry>, Repository<InstagramCountry>>();
+            services.AddTransient<IRepository<InstagramCity>, Repository<InstagramCity>>();
+            services.AddTransient<IRepository<InstagramAgeGroup>, Repository<InstagramAgeGroup>>();
+
 
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
-            services.AddTransient<IBlogService, BlogService>(); 
+            services.AddTransient<IBlogService, BlogService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

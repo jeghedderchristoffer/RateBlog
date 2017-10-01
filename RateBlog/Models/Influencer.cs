@@ -29,5 +29,6 @@ namespace Bestfluence.Models
         public virtual ICollection<Feedback> Ratings { get; set; } 
         public virtual ICollection<InfluencerPlatform> InfluenterPlatform { get; set; }
         public virtual ICollection<InfluencerCategory> InfluenterKategori { get; set; }
+        public virtual InstagramData InstagramData { get; set; }
     }
 }
