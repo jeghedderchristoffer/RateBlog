@@ -23,17 +23,16 @@
 }
 
 
-function drawAgeChart(data1,data2,data3,data4,data5,data6,data7,data8) {
+function drawAgeChart(data1,data2,data3,data4,data5,data6,data7) {
     var data = google.visualization.arrayToDataTable([
         ["Alder", "Antal", { role: "style" }],
-        ["-12", data1, "blue"],
-        ["13-17", data2, "grey"],
-        ["18-24", data3, "blue"],
-        ["25-34", data4, "grey"],
-        ["35-44", data5, "blue"],
-        ["45-54", data6, "grey"],
-        ["55-64", data7, "blue"],
-        ["65+", data8, "grey"]
+        ["13-17", data1, "grey"],
+        ["18-24", data2, "blue"],
+        ["25-34", data3, "grey"],
+        ["35-44", data4, "blue"],
+        ["45-54", data5, "grey"],
+        ["55-64", data6, "blue"],
+        ["65+", data7, "grey"]
     ]);
 
     var view = new google.visualization.DataView(data);
@@ -95,9 +94,9 @@ function drawMediaPie(Likes,Comments) {
     ]);
 
     var options = {
-
-        width: 300,
-        height: 250,
+        chartArea: { width: '100%', height: '80%' },
+        width: 250,
+        height: 200,
         pieHole: 0.9,
         pieSliceTextStyle: {
             color: 'black',

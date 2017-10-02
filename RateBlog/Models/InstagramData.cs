@@ -25,7 +25,7 @@ namespace Bestfluence.Models
         public int WeekImpression { get; set; }
         public int MonthImpression { get; set; }
 
-
+        public DateTime LastUpdated { get; set; }
 
     }
 }

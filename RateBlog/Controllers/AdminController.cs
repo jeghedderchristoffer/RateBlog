@@ -528,82 +528,44 @@ namespace Bestfluence.Controllers
             var getTheInfluenter = _userManager.Users.FirstOrDefault(x => x.Id == id);
             var listOfRatingsByTheInfluenter = _feedbackRepo.GetAll().Where(x => x.InfluenterId == getTheInfluenter.Id).ToList();
             var GetTheInfuenterAsInfluenter = _influencerRepo.GetAll().FirstOrDefault(x => x.Id == getTheInfluenter.Id);
-            var GetInstagramData = _context.InstagramData.
-                Include(x => x.InstagramAgeGroup).
-                Include(x => x.InstagramCity).
-                ThenInclude(x => x.City).Include(x => x.InstagramCountry).
-                ThenInclude(x => x.Country).
-                SingleOrDefault(x => x.InfluencerId == id);
+            var HasInstaData = _context.InstagramData.Any(x => x.InfluencerId == id);
 
             var StatisticVm = new InfluenterStatisticsViewModel()
             {
-                InstagramDatas = GetInstagramData,
+                HasInstagramData = HasInstaData,
                 InfluenterUserInfo = getTheInfluenter,
                 InfluentersFeedbacks = listOfRatingsByTheInfluenter,
-                Influenter = GetTheInfuenterAsInfluenter,
+                Influenter = GetTheInfuenterAsInfluenter
             };
-
-
 
             return View(StatisticVm);
         }
 
-
-        public async Task InstagramDataAdd()
+        public dynamic[] GetInstagramFacebookData(string code)
         {
-            string UserId = (await _userManager.GetUserAsync(User)).Id;
-            InstagramData InstagramDatas = new InstagramData { InfluencerId = UserId };
-            List<InstagramCountry> InstagramCountryList = new List<InstagramCountry>();
-            List<InstagramCity> InstagramCityList = new List<InstagramCity>();
-        }
-
-        public void InstagramDataUpdate()
-        {
-            InstagramData InstagramDatas = _context.InstagramData.Include(x => x.InstagramAgeGroup).Include(x => x.InstagramCity).ThenInclude(x => x.City).Include(x => x.InstagramCountry).ThenInclude(x => x.Country).SingleOrDefault(x => x.InfluencerId == UserId);
-
-        }
-
-        [AllowAnonymous]
-        public async Task<IActionResult> StatisticsInstagramAccounts(string code)
-        {
-            string FBAppClientId = AppConfigs.AppId;
-            string FBAppSecret = AppConfigs.AppSecret;
-            string UserId = (await _userManager.GetUserAsync(User)).Id;
-            string Access_Token = "";
             string InstagramBusinessId = "";
-            InstagramData InstagramDatas = new InstagramData();
-            if (_context.InstagramData.Any(x => x.InfluencerId == UserId))
-            {
-                InstagramDataUpdate();
-            }
-            else
-            {
-                InstagramDataAdd();
-            }
+            dynamic Access_Token = "";
 
-            List<InstagramCountry> InstagramCountryList = new List<InstagramCountry>();
-            List<InstagramCity> InstagramCityList = new List<InstagramCity>();
-            //fb user Access Token
+            dynamic[] AllDatas = new dynamic[3];
+            //Authenticate (Get AcessToken)
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
             {
                 client.BaseAddress = new Uri("https://graph.facebook.com/oauth/");
-                HttpResponseMessage response = client.GetAsync("access_token?client_id=" + FBAppClientId + "&client_secret=" + FBAppSecret + "&code=" + code + "&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts").Result;
-                response.EnsureSuccessStatusCode();
-                string result = response.Content.ReadAsStringAsync().Result;
-                dynamic data = JObject.Parse(result);
-                Access_Token = data.access_token;
+                HttpResponseMessage Access_Token_Response = client.GetAsync("access_token?client_id=" + AppConfigs.AppId + "&client_secret=" + AppConfigs.AppSecret + "&code=" + code + "&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts").Result;
+                Access_Token_Response.EnsureSuccessStatusCode();
+                string Access_Token_Result = Access_Token_Response.Content.ReadAsStringAsync().Result;
+                Access_Token = JObject.Parse(Access_Token_Result);
+                Access_Token = Access_Token.access_token;
             }
-
-            //Get Businesses account assosiated with
+            //Get Business Id
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
             {
                 client.BaseAddress = new Uri("https://graph.facebook.com/v2.10/");
-                HttpResponseMessage response = client.GetAsync("me/accounts?fields=instagram_business_account&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts&access_token=" + Access_Token).Result;
-                response.EnsureSuccessStatusCode();
-                string result = response.Content.ReadAsStringAsync().Result;
-                dynamic data = JObject.Parse(result);
-
-                foreach (var i in data.data)
+                HttpResponseMessage BusinessId_Response = client.GetAsync("me/accounts?fields=instagram_business_account&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts&access_token=" + Access_Token).Result;
+                BusinessId_Response.EnsureSuccessStatusCode();
+                string BusinessId_Result = BusinessId_Response.Content.ReadAsStringAsync().Result;
+                dynamic Business_Data = JObject.Parse(BusinessId_Result);
+                foreach (var i in Business_Data.data)
                 {
                     if (i.instagram_business_account != null)
                     {
@@ -615,148 +577,240 @@ namespace Bestfluence.Controllers
                     }
                 }
             }
-
-            //Get MetaData
+            //Get Instagram MetaData
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
             {
                 client.BaseAddress = new Uri("https://graph.facebook.com/v2.10/");
-                HttpResponseMessage response = client.GetAsync(InstagramBusinessId + "?fields=followers_count,media_count&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts&access_token=" + Access_Token).Result;
-                response.EnsureSuccessStatusCode();
-                string result = response.Content.ReadAsStringAsync().Result;
-                dynamic data = JObject.Parse(result);
-                InstagramDatas.MediaCount = data.followers_count;
-                InstagramDatas.FollowerCount = data.media_count;
+                HttpResponseMessage MetaData_Response = client.GetAsync(InstagramBusinessId + "?fields=followers_count,media_count&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts&access_token=" + Access_Token).Result;
+                MetaData_Response.EnsureSuccessStatusCode();
+                string MetaData_Result = MetaData_Response.Content.ReadAsStringAsync().Result;
+                AllDatas[0] = JObject.Parse(MetaData_Result);
             }
-
-            //Get Gender, location, location
+            //Get Instagram Lifetime Data
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
             {
                 client.BaseAddress = new Uri("https://graph.facebook.com/v2.10/");
-                HttpResponseMessage response = client.GetAsync(InstagramBusinessId + "/insights?metric=audience_gender_age,audience_country,audience_city&period=lifetime&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts&access_token=" + Access_Token).Result;
-                response.EnsureSuccessStatusCode();
-                string result = response.Content.ReadAsStringAsync().Result;
-                dynamic data = JObject.Parse(result);
+                HttpResponseMessage LifeTime_Response = client.GetAsync(InstagramBusinessId + "/insights?metric=audience_gender_age,audience_country,audience_city&period=lifetime&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts&access_token=" + Access_Token).Result;
+                LifeTime_Response.EnsureSuccessStatusCode();
+                string LifeTime_Result = LifeTime_Response.Content.ReadAsStringAsync().Result;
+                AllDatas[1] = JObject.Parse(LifeTime_Result);
+            }
+            //Get all Instagram day,week and month info
+            using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
+            {
+                client.BaseAddress = new Uri("https://graph.facebook.com/v2.10/");
+                HttpResponseMessage Reach_Impression_Response = client.GetAsync(InstagramBusinessId + "/insights?metric=impressions,reach&period=day,week,days_28&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts&access_token=" + Access_Token).Result;
+                Reach_Impression_Response.EnsureSuccessStatusCode();
+                string Reach_Impression_Result = Reach_Impression_Response.Content.ReadAsStringAsync().Result;
+                AllDatas[2] = JObject.Parse(Reach_Impression_Result);
+            }
+            return AllDatas;
+        }
 
-                InstagramDatas.InstagramAgeGroup.InstagramDataId = InstagramDatas.Id;
-                InstagramDatas.InstagramAgeGroup.InstagramData = InstagramDatas;
-                InstagramDatas.InstagramAgeGroup.Female13To17 = data.data[0].values[0].value["F.13-17"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Female18To24 = data.data[0].values[0].value["F.18-24"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Female25To34 = data.data[0].values[0].value["F.25-34"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Female35To44 = data.data[0].values[0].value["F.35-44"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Female45To55 = data.data[0].values[0].value["F.45-54"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Female55To64 = data.data[0].values[0].value["F.55-64"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Female65Plus = data.data[0].values[0].value["F.65+"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Male13To17 = data.data[0].values[0].value["M.13-17"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Male18To24 = data.data[0].values[0].value["M.18-24"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Male25To34 = data.data[0].values[0].value["M.25-34"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Male35To44 = data.data[0].values[0].value["M.35-44"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Male45To55 = data.data[0].values[0].value["M.45-54"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Male55To64 = data.data[0].values[0].value["M.55-64"] ?? 0;
-                InstagramDatas.InstagramAgeGroup.Male65Plus = data.data[0].values[0].value["M.65+"] ?? 0;
-                
-                
-                var countries = _context.Country.ToList();
-                foreach (var i in data.data[1].values[0].value)
+        public async Task InstagramDataAdd(string code)
+        {
+            var AllDatas = GetInstagramFacebookData(code);
+            string UserId = (await _userManager.GetUserAsync(User)).Id;
+            InstagramData InstagramDatas = new InstagramData { InfluencerId = UserId };
+            InstagramDatas.LastUpdated = DateTime.Now;
+            List<InstagramCountry> InstagramCountryList = new List<InstagramCountry>();
+            List<InstagramCity> InstagramCityList = new List<InstagramCity>();
+            InstagramDatas.MediaCount = AllDatas[0].media_count;
+            InstagramDatas.FollowerCount = AllDatas[0].followers_count;
+            var InstagramAgeGroups = new InstagramAgeGroup()
+            {
+                Female13To17 = AllDatas[1].data[0].values[0].value["F.13-17"] ?? 0,
+                Female18To24 = AllDatas[1].data[0].values[0].value["F.18-24"] ?? 0,
+                Female25To34 = AllDatas[1].data[0].values[0].value["F.25-34"] ?? 0,
+                Female35To44 = AllDatas[1].data[0].values[0].value["F.35-44"] ?? 0,
+                Female45To55 = AllDatas[1].data[0].values[0].value["F.45-54"] ?? 0,
+                Female55To64 = AllDatas[1].data[0].values[0].value["F.55-64"] ?? 0,
+                Female65Plus = AllDatas[1].data[0].values[0].value["F.65+"] ?? 0,
+                Male13To17 = AllDatas[1].data[0].values[0].value["M.13-17"] ?? 0,
+                Male18To24 = AllDatas[1].data[0].values[0].value["M.18-24"] ?? 0,
+                Male25To34 = AllDatas[1].data[0].values[0].value["M.25-34"] ?? 0,
+                Male35To44 = AllDatas[1].data[0].values[0].value["M.35-44"] ?? 0,
+                Male45To55 = AllDatas[1].data[0].values[0].value["M.45-54"] ?? 0,
+                Male55To64 = AllDatas[1].data[0].values[0].value["M.55-64"] ?? 0,
+                Male65Plus = AllDatas[1].data[0].values[0].value["M.65+"] ?? 0
+            };
+            InstagramDatas.InstagramAgeGroup = InstagramAgeGroups;
+
+            var countries = _context.Country.ToList();
+            foreach (var i in AllDatas[1].data[1].values[0].value)
+            {
+                if (!countries.Any(x => x.Name == i.Name))
                 {
-                    if (!countries.Any(x => x.Name == i.Name))
-                    {
-                        _context.Country.Add(new Country { Name = i.Name });
-                        _context.SaveChanges();
-                        countries = _context.Country.ToList();
-                    }
-                    var TheCountry = countries.FirstOrDefault(x => x.Name == (string)i.Name);
-
-                    if (AlreadyExcists)
-                    {
-                        var InstagramContries = InstagramDatas.InstagramCountry.FirstOrDefault(x => x.CountryId == TheCountry.Id);
-                        InstagramContries.Count = i.Value;
-                        InstagramCountryList.Add(InstagramContries);
-                    }
-                    else
-                    {
-                        var InstaCountry = new InstagramCountry()
-                        {
-                            InstagramData = InstagramDatas,
-                            InstagramDataId = InstagramDatas.Id,
-                            CountryId = TheCountry.Id,
-                            Country = TheCountry,
-                            Count = i.Value
-                        };
-                        InstagramCountryList.Add(InstaCountry);
-                    }
+                    _context.Country.Add(new Country { Name = i.Name });
+                    _context.SaveChanges();
+                    countries = _context.Country.ToList();
                 }
-                InstagramDatas.InstagramCountry = InstagramCountryList;
-                var cities = _context.City.ToList();
-                foreach (var i in data.data[2].values[0].value)
+                var TheCountry = countries.FirstOrDefault(x => x.Name == (string)i.Name);
+                var InstaCountry = new InstagramCountry()
                 {
-                    if (!cities.Any(x => x.Name == i.Name))
+                    InstagramData = InstagramDatas,
+                    InstagramDataId = InstagramDatas.Id,
+                    CountryId = TheCountry.Id,
+                    Country = TheCountry,
+                    Count = i.Value
+                };
+                InstagramCountryList.Add(InstaCountry);
+            }
+            InstagramDatas.InstagramCountry = InstagramCountryList;
+
+            var cities = _context.City.ToList();
+            foreach (var i in AllDatas[1].data[2].values[0].value)
+            {
+                if (!cities.Any(x => x.Name == i.Name))
+                {
+                    _context.City.Add(new City { Name = i.Name });
+                    _context.SaveChanges();
+                    cities = _context.City.ToList();
+                }
+                var TheCity = cities.FirstOrDefault(x => x.Name == (string)i.Name);
+                var InstaCity = new InstagramCity()
+                {
+                    InstagramData = InstagramDatas,
+                    InstagramDataId = InstagramDatas.Id,
+                    CityId = TheCity.Id,
+                    City = TheCity,
+                    Count = i.Value
+                };
+                InstagramCityList.Add(InstaCity);
+            }
+            InstagramDatas.InstagramCity = InstagramCityList;
+            InstagramDatas.DayImpression = AllDatas[2].data[0].values[0].value ?? 0;
+            InstagramDatas.WeekImpression = AllDatas[2].data[1].values[0].value ?? 0;
+            InstagramDatas.MonthImpression = AllDatas[2].data[2].values[0].value ?? 0;
+            InstagramDatas.DayReach = AllDatas[2].data[3].values[0].value ?? 0;
+            InstagramDatas.WeekReach = AllDatas[2].data[4].values[0].value ?? 0;
+            InstagramDatas.MonthReach = AllDatas[2].data[5].values[0].value ?? 0;
+            _context.InstagramData.Add(InstagramDatas);
+            _context.SaveChanges();
+        }
+
+        public async Task InstagramDataUpdate(string code)
+        {
+            string UserId = (await _userManager.GetUserAsync(User)).Id;
+            InstagramData InstagramDatas = _context.InstagramData.Include(x => x.InstagramAgeGroup).Include(x => x.InstagramCity).ThenInclude(x => x.City).Include(x => x.InstagramCountry).ThenInclude(x => x.Country).SingleOrDefault(x => x.InfluencerId == UserId);
+            InstagramDatas.LastUpdated = DateTime.Now;
+            var AllDatas = GetInstagramFacebookData(code);
+            //MetaData
+            InstagramDatas.MediaCount = AllDatas[0].followers_count;
+            InstagramDatas.FollowerCount = AllDatas[0].media_count;
+            //LifeTimeData
+            InstagramDatas.InstagramAgeGroup.InstagramDataId = InstagramDatas.Id;
+            InstagramDatas.InstagramAgeGroup.InstagramData = InstagramDatas;
+            InstagramDatas.InstagramAgeGroup.Female13To17 = AllDatas[1].data[0].values[0].value["F.13-17"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Female18To24 = AllDatas[1].data[0].values[0].value["F.18-24"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Female25To34 = AllDatas[1].data[0].values[0].value["F.25-34"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Female35To44 = AllDatas[1].data[0].values[0].value["F.35-44"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Female45To55 = AllDatas[1].data[0].values[0].value["F.45-54"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Female55To64 = AllDatas[1].data[0].values[0].value["F.55-64"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Female65Plus = AllDatas[1].data[0].values[0].value["F.65+"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Male13To17 = AllDatas[1].data[0].values[0].value["M.13-17"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Male18To24 = AllDatas[1].data[0].values[0].value["M.18-24"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Male25To34 = AllDatas[1].data[0].values[0].value["M.25-34"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Male35To44 = AllDatas[1].data[0].values[0].value["M.35-44"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Male45To55 = AllDatas[1].data[0].values[0].value["M.45-54"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Male55To64 = AllDatas[1].data[0].values[0].value["M.55-64"] ?? 0;
+            InstagramDatas.InstagramAgeGroup.Male65Plus = AllDatas[1].data[0].values[0].value["M.65+"] ?? 0;
+            //day,week,month
+            var countries = _context.Country.ToList();
+            foreach (var i in AllDatas[1].data[1].values[0].value)
+            {
+                if (!countries.Any(x => x.Name == i.Name))
+                {
+                    _context.Country.Add(new Country { Name = i.Name });
+                    _context.SaveChanges();
+                    countries = _context.Country.ToList();
+                }
+                var TheCountry = countries.FirstOrDefault(x => x.Name == (string)i.Name);
+                if (InstagramDatas.InstagramCountry.FirstOrDefault(x => x.CountryId == TheCountry.Id) == null)
+                {
+                    var InstaCountry = new InstagramCountry()
                     {
-                        _context.City.Add(new City { Name = i.Name });
-                        _context.SaveChanges();
-                        cities = _context.City.ToList();
-                    }
-                    var TheCity = cities.FirstOrDefault(x => x.Name == (string)i.Name);
+                        InstagramData = InstagramDatas,
+                        InstagramDataId = InstagramDatas.Id,
+                        CountryId = TheCountry.Id,
+                        Country = TheCountry,
+                        Count = i.Value
+                    };
+                    InstagramDatas.InstagramCountry.Add(InstaCountry);
+                }
+                else
+                {
+                    InstagramDatas.InstagramCountry.FirstOrDefault(x => x.CountryId == TheCountry.Id).Count = i.Value;
+                }
+            }
+            var cities = _context.City.ToList();
+            foreach (var i in AllDatas[1].data[2].values[0].value)
+            {
+                if (!cities.Any(x => x.Name == i.Name))
+                {
+                    _context.City.Add(new City { Name = i.Name });
+                    _context.SaveChanges();
+                    cities = _context.City.ToList();
+                }
+                var TheCity = cities.FirstOrDefault(x => x.Name == (string)i.Name);
+                if (InstagramDatas.InstagramCity.FirstOrDefault(x => x.CityId == TheCity.Id) == null)
+                {
                     var InstaCity = new InstagramCity()
                     {
-                        Id =InstagramDatas.Id??null,
                         InstagramData = InstagramDatas,
                         InstagramDataId = InstagramDatas.Id,
                         CityId = TheCity.Id,
                         City = TheCity,
                         Count = i.Value
                     };
-                    InstagramCityList.Add(InstaCity);
+                    InstagramDatas.InstagramCity.Add(InstaCity);
                 }
-                InstagramDatas.InstagramCity = InstagramCityList;
+                else
+                {
+                    InstagramDatas.InstagramCity.FirstOrDefault(x => x.CityId == TheCity.Id).Count = i.Value;
+                }
             }
+            InstagramDatas.DayImpression = AllDatas[2].data[0].values[0].value ?? 0;
+            InstagramDatas.WeekImpression = AllDatas[2].data[1].values[0].value ?? 0;
+            InstagramDatas.MonthImpression = AllDatas[2].data[2].values[0].value ?? 0;
+            InstagramDatas.DayReach = AllDatas[2].data[3].values[0].value ?? 0;
+            InstagramDatas.WeekReach = AllDatas[2].data[4].values[0].value ?? 0;
+            InstagramDatas.MonthReach = AllDatas[2].data[5].values[0].value ?? 0;
+            _context.InstagramData.Update(InstagramDatas);
+            _context.SaveChanges();
+        }
 
-            //Get Impression,Reach for days,week and month
-            using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
+        [AllowAnonymous]
+        public async Task<IActionResult> StatisticsInstagramAccounts(string code)
+        {
+            string UserId = (await _userManager.GetUserAsync(User)).Id;
+            if (_context.InstagramData.Any(x => x.InfluencerId == UserId))
             {
-                client.BaseAddress = new Uri("https://graph.facebook.com/v2.10/");
-                HttpResponseMessage response = client.GetAsync(InstagramBusinessId + "/insights?metric=impressions,reach&period=day,week,days_28&redirect_uri=http://localhost:54069/Admin/StatisticsInstagramAccounts&access_token=" + Access_Token).Result;
-                response.EnsureSuccessStatusCode();
-                string result = response.Content.ReadAsStringAsync().Result;
-                dynamic data = JObject.Parse(result);
-                InstagramDatas.DayImpression = data.data[0].values[0].value ?? 0;
-                InstagramDatas.WeekImpression = data.data[1].values[0].value ?? 0;
-                InstagramDatas.MonthImpression = data.data[2].values[0].value ?? 0;
-                InstagramDatas.DayReach = data.data[3].values[0].value ?? 0;
-                InstagramDatas.WeekReach = data.data[4].values[0].value ?? 0;
-                InstagramDatas.MonthReach = data.data[5].values[0].value ?? 0;
-            }
-
-            if (AlreadyExcists)
-            {
-                _context.InstagramData.Update(InstagramDatas);
-                _context.SaveChanges();
+                await InstagramDataUpdate(code);
             }
             else
             {
-                _context.InstagramData.Add(InstagramDatas);
-                _context.SaveChanges();
+                await InstagramDataAdd(code);
             }
-
             return RedirectToAction("InfluenterStatistics", new { id = UserId });
         }
 
         [AllowAnonymous]
         public JsonResult InstagramData(string id)
         {
-            var instagramData = _context.InstagramData.
+            var GetInstagramData = _context.InstagramData.
                 Include(x => x.InstagramAgeGroup).
                 Include(x => x.InstagramCity).
                 ThenInclude(x => x.City).Include(x => x.InstagramCountry).
                 ThenInclude(x => x.Country).
                 SingleOrDefault(x => x.InfluencerId == id);
 
-           
-            
-            
-            
-            //AgeGroup.InstagramData = null;
+            GetInstagramData.InstagramAgeGroup.InstagramData = null;
+            GetInstagramData.Influencer = null;
+            GetInstagramData.InstagramCity.Select(x => { x.InstagramData = null; return x; }).ToList();
+            GetInstagramData.InstagramCountry.Select(x => { x.InstagramData = null; return x; }).ToList();
 
-            return Json("fuckoff");
+            return Json(GetInstagramData);
         }
 
         [AllowAnonymous]

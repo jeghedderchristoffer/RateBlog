@@ -10,6 +10,6 @@ namespace Bestfluence.Models.AdminViewModels
         public ApplicationUser InfluenterUserInfo { get; set; }
         public List<Feedback> InfluentersFeedbacks { get; set; }
         public Influencer Influenter { get; set; }
-        public InstagramData InstagramDatas { get; set; }
+        public bool HasInstagramData { get; set; }
     }
 }
