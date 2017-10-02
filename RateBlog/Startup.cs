@@ -87,11 +87,13 @@ namespace Bestfluence
             services.AddTransient<IRepository<FeedbackReport>, Repository<FeedbackReport>>();
             services.AddTransient<IRepository<EmailNotification>, Repository<EmailNotification>>();
             services.AddTransient<IRepository<BlogArticle>, Repository<BlogArticle>>();
+            services.AddTransient<IRepository<YoutubeData>, Repository<YoutubeData>>();
 
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
-            services.AddTransient<IBlogService, BlogService>(); 
+            services.AddTransient<IBlogService, BlogService>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

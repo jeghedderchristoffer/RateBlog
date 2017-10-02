@@ -13,6 +13,7 @@ using Bestfluence.Services;
 using Bestfluence.Models.FooterViewModels;
 using Bestfluence.Data;
 using Bestfluence.Services.Interfaces;
+using Bestfluence.Models.HomeViewModels;
 
 namespace Bestfluence.Controllers
 {
@@ -20,11 +21,13 @@ namespace Bestfluence.Controllers
     {
         private readonly IEmailSender _mailSender;
         private readonly ApplicationDbContext _context;
+        private readonly IRepository<YoutubeData> _YoutubeRepo;
 
-        public HomeController(IEmailSender mailSender, ApplicationDbContext context)
+        public HomeController(IEmailSender mailSender, ApplicationDbContext context, IRepository<YoutubeData> youtubeRepo)
         {
             _mailSender = mailSender;
             _context = context;
+            _YoutubeRepo = youtubeRepo;
         }
 
         public IActionResult Index()
@@ -125,16 +128,32 @@ namespace Bestfluence.Controllers
             return View();
         }
 
+       
         [HttpPost]
-        public string Test()
+        public JsonResult Test(YoutubeViewModel model)
         {
-            
+ 
+
+            if (ModelState.IsValid)
+            {
+                YoutubeData data = new YoutubeData()
+                {
+                    Views = model.Views,
+                    Subcribers = model.Subcribers,
+                    Likes = model.Likes,
+                    FemaleViews = model.FemaleViews
+
+                };
+
+                _YoutubeRepo.Add(data);
+
+                return Json(true);
+            }
+
+            return Json(false);
+
+
         }
 
-        //[HttpGet]
-        //public JsonResult Test(string model)
-        //{
-        //    return Json(model); 
-        //}
     }
 }
