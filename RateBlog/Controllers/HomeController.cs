@@ -132,25 +132,30 @@ namespace Bestfluence.Controllers
         [HttpPost]
         public JsonResult Test(YoutubeViewModel model)
         {
- 
 
-            if (ModelState.IsValid)
+
+
+            YoutubeData data = new YoutubeData()
             {
-                YoutubeData data = new YoutubeData()
-                {
-                    Views = model.Views,
-                    Subcribers = model.Subcribers,
-                    Likes = model.Likes,
-                    FemaleViews = model.FemaleViews
+                Views = model.Views,
+                FemaleViews = model.FemaleViews,
+                Likes = model.Likes,
+                Subcribers = model.Subcribers,
+                MaleViews = model.MaleViews,
+                Comments = model.Comments,
+                Dislike = model.Dislike,
+
 
                 };
-
+              
                 _YoutubeRepo.Add(data);
+               
 
                 return Json(true);
-            }
 
-            return Json(false);
+             
+
+        
 
 
         }

@@ -12,8 +12,8 @@ namespace Bestfluence.Models.HomeViewModels
 
         public int Engagement { get; set; }
         public int Views { get; set; }
-        public int MaleViews { get; set; }
-        public int FemaleViews { get; set; }
+        public double MaleViews { get; set; }
+        public double FemaleViews { get; set; }
         public int Subcribers { get; set; }
 
         public int Likes { get; set; }

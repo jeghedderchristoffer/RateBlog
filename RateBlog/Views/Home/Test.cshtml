@@ -56,10 +56,7 @@
 
 @section Scripts{
     <script>
-        var likes;
-        //var Subcription;
-        //var Country;
-        var gender;
+      
 
         var GoogleAuth;
 
@@ -128,18 +125,12 @@
                     'access to this app.');
 
                 getLikes();
-                getGenderViewsPercentage();
-                //getWhereViewsOriginate();
-                //getDislikesAndLikes();
-                //getTop7Countrys();
-
+               
               
-                //country = getWhereViewsOriginate;
-                likes = getLikes();
-                gender = getGenderViewsPercentage();
-                console.log("Sign in kald")
+               
+              // getGenderViewsPercentage();
+              
 
-                saveData(gender, likes);
             } else {
                 $('#sign-in-or-out-button').html('Sign In/Authorize');
                 $('#revoke-access-button').css('display', 'none');
@@ -153,6 +144,7 @@
         }
 
         function getGenderViewsPercentage() {
+            
             var request = gapi.client.request({
                 'method': 'GET',
                 'path': '/youtube/analytics/v1/reports',
@@ -160,13 +152,22 @@
             });
             // Execute the API request.
             request.execute(function (response) {
-                console.log(response);
+                //console.log(response);
+                // saveData(gender, maleViews)
+                gender = response.rows[0][1];
+                maleViews = response.rows[1][1]
+                saveData(gender, maleViews)
+
                 $("#malePercent").html(response.rows[1][1] + "%")
-                $("#femalePercent").html(response.rows[0][1] + "%")
-                console.log(response.rows[0][1])
-                return response.rows[0][1];
+                $("#femalePercent").html(response.rows[0][1] + "%")              
+              
+               
+                
+               
             });
+           
         }
+
         //function getTop7Countrys() {
         //    var request = gapi.client.request({
         //        'method': 'GET',
@@ -201,7 +202,26 @@
         //    });
         //}
 
-        function getLikes() {
+
+        //function getChannel() {
+        //    gapi.client.youtube.channels.list({
+        //        'part': 'snippet,contentDetails,statistics',
+        //        'forUsername': 'OMrSuperJellyFish'
+        //    }).then(function (response) {
+        //        console.log(response);
+        //        var channel = response.result.items[0];
+        //        console.log(response + "Alt i channels")
+        //        //appendPre('Kanal id' + channel.id + '. ' +
+        //        //    'Kanal title \'' + channel.snippet.title + ', ' +
+        //        //    'Kanal views ' + channel.statistics.viewCount + ' views.'
+        //        //);
+               
+        //    });
+
+
+        //}
+
+        function getLikes(gender, maleViews) {
             var request = gapi.client.request({
                 'method': 'GET',
                 'path': '/youtube/analytics/v1/reports',
@@ -212,17 +232,12 @@
 
             // Execute the API request.
             request.execute(function (response) {
-                console.log(response);
-                $("#views0").html(response.rows[0][1])
-                $("#views").html(response.rows[1][1])
-                $("#views2").html(response.rows[2][1])
-                $("#views3").html(response.rows[3][1])
-                $("#views4").html(response.rows[4][1])
-                $("#views5").html(response.rows[5][1])
-                $("#views6").html(response.rows[6][1])
-                console.log(response.rows[0][1])
-                return response.rows[0][1];
+                // console.log(response);
+                getGenderViewsPercentage(response.rows[0][1], maleViews);
+                   
                 
+                return response.rows[1][1];
+             
 
             });
 
@@ -273,20 +288,30 @@
         //    });
         //}
 
-        function saveData(gender, likes) {
+        function saveData(gender, likes, maleViews) {
 
             var model = {}; 
 
+            console.log(gender)
+
             model.femaleViews = gender;
-            model.likes = likes;
+            model.Likes = likes;
 
-            console.log("ajax")
 
+            model.maleViews = maleViews;
+
+
+            model.comments = "2", 
+            model.subcribers = "403",         
+
+               
+                console.log(gender + "gender views")
+            console.log(maleViews + "maleviews")
             $.ajax({
                 url: "/home/test",
                 method: "POST",
                 data: {
-                    model: model
+                    model: model,                                         
                 },
                 mimeType: 'multipart/form-data',
                 success: function (result) {
