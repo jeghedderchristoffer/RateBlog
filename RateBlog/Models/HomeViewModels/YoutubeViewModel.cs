@@ -9,6 +9,7 @@ namespace Bestfluence.Models.HomeViewModels
     {
 
         public YoutubeData YoutubeData { get; set; }
+        public YoutubeCountry YoutubeCountry { get; set; }
 
         public int Engagement { get; set; }
         public int Views { get; set; }
@@ -19,5 +20,12 @@ namespace Bestfluence.Models.HomeViewModels
         public int Likes { get; set; }
         public int Dislike { get; set; }
         public int Comments { get; set; }
+       
+        public int ThirteenToSeventeen { get; set; }      
+        public int EighteenTothirtyfour { get; set; }
+        public int ThirtyfiveTofortyfour { get; set; }
+        public int FortyFiveTofiftyfive { get; set; }
+        public int FiftyfiveToSixtyfive { get; set; }
+        public int SixtyfivePlus { get; set; }
     }
 }

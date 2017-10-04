@@ -124,12 +124,10 @@
                 $('#auth-status').html('You are currently signed in and have granted ' +
                     'access to this app.');
 
-                getLikes();
-               
-              
-               
-              // getGenderViewsPercentage();
-              
+                getViews();
+                             
+                    
+                
 
             } else {
                 $('#sign-in-or-out-button').html('Sign In/Authorize');
@@ -143,6 +141,45 @@
             setSigninStatus();
         }
 
+
+
+
+        function getLikes(callback) {
+            var request = gapi.client.request({
+                'method': 'GET',
+                'path': '/youtube/analytics/v1/reports',
+                'params': {
+                    'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'likes', 'dimensions': 'day'
+                }
+            });
+
+            // Execute the API request.
+            request.execute(function (response) {
+                console.log(response);
+                getGenderViewsPercentage();
+                likes = response.rows[1][1];
+                //getComments();
+            });
+        }
+
+        //function getComments() {
+        //    var request = gapi.client.request({
+        //        'method': 'GET',
+        //        'path': '/youtube/analytics/v1/reports',
+        //        'params': {
+        //            'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'comments', 'dimensions': 'day'
+        //        }
+        //    });
+
+        //    // Execute the API request.
+        //    request.execute(function (response) {
+        //        console.log(response);              
+        //        comments = response.rows[1][1];
+        //    });
+        //}
+
+
+
         function getGenderViewsPercentage() {
             
             var request = gapi.client.request({
@@ -152,21 +189,44 @@
             });
             // Execute the API request.
             request.execute(function (response) {
-                //console.log(response);
-                // saveData(gender, maleViews)
+                
+                male = response.rows[1][1];
                 gender = response.rows[0][1];
-                maleViews = response.rows[1][1]
-                saveData(gender, maleViews)
+               
+                saveData(gender, male, views, likes);
+               
 
                 $("#malePercent").html(response.rows[1][1] + "%")
                 $("#femalePercent").html(response.rows[0][1] + "%")              
-              
-               
-                
-               
+                                                           
             });
            
-        }
+        }       
+
+        //function getGenderViewsPercentage2() {
+
+        //    var request = gapi.client.request({
+        //        'method': 'GET',
+        //        'path': '/youtube/analytics/v1/reports',
+        //        'params': { 'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'viewerPercentage', 'dimensions': 'gender' }
+        //    });
+        //    // Execute the API request.
+        //    request.execute(function (response) {
+
+               
+        //        male = response.rows[1][1]
+        //        saveData(male)
+
+
+        //        $("#malePercent").html(response.rows[1][1] + "%")
+        //        $("#femalePercent").html(response.rows[0][1] + "%")
+
+
+
+
+        //    });
+
+        //}
 
         //function getTop7Countrys() {
         //    var request = gapi.client.request({
@@ -221,53 +281,10 @@
 
         //}
 
-        function getLikes(gender, maleViews) {
-            var request = gapi.client.request({
-                'method': 'GET',
-                'path': '/youtube/analytics/v1/reports',
-                'params': {
-                    'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'views', 'dimensions': 'day'
-                }
-            });
-
-            // Execute the API request.
-            request.execute(function (response) {
-                // console.log(response);
-                getGenderViewsPercentage(response.rows[0][1], maleViews);
-                   
-                
-                return response.rows[1][1];
-             
-
-            });
+    
 
 
-        }
-
-        //function getDislikesAndLikes() {
-        //    var request = gapi.client.request({
-        //        'method': 'GET',
-        //        'path': '/youtube/analytics/v1/reports',
-        //        'params': {
-        //            'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'views', 'dimensions': 'day'
-        //        }
-        //    });
-
-        //    // Execute the API request.
-        //    request.execute(function (response) {
-        //        console.log(response);
-        //        $("#views0").html(response.rows[0][1])
-        //        $("#views").html(response.rows[1][1])
-        //        $("#views2").html(response.rows[2][1])
-        //        $("#views3").html(response.rows[3][1])
-        //        $("#views4").html(response.rows[4][1])
-        //        $("#views5").html(response.rows[5][1])
-        //        $("#views6").html(response.rows[6][1])
-        //    });
-        //}
-
-
-
+     
 
         //function getWhereViewsOriginate() {
         //    var request = gapi.client.request({
@@ -288,25 +305,41 @@
         //    });
         //}
 
-        function saveData(gender, likes, maleViews) {
+        function getViews() {
+            var request = gapi.client.request({
+                'method': 'GET',
+                'path': '/youtube/analytics/v1/reports',
+                'params': {
+                    'ids': 'channel==MINE', 'start-date': '2016-05-01', 'end-date': '2017-09-25', 'metrics': 'views', 'dimensions': 'day'
+                }
+            });
+            // Execute the API request.
+            request.execute(function (response) {
 
+                getGenderViewsPercentage();
+                views = response.rows[1][1];
+                getLikes();
+               
+            });
+        }
+
+        function saveData(gender, male, views, likes) {
+
+            console.log(likes)
             var model = {}; 
 
-            console.log(gender)
-
             model.femaleViews = gender;
-            model.Likes = likes;
+            
 
 
-            model.maleViews = maleViews;
+            model.maleViews = male;
 
-
+            model.Views = views;
             model.comments = "2", 
             model.subcribers = "403",         
-
+            model.likes = likes;
                
-                console.log(gender + "gender views")
-            console.log(maleViews + "maleviews")
+
             $.ajax({
                 url: "/home/test",
                 method: "POST",

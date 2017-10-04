@@ -143,21 +143,35 @@ namespace Bestfluence.Controllers
                 Subcribers = model.Subcribers,
                 MaleViews = model.MaleViews,
                 Comments = model.Comments,
-                Dislike = model.Dislike,
+                Dislike = model.Dislike,               
 
+              };
 
-                };
-              
-                _YoutubeRepo.Add(data);
-               
+            _YoutubeRepo.Add(data);
 
-                return Json(true);
+            //YoutubeCountry countryData = new YoutubeCountry()
+            //{
+            //};
 
-             
+            //_YoutubeRepo.Add(countryData);                                      
 
-        
+                return Json(true);                  
+        }
 
+        [HttpGet]
+        public IActionResult InfluenterStatistics(string id)
+        {
+            //var getTheInfluenter = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            
+            //var GetTheInfuenterAsInfluenter = _influencerRepo.GetAll().FirstOrDefault(x => x.Id == getTheInfluenter.Id);
 
+            //var StatisticVm = new InfluenterStatisticsViewModel()
+            //{
+            //    InfluenterUserInfo = getTheInfluenter,
+            //    InfluentersFeedbacks = listOfRatingsByTheInfluenter,
+            //    Influenter = GetTheInfuenterAsInfluenter,
+            //};
+           return View();
         }
 
     }
