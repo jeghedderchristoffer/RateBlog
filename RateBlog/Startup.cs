@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Security.Claims;
 using Bestfluence.Services.Interfaces;
 using Bestfluence.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Bestfluence
 {
@@ -71,7 +72,7 @@ namespace Bestfluence
                 .AddDefaultTokenProviders();
 
 
-            services.AddRouting(options => options.LowercaseUrls = true); 
+            services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddMemoryCache();
             services.AddSession();
@@ -91,7 +92,7 @@ namespace Bestfluence
             services.AddTransient<IInfluencerService, InfluencerService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
-            services.AddTransient<IBlogService, BlogService>(); 
+            services.AddTransient<IBlogService, BlogService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -175,12 +176,14 @@ namespace Bestfluence
                         {
                             context.Identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, birthday));
                         }
-                        
+
                         return Task.FromResult(0);
                     }
                 },
                 SaveTokens = true
             });
+
+            SeedData(app); 
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
@@ -201,6 +204,45 @@ namespace Bestfluence
                    defaults: new { controller = "Blog", action = "Article" });
             });
 
+        }
+
+        public static void SeedData(IApplicationBuilder app)
+        {
+            using (var context = app.ApplicationServices.GetRequiredService<ApplicationDbContext>())
+            {
+                if (context.Platform.Count() == 0)
+                {
+                    context.Platform.Add(new Platform() { Name = "Twitch" });
+                    context.Platform.Add(new Platform() { Name = "Facebook" });
+                    context.Platform.Add(new Platform() { Name = "Website" });
+                    context.Platform.Add(new Platform() { Name = "SnapChat" });
+                    context.Platform.Add(new Platform() { Name = "Twitter" });
+                    context.Platform.Add(new Platform() { Name = "YouTube" });
+                    context.Platform.Add(new Platform() { Name = "Instagram" });
+                    context.Platform.Add(new Platform() { Name = "SecondYouTube" });
+                    context.SaveChanges();
+                }
+
+                if(context.Category.Count() == 0)
+                {
+                    context.Category.Add(new Category() { Name = "Gaming" });
+                    context.Category.Add(new Category() { Name = "Personal" });
+                    context.Category.Add(new Category() { Name = "Interests" });
+                    context.Category.Add(new Category() { Name = "Entertainment" });
+                    context.Category.Add(new Category() { Name = "Fashion" });
+                    context.Category.Add(new Category() { Name = "Lifestyle" });
+                    context.Category.Add(new Category() { Name = "Beauty" });
+                    context.SaveChanges();
+                }
+
+                if(context.Roles.Count() == 0)
+                {
+                    context.Roles.Add(new IdentityRole() { Name = "Influencer", NormalizedName = "INFLUENCER" });
+                    context.Roles.Add(new IdentityRole() { Name = "Admin", NormalizedName = "ADMIN" });
+                    context.SaveChanges(); 
+                }
+
+            }
         }
 
     }

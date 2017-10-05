@@ -172,13 +172,13 @@
                     <div class="col-md-12">
                         <hr />
                         <p>Hvad har du at sige om denne feedback?</p>
-                        <form asp-area="" asp-controller="manage" asp-action="answerFeedback">
+                        <form asp-area="" asp-controller="manage" asp-action="answerFeedback" id="AnswerFeedback-Submit-ID">
                             @Html.HiddenFor(x => x.Rating.Id)
                             <div class="textarea-container nopaddingmobile">
                                 <textarea asp-for="@Model.Rating.Answer" placeholder=""></textarea>
                             </div>
                             <div style="padding-left: 40px; padding-right: 40px;" class="nopaddingmobile">
-                                <button type="submit" class="give-feedback-btn" id="sendBtn" style="margin-top: 25px; margin-bottom: 25px;">SEND SVAR</button>
+                                <button type="submit" class="give-feedback-btn" style="margin-top: 25px; margin-bottom: 25px;">SEND SVAR</button>
                             </div>
                         </form>
                     </div>

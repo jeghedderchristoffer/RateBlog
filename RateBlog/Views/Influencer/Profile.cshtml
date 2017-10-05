@@ -146,7 +146,7 @@
                                 <div class="vote-box-body" id="voteBox">
                                     @foreach (var v in Model.Afstemning.VoteQuestions)
                                     {
-                                        <input type="radio" value="@v.Id" id="@v.Id" name="voteAnswers" />
+                                        <input type="radio" value="@v.Id" id="@v.Id" name="voteAnswers" class="AnswerQuestionnaire-Click-Class" />
                                         <label for="@v.Id" style="border-left: 3px solid @colors[index]">
                                             @v.Question
                                         </label>

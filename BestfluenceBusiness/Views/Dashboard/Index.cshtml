@@ -1,157 +1,113 @@
-﻿@{ 
+﻿@{
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="side-menu">
-    <div class="header">
-        <h3>Bestfluence</h3>
-        <p>Business</p>
-    </div>
-    <ul>
-        <li><a class="active" href="#"><i class="fa fa-home" aria-hidden="true"></i>Dashboard</a></li>
-        <li><a href="#"><i class="fa fa-camera" aria-hidden="true"></i>Kampagner</a></li>
-
-    </ul>
-</div>
-
-<div class="content-container">
+<div class="main-content">
     <div class="header">
         <h2>Dashboard</h2>
     </div>
 
-    <div class="col-md-12 body">
-        <div class="col-md-8">
-            <div class="col-md-12 dashboard-container">
-                <div class="col-md-3">
-                    <div class="box">
-                        <div class="center">
-                            <h2>12411</h2>
-                            <h3>Views</h3>
+    <div class="body">
+        <div class="dashboard">
+            <div class="col-md-12">
+                <div class="col-md-8">
+                    <div class="dashboard-box" style="border-bottom: none">
+                        <h3 class="request-title">Nyeste anmodninger</h3>
+
+                        @for (int i = 0; i < 6; i++)
+                        {
+                            <div class="request-dash-body">
+                                <img src="~/images/pic1.jpg" />
+                                <p>Navn: Christoffer Jespersen</p><br />
+                            </div>
+
+                        }
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="col-md-12 noPadding">
+                        <div class="dashboard-box">
+                            <i class="material-icons" style="color: #ffa500">timeline</i>
+                            <h3>Antal kampagner</h3>
+                            <h2>3</h2>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="box">
-                        <div class="center">
-                            <h2>1245</h2>
-                            <h3>Likes</h3>
+                <div class="col-md-4 new-row">
+                    <div class="col-md-12 noPadding">
+                        <div class="dashboard-box">
+                            <i class="material-icons" style="color: #53b80a">people</i>
+                            <h3>Samarbejder lavet</h3>
+                            <h2>6</h2>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="box">
-                        <div class="center">
-                            <h2>682</h2>
-                            <h3>Kommentarer</h3>
+                <div class="col-md-4 new-row">
+                    <div class="col-md-12 noPadding">
+                        <div class="dashboard-box">
+                            <i class="material-icons" style="color: #089de3">public</i>
+                            <h3>Samlet reach</h3>
+                            <h2>25k</h2>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="box" style="border: none;">
-                        <div class="center">
-                            <h2>352 min.</h2>
-                            <h3>Spilletid</h3>
-                        </div>
+            </div>
+
+
+            <div class="col-md-12 new-row">
+                <div class="col-md-8">
+                    <div class="dashboard-box">
+                        <h3 style="margin-top: 30px;">Dine kampagners engagement</h3>
+                        <canvas id="myChart" width="600" height="300"></canvas>
                     </div>
-                </div>
-                <div class="col-md-12">
-                    <div id="line-chart" style="padding: 30px; width: 100%;"></div>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="col-md-12  dashboard-container">
-                <div class="col-md-6">
-                    <div class="box">
-                        <div class="center">
-                            <h2>4793</h2>
-                            <h3>Kvinder</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="box" style="border: none;">
-                        <div class="center">
-                            <h2>5124</h2>
-                            <h3>Mænd</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div id="donutchart" style="width: 100%; height: 559px; padding: 30px;"></div>
-                </div>
-
-            </div>
-
-        </div>
-
     </div>
-
 </div>
+
 
 @section Scripts{
     <script>
-        google.charts.setOnLoadCallback(drawChart);
-        google.charts.setOnLoadCallback(drawDonutChart);
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Views", "Likes", "Comments", "Spilletid (min.)"],
+                datasets: [{
+                    label: 'status',
+                    data: [12842, 3200, 993, 6784],
+                    backgroundColor: [
+                        'rgb(8, 157, 227)',
+                        'rgb(234, 67, 53)',
+                        'rgb(83, 184, 10)',
+                        'rgb(255, 165, 0)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
 
-
-        function drawChart() {
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Day');
-            data.addColumn('number', 'Views');
-            data.addColumn('number', 'Likes');
-            data.addColumn('number', 'Kommentarer');
-            data.addColumn('number', 'Spilletid');
-
-            data.addRows([
-                [1, 37.8, 80.8, 41.8, 20],
-                [2, 30.9, 69.5, 32.4, 22],
-                [3, 25.4, 57, 25.7, 43],
-                [4, 11.7, 18.8, 10.5, 47],
-                [5, 11.9, 17.6, 10.4, 53],
-                [6, 8.8, 13.6, 7.7, 70],
-                [7, 7.6, 12.3, 9.6, 63],
-                [8, 12.3, 29.2, 10.6, 65],
-                [9, 16.9, 42.9, 14.8, 61],
-                [10, 12.8, 30.9, 11.6, 46],
-                [11, 5.3, 7.9, 4.7, 41],
-                [12, 6.6, 8.4, 5.2, 70],
-                [13, 4.8, 6.3, 3.6, 31],
-                [14, 4.2, 6.2, 3.4, 23]
-            ]);
-
-            var options = {
-                chart: {
-                    title: 'Statistik over din sociale inflydelse',
-                    subtitle: 'De seneste 30 dage'
                 },
-                width: '100%',
-                height: 500
-            };
-
-            var chart = new google.charts.Line(document.getElementById('line-chart'));
-
-            chart.draw(data, google.charts.Line.convertOptions(options));
-        }
-
-        function drawDonutChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Task', 'Hours per Day'],
-                ['Mænd', 11],
-                ['Kvinder', 2],
-            ]);
-
-            var options = {
-                pieHole: 0.5,
-                legend: 'none',
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-            chart.draw(data, options);
-        }
-
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                layout: {
+                    padding: {
+                        left: 30,
+                        right: 30,
+                        top: 30,
+                        bottom: 30
+                    }
+                }
+            }
+        });
     </script>
 }
-

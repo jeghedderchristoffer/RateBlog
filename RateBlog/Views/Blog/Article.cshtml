@@ -119,9 +119,9 @@
                 <hr />
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <form asp-action="createComment" asp-controller="blog" method="post">
+                    <form asp-action="createComment" asp-controller="blog" method="post" id="CommentBlog-Submit-ID">
                         <input type="hidden" name="id" value="@Model.Article.Id" />
-                        <textarea rows="5" placeholder="Din kommentar..." name="comment"></textarea>
+                        <textarea rows="5" placeholder="Din kommentar..." id="CommentBlog-Click-ID" name="comment"></textarea>
                         <button type="submit">SKRIV KOMMENTAR</button>
                     </form>
                 }

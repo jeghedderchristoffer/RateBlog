@@ -27,7 +27,7 @@
                 <div class="white-box">
                     <h2>Opret afstemning</h2>
                     <hr />
-                    <form asp-controller="votes" asp-action="create" method="post">
+                    <form asp-controller="votes" asp-action="create" method="post" id="Questionnaire-Submit-ID">
                         <p>Dit spørgsmål:</p>
                         <input type="text" placeholder="F.eks. Hvilket produkt skal jeg anmelde næste gang?" asp-for="@Model.Question" />
 

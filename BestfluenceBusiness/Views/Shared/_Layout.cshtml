@@ -19,46 +19,72 @@
     @Html.Raw(JavaScriptSnippet.FullScript)
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300|Open+Sans:300,400|Roboto:300|Raleway:300|Hind:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
     <script type="text/javascript">
         google.charts.load('current', { 'packages': ['line'] });
         google.charts.load("current", { packages: ["corechart"] });
+        google.charts.load('current', { 'packages': ['bar'] });
+        google.charts.load('current', {
+            'packages': ['geochart'],
+            // Note: you will need to get a mapsApiKey for your project.
+            // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+            'mapsApiKey': 'AIzaSyDWEZSe_DCiFhdLBoel5bw7YL4FEp3018g'
+        });
     </script>
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300|Roboto:300|Raleway:300" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 <body>
-    @*<nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">BusinessMockUp</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>*@
 
+    <nav class="sidenav" id="sideMenuContainer" style="display: none">
+        <div class="header">
+
+        </div>
+        <div class="content">
+            <p>GENERELT</p>
+            <ul>
+                <li><a><i class="material-icons">dashboard</i>Dashboard</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <p>KAMPAGNER</p>
+            <ul>
+                <li><a><i class="material-icons">show_chart</i>Kampagner</a></li>
+                <li><a><i class="material-icons">assignment</i>Opret kampagne</a></li>
+            </ul>
+        </div>
+
+        @*<div class="content">
+            <p>DATA</p>
+            <ul>
+                <li><a><i class="material-icons">search</i>Søg i data</a></li>
+                <li><a><i class="material-icons">email</i>Kontakt influencere</a></li>
+            </ul>
+        </div>*@
+
+        <div class="content">
+            <p>ANDET</p>
+            <ul>
+                <li><a><i class="material-icons">settings</i>Indstillinger</a></li>
+                <li><a><i class="material-icons">help_outline</i>Hjælp</a></li>
+            </ul>
+        </div>
+
+    </nav>
+
+
+    <script>
+        if (location.pathname != "/") {
+            var elements = document.getElementById("sideMenuContainer").style.display = "block";
+        }
+    </script>
 
     @RenderBody()
-
-
-
-    @*<hr />
-        <footer>
-            <p>&copy; 2017 - BusinessMockUp</p>
-        </footer>*@
-
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -80,6 +106,8 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

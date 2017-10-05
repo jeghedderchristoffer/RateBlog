@@ -20,15 +20,23 @@ namespace Bestfluence.Controllers
     {
         private readonly IEmailSender _mailSender;
         private readonly ApplicationDbContext _context;
+        private readonly SignInManager<ApplicationUser> _signInManager; 
 
-        public HomeController(IEmailSender mailSender, ApplicationDbContext context)
+        public HomeController(IEmailSender mailSender, ApplicationDbContext context, SignInManager<ApplicationUser> signInManager)
         {
             _mailSender = mailSender;
             _context = context;
+            _signInManager = signInManager; 
         }
 
         public IActionResult Index()
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Index", "Feed"); 
+            }
+
+
             return View();
         }
 

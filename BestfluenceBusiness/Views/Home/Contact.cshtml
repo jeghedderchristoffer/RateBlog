@@ -4,14 +4,41 @@
 <h2>@ViewData["Title"].</h2>
 <h3>@ViewData["Message"]</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<div class="col-md-offset-4 col-md-8">
+    <button id="instaBtn">Instagram</button>
+    <button id="faceBtn">Facebook</button>
 
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+
+    
+    <div>
+        <p id="text">Followers: <span id="followers"></span></p>
+        <p>Likes </p>
+
+        <graph></graph>
+    </div>
+
+
+</div>
+
+
+@section Scripts{ 
+    <script>
+        $("#instaBtn").click(function () {
+
+            
+
+
+            $("#followers").text(result.follower)
+
+
+        });
+
+        $("#faceBtn").click(function () {
+            $("#followers").text("123123123123123")
+        });
+
+
+
+
+    </script>
+}

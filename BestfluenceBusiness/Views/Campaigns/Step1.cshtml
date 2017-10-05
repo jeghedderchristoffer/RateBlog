@@ -1,0 +1,152 @@
+﻿@using BestfluenceBusiness.Models.CampaignsViewModel
+@model CreateViewModel
+@{
+    ViewData["Title"] = "Ny kampagne";
+} 
+<div class="content">
+    <div class="content-head">
+        <h2>Ny kampagne</h2>
+    </div>
+
+    <div class="content-body">
+        <div class="create-campaign">
+            <div class="col-md-12">
+                <div class="col-md-8">
+                    <div class="create-campaign-box">
+                        <div class="create-campaign-box-head">
+                            <ul>
+                                <li class="active">Step 1</li>
+                                <li>Step 2</li>
+                                <li>Step 3</li>
+                            </ul>
+                        </div>
+                        <div class="create-campaign-box-body">
+                            <form asp-action="Step2" asp-controller="Campaigns" method="post">
+                                <div class="col-md-12 new-row">
+                                    <div class="col-md-12">
+                                        <p>Hvad er formålet med din kampagne?</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="campaign-type">
+                                            <input type="radio" value="Salg" id="sale" asp-for="@Model.Step1.Type" />
+                                            <label for="sale">Salg</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="campaign-type">
+                                            <input type="radio" value="Branding" id="branding" asp-for="@Model.Step1.Type" />
+                                            <label for="branding">Branding</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="campaign-type">
+                                            <input type="radio" value="Kendskabsgrad" id="know" asp-for="@Model.Step1.Type" />
+                                            <label for="know">Kendskabsgrad</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 new-row">
+                                    <div class="col-md-12">
+                                        <p>Hvor skal din kampagne foregå? <span style="color: #999">(Kan vælges flere)</span></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="campaign-type">
+                                            <input type="checkbox" name="socialMedia" id="facebook" asp-for="@Model.Step1.Facebook" />
+                                            <label for="facebook">Facebook</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="campaign-type">
+                                            <input type="checkbox" name="socialMedia" id="youtube" asp-for="@Model.Step1.Youtube" />
+                                            <label for="youtube">Youtube</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="campaign-type">
+                                            <input type="checkbox" name="socialMedia" id="instagram" asp-for="@Model.Step1.Instagram" />
+                                            <label for="instagram">Instagram</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 new-row">
+                                    <div class="col-md-12">
+                                        <p>Hvor mange influencere søger du?</p>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="influencer-number">
+                                            <input type="radio" name="influencerNumber" value="1" id="1" asp-for="@Model.Step1.InfluencerNumber" />
+                                            <label for="1">1</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="influencer-number">
+                                            <input type="radio" name="influencerNumber" value="2" id="2" asp-for="@Model.Step1.InfluencerNumber" />
+                                            <label for="2">2</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="influencer-number">
+                                            <input type="radio" name="influencerNumber" value="3" id="3" asp-for="@Model.Step1.InfluencerNumber" />
+                                            <label for="3">3</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="influencer-number">
+                                            <input type="radio" name="influencerNumber" value="4" id="4" asp-for="@Model.Step1.InfluencerNumber" />
+                                            <label for="4">4</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="influencer-number">
+                                            <input type="radio" name="influencerNumber" value="5" id="5" asp-for="@Model.Step1.InfluencerNumber" />
+                                            <label for="5">5</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="influencer-number">
+                                            <input type="radio" name="influencerNumber" value="6" id="6" asp-for="@Model.Step1.InfluencerNumber" />
+                                            <label for="6">6</label>
+                                        </div>
+                                    </div>
+
+
+                                    @*<div class="col-md-6">
+                                        <input type="range" min="1" max="20" value="1" class="slider" id="myRange" asp-for="@Model.Step1.InfluencerNumber">
+                                        <br />
+                                        <p id="sliderValue" style="margin-top: 20px;"></p>
+                                    </div>*@
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="col-md-offset-8 col-md-4">
+                                        <button type="submit" class="create-campaign-continue-btn">Næste step</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("sliderValue");
+    output.innerHTML = slider.value + " influencer";
+
+    slider.oninput = function () {
+        if (this.value == 1) {
+            output.innerHTML = this.value + " influencer";
+        } else {
+            output.innerHTML = this.value + " influencere";
+        }
+
+       
+    }
+</script>

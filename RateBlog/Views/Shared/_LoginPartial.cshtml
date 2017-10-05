@@ -8,9 +8,12 @@
 @if (SignInManager.IsSignedIn(User))
 {
     var user = await UserManager.GetUserAsync(User);
+    await SignInManager.RefreshSignInAsync(user);
     var isInfluencer = (InfluencerService.IsInfluencer(user.Id)) ? "Influencer" : "Bliv influencer";
 
     <input type="hidden" value="@user.Id" id="applicationUserId" />
+    <input type="hidden" value="@isInfluencer" id="isInfluencer" />
+
     <form asp-area="" asp-controller="account" asp-action="logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right" id="dropdownPc">
 
@@ -47,7 +50,7 @@
         <ul class="nav navbar-nav navbar-right" id="dropdownMobile" style="display: none">
 
             @if (isInfluencer == "Influencer" && await UserManager.IsInRoleAsync(user, "Influencer"))
-            {
+                {
                 <li>
                     <a asp-controller="votes" asp-action="index" class="navLinks">Afstemninger</a>
                 </li>
@@ -70,10 +73,6 @@
                     <li><a id="logOutMobile" href="#" style="padding: 0 0 0 25px; line-height: 50px">Log af</a></li>
                 </ul>
             </li>
-            
-
-           
-            
         </ul>
     </form>
 }
@@ -84,4 +83,3 @@ else
         <li><a class="login-links navLinks" data-toggle="modal" data-target="#loginModal">Log ind</a></li>
     </ul>
 }
-

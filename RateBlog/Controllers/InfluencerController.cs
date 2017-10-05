@@ -166,8 +166,12 @@ namespace Bestfluence.Controllers
         [Route("/[controller]/feedback/[action]/{id}")]
         public async Task<IActionResult> Read(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
             var influencer = await _influencerService.GetInfluecerAsync(id);
+
+            if (_dbContext.Influencer.Any(x => x.Url.ToLower() == id.ToLower()))
+                influencer = await _dbContext.Influencer.SingleOrDefaultAsync(x => x.Url.ToLower() == id.ToLower());
+
+            var user = await _userManager.FindByIdAsync(influencer.Id);
 
             var gender = (user.Gender == "male") ? "Mand" : "Kvinde";
 
@@ -269,10 +273,14 @@ namespace Bestfluence.Controllers
         [Route("/[controller]/feedback/[action]/{id}")]
         public async Task<IActionResult> Give(string id)
         {
-            var influenter = _influencerRepo.Get(id);
+            var influencer = _influencerRepo.Get(id);
+
+            if (_dbContext.Influencer.Any(x => x.Url.ToLower() == id.ToLower()))
+                influencer = await _dbContext.Influencer.SingleOrDefaultAsync(x => x.Url.ToLower() == id.ToLower());
+
             var model = new GiveViewModel()
             {
-                Influencer = influenter,
+                Influencer = influencer,
                 Follower = await _userManager.GetUserAsync(User)
             };
 

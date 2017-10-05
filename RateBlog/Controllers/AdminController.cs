@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Bestfluence.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bestfluence.Controllers
 {
@@ -32,6 +34,8 @@ namespace Bestfluence.Controllers
         private readonly IFeedbackService _feedbackService;
         private readonly IRepository<FeedbackReport> _feedbackReportRepo;
         private readonly IRepository<BlogArticle> _blogRepo;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public AdminController(IRepository<FeedbackReport> feedbackReportRepo,
             IFeedbackService feedbackService,
@@ -44,7 +48,9 @@ namespace Bestfluence.Controllers
             UserManager<ApplicationUser> userManager,
             IInfluencerService influencerService,
             IInfluencerRepository influencerRepo,
-            IRepository<BlogArticle> blogRepo)
+            IRepository<BlogArticle> blogRepo,
+            ApplicationDbContext context,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _influencerService = influencerService;
@@ -58,6 +64,8 @@ namespace Bestfluence.Controllers
             _feedbackService = feedbackService;
             _feedbackReportRepo = feedbackReportRepo;
             _blogRepo = blogRepo;
+            _dbContext = context;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -217,6 +225,8 @@ namespace Bestfluence.Controllers
 
             await _userManager.AddToRoleAsync(user, "Influencer");
 
+            await _signInManager.RefreshSignInAsync(user); 
+
             await _emailSender.SendInfluencerApprovedEmailAsync(user.Name, user.Email, influencer.Alias);
             return RedirectToAction("UserProfile", new { id = model.InfluencerViewModel.Influencer.Id });
         }
@@ -257,13 +267,60 @@ namespace Bestfluence.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteUser(UserProfileViewModel model)
         {
-            var user = _userManager.Users.SingleOrDefault(x => x.Id == model.ApplicationUser.Id);
-            var result = await _userManager.DeleteAsync(user);
+            var user = await _dbContext.Users
+                .Include(x => x.Feedbacks)
+                .Include(x => x.FeedbackReports)
+                .Include(x => x.EmailNotification)
+                .Include(x => x.BlogComments)
+                .Include(x => x.BlogRatings)
+                .Include(x => x.VoteAnswers)
+                .Include(x => x.Influencer).ThenInclude(x => x.Votes).ThenInclude(x=> x.VoteQuestions).SingleOrDefaultAsync(x => x.Id == model.ApplicationUser.Id);
 
-            if (result.Succeeded)
-                return RedirectToAction("Index", "Admin");
-            else
-                return RedirectToAction("UserProfile", "Admin", new { id = model.ApplicationUser.Id });
+            foreach(var v in user.Feedbacks.ToList())
+            {
+                _dbContext.Feedback.Remove(v); 
+            }
+
+            foreach(var v in user.FeedbackReports.ToList())
+            {
+                _dbContext.FeedbackReports.Remove(v); 
+            }
+
+            foreach(var v in user.BlogComments.ToList())
+            {
+                _dbContext.BlogComments.Remove(v); 
+            }
+
+            foreach(var v in user.BlogRatings.ToList())
+            {
+                _dbContext.BlogRatings.Remove(v); 
+            }
+
+            foreach(var v in user.VoteAnswers.ToList())
+            {
+                _dbContext.VoteAnswers.Remove(v); 
+            }
+
+            if(user.Influencer != null)
+            {
+                foreach(var v in user.Influencer.Votes.Select(x => x.VoteQuestions).Select(x => x).ToList())
+                {
+                    foreach(var i in v)
+                    {
+                        _dbContext.VoteQuestions.Remove(i); 
+                    }
+                }
+
+                foreach(var v in user.Influencer.Votes)
+                {
+                    _dbContext.Votes.Remove(v);
+                }
+
+                _dbContext.Influencer.Remove(user.Influencer);
+            }
+            await _dbContext.SaveChangesAsync();
+            await _userManager.DeleteAsync(user); 
+            return RedirectToAction("Index", "Admin");
         }
 
         [HttpGet]
@@ -489,7 +546,7 @@ namespace Bestfluence.Controllers
             }
             else
             {
-                article.Publish = true; 
+                article.Publish = true;
             }
             _blogRepo.Update(article);
 
@@ -500,7 +557,7 @@ namespace Bestfluence.Controllers
         public IActionResult ArticlePreview(string id)
         {
             var article = _blogRepo.Get(id);
-            return View(article); 
+            return View(article);
         }
 
         #endregion

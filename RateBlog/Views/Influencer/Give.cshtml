@@ -30,7 +30,7 @@
         <h1 class="feedback-title">Feedback til @Model.Influencer.Alias</h1>
 
         <div class="col-md-12 influencer-give noPadding">
-            <form asp-controller="influencer" asp-action="give" method="post">
+            <form asp-controller="Influencer" asp-action="Give" method="post" id="InfluencerFeedback-Submit-ID">
 
                 @Html.HiddenFor(x => x.Influencer.Id)
                 @Html.HiddenFor(x => x.Follower.Id)
@@ -204,7 +204,7 @@
 
                     </div>
 
-                    <button type="submit" class="give-feedback-btn" disabled id="sendBtn" style="display: none; margin-bottom: 50px;">SEND SVAR</button>
+                    <button type="submit" id="sendBtn" class="give-feedback-btn" disabled style="display: none; margin-bottom: 50px;">SEND SVAR</button>
                 </div>
             </form>
         </div>
@@ -230,7 +230,9 @@
                 offset = elOffset;
             }
 
-            $('html body').animate({
+            console.log(offset);
+
+            $('html, body').animate({
                 scrollTop: offset + number
             }, 600);
 

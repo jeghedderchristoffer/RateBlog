@@ -53,7 +53,7 @@
             </div>
 
             <div class="col-md-9 col-sm-12 nopaddingmobile">
-                <form method="get" asp-area="" asp-controller="influencer" asp-action="index" style="margin-bottom: 30px;">
+                <form method="get" asp-area="" asp-controller="influencer" asp-action="index" style="margin-bottom: 30px;" id="SearchButton-Click-ID">
                     <div class="input-group">
                         <input autocomplete="off" type="text" name="search" id="search" value="@Model.SearchString" style="border: 1px solid #ddd; height: 40px" class="form-control search-input-influencer" list="searchSug" placeholder="Søg på influencere" />
                         <datalist id="searchSug"></datalist>
@@ -379,8 +379,8 @@
                 '<p class="show-score">' + avg.toFixed(2) + ' af ' + item.feedbackCount + ' ratings</p>' +
 
                 '</div>' +
-                '<a href="/Influencer/Feedback/Give/' + item.id + '" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>' +
-                '<a href="/Influencer/Feedback/Read/' + item.id + '" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />' +
+                '<a href="/influencer/feedback/give/' + item.id + '" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>' +
+                '<a href="/influencer/feedback/read/' + item.id + '" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />' +
 
                 '</div>' +
                 '</div>'

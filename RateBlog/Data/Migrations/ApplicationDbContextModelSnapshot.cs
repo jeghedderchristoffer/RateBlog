@@ -495,7 +495,7 @@ namespace Bestfluence.Migrations
             modelBuilder.Entity("Bestfluence.Models.BlogComment", b =>
                 {
                     b.HasOne("Bestfluence.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("BlogComments")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -508,7 +508,7 @@ namespace Bestfluence.Migrations
             modelBuilder.Entity("Bestfluence.Models.BlogRating", b =>
                 {
                     b.HasOne("Bestfluence.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("BlogRatings")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -529,7 +529,7 @@ namespace Bestfluence.Migrations
             modelBuilder.Entity("Bestfluence.Models.Feedback", b =>
                 {
                     b.HasOne("Bestfluence.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("Ratings")
+                        .WithMany("Feedbacks")
                         .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("Bestfluence.Models.Influencer", "Influenter")
@@ -541,7 +541,7 @@ namespace Bestfluence.Migrations
             modelBuilder.Entity("Bestfluence.Models.FeedbackReport", b =>
                 {
                     b.HasOne("Bestfluence.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("FeedbackReports")
                         .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("Bestfluence.Models.Feedback", "Feedback")
@@ -552,8 +552,8 @@ namespace Bestfluence.Migrations
             modelBuilder.Entity("Bestfluence.Models.Influencer", b =>
                 {
                     b.HasOne("Bestfluence.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("Id")
+                        .WithOne("Influencer")
+                        .HasForeignKey("Bestfluence.Models.Influencer", "Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -586,7 +586,7 @@ namespace Bestfluence.Migrations
             modelBuilder.Entity("Bestfluence.Models.Vote", b =>
                 {
                     b.HasOne("Bestfluence.Models.Influencer", "Influencer")
-                        .WithMany()
+                        .WithMany("Votes")
                         .HasForeignKey("InfluencerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -594,7 +594,7 @@ namespace Bestfluence.Migrations
             modelBuilder.Entity("Bestfluence.Models.VoteAnswer", b =>
                 {
                     b.HasOne("Bestfluence.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("VoteAnswers")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade);
 

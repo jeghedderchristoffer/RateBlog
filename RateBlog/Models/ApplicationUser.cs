@@ -21,16 +21,19 @@ namespace Bestfluence.Models
 
         public Byte[] ProfilePicture { get; set; }
 
-        public virtual ICollection<Feedback> Ratings { get; set; }
-
         public DateTime Created { get; set; }
 
         public DateTime TermsAndConditions { get; set; }
 
         public bool NewsLetter { get; set; }
 
-        public virtual EmailNotification EmailNotification { get; set; } 
-
+        public virtual EmailNotification EmailNotification { get; set; }
+        public virtual ICollection<BlogComment> BlogComments { get; set; } 
+        public virtual ICollection<BlogRating> BlogRatings { get; set; }
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
+        public virtual ICollection<FeedbackReport> FeedbackReports { get; set; }
+        public virtual ICollection<VoteAnswer> VoteAnswers { get; set; }
+        public virtual Influencer Influencer { get; set; } 
 
     }
 }

@@ -27,6 +27,10 @@ namespace BestfluenceBusiness
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRouting(options => options.LowercaseUrls = true);
+            services.AddMemoryCache();
+            services.AddSession();
+
             // Add framework services.
             services.AddMvc();
         }
@@ -36,6 +40,8 @@ namespace BestfluenceBusiness
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseSession();
 
             if (env.IsDevelopment())
             {
