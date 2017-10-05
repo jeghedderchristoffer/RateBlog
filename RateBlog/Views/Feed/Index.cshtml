@@ -1,25 +1,37 @@
-﻿@{ 
-    ViewData["Title"] = "Dit feed"; 
+﻿@model IEnumerable<RSSFeed>
+@{
+    ViewData["Title"] = "Dit feed";
 }
+
+
 
 <div class="background-all">
     <div class="navbar-allaround"></div>
 
     <div class="container" style="padding-top: 40px;">
-        <div class="col-md-offset-2 col-md-8">
-            <div class="feed-box">
-                <div class="col-md-2">
-                    <a href="#">
-                        <img class="profile-img" src="~/images/CH.png" />
-                    </a>
-                </div>
-                <div class="col-md-10">
-                    <a href="#" class="profile-link">Christoffer Skov Jespersen</a> <span class="profile-link-text">har skrevet følgende artikel</span>
-                    <h4>Sunhed, welness og fitness</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
-                    <h4 style="margin-bottom: 5px; float: right;"><a>Læs mere</a></h4>
-                </div>
+        <div class="col-md-4">
+            <div class="white-box">
+                <h3 style="margin-top: 10px">Du følger: </h3>
             </div>
+        </div>
+        <div class="col-md-8 nopaddingmobile">
+
+            @foreach (var v in Model)
+            {
+                <div class="feed-box">
+                    <div class="col-md-2">
+                        <a href="#">
+                            <img class="profile-img" src="~/images/CH.png" />
+                        </a>
+                    </div>
+                    <div class="col-md-10">
+                        <a href="#" class="profile-link">Christoffer Skov Jespersen</a> <span class="profile-link-text">, Blogindlæg</span>
+                        <h4>@v.Title</h4>
+                        <p>@v.Description</p>
+                        <h4 style="margin-bottom: 5px; float: right;"><a href="@v.Link">Læs mere</a></h4>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>

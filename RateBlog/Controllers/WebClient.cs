@@ -1,4 +1,0 @@
-﻿namespace Bestfluence.Controllers
-{
-    
-}

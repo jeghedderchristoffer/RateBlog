@@ -4,48 +4,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using System.Collections.Generic;
 using Bestfluence.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net;
 
 namespace Bestfluence.Controllers
 {
     public class FeedController : Controller
     {
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
 
             using (var client = new HttpClient())
             {
 
-                client.BaseAddress = new Uri("https://ceciliademant.dk");
+                client.BaseAddress = new Uri("http://fielaursen.dk");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
-                HttpResponseMessage RSSdata = await client.GetAsync("/blog/feed");
+                HttpResponseMessage RSSdata = await client.GetAsync("/feed");
 
-                //string RSSData = client.DownloadString(RSSURL);
                 if (RSSdata.IsSuccessStatusCode)
                 {
-                    XDocument xml = XDocument.Parse(RSSdata.ToString());
+
+
+                    XDocument xml = XDocument.Parse(await RSSdata.Content.ReadAsStringAsync());
                     var RSSFeedData = (from x in xml.Descendants("item")
                                        select new RSSFeed
                                        {
-                                           Title = ((string)x.Element("title")),
-                                           Link = ((string)x.Element("link")),
-                                           Description = ((string)x.Element("description")),
-                                           PubData = ((string)x.Element("pubDate"))
-                                       });
-                    ViewBag.RSSFeed = RSSFeedData;               
-                    
+                                           Title = WebUtility.HtmlDecode(((string)x.Element("title"))),
+                                           Link = WebUtility.HtmlDecode(((string)x.Element("link"))),
+                                           Description = WebUtility.HtmlDecode(((string)x.Element("description"))),
+                                           PubData = WebUtility.HtmlDecode(((string)x.Element("pubDate")))
+                                       }).ToList();
+
+                    foreach(var v in RSSFeedData)
+                    {
+                        if (v.Description.Length > 250)
+                            v.Description = v.Description.Substring(0, 250) + "..."; 
+                    }
+
+                    return View(RSSFeedData);
+
                 }
                 return View();
             }
-                
-          
         }
     }
 }
