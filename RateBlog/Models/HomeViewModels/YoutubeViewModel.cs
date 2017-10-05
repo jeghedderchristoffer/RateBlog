@@ -11,7 +11,7 @@ namespace Bestfluence.Models.HomeViewModels
         public YoutubeData YoutubeData { get; set; }
         public YoutubeCountry YoutubeCountry { get; set; }
 
-        public int Engagement { get; set; }
+        public double Engagement { get; set; }
         public int Views { get; set; }
         public double MaleViews { get; set; }
         public double FemaleViews { get; set; }

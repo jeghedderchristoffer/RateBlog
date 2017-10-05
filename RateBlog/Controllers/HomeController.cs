@@ -143,7 +143,9 @@ namespace Bestfluence.Controllers
                 Subcribers = model.Subcribers,
                 MaleViews = model.MaleViews,
                 Comments = model.Comments,
-                Dislike = model.Dislike,               
+                Dislike = model.Dislike,  
+                Engagement = model.Engagement,
+                
 
               };
 
