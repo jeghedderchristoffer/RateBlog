@@ -325,6 +325,24 @@ namespace Bestfluence.Migrations
                     b.ToTable("Platform");
                 });
 
+            modelBuilder.Entity("Bestfluence.Models.RSSFeed", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Link");
+
+                    b.Property<string>("PubData");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RSSFeed");
+                });
+
             modelBuilder.Entity("Bestfluence.Models.Vote", b =>
                 {
                     b.Property<string>("Id")
