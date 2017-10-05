@@ -36,7 +36,10 @@ namespace Bestfluence.Data
         // Vote
         public DbSet<Vote> Votes { get; set; }
         public DbSet<VoteQuestion> VoteQuestions { get; set; }
-        public DbSet<VoteAnswer> VoteAnswers { get; set; } 
+        public DbSet<VoteAnswer> VoteAnswers { get; set; }
+
+        //RSS feed
+        public DbSet<RSSFeed> RSSFeed { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
