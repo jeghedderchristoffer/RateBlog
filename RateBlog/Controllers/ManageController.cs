@@ -258,7 +258,8 @@ namespace Bestfluence.Controllers
                         model.Url.ToLower().StartsWith("account") ||
                         model.Url.ToLower().StartsWith("blog") ||
                         model.Url.ToLower().StartsWith("manage") ||
-                        model.Url.ToLower().StartsWith("votes"))
+                        model.Url.ToLower().StartsWith("votes") ||
+                        model.Url.ToLower().StartsWith("feed"))
                     {
                         TempData["Error"] = "Denne URL kan ikke bruges. Prøv en anden";
                         if (influencer != null) { model.InfluencerCategories = influencer.InfluenterKategori; }

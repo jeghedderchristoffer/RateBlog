@@ -1,31 +1,4 @@
-﻿// Update navbar to mobile version 
-
-$(document).ready(function () {
-    if (window.innerWidth <= 767) {
-        $("#dropdownPc").hide();
-        $("#dropdownMobile").show();
-    }
-    else {
-        $("#dropdownPc").show();
-        $("#dropdownMobile").hide();
-    }
-
-    $(window).resize(function () {
-        if (window.innerWidth <= 767) {
-            $("#dropdownPc").hide();
-            $("#dropdownMobile").show();
-        }
-        else {
-            $("#dropdownPc").show();
-            $("#dropdownMobile").hide();
-        }
-    });
-});
-
-
-
-
-
+﻿
 // Rating stars
 
 $(document).ready(function () {
@@ -49,7 +22,6 @@ $(document).ready(function () {
     });
 });
 
-
 // DatePicker
 
 $(document).ready(function () {
@@ -69,10 +41,7 @@ $(document).ready(function () {
 // Log out
 
 $(document).ready(function () {
-    $("#logOut").click(function () {
-        $("#logoutForm").submit();
-    });
-    $("#logOutMobile").click(function () {
+    $("#logoutBtn").click(function () {
         $("#logoutForm").submit();
     });
 });

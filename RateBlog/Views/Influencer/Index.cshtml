@@ -9,8 +9,6 @@
 
 <div class="background-all">
 
-    <div class="navbar-allaround"></div>
-
     <div class="container" style="padding-top: 30px; padding-left: 0; padding-right: 0;">
         <div class="col-md-12">
             <div class="col-md-3 hidden-sm hidden-xs">
@@ -52,7 +50,7 @@
 
             </div>
 
-            <div class="col-md-9 col-sm-12 nopaddingmobile">
+            <div class="col-md-9 col-sm-12 col-xs-12 nopaddingmobile">
                 <form method="get" asp-area="" asp-controller="influencer" asp-action="index" style="margin-bottom: 30px;" id="SearchButton-Click-ID">
                     <div class="input-group">
                         <input autocomplete="off" type="text" name="search" id="search" value="@Model.SearchString" style="border: 1px solid #ddd; height: 40px" class="form-control search-input-influencer" list="searchSug" placeholder="Søg på influencere" />
@@ -90,7 +88,7 @@
 
                 </div>
 
-                <div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px; height: 150px; display: none" id="createInfluencer">
+                @*<div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px; height: 150px; display: none" id="createInfluencer">
                     <div class="outer">
                         <div class="middle">
                             <div class="inner">
@@ -99,7 +97,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*@
 
                 <div class="col-md-12 text-center" id="loadingBox" style="height: 50px">
                     <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
@@ -165,7 +163,7 @@
                     }
 
                     $.each(result, function (i, item) {
-                        var newItem = $(LoadHtml(item)).hide(); 
+                        var newItem = $(LoadHtml(item)).hide();
                         $("#listOfInfluencers").append(newItem);
                         newItem.fadeIn("slow");
                     })
@@ -317,73 +315,107 @@
             for (var i = 0; i <= floor; i++) {
                 if (hasDeciaml) {
                     if (i === floor) {
-                        stars += '<div class="show-rating-box"><i class="fa fa-star-half" aria-hidden="true"></i></div>'
+                        stars += '<div class="show-rating-box-small"><i class="fa fa-star-half" aria-hidden="true"></i></div>'
                     }
                     else {
-                        stars += '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>'
+                        stars += '<div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div>'
                     }
                 } else {
                     if (floor <= i) {
                         break;
                     }
-                    stars += '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>'
+                    stars += '<div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div>'
                 }
             }
 
-            var vote = ""; 
-            if (item.influencerVote) {
-                vote = ' <span class="vote-label">AFSTEMNING</<span>';
-            }
+            
 
             var hrefUrl = "/influencer/profile/" + item.id;
 
             if (item.url) {
-                hrefUrl = "/" + item.url; 
+                hrefUrl = "/" + item.url;
             }
 
-            return '<div class="col-md-12 search-result noPaddingLeft">' +
-                '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">' +
-                ' <a href="' + hrefUrl + '">' +
-                ' <img class="influ-img" src="/Manage/UsersProfilePic/' + item.id + '" />' +
-                '</a>' +
-                '</div>' +
+            var vote = "";
+            if (item.influencerVote) {
+                vote = '<div class="vote-span-container"><a class="vote-span" href="' + hrefUrl + '">AFSTEMING IGANG</a></div>';
+            }
 
-                '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 noPadding search-body">' +
-                '<div class="outer"><div class="middle"><div class="inner inner-influencer" style="text-align: left;">' +
-                '<h4><a class="search-result-link" href="' + hrefUrl + '">' + item.alias +  vote +' </a></h4>' +
-                '<p style="margin-top: 12px">' + categories + '</p>' +
-                '<div class="center-social">' +
-                platforms +
+            return '<div class="influencer-result-box">' +
+                '<div class="col-lg-2 col-md-2 col-sm-2">' +
+                '<img src="/Manage/UsersProfilePic/' + item.id + '" />' +
                 '</div>' +
-                '</div></div></div>' +
+                '<div class="col-lg-7 col-md-7 col-sm-7">' +
+                '<a class="profile-link" href="' + hrefUrl + '">' + item.alias + '</a>' +
+                '<span class="categories">' + categories + '</span>' +
+                '<div class="hidden-xs" style="float: left">' +
+                '<a class="follow-btn rss-feed"><i class="fa fa-rss" aria-hidden="true"></i> Følg</a><a class="follow-btn star"><i class="fa fa-star" aria-hidden="true"></i> Giv feedback</a><a class="follow-btn heart"><i class="fa fa-heart" style="font-size: 12px" aria-hidden="true"></i> Læs feedback</a>' +
                 '</div>' +
-
-                '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding influencer-index">' +
-                '<div class="show-rating" style="margin-top: 15px;">' +
-                '<div class="show-rating-container center-block">' +
-
-                '<div class="show-rating-front">' +
+                '</div>' +
+                '<div class="col-lg-3 col-md-3 col-sm-3 noPadding">' +
+                '<div class="show-rating-small">' +
+                '<div class="show-rating-container-small center-block">' +
+                '<div class="show-rating-front-small">' +
                 stars +
                 '</div>' +
+                '<div class="show-rating-back-small">' +
+                '<div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div><div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div><div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div><div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div><div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<span class="score">' + avg.toFixed(2) + ' af ' + item.feedbackCount + ' ratings</span>' +
+                vote +
+                '<div class="visible-xs" style="float: left; width: 100%;">' +
+                '<a class="follow-btn rss-feed"><i class="fa fa-rss" aria-hidden="true"></i> Følg influencer</a>' +
+                '<a class="follow-btn star"><i class="fa fa-star" aria-hidden="true"></i> Giv feedback</a>' +
+                '<a class="follow-btn heart"><i class="fa fa-heart" style="font-size: 12px" aria-hidden="true"></i> Læs feedback</a>' +
+                '</div>' +
+                '</div></div>'
 
-                '<div class="show-rating-back">' +
-                '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
-                '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
-                '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
-                '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
-                '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
 
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<p class="show-score">' + avg.toFixed(2) + ' af ' + item.feedbackCount + ' ratings</p>' +
+            //return '<div class="col-md-12 search-result noPaddingLeft">' +
+            //    '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">' +
+            //    ' <a href="' + hrefUrl + '">' +
+            //    ' <img class="influ-img" src="/Manage/UsersProfilePic/' + item.id + '" />' +
+            //    '</a>' +
+            //    '</div>' +
 
-                '</div>' +
-                '<a href="/influencer/feedback/give/' + item.id + '" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>' +
-                '<a href="/influencer/feedback/read/' + item.id + '" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />' +
+            //    '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 noPadding search-body">' +
+            //    '<div class="outer"><div class="middle"><div class="inner inner-influencer" style="text-align: left;">' +
+            //    '<h4><a href="' + hrefUrl + '">' + item.alias +  vote +' </a></h4>' +
+            //    '<p style="margin-top: 12px">' + categories + '</p>' +
+            //    '<div class="center-social">' +
+            //    platforms +
+            //    '</div>' +
+            //    '</div></div></div>' +
+            //    '</div>' +
 
-                '</div>' +
-                '</div>'
+            //    '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding influencer-index">' +
+            //    '<div class="show-rating" style="margin-top: 15px;">' +
+            //    '<div class="show-rating-container center-block">' +
+
+            //    '<div class="show-rating-front">' +
+            //    stars +
+            //    '</div>' +
+
+            //    '<div class="show-rating-back">' +
+            //    '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+            //    '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+            //    '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+            //    '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+            //    '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+
+            //    '</div>' +
+            //    '</div>' +
+            //    '</div>' +
+            //    '<p class="show-score">' + avg.toFixed(2) + ' af ' + item.feedbackCount + ' ratings</p>' +
+
+            //    '</div>' +
+            //    '<a href="/influencer/feedback/give/' + item.id + '" class="feedback-influencer-btn" style="background: #089de3"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>' +
+            //    '<a href="/influencer/feedback/read/' + item.id + '" class="feedback-influencer-btn feedback-margin-bot"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a><br />' +
+
+            //    '</div>' +
+            //    '</div>'
 
         }
 

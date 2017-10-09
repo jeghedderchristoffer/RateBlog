@@ -134,8 +134,11 @@ namespace Bestfluence.Services
 
             if (influencer == null)
             {
-                feedback.IsAnswerRead = true;
-                _feedbackRepo.Update(feedback);
+                if(feedback.Answer != null)
+                {
+                    feedback.IsAnswerRead = true;
+                    _feedbackRepo.Update(feedback);
+                }
                 return _feedbackRepo.GetAll().Where(x => x.IsAnswerRead == false && x.Answer != null && x.ApplicationUserId == userId).Count();
             }
             else

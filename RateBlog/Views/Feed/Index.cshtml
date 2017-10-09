@@ -1,37 +1,161 @@
 ﻿@model IEnumerable<RSSFeed>
+@inject Bestfluence.Services.Interfaces.IFeedService FeedService
 @{
     ViewData["Title"] = "Dit feed";
 }
 
+<div class="background-all" style="padding: 0;">
+
+    <div class="container">
+        <div class="feed-sidemenu">
+            <h4 style="margin-bottom: 15px;">DU FØLGER:</h4>
+            <ul>
+                <li><img src="~/images/CH.png" />Christoffer Jespersen</li>
+                <li><img src="~/images/Cecilia.png" />Cecilia Demant</li>
+                <li><img src="~/images/Nikolaj.png" />Nikolaj Jespersen</li>
+                <li><img src="~/images/CH.png" />Christoffer Jespersen</li>
+                <li><img src="~/images/Cecilia.png" />Cecilia Demant</li>
+                <li><img src="~/images/Nikolaj.png" />Nikolaj Jespersen</li>
+                <li><img src="~/images/CH.png" />Christoffer Jespersen</li>
+                <li><img src="~/images/Cecilia.png" />Cecilia Demant</li>
 
 
-<div class="background-all">
-    <div class="navbar-allaround"></div>
-
-    <div class="container" style="padding-top: 40px;">
-        <div class="col-md-4">
-            <div class="white-box">
-                <h3 style="margin-top: 10px">Du følger: </h3>
-            </div>
+            </ul>
         </div>
-        <div class="col-md-8 nopaddingmobile">
 
-            @foreach (var v in Model)
+        <div class="col-lg-offset-3 col-lg-7 col-md-offset-2 col-md-8 col-sm-12" style="padding-top: 40px; padding-left: 0; padding-right: 0">
+
+            @foreach (var v in Model.OrderBy(x => x.TimeSincePublished))
             {
-                <div class="feed-box">
-                    <div class="col-md-2">
-                        <a href="#">
-                            <img class="profile-img" src="~/images/CH.png" />
-                        </a>
-                    </div>
-                    <div class="col-md-10">
-                        <a href="#" class="profile-link">Christoffer Skov Jespersen</a> <span class="profile-link-text">, Blogindlæg</span>
-                        <h4>@v.Title</h4>
-                        <p>@v.Description</p>
-                        <h4 style="margin-bottom: 5px; float: right;"><a href="@v.Link">Læs mere</a></h4>
+                <div class="feed">
+                    <div class="feed-body">
+                        <div class="col-md-1 col-sm-1 noPadding">
+                            <img class="profileimg" src="~/images/CH.png" />
+                        </div>
+                        <div class="col-md-11 col-sm-11">
+                            <div class="feed-top">
+                                <a href="#" class="profile-link">CHRISTOFFER JESPERSEN</a>
+                                <span class="time">@FeedService.GetTimeString(v.TimeSincePublished)</span>
+
+                                @if (v.Type == "Blog")
+                                {
+                                    <span class="type"><i class="fa fa-globe" aria-hidden="true" style="color: #5E9DC8"></i> Blog</span>
+                                }
+                                else if (v.Type == "Youtube")
+                                {
+                                    <span class="type"><i class="fa fa-youtube-play" aria-hidden="true" style="color: #bb0000"></i> YouTube</span>
+                                }
+                                else if (v.Type == "Instagram")
+                                {
+                                    <span class="type"><i class="fa fa-instagram" aria-hidden="true"></i> Instagram</span>
+                                }
+
+                            </div>
+                            <h4 style="font-weight: bold;">@v.Title</h4>
+                            <p>@v.Description</p>
+
+                            @if (v.Type == "Blog")
+                            {
+                                <img class="blog-img" @v.Src />
+                                <a target="_blank" href="@v.Link" class="go-link">Læs mere</a>
+                            }
+                            else if (v.Type == "Youtube")
+                            {
+                                <div class="videoWrapper">
+                                    <iframe width="560" height="349" src="@v.Src" allowfullscreen frameborder="0"></iframe>
+                                </div>
+                                <a target="_blank" class="go-link" href="@v.Link">Se video</a>
+                            }
+                            else if (v.Type == "Instagram")
+                            {
+                                <img class="blog-img" src="@v.Src" />
+                                <a target="_blank" class="go-link" href="@v.Link">Se profil</a>
+                            }
+
+                            <a target="_blank" class="go-link feedback-btn" href="@v.Link">Giv feedback</a>
+
+                        </div>
                     </div>
                 </div>
+
             }
+
+
         </div>
+
     </div>
+
+    @*<div class="container-fluid">
+
+            <div class="feed-sidemenu">
+                <h4>Du følger:</h4>
+            </div>
+
+            <div class="col-md-12">
+                <div class="col-md-6" style="background: #000">
+                    <p>FDF</p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-md-12">
+
+
+            <div class="col-md-offset-4 col-md-4 nopaddingmobile">
+                @foreach (var v in Model.OrderBy(x => x.TimeSincePublished))
+                {
+                    <div class="feed">
+                        <div class="feed-body">
+                            <div class="col-md-2">
+                                <a href="#">
+                                    <img class="profile-img" src="~/images/CH.png" />
+                                </a>
+                            </div>
+                            <div class="col-md-10 nopaddingmobile">
+                                <a href="#" class="profile-link">CECILIA DEMANT</a>
+                                <span class="profile-text">
+                                    <span style="font-weight: normal;">|</span> @v.Type.ToUpper()
+                                </span>
+                                <span style="float: right">
+                                    @FeedService.GetTimeString(v.TimeSincePublished)
+                                </span>
+                                <h4 style="margin-bottom: 15px;">@v.Title</h4>
+                                <p>@Html.Raw(v.Description)</p>
+
+                                @if (v.Type == "Blog")
+                                {
+                                    <img class="blog-img" @v.Src />
+                                        <a href="@v.Link" target="_blank" class="feed-continue-link">Læs mere</a>
+                                }
+                                else if (v.Type == "Instagram")
+                                {
+                                    <img class="blog-img" src="@v.Src" />
+                                        <a href="@v.Link" target="_blank" class="feed-continue-link instagram-color">Se profil</a>
+                                }
+                                else if (v.Type == "Youtube")
+                                {
+                                    <div class="videoWrapper">
+                                        <iframe width="560" height="349" src="@v.Src" allowfullscreen frameborder="0"></iframe>
+                                    </div>
+                                        <a href="@v.Link" target="_blank" class="feed-continue-link" style="background: #bb0000">Se mere</a>
+                                }
+                            </div>
+                        </div>
+                        <div class="feed-footer">
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>*@
 </div>
+
+
+
+@section Scripts{
+    <script>
+        document.getElementById("myFooter").style.display = "none";
+    </script>
+}

@@ -93,6 +93,7 @@ namespace Bestfluence
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IFeedbackService, FeedbackService>();
             services.AddTransient<IBlogService, BlogService>();
+            services.AddTransient<IFeedService, FeedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
