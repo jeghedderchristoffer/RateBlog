@@ -200,6 +200,7 @@ namespace Bestfluence.Controllers
 
             influencer.ProfileText = model.InfluencerViewModel.Influencer.ProfileText;
             influencer.Alias = model.InfluencerViewModel.Influencer.Alias;
+            influencer.Url = model.InfluencerViewModel.Influencer.Url; 
 
             _influencerRepo.SaveChanges();
 
