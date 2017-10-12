@@ -61,48 +61,49 @@
                     </div>
                 </form>
 
+
                 @if (!SignInManager.IsSignedIn(User))
-                {
-                    <div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px; height: 150px">
+                    {
+                        <div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px; height: 150px">
+                            <div class="outer">
+                                <div class="middle">
+                                    <div class="inner">
+                                        <h4 style="margin-top: 0; margin-bottom: 15px">Bruger du sociale medier?</h4>
+                                        <a href="#" data-toggle="modal" data-target="#opretModal" class="btn-create center-block">Opret en profil</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-md-12 col-sm-12">
+                        <div class="loading-box-top" id="sortLoadingBox">
+                            <div class="text-center">
+                                <i style="color: #089de3" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="listOfInfluencers">
+
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 search-result" style="padding-top: 15px; padding-bottom: 15px; height: 150px; display: none" id="createInfluencer">
                         <div class="outer">
                             <div class="middle">
                                 <div class="inner">
-                                    <h4 style="margin-top: 0; margin-bottom: 15px">Bruger du sociale medier?</h4>
-                                    <a href="#" data-toggle="modal" data-target="#opretModal" class="btn-create center-block">Opret en profil</a>
+                                    <h4 style="margin-top: 0; margin-bottom: 15px">Mangler vi din influencer?</h4>
+                                    <a asp-controller="influencer" asp-action="create" class="btn-create center-block">Opret din influencer</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                }
 
-                <div class="col-md-12">
-                    <div class="loading-box-top" id="sortLoadingBox">
-                        <div class="text-center">
-                            <i style="color: #089de3" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                            <span class="sr-only">Loading...</span>
-                        </div>
+                    <div class="col-md-12 text-center" id="loadingBox" style="height: 50px">
+                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
                     </div>
-                </div>
-
-                <div id="listOfInfluencers">
-
-                </div>
-
-                @*<div class="col-md-12 search-result" style="padding-top: 15px; padding-bottom: 15px; height: 150px; display: none" id="createInfluencer">
-                    <div class="outer">
-                        <div class="middle">
-                            <div class="inner">
-                                <h4 style="margin-top: 0; margin-bottom: 15px">Mangler vi din influencer?</h4>
-                                <a asp-controller="influencer" asp-action="create" class="btn-create center-block">Opret din influencer</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
-
-                <div class="col-md-12 text-center" id="loadingBox" style="height: 50px">
-                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                    <span class="sr-only">Loading...</span>
-                </div>
             </div>
         </div>
     </div>
@@ -328,52 +329,104 @@
                 }
             }
 
-            
-
             var hrefUrl = "/influencer/profile/" + item.id;
 
             if (item.url) {
                 hrefUrl = "/" + item.url;
             }
 
-            var vote = "";
-            if (item.influencerVote) {
-                vote = '<div class="vote-span-container"><a class="vote-span" href="' + hrefUrl + '">AFSTEMING IGANG</a></div>';
+            var followBtn = '<a class="button btn-rss" id="' + item.id + '" style="border-left: none"><i style="color: #f26522" class="fa fa-rss" aria-hidden="true"></i></a>'; 
+
+            if (item.follows) {
+                followBtn = '<a class="button btn-rss follow" id="' + item.id + '" style="border-left: none"><i style="color: #f26522" class="fa fa-times" aria-hidden="true"></i></a>'
             }
 
+            var vote = ""; 
+
+            if (item.influencerVote) {
+                vote = '<span class="vote-span">AFSTEMING</span>';
+            }
+
+            var alias = item.alias; 
+            var aliasLower = alias.toLowerCase();
+
+            var loggedIn = $('#applicationUserId').val();
+            var followText = item.followerCount + " følger <span style='text-transform: capitalize'>" + aliasLower + "</span>"; 
+
             return '<div class="influencer-result-box">' +
-                '<div class="col-lg-2 col-md-2 col-sm-2">' +
+                vote +
+                '<div class="col-md-4 col-sm-4 noPadding">' +
                 '<img src="/Manage/UsersProfilePic/' + item.id + '" />' +
-                '</div>' +
-                '<div class="col-lg-7 col-md-7 col-sm-7">' +
-                '<a class="profile-link" href="' + hrefUrl + '">' + item.alias + '</a>' +
-                '<span class="categories">' + categories + '</span>' +
-                '<div class="hidden-xs" style="float: left">' +
-                '<a class="follow-btn rss-feed"><i class="fa fa-rss" aria-hidden="true"></i> Følg</a><a class="follow-btn star"><i class="fa fa-star" aria-hidden="true"></i> Giv feedback</a><a class="follow-btn heart"><i class="fa fa-heart" style="font-size: 12px" aria-hidden="true"></i> Læs feedback</a>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-lg-3 col-md-3 col-sm-3 noPadding">' +
-                '<div class="show-rating-small">' +
+                '<div class="visible-xs"><a href="' + hrefUrl + '" class="profile-link">' + alias + item.validatedInfluencer + '</a></div>' +
+                '<div class="show-rating-small" style="margin-top: 8px;">' +
                 '<div class="show-rating-container-small center-block">' +
                 '<div class="show-rating-front-small">' +
                 stars +
                 '</div>' +
                 '<div class="show-rating-back-small">' +
-                '<div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div><div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div><div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div><div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div><div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
+                '<div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                '<div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                '<div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                '<div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                '<div class="show-rating-box-small"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+                '</div></div></div>' +
                 '<span class="score">' + avg.toFixed(2) + ' af ' + item.feedbackCount + ' ratings</span>' +
-                vote +
-                '<div class="visible-xs" style="float: left; width: 100%;">' +
-                '<a class="follow-btn rss-feed"><i class="fa fa-rss" aria-hidden="true"></i> Følg influencer</a>' +
-                '<a class="follow-btn star"><i class="fa fa-star" aria-hidden="true"></i> Giv feedback</a>' +
-                '<a class="follow-btn heart"><i class="fa fa-heart" style="font-size: 12px" aria-hidden="true"></i> Læs feedback</a>' +
                 '</div>' +
-                '</div></div>'
+                '<div class="col-md-8 col-sm-8 noPadding">' +
+                '<div class="hidden-xs"><a href="' + hrefUrl + '" class="profile-link">' + item.alias + item.validatedInfluencer + '</a></div>' +
+                '<span class="categories">' + categories + '</span>' +
+                '<div class="center-social">' +
+                platforms +
+                '</div>' +
+                '<p class="stats-text" id="followCount' + item.id + '">' + followText + '</p>' +
+                '</div>' +
+                '<div class="foot">' +
+                '<a class="button btn-heart" href="/influencer/feedback/read/' + item.id + '"><i style="color: #ea4335" class="fa fa-heart" aria-hidden="true"></i></a>' +
+                '<a class="button btn-star" href="/influencer/feedback/give/' + item.id + '"><i style="color: #fd4" class="fa fa-star star-border" aria-hidden="true"></i></a>' +
+                followBtn +
+                '</div></div>';
 
 
-            //return '<div class="col-md-12 search-result noPaddingLeft">' +
+            //return '<div class="influencer-result-box">' +
+            //    '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 img-body noPadding">' +
+            //    '<img src="/Manage/UsersProfilePic/' + item.id + '"/>' +
+            //    '</div>' +
+            //    '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 body noPadding">' +
+            //    '<div class="outer">' +
+            //    '<div class="middle">' +
+            //    '<div class="inner inner-left">' +
+            //    '<a class="profile-link" href="' + hrefUrl + '">' + item.alias + '</a> ' + vote +
+            //    '<span class="categories">' + categories + '</span>' +
+            //    '<div class="center-social">' +
+            //    platforms +
+            //    '</div>' +
+            //    '</div>' +
+            //    '</div>' +
+            //    '</div>' +
+            //    '</div>' +
+            //    '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 noPadding">' +
+            //    '<div class="show-rating" style="margin-top: 10px;">' +
+            //    '<div class="show-rating-container center-block">' +
+            //    '<div class="show-rating-front">' +
+            //    stars +
+            //    '</div>' +
+            //    '<div class="show-rating-back">' +
+            //    '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+            //    '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+            //    '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+            //    '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+            //    '<div class="show-rating-box"><i class="fa fa-star" aria-hidden="true"></i></div>' +
+            //    '</div>' +
+            //    '</div>' +
+            //    '<span class="score">' + avg.toFixed(2) + ' af ' + item.feedbackCount + ' ratings</span>' +
+            //    '</div>' +
+            //    '<a href="/influencer/feedback/give/' + item.id + '" class="button button-star" style="background: #3AB1E9">GIV FEEDBACK</a>' +
+            //    '<a href="/influencer/feedback/read/' + item.id + '" class="button button-heart" style="background: #53b80a">LÆS FEEDBACK</a>' +
+            //    '<a class="button button-rss" style="background: #ffa500">FØLG INFLUENCER</a>' +
+            //    '</div>' +
+            //'</div>'
+
+             //return '<div class="col-md-12 search-result noPaddingLeft">' +
             //    '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 search-result-box">' +
             //    ' <a href="' + hrefUrl + '">' +
             //    ' <img class="influ-img" src="/Manage/UsersProfilePic/' + item.id + '" />' +
@@ -416,11 +469,54 @@
 
             //    '</div>' +
             //    '</div>'
-
         }
 
         $(document).ready(function () {
             FetchData();
+
+            $(document).delegate(".btn-rss", "click", function () {
+                var element = $(this); 
+                var id = $(this).attr('id') // or this.id
+
+                $.ajax({
+                    url: "/Influencer/Follow",
+                    method: "POST",
+                    dataType: 'json',
+                    data: {
+                        influencerId: id
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        if (result === "Follow") {
+                            element.addClass("follow");
+                            element.find('i').removeClass("fa-rss");
+                            element.find('i').addClass("fa-times");
+                            element.find('i').css("fontSize", "15px");
+                            var currentCount = Number($("#followCount" + id).text().match(/\d+/)[0]);
+                            var name = $("#followCount" + id).find("span").text();
+                            $("#followCount" + id).html((currentCount + 1) + " følger <span style='text-transform: capitalize'>" + name + "</span>");
+                        }
+                        else if (result === "Unfollow") {
+                            element.removeClass("follow");
+                            element.find('i').addClass("fa-rss");
+                            element.find('i').removeClass("fa-times");
+                            element.find('i').css("fontSize", "14px");
+                            var currentCount = Number($("#followCount" + id).text().match(/\d+/)[0]);
+                            var name = $("#followCount" + id).find("span").text();
+                            $("#followCount" + id).html((currentCount - 1) + " følger <span style='text-transform: capitalize'>" + name + "</span>");
+                        }
+                        else if (result == "NeedAuthorize") {
+                            $('#opretModal').modal('show');
+                        }
+                    },
+                    error: function () {
+                        console.log("fail follow");
+                    }
+                });
+
+            });
+
+
         });
 
         $(window).scroll(function () {

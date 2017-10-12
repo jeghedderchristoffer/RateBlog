@@ -8,9 +8,9 @@ namespace Bestfluence.Services.Interfaces
 {
     public interface IFeedService
     {
-        Task<IEnumerable<RSSFeed>> GetBlogFeedAsync(string blogUrl, string parameter);
-        Task<IEnumerable<RSSFeed>> GetYoutubeFeedAsync(string youtubeUrl, string parameter);
-        Task<IEnumerable<RSSFeed>> GetInstagramFeedAsync(string instagramUrl); 
+        Task<IEnumerable<RSSFeed>> GetBlogFeedAsync(string blogUrl, string parameter, string influencerId, string alias);
+        Task<IEnumerable<RSSFeed>> GetYoutubeFeedAsync(string youtubeUrl, string parameter, string influencerId, string alias);
+        Task<IEnumerable<RSSFeed>> GetInstagramFeedAsync(string instagramUrl, string influencerId, string alias); 
         string GetTimeString(int hours);
     }
 }

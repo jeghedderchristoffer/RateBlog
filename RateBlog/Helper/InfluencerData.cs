@@ -15,6 +15,9 @@ namespace Bestfluence.Helper
         public IEnumerable<string> Platforms { get; set; }
         public string ProfileText { get; set; }
         public bool InfluencerVote { get; set; }
-        public string Url { get; set; } 
+        public string Url { get; set; }
+        public string ValidatedInfluencer { get; set; }
+        public bool Follows { get; set; }
+        public int FollowerCount { get; set; } 
     }
 }

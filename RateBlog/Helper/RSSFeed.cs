@@ -13,8 +13,10 @@ namespace Bestfluence.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string PubData { get; set; }
-        public int TimeSincePublished { get; set; }  
+        public int TimeSincePublished { get; set; }
+        public string TimeString { get; set; } 
         public string Src { get; set; }
-        public string Type { get; set; } 
+        public string Type { get; set; }
+        public string Name { get; set; } 
     }
 }

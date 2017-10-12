@@ -1,161 +1,147 @@
-﻿@model IEnumerable<RSSFeed>
+﻿@model Bestfluence.Models.FeedViewModels.IndexViewModel
 @inject Bestfluence.Services.Interfaces.IFeedService FeedService
 @{
     ViewData["Title"] = "Dit feed";
 }
 
-<div class="background-all" style="padding: 0;">
+<div class="background-all">
 
     <div class="container">
         <div class="feed-sidemenu">
             <h4 style="margin-bottom: 15px;">DU FØLGER:</h4>
             <ul>
-                <li><img src="~/images/CH.png" />Christoffer Jespersen</li>
-                <li><img src="~/images/Cecilia.png" />Cecilia Demant</li>
-                <li><img src="~/images/Nikolaj.png" />Nikolaj Jespersen</li>
-                <li><img src="~/images/CH.png" />Christoffer Jespersen</li>
-                <li><img src="~/images/Cecilia.png" />Cecilia Demant</li>
-                <li><img src="~/images/Nikolaj.png" />Nikolaj Jespersen</li>
-                <li><img src="~/images/CH.png" />Christoffer Jespersen</li>
-                <li><img src="~/images/Cecilia.png" />Cecilia Demant</li>
-
-
+                @foreach (var v in Model.InfluencerList.OrderBy(x => x.Influencer.Alias))
+                {
+                    <li><img src="@Url.Action("UsersProfilePic", "Manage", new { Id = v.InfluencerId})" />@v.Influencer.Alias</li>
+                }
             </ul>
         </div>
 
         <div class="col-lg-offset-3 col-lg-7 col-md-offset-2 col-md-8 col-sm-12" style="padding-top: 40px; padding-left: 0; padding-right: 0">
 
-            @foreach (var v in Model.OrderBy(x => x.TimeSincePublished))
+            @if(Model.InfluencerList.Count() == 0)
             {
                 <div class="feed">
-                    <div class="feed-body">
-                        <div class="col-md-1 col-sm-1 noPadding">
-                            <img class="profileimg" src="~/images/CH.png" />
-                        </div>
-                        <div class="col-md-11 col-sm-11">
-                            <div class="feed-top">
-                                <a href="#" class="profile-link">CHRISTOFFER JESPERSEN</a>
-                                <span class="time">@FeedService.GetTimeString(v.TimeSincePublished)</span>
-
-                                @if (v.Type == "Blog")
-                                {
-                                    <span class="type"><i class="fa fa-globe" aria-hidden="true" style="color: #5E9DC8"></i> Blog</span>
-                                }
-                                else if (v.Type == "Youtube")
-                                {
-                                    <span class="type"><i class="fa fa-youtube-play" aria-hidden="true" style="color: #bb0000"></i> YouTube</span>
-                                }
-                                else if (v.Type == "Instagram")
-                                {
-                                    <span class="type"><i class="fa fa-instagram" aria-hidden="true"></i> Instagram</span>
-                                }
-
-                            </div>
-                            <h4 style="font-weight: bold;">@v.Title</h4>
-                            <p>@v.Description</p>
-
-                            @if (v.Type == "Blog")
-                            {
-                                <img class="blog-img" @v.Src />
-                                <a target="_blank" href="@v.Link" class="go-link">Læs mere</a>
-                            }
-                            else if (v.Type == "Youtube")
-                            {
-                                <div class="videoWrapper">
-                                    <iframe width="560" height="349" src="@v.Src" allowfullscreen frameborder="0"></iframe>
-                                </div>
-                                <a target="_blank" class="go-link" href="@v.Link">Se video</a>
-                            }
-                            else if (v.Type == "Instagram")
-                            {
-                                <img class="blog-img" src="@v.Src" />
-                                <a target="_blank" class="go-link" href="@v.Link">Se profil</a>
-                            }
-
-                            <a target="_blank" class="go-link feedback-btn" href="@v.Link">Giv feedback</a>
-
-                        </div>
-                    </div>
+                    <h4 style="text-align: center; padding: 20px 10px 1px 10px">Du skal følge dem du ønsker at se indhold fra</h4>
+                    <h5 style="text-align: center; padding: 20px 10px;">Du kan finde influencere du ønsker at følge <a asp-action="Index" asp-controller="Influencer">her</a></h5>
                 </div>
-
             }
 
+            <div id="feedContainer">
 
+            </div>
+
+            <div class="col-md-12 text-center" id="loadingBox" style="height: 50px">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
-
     </div>
-
-    @*<div class="container-fluid">
-
-            <div class="feed-sidemenu">
-                <h4>Du følger:</h4>
-            </div>
-
-            <div class="col-md-12">
-                <div class="col-md-6" style="background: #000">
-                    <p>FDF</p>
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="col-md-12">
-
-
-            <div class="col-md-offset-4 col-md-4 nopaddingmobile">
-                @foreach (var v in Model.OrderBy(x => x.TimeSincePublished))
-                {
-                    <div class="feed">
-                        <div class="feed-body">
-                            <div class="col-md-2">
-                                <a href="#">
-                                    <img class="profile-img" src="~/images/CH.png" />
-                                </a>
-                            </div>
-                            <div class="col-md-10 nopaddingmobile">
-                                <a href="#" class="profile-link">CECILIA DEMANT</a>
-                                <span class="profile-text">
-                                    <span style="font-weight: normal;">|</span> @v.Type.ToUpper()
-                                </span>
-                                <span style="float: right">
-                                    @FeedService.GetTimeString(v.TimeSincePublished)
-                                </span>
-                                <h4 style="margin-bottom: 15px;">@v.Title</h4>
-                                <p>@Html.Raw(v.Description)</p>
-
-                                @if (v.Type == "Blog")
-                                {
-                                    <img class="blog-img" @v.Src />
-                                        <a href="@v.Link" target="_blank" class="feed-continue-link">Læs mere</a>
-                                }
-                                else if (v.Type == "Instagram")
-                                {
-                                    <img class="blog-img" src="@v.Src" />
-                                        <a href="@v.Link" target="_blank" class="feed-continue-link instagram-color">Se profil</a>
-                                }
-                                else if (v.Type == "Youtube")
-                                {
-                                    <div class="videoWrapper">
-                                        <iframe width="560" height="349" src="@v.Src" allowfullscreen frameborder="0"></iframe>
-                                    </div>
-                                        <a href="@v.Link" target="_blank" class="feed-continue-link" style="background: #bb0000">Se mere</a>
-                                }
-                            </div>
-                        </div>
-                        <div class="feed-footer">
-
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>*@
 </div>
 
 
 
 @section Scripts{
     <script>
+        var index = 0;
+        var ajaxDone = 0;
+
+
         document.getElementById("myFooter").style.display = "none";
+
+        $(document).ready(function () {
+            getData();
+        });
+
+        function getData() {
+
+            $.ajax({
+                url: "/Feed/GetFeed",
+                method: "GET",
+                dataType: 'json',
+                data: {
+                    index: index
+                },
+                beforeSend: function () {
+                    ajaxDone++;
+                },
+                success: function (result) {
+
+                    if (result.length === 0) {
+                        $("#loadingBox").hide();
+                    }
+
+                    $.each(result, function (i, item) {
+                        var newItem = $(renderHtml(item)).hide();
+                        $("#feedContainer").append(newItem);
+                        newItem.fadeIn("slow");
+                    });
+
+                    index++;
+                },
+                error: function () {
+                    console.log("fail feed");
+                },
+                complete: function () {
+                    ajaxDone--;
+                }
+            });
+        }
+
+        function renderHtml(item) {
+
+            var title = "";
+            var description = "";
+
+            if (item.title) {
+                title = item.title;
+            }
+
+            if (item.description) {
+                description = item.description;
+            }
+
+            var socialIcon;
+            var srcHtml;
+            if (item.type === "Youtube") {
+                socialIcon = '<span class="type"><i class="fa fa-youtube-play" aria-hidden="true" style="color: #bb0000"></i> YouTube</span>';
+                srcHtml = '<div class="videoWrapper"><iframe width="560" height="349" src="' + item.src + '" allowfullscreen frameborder="0"></iframe></div><a target="_blank" class="go-link" href="' + item.link + '"><i class="fa fa-youtube-play" aria-hidden="true" style="color: #bb0000"></i>SE VIDEO</a>';
+            }
+            else if (item.type === 'Blog') {
+                socialIcon = '<span class="type"><i class="fa fa-globe" aria-hidden="true" style="color: #5E9DC8"></i> Blog</span>';
+                srcHtml = '<img class="blog-img" ' + item.src + ' /><a target="_blank" href="' + item.link + '" class="go-link"><i class="fa fa-globe" aria-hidden="true" style="color: #5E9DC8"></i>LÆS MERE</a>';
+            }
+            else if (item.type === 'Instagram') {
+                socialIcon = '<span class="type"><i class="fa fa-instagram" aria-hidden="true"></i> Instagram</span>'
+                srcHtml = '<img class="blog-img" src="' + item.src + '" /><a target="_blank" class="go-link" href="' + item.link + '"><i class="fa fa-instagram" aria-hidden="true"></i>SE PROFIL</a>';
+            }
+
+            return '<div class="feed">' +
+                '<div class="feed-body">' +
+                '<div class="col-md-1 col-sm-1 noPadding">' +
+                '<img class="profileimg" src="/Manage/UsersProfilePic/' + item.id + '" />' +
+                '</div>' +
+                '<div class="col-md-11 col-sm-11 nopaddingmobile">' +
+                '<div class="feed-top">' +
+                '<a href="/influencer/profile/' + item.id +'" class="profile-link">' + item.name + '</a>' +
+                '<span class="time">' + item.timeString + '</span>' +
+                socialIcon +
+                '</div>' +
+                '<h4 style="font-weight: bold;">' + title + '</h4>' +
+                '<p>' + description + '</p>' +
+                srcHtml +
+                '<a class="go-link feedback-btn" href="/influencer/feedback/give/' + item.id + '"><i class="fa fa-star star-border" style="color: #fd4" aria-hidden="true"></i>GIV FEEDBACK</a>' +
+                '</div></div></div>';
+
+        }
+
+        $(window).scroll(function () {
+            if (ajaxDone === 0) {
+                if ($(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
+                    getData();
+                }
+            }
+        });
+
     </script>
 }

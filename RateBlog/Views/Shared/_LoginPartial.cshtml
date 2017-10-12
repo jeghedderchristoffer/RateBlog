@@ -38,7 +38,14 @@
             <div class="dropdown">
                 <a href="#" class="dropdown-toggle navLinks" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Konto <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                 <ul class="dropdown-menu">
-                    <li><a asp-area="" asp-controller="manage" asp-action="profile">Vis profil</a></li>
+                    @if (isInfluencer == "Influencer")
+                    {
+                        <li><a asp-area="" asp-controller="influencer" asp-action="profile" asp-route-id="@user.Id">Vis profil</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="account" asp-action="profile" asp-route-id="@user.Id">Vis profil</a></li>
+                    }
                     <li><a asp-area="" asp-controller="manage" asp-action="edit">Rediger profil</a></li>
                     <li><a asp-area="" asp-controller="manage" asp-action="influencer">@isInfluencer</a></li>
                     <li><a asp-area="" asp-controller="manage" asp-action="notifications">Indstillinger</a></li>

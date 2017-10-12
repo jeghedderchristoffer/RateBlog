@@ -55,6 +55,20 @@
 
     <div class="navbar-allaround"></div>
 
+    @if (TempData["Success"] != null)
+    {
+        <div id="showSuc" class="alert fade in alert-success alert-dismissable alert-mobile" style="margin-top: 10px;  position: absolute; z-index: 5; left: 20%; right: 20%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @TempData["Success"]
+        </div>
+
+        <script>
+            window.setTimeout(function () {
+                $("#showSuc").fadeOut(1000);
+            }, 5000);
+        </script>
+    }
+
     <div class="container"  style="padding-top: 40px;" >
         <div class="col-md-12 noPadding">
             <div class="col-md-4 nopaddingmobile">
@@ -85,11 +99,21 @@
                         <h5>@Model.Age år</h5>
                         <h5>@Model.Gender</h5>
                     }
+
                     <br />
                     <h3 style="font-family: 'Anton', sans-serif;">BIO</h3>
                     <p style="word-break: break-word">@Model.Influenter.ProfileText</p>
                     <br />
-                    <a asp-controller="influencer" asp-action="give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
+
+                    @if (Model.Follows)
+                    {
+                        <a class="follow-button" id="@Model.Influenter.Id" style="width: 50%;"><i class="fa fa-times" style="font-size: 15px;" aria-hidden="true"></i><span>FJERN</span></a><a asp-controller="influencer" asp-action="give" asp-route-id="@Model.Influenter.Id" class="give-button" style="width: 50%; border-bottom-right-radius: 3px; border-top-right-radius: 3px; border-right: 1px solid #999;"><i class="fa fa-star star-border" aria-hidden="true"></i>GIV</a>
+                    }
+                    else
+                    {
+                        <a class="follow-button" id="@Model.Influenter.Id" style="width: 50%;"><i class="fa fa-rss" aria-hidden="true"></i><span>FØLG</span></a><a asp-controller="influencer" asp-action="give" asp-route-id="@Model.Influenter.Id" class="give-button" style="width: 50%; border-bottom-right-radius: 3px; border-top-right-radius: 3px; border-right: 1px solid #999;"><i class="fa fa-star star-border" aria-hidden="true"></i>GIV</a>
+                    }
+
                 </div>
             </div>
             <div class="col-md-8 nopaddingmobile">
@@ -330,6 +354,45 @@
                 });
             });            
         });
+
+        $(document).ready(function () {
+            $(document).delegate(".follow-button", "click", function () {
+                var element = $(this);
+                var id = $(this).attr('id') // or this.id
+                console.log(id);
+
+                $.ajax({
+                    url: "/Influencer/Follow",
+                    method: "POST",
+                    dataType: 'json',
+                    data: {
+                        influencerId: id
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        if (result === "Follow") {
+                            element.find('span').text("FJERN");
+                            element.find('i').removeClass("fa-rss");
+                            element.find('i').addClass("fa-times");
+                            element.find('i').css("fontSize", "15px");
+                        }
+                        else if (result === "Unfollow") {
+                            element.find('span').text("FØLG ");
+                            element.find('i').addClass("fa-rss");
+                            element.find('i').removeClass("fa-times");
+                            element.find('i').css("fontSize", "14px");
+                        }
+                        else if (result == "NeedAuthorize") {
+                            $('#opretModal').modal('show');
+                        }
+                    },
+                    error: function () {
+                        console.log("fail follow");
+                    }
+                });
+
+            });
+        })
 
     </script>
 }

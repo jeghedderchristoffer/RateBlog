@@ -12,10 +12,7 @@
     <meta name="description" content="Lær noget nyt om og gå på opdagelse i @Model.Influenter.Alias's profil & sociale medier.">
 }
 
-
-
-
-<div class="background-all" >
+<div class="background-all">
 
     <div class="navbar-allaround"></div>
 
@@ -54,12 +51,20 @@
 
                     }
                     <br />
+                   
                     <h3 style="font-family: 'Anton', sans-serif;">BIO</h3>
                     <p style="word-break: break-word">@Model.Influenter.ProfileText</p>
-
                     <br />
-                    <a asp-controller="influencer" asp-action="give" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #089de3;"><i class="fa fa-star icon-hover-star" aria-hidden="true"></i>&nbsp;&nbsp;Giv feedback</a>
-                    <a asp-controller="influencer" asp-action="read" asp-route-id="@Model.Influenter.Id" class="feedback-influencer-btn width100" style="background-color: #53b80a;"><i class="fa fa-heart icon-hover-heart" aria-hidden="true"></i>&nbsp;&nbsp;Se feedback</a>
+
+                    @if (Model.Follows)
+                    {
+                        <a class="follow-button" id="@Model.Influenter.Id"><i class="fa fa-times" style="font-size: 15px;" aria-hidden="true"></i><span>FJERN</span></a><a asp-controller="influencer" asp-action="give" asp-route-id="@Model.Influenter.Id" class="give-button"><i class="fa fa-star star-border" aria-hidden="true"></i>GIV</a><a asp-controller="influencer" asp-action="read" asp-route-id="@Model.Influenter.Id" class="read-button"><i class="fa fa-heart" aria-hidden="true"></i>LÆS</a>
+                    }
+                    else
+                    {
+                        <a class="follow-button" id="@Model.Influenter.Id"><i class="fa fa-rss" aria-hidden="true"></i><span>FØLG</span></a><a asp-controller="influencer" asp-action="give" asp-route-id="@Model.Influenter.Id" class="give-button"><i class="fa fa-star star-border" aria-hidden="true"></i>GIV</a><a asp-controller="influencer" asp-action="read" asp-route-id="@Model.Influenter.Id" class="read-button"><i class="fa fa-heart" aria-hidden="true"></i>LÆS</a>
+                    }
+
 
                 </div>
             </div>
@@ -164,7 +169,7 @@
                                 <h4 style="">Du skal have en profil for at svare</h4>
                                 <button class="vote-opret-btn" data-toggle="modal" data-target="#opretModal">OPRET PROFIL</button>
                             </div>
-                           
+
 
                             <div class="white-box vote-box blur-effect">
                                 <h3 class="text-center" style="margin-top: 10px ;margin-bottom: 20px"><b>AFSTEMNING</b></h3>
@@ -322,6 +327,44 @@
             }
         }
 
+        $(document).ready(function () {
+            $(document).delegate(".follow-button", "click", function () {
+                var element = $(this);
+                var id = $(this).attr('id') // or this.id
+                console.log(id);
+
+                $.ajax({
+                    url: "/Influencer/Follow",
+                    method: "POST",
+                    dataType: 'json',
+                    data: {
+                        influencerId: id
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        if (result === "Follow") {
+                            element.find('span').text("FJERN");
+                            element.find('i').removeClass("fa-rss");
+                            element.find('i').addClass("fa-times");
+                            element.find('i').css("fontSize", "15px");
+                        }
+                        else if (result === "Unfollow") {
+                            element.find('span').text("FØLG ");
+                            element.find('i').addClass("fa-rss");
+                            element.find('i').removeClass("fa-times");
+                            element.find('i').css("fontSize", "14px");
+                        }
+                        else if (result == "NeedAuthorize") {
+                            $('#opretModal').modal('show');
+                        }
+                    },
+                    error: function () {
+                        console.log("fail follow");
+                    }
+                });
+
+            });
+        })
 
 
     </script>

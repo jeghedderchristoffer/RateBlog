@@ -25,6 +25,7 @@ namespace Bestfluence.Data
         public DbSet<InfluencerCategory> InfluencerCategory { get; set; }
         public DbSet<FeedbackReport> FeedbackReports { get; set; }
         public DbSet<EmailNotification> EmailNotifications { get; set; }
+        public DbSet<UserFollower> UserFollowers { get; set; } 
         //public DbSet<FollowerRank> FollowerRanks { get; set; }
         //public DbSet<FollowerStatus> FollowerStatus { get; set; } 
 
@@ -39,7 +40,7 @@ namespace Bestfluence.Data
         public DbSet<VoteAnswer> VoteAnswers { get; set; }
 
         //RSS feed
-        public DbSet<RSSFeed> RSSFeed { get; set; }
+        //public DbSet<RSSFeed> RSSFeed { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -79,7 +80,22 @@ namespace Bestfluence.Data
             builder.Entity<EmailNotification>()
                 .HasOne(x => x.ApplicationUser)
                 .WithOne(x => x.EmailNotification)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserFollower>()
+                .HasKey(x => new { x.ApplicationUserId, x.InfluencerId }); 
+
+            builder.Entity<UserFollower>()
+                .HasOne(x => x.ApplicationUser)
+                .WithMany(x => x.UserFollowers)
+                .HasForeignKey(x => x.ApplicationUserId);
+
+            builder.Entity<UserFollower>()
+                .HasOne(x => x.Influencer)
+                .WithMany(x => x.UserFollowers)
+                .HasForeignKey(x => x.InfluencerId);
+
+
 
 
             // Customize the ASP.NET Identity model and override the defaults if needed.

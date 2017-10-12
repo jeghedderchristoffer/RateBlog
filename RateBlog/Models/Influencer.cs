@@ -30,6 +30,7 @@ namespace Bestfluence.Models
         public virtual ICollection<InfluencerPlatform> InfluenterPlatform { get; set; }
         public virtual ICollection<InfluencerCategory> InfluenterKategori { get; set; }
 
-        public virtual ICollection<Vote> Votes { get; set; } 
+        public virtual ICollection<Vote> Votes { get; set; }
+        public virtual ICollection<UserFollower> UserFollowers { get; set; } 
     }
 }

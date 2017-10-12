@@ -102,10 +102,10 @@ namespace Bestfluence.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile(string id)
         {
-            var influencer = _influencerRepo.Get(id);
+            var influencer = await _influencerService.GetInfluecerAsync(id);
 
             if (_dbContext.Influencer.Any(x => x.Url.ToLower() == id.ToLower()))
-                influencer = await _dbContext.Influencer.SingleOrDefaultAsync(x => x.Url.ToLower() == id.ToLower()); 
+                influencer = await _dbContext.Influencer.SingleOrDefaultAsync(x => x.Url.ToLower() == id.ToLower());
 
             //Burde kun kunne få den pågældene user, da Index() metoden KUN returnere Users som er influenter...
             var userInfluencer = await _userManager.FindByIdAsync(influencer.Id);
@@ -123,14 +123,25 @@ namespace Bestfluence.Controllers
             if (vote != null && currentUser != null)
                 hasVoted = vote.VoteQuestions.Select(x => x.VoteAnswers.Any(p => p.ApplicationUserId == currentUser.Id)).Any(x => x == true);
 
+            // Follows
+            var isFollowing = false;
+            if (currentUser != null)
+            {
+                if (influencer.UserFollowers.Any(x => x.ApplicationUserId == currentUser.Id))
+                    isFollowing = true;
+            }
+
+
             var model = new ShowViewModel()
             {
                 ApplicationUser = userInfluencer,
+                CurrentUser = currentUser,
                 Influenter = influencer,
                 Gender = gender,
                 Age = age,
                 Afstemning = vote,
-                HasVoted = hasVoted
+                HasVoted = hasVoted,
+                Follows = isFollowing
             };
 
             return View(model);
@@ -179,12 +190,26 @@ namespace Bestfluence.Controllers
             var age = today.Year - user.BirthDay.Year;
             if (user.BirthDay > today.AddYears(-age)) age--;
 
+            // Follows
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            var isFollowing = false;
+
+            if(currentUser != null)
+            {
+                if (influencer.UserFollowers.Any(x => x.ApplicationUserId == currentUser.Id))
+                    isFollowing = true;
+            }
+            
+
             var model = new Models.InfluenterViewModels.ReadViewModel()
             {
                 ApplicationUser = user,
+                CurrentApplicationUser = currentUser,
                 Influenter = influencer,
                 Gender = gender,
-                Age = age
+                Age = age,
+                Follows = isFollowing
             };
 
             return View(model);
@@ -375,7 +400,7 @@ namespace Bestfluence.Controllers
                 if (notificationSettings.FeedbackUpdate)
                     await _emailSender.SendInfluencerFeedbackUpdateEmailAsync(model.Influencer.Alias, _userManager.Users.SingleOrDefault(x => x.Id == model.Influencer.Id).Email, user.Name);
 
-                return RedirectToAction("Profile", "Influencer", new { Id = model.Influencer.Id });
+                return RedirectToAction("Read", "Influencer", new { Id = model.Influencer.Id });
             }
 
 
@@ -384,7 +409,7 @@ namespace Bestfluence.Controllers
         }
 
         [HttpGet]
-        public JsonResult Sorter(string[] platforme, string[] kategorier, int pageIndex, int pageSize, string search, int sortBy)
+        public async Task<JsonResult> Sorter(string[] platforme, string[] kategorier, int pageIndex, int pageSize, string search, int sortBy)
         {
             if (string.IsNullOrEmpty(search)) search = "";
 
@@ -410,6 +435,8 @@ namespace Bestfluence.Controllers
 
             List<string> orderByList = new List<string> { "Instagram", "YouTube", "SecondYouTube", "Website", "Twitch", "SnapChat", "Facebook", "Twitter" };
 
+            var user = await _userManager.GetUserAsync(User);
+
             var result = list.Select(x => new InfluencerData()
             {
                 Alias = x.Alias.ToUpper(),
@@ -419,7 +446,10 @@ namespace Bestfluence.Controllers
                 FeedbackCount = x.Ratings.Count,
                 FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4),
                 InfluencerVote = _dbContext.Votes.Any(p => p.InfluencerId == x.Id && p.Active == true),
-                Url = x.Url
+                Url = x.Url,
+                ProfileText = (string.IsNullOrEmpty(x.ProfileText)) ? "" : x.ProfileText.Substring(0, Math.Min(x.ProfileText.Length, 200)) + "...",
+                ValidatedInfluencer = (_userManager.Users.SingleOrDefault(p => p.Id == x.Id).NormalizedEmail.StartsWith("USERINFLUENCER")) ? "" : "<i class='fa fa-check-circle' aria-hidden='true' style='color: #089de3;' title='Verificeret'></i>",
+                Follows = (user != null) ? x.UserFollowers.Any(p => p.ApplicationUserId == user.Id) : false
             });
 
             switch (sortBy)
@@ -445,10 +475,9 @@ namespace Bestfluence.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetNextFromList(int pageIndex, int pageSize, string search, string[] platforme, string[] kategorier, int sortBy)
+        public async Task<JsonResult> GetNextFromList(int pageIndex, int pageSize, string search, string[] platforme, string[] kategorier, int sortBy)
         {
             if (string.IsNullOrEmpty(search)) search = "";
-
             search = WebUtility.HtmlDecode(search);
 
             var list = _influencerService.GetAll(search);
@@ -471,6 +500,8 @@ namespace Bestfluence.Controllers
 
             List<string> orderByList = new List<string> { "Instagram", "YouTube", "SecondYouTube", "Website", "Twitch", "SnapChat", "Facebook", "Twitter" };
 
+            var user = await _userManager.GetUserAsync(User);
+
             var result = list.Select(x => new InfluencerData()
             {
                 Alias = x.Alias.ToUpper(),
@@ -480,7 +511,11 @@ namespace Bestfluence.Controllers
                 FeedbackCount = x.Ratings.Count,
                 FeedbackScore = x.Ratings.Select(i => ((double)i.Kvalitet + i.Troværdighed + i.Opførsel + i.Interaktion) / 4),
                 InfluencerVote = _dbContext.Votes.Any(p => p.InfluencerId == x.Id && p.Active == true),
-                Url = x.Url
+                Url = x.Url,
+                ProfileText = (string.IsNullOrEmpty(x.ProfileText)) ? "" : x.ProfileText.Substring(0, Math.Min(x.ProfileText.Length, 200)) + "...",
+                ValidatedInfluencer = (_userManager.Users.SingleOrDefault(p => p.Id == x.Id).NormalizedEmail.StartsWith("USERINFLUENCER")) ? "" : "<i class='fa fa-check-circle' aria-hidden='true' style='color: #089de3;' title='Verificeret'></i>",
+                Follows = (user != null) ? x.UserFollowers.Any(p => p.ApplicationUserId == user.Id) : false,
+                FollowerCount = x.UserFollowers.Count
             });
 
             switch (sortBy)
@@ -528,7 +563,28 @@ namespace Bestfluence.Controllers
             return Json("Success");
         }
 
+        [HttpPost]
+        public async Task<JsonResult> Follow(string influencerId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Json("NeedAuthorize");
+            }
 
+            if (_dbContext.UserFollowers.Any(x => x.ApplicationUserId == user.Id && x.InfluencerId == influencerId))
+            {
+                _dbContext.UserFollowers.Remove(await _dbContext.UserFollowers.SingleOrDefaultAsync(x => x.ApplicationUserId == user.Id && x.InfluencerId == influencerId));
+                await _dbContext.SaveChangesAsync();
+                return Json("Unfollow");
+            }
+            else
+            {
+                await _dbContext.UserFollowers.AddAsync(new UserFollower() { ApplicationUserId = user.Id, InfluencerId = influencerId });
+                await _dbContext.SaveChangesAsync();
+                return Json("Follow");
+            }
+        }
 
         private void UpdatePlatform(string link, string name, Influencer influencer, IEnumerable<Platform> platforms)
         {

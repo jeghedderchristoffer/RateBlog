@@ -28,7 +28,8 @@ namespace Bestfluence.Services
                 {
                     return _dbContext.Influencer.Include(x => x.InfluenterPlatform).ThenInclude(x => x.Platform).Where(x => x.InfluenterPlatform.Any(p => p.Platform.Name == v)) 
                         .Include(x => x.InfluenterKategori).ThenInclude(x => x.Category)
-                        .Include(x => x.Ratings);
+                        .Include(x => x.Ratings)
+                        .Include(x => x.UserFollowers);
                 }
             }
             
@@ -38,14 +39,16 @@ namespace Bestfluence.Services
                 {
                     return _dbContext.Influencer.Include(x => x.InfluenterKategori).ThenInclude(x => x.Category).Where(x => x.InfluenterKategori.Any(p => p.Category.Name == v))
                         .Include(x => x.InfluenterPlatform).ThenInclude(x => x.Platform)
-                        .Include(x => x.Ratings);
+                        .Include(x => x.Ratings)
+                        .Include(x => x.UserFollowers); ;
                 }
             }
 
             return _dbContext.Influencer.Where(x => x.Alias.ToLower().Contains(search.ToLower()) && x.IsApproved == true)
                 .Include(x => x.InfluenterKategori).ThenInclude(x => x.Category)
                 .Include(x => x.InfluenterPlatform).ThenInclude(x => x.Platform)
-                .Include(x => x.Ratings);
+                .Include(x => x.Ratings)
+                .Include(x => x.UserFollowers);
         }
 
         public async Task<Influencer> GetInfluecerAsync(string id)
@@ -54,6 +57,7 @@ namespace Bestfluence.Services
                 .Include(x => x.InfluenterKategori).ThenInclude(x => x.Category)
                 .Include(x => x.InfluenterPlatform).ThenInclude(x => x.Platform)
                 .Include(x => x.Ratings)
+                .Include(x => x.UserFollowers)
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 

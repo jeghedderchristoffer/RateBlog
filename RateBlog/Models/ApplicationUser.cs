@@ -33,7 +33,8 @@ namespace Bestfluence.Models
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<FeedbackReport> FeedbackReports { get; set; }
         public virtual ICollection<VoteAnswer> VoteAnswers { get; set; }
-        public virtual Influencer Influencer { get; set; } 
+        public virtual Influencer Influencer { get; set; }
+        public virtual ICollection<UserFollower> UserFollowers { get; set; }  
 
     }
 }

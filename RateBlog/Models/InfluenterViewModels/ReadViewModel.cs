@@ -10,8 +10,9 @@ namespace Bestfluence.Models.InfluenterViewModels
 
         public Influencer Influenter { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser CurrentApplicationUser { get; set; } 
         public int Age { get; set; }  
         public string Gender { get; set; }
-
+        public bool Follows { get; set; } 
     }
 }

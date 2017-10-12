@@ -1,104 +1,50 @@
-﻿
+﻿@*<div class="feed">
+    <div class="feed-body">
+        <div class="col-md-1 col-sm-1 noPadding">
+            <img class="profileimg" src="~/images/CH.png" />
+        </div>
+        <div class="col-md-11 col-sm-11">
+            <div class="feed-top">
+                <a href="#" class="profile-link">CHRISTOFFER JESPERSEN</a>
+                <span class="time">@FeedService.GetTimeString(v.TimeSincePublished)</span>
 
-<div class="background-all" style="padding-top: 40px;">
+                @if (v.Type == "Blog")
+                {
+                    <span class="type"><i class="fa fa-globe" aria-hidden="true" style="color: #5E9DC8"></i> Blog</span>
+                }
+                else if (v.Type == "Youtube")
+                {
+                    <span class="type"><i class="fa fa-youtube-play" aria-hidden="true" style="color: #bb0000"></i> YouTube</span>
+                }
+                else if (v.Type == "Instagram")
+                {
+                    <span class="type"><i class="fa fa-instagram" aria-hidden="true"></i> Instagram</span>
+                }
 
-    <div class="container">
-        <div class="col-lg-9 col-md-9 col-sm-12 nopaddingmobile">
-            @for (int i = 0; i < 10; i++)
+            </div>
+            <h4 style="font-weight: bold;">@v.Title</h4>
+            <p>@v.Description</p>
+
+            @if (v.Type == "Blog")
             {
-                <div class="influencer-result-box">
-                    <div class="col-lg-3 col-md-3 col-sm-3 noPadding">
-                        <img src="~/images/CH.png" />
-                        <a class="profile-link" href="#">ELISABETH B. CHRISTENSEN</a>
-                    </div>
-                    <div class="col-lg-7 col-md-7 col-sm-7">
-
-                            <span class="categories">Gaming | Lifestyle | Beauty | Fashion | Personal | Interests</span>
-
-                            <div class="center-social">
-                                    <a href="http://www.twitter.com/DjChris" target="_blank" class="fa fa-search-o fa-youtube-play fa-youtube-search"></a>
-                                    <a href="http://www.twitter.com/DjChris" target="_blank" class="fa fa-search-o fa-instagram fa-instagram-search"></a>
-                                    <a href="http://www.twitter.com/DjChris" target="_blank" class="fa fa-search-o fa-twitch fa-twitch-search"></a>
-                                    <a href="http://www.twitter.com/DjChris" target="_blank" class="fa fa-search-o fa-snapchat-ghost fa-snapchat-ghost-search"></a>
-                                    <a href="http://www.twitter.com/DjChris" target="_blank" class="fa fa-search-o fa-youtube-play fa-youtube-search"></a>
-                                    <a href="http://www.twitter.com/DjChris" target="_blank" class="fa fa-search-o fa-globe fa-globe-search"></a>
-
-                                    <a href="http://www.twitter.com/DjChris" target="_blank" class="fa fa-search-o fa-facebook fa-facebook-search"></a>
-                                    <a href="http://www.twitter.com/DjChris" target="_blank" class="fa fa-search-o fa-twitter fa-twitter-search"></a>
-                                </div>
-                            <div class="hidden-xs" style="float: left">
-                                <a class="follow-btn rss-feed"><i class="fa fa-rss" aria-hidden="true"></i> Følg</a>
-                                <a class="follow-btn star"><i class="fa fa-star" aria-hidden="true"></i> Giv feedback</a>
-                                <a class="follow-btn heart"><i class="fa fa-heart" style="font-size: 12px" aria-hidden="true"></i> Læs feedback</a>
-                            </div>
-
-                        </div>
-                    @*<div class="col-lg-3 col-md-3 col-sm-3 noPadding">
-                        <div class="show-rating-small">
-                            <div class="show-rating-container-small center-block">
-                                <div class="show-rating-front-small">
-                                    <div class="show-rating-box-small">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="show-rating-box-small">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="show-rating-box-small">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="show-rating-box-small">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div class="show-rating-back-small">
-                                    <div class="show-rating-box-small">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="show-rating-box-small">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="show-rating-box-small">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="show-rating-box-small">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="show-rating-box-small">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="score">4.22 af 4 ratings</span>
-
-
-
-                        <div class="vote-span-container">
-                            <a class="vote-span" href="#">
-                                AFSTEMING IGANG
-                            </a>
-                        </div>*@
-
-
-                    @*<div style="width: 100%;">
-                            <a title="Følg Christoffer Jespersen" class="follow-btn rss-feed"><i class="fa fa-rss" aria-hidden="true"></i></a><a title="Giv Christoffer Jespersen feedback" class="follow-btn star"><i class="fa fa-star" aria-hidden="true"></i></a><a title="Læs Christoffer Jespersen's feedback" class="follow-btn heart"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                        </div>*@
-
-                    <div class="visible-xs" style="float: left; width: 100%;">
-                        <a class="follow-btn rss-feed"><i class="fa fa-rss" aria-hidden="true"></i> Følg influencer</a>
-                        <a class="follow-btn star"><i class="fa fa-star" aria-hidden="true"></i> Giv feedback</a>
-                        <a class="follow-btn heart"><i class="fa fa-heart" style="font-size: 12px" aria-hidden="true"></i> Læs feedback</a>
-                    </div>
-
-                </div>
-
+                <img class="blog-img" @v.Src />
+                                <a target="_blank" href="@v.Link" class="go-link">Læs mere</a>
             }
+            else if (v.Type == "Youtube")
+            {
+                <div class="videoWrapper">
+                    <iframe width="560" height="349" src="@v.Src" allowfullscreen frameborder="0"></iframe>
+                </div>
+                                <a target="_blank" class="go-link" href="@v.Link">Se video</a>
+            }
+            else if (v.Type == "Instagram")
+            {
+                <img class="blog-img" src="@v.Src" />
+                                <a target="_blank" class="go-link" href="@v.Link">Se profil</a>
+            }
+
+            <a target="_blank" class="go-link feedback-btn" href="@v.Link">Giv feedback</a>
 
         </div>
     </div>
-
-
-
-
-
-</div>
+</div>*@
