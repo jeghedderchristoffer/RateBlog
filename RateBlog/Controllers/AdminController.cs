@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Bestfluence.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
