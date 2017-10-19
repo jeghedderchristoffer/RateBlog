@@ -18,7 +18,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bestfluence.Controllers
 {
-    [Authorize]
     public class FeedController : Controller
     {
         private readonly IFeedService _feedSevice;
@@ -60,14 +59,14 @@ namespace Bestfluence.Controllers
                     {
                         list.AddRange(await _feedSevice.GetBlogFeedAsync(p.Link, "feed", v.InfluencerId, v.Influencer.Alias.ToUpper()));
                     }
-                    else if(p.Platform.Name == "YouTube" || p.Platform.Name == "SecondYouTube")
+                    else if (p.Platform.Name == "YouTube" || p.Platform.Name == "SecondYouTube")
                     {
                         list.AddRange(await _feedSevice.GetYoutubeFeedAsync(p.Link, "/feeds/videos.xml?", v.InfluencerId, v.Influencer.Alias.ToUpper()));
                     }
-                    else if (p.Platform.Name == "Instagram")
-                    {
-                        list.AddRange(await _feedSevice.GetInstagramFeedAsync(p.Link, v.InfluencerId, v.Influencer.Alias.ToUpper()));
-                    }
+                    //else if (p.Platform.Name == "Instagram")
+                    //{
+                    //    list.AddRange(await _feedSevice.GetInstagramFeedAsync(p.Link, v.InfluencerId, v.Influencer.Alias.ToUpper()));
+                    //}
                 }
             }
 

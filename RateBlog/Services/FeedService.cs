@@ -223,7 +223,7 @@ namespace Bestfluence.Services
                             v.TimeString = GetTimeString(v.TimeSincePublished);
                         }
 
-                    }
+                    } 
                 }
                 return RSSFeedData;
             }
