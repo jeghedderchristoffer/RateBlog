@@ -13,15 +13,13 @@ namespace Bestfluence.Models
         public string Name { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]
-        public DateTime BirthDay { get; set; } 
-       
-        public int Postnummer { get; set; } 
+        public DateTime BirthDay { get; set; }
 
-        public string Gender { get; set; } 
+        public int Postnummer { get; set; }
+
+        public string Gender { get; set; }
 
         public Byte[] ProfilePicture { get; set; }
-
-        public virtual ICollection<Feedback> Ratings { get; set; }
 
         public DateTime Created { get; set; }
 
@@ -29,8 +27,12 @@ namespace Bestfluence.Models
 
         public bool NewsLetter { get; set; }
 
-        public virtual EmailNotification EmailNotification { get; set; } 
-
-
+        public virtual EmailNotification EmailNotification { get; set; }
+        public virtual ICollection<BlogComment> BlogComments { get; set; }
+        public virtual ICollection<BlogRating> BlogRatings { get; set; }
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
+        public virtual ICollection<FeedbackReport> FeedbackReports { get; set; }
+        public virtual ICollection<VoteAnswer> VoteAnswers { get; set; }
+        public virtual Influencer Influencer { get; set; }
     }
 }
