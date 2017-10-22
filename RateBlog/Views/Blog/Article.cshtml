@@ -121,8 +121,8 @@
                 {
                     <form asp-action="createComment" asp-controller="blog" method="post">
                         <input type="hidden" name="id" value="@Model.Article.Id" />
-                        <textarea rows="5" placeholder="Din kommentar..." name="comment"></textarea>
-                        <button type="submit">SKRIV KOMMENTAR</button>
+                        <textarea rows="5" placeholder="Din kommentar..." name="comment" id="CommentBlog-Click-ID"></textarea>
+                        <button type="submit" id="CommentBlog-Submit-ID">SKRIV KOMMENTAR</button>
                     </form>
                 }
                 else
