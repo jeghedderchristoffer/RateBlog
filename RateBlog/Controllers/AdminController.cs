@@ -264,7 +264,7 @@ namespace Bestfluence.Controllers
         public async Task<IActionResult> DeleteUser(UserProfileViewModel model)
         {
             var user = await _dbContext.Users
-                .Include(x => x)
+                .Include(x => x.Feedbacks)
                 .Include(x => x.FeedbackReports)
                 .Include(x => x.EmailNotification)
                 .Include(x => x.BlogComments)
