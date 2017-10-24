@@ -8,27 +8,64 @@
 @if (SignInManager.IsSignedIn(User))
 {
     var user = await UserManager.GetUserAsync(User);
+    await SignInManager.RefreshSignInAsync(user);
     var isInfluencer = (InfluencerService.IsInfluencer(user.Id)) ? "Influencer" : "Bliv influencer";
 
     <input type="hidden" value="@user.Id" id="applicationUserId" />
-    <form asp-area="" asp-controller="account" asp-action="logout" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right" id="dropdownPc">
+    <input type="hidden" value="@isInfluencer" id="isInfluencer" />
 
-            @if (isInfluencer == "Influencer" && await UserManager.IsInRoleAsync(user, "Influencer"))
-            {
-                <li>
-                    <a asp-controller="votes" asp-action="index" class="navLinks">Afstemninger</a>
-                </li>
-            }
+    <form asp-area="" asp-controller="account" asp-action="logout" method="post" id="logoutForm" class="navbar-right"></form>
+    <ul class="nav navbar-nav navbar-right" id="dropdownPc">
 
+        @if (isInfluencer == "Influencer" && await UserManager.IsInRoleAsync(user, "Influencer"))
+        {
             <li>
-                <a asp-area="" asp-controller="manage" asp-action="feedback" class="navLinks">
-                    Min feedback
-                    <span class="badge navbarBagde" style="font-family: Arial; background: #FFA500"></span>
-                </a>
+                <a asp-controller="votes" asp-action="index" class="navLinks">Afstemning</a>
             </li>
+            <li><a style="padding-left: 0; padding-right: 0" class="hidden-xs">|</a></li>
+        }
 
-            <li class="drop">
+        <li>
+            <a asp-area="" asp-controller="manage" asp-action="feedback" class="navLinks">
+                Feedback
+                <span class="badge navbarBagde" style="font-family: Arial; background: #FFA500"></span>
+            </a>
+        </li>
+
+        <li><a style="padding-left: 0; padding-right: 0" class="hidden-xs">|</a></li>
+
+        <li>
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle navLinks" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Konto <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                <ul class="dropdown-menu">
+                    @if (isInfluencer == "Influencer")
+                    {
+                        <li><a asp-area="" asp-controller="influencer" asp-action="profile" asp-route-id="@user.Id">Vis profil</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="account" asp-action="profile" asp-route-id="@user.Id">Vis profil</a></li>
+                    }
+                    <li><a asp-area="" asp-controller="manage" asp-action="edit">Rediger profil</a></li>
+                    <li><a asp-area="" asp-controller="manage" asp-action="influencer">@isInfluencer</a></li>
+                    <li><a asp-area="" asp-controller="manage" asp-action="notifications">Indstillinger</a></li>
+                    <li><a href="#" id="logoutBtn">Log af</a></li>
+                </ul>
+            </div>
+        </li>
+
+        @*<li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Konto <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a asp-area="" asp-controller="manage" asp-action="profile">Vis profil</a></li>
+                    <li><a asp-area="" asp-controller="manage" asp-action="edit">Rediger profil</a></li>
+                    <li><a asp-area="" asp-controller="manage" asp-action="influencer">@isInfluencer</a></li>
+                    <li><a asp-area="" asp-controller="manage" asp-action="notifications">Indstillinger</a></li>
+                    <li><a href="#">Log af</a></li>
+                </ul>
+            </li>*@
+
+        @*<li class="drop">
                 <a href="#" class="navLinks">Konto</a>
                 <div class="dropdownContain">
                     <div class="dropOut">
@@ -42,12 +79,16 @@
                         </ul>
                     </div>
                 </div>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right" id="dropdownMobile" style="display: none">
+            </li>*@
+    </ul>
+
+
+
+
+    @*<ul class="nav navbar-nav navbar-right" id="dropdownMobile" style="display: none">
 
             @if (isInfluencer == "Influencer" && await UserManager.IsInRoleAsync(user, "Influencer"))
-            {
+                {
                 <li>
                     <a asp-controller="votes" asp-action="index" class="navLinks">Afstemninger</a>
                 </li>
@@ -70,18 +111,14 @@
                     <li><a id="logOutMobile" href="#" style="padding: 0 0 0 25px; line-height: 50px">Log af</a></li>
                 </ul>
             </li>
-            
+        </ul>*@
 
-           
-            
-        </ul>
-    </form>
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a id="signup" class="login-links navLinks" data-toggle="modal" data-target="#opretModal">Opret</a></li>
+        <li><a id="signup" class="login-links navLinks" data-toggle="modal" data-target="#opretModal">Tilmeld dig</a></li>
+        <li><a style="padding-left: 0; padding-right: 0" class="hidden-xs">|</a></li>
         <li><a class="login-links navLinks" data-toggle="modal" data-target="#loginModal">Log ind</a></li>
     </ul>
 }
-

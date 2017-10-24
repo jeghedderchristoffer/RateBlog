@@ -69,10 +69,7 @@ $(document).ready(function () {
 // Log out
 
 $(document).ready(function () {
-    $("#logOut").click(function () {
-        $("#logoutForm").submit();
-    });
-    $("#logOutMobile").click(function () {
+    $("#logoutBtn").click(function () {
         $("#logoutForm").submit();
     });
 });
